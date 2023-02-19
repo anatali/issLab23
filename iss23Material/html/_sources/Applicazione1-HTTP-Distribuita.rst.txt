@@ -1,0 +1,664 @@
+.. role:: red 
+.. role:: blue 
+.. role:: brown 
+.. role:: remark
+.. role:: worktodo
+
+.. _tuPrologNew: https://apice.unibo.it/xwiki/bin/view/Tuprolog/
+.. _tuProlog: http://amsacta.unibo.it/5450/7/tuprolog-guide.pdf
+.. _Prolog: https://it.wikipedia.org/wiki/Prolog
+.. _Json: https://it.wikipedia.org/wiki/JavaScript_Object_Notation
+
+=================================
+Applicazione1-HTTP-Distribuita
+=================================
+
+In questa nuova fase dello sviluppo, dobbiamo superare le limitazioni che ci siamo imposti per 
+:ref:`Applicazione1-HTTP-Core`, tenendo conto di quanto già osservato in 
+:ref:`Appl1: Natura dei componenti` della :ref:`Appl1: Architettura logica`. 
+
+Utente --> :remark:`CmdConsole --> Appl1`--> :ref:`VirtualRobot23`
+
+In particolare detto ``P`` uno dei protocolli definiti in :ref:`ProtocolType<unibo.basicomm23.msg.ProtocolType>`:
+
+#. L'applicazione *Appl1* deve diventare un ente attivo capace  di ricevere messaggi (comandi ``start/stop/resume``) 
+   via ``P`` e   :blue:`interpretare` tali messaggi,  convertendoli in comandi a :ref:`VirtualRobot23`.
+
+#. *CmdConsole* deve diventare un ente attivo che interagisce con un utente umano e che invia comandi ad ``Appl1``
+   usando il protocollo ``P``.
+
+La fase di interpretazione dei comandi è affidata a *Appl1* in quanto:
+
+- la *CmdConsole* è solo un dispositivo di input, che si vuole mantenere libero da aspetti legati alla business logic;
+- *Appl1* potrebbe ricevere comandi da dispositivi diversi dalla *CmdConsole*.
+ 
+Nell'impostare il lavoro abbiamo ora un punto di partenza   
+costituito dal codice di :ref:`unibo.appl1.http.Application1HTTPCore`, che realizza la logica di business.
+
+Il nostro obiettivo qui, è :blue:`riusare` il più possibile questo codice (già testato), seguendo il 
+principio  della **Clean Architecture**: le nuove funzionalità
+di comunicazione vanno introdotte senza modificare il nucleo centrale dell'applicazione.
+
+
+Il progetto :ref:`unibo.basicomm23` aiuta a raggiungere questo obiettivo.
+
+Cominciamo con il rivedere le interazioni  :remark:`Appl -->  VirtualRobot23`
+
+----------------------------------------
+Refactoring di VrobotHLMovesHTTPApache
+----------------------------------------
+
+La classe :ref:`unibo.supports.VrobotHLMovesHTTPApache`
+che definisce le mosse di alto livello del robot può essere ridefinita in modo da utilizzare
+un supporto che implementa :ref:`Interaction2021<unibo.basicomm23.interfaces.Interaction2021>` 
+usando il protocollo ``HTTP``.
+
++++++++++++++++++++++++++++++++++++++++++
+unibo.supports.VrobotHLMovesHTTP
++++++++++++++++++++++++++++++++++++++++++
+
+.. code:: java
+
+    public class VrobotHLMovesHTTPApache implements IVrobotMoves{
+    private Interaction2021 httpSupport  ;
+    public VrobotHLMovesHTTP(Interaction2021 httpSupport){this.httpSupport = httpSupport;}
+    @Override
+    public void turnLeft() throws Exception{ httpSupport.request(VrobotMsgs.turnleftcmd);}
+    @Override
+    public void turnRight() throws Exception{httpSupport.request(VrobotMsgs.turnrightcmd);}
+    @Override
+    public void forward(int time) throws Exception{
+        String result = httpSupport.request(  VrobotMsgs.forwardcmd.replace("TIME",""+time)  );
+        if( result.contains("collision")  ){ throw new CollisionException(  ) ; }
+    }
+    @Override
+    public void backward(int time) throws Exception{
+        String result = httpSupport.request(  VrobotMsgs.backwardcmd.replace("TIME",""+time)  );
+        if( result.contains("collision")  ){ throw new CollisionException(  ) ; }
+    } 
+    @Override
+    public void halt( ) throws Exception { httpSupport.request(  VrobotMsgs.haltcmd  ); }    
+    }
+
+
+++++++++++++++++++++++++++++++++++++++++
+unibo.appl1.interaction.VrobotHLMoves
+++++++++++++++++++++++++++++++++++++++++
+
+.. code:: java
+
+   package unibo.appl1.interaction;   
+
+    public class VrobotHLMoves implements IVrobotMoves{
+    private Interaction2021 conn  ;
+
+    public VrobotHLMoves(Interaction2021 conn) {this.conn = conn;}
+
+Le chiamate a ``WEnv`` vengono realizzate sostituendo frasi quali ``httpSupport.requestSynch(VrobotMsgs.xxx);``
+con:
+
+.. code:: java
+
+    conn.request(VrobotMsgs.xxx);    
+
+++++++++++++++++++++++++++++++++++++++++
+unibo.appl1.common.VrobotMsgs
+++++++++++++++++++++++++++++++++++++++++
+
+La classe *VrobotMsgs* definisce alcuni :ref:`messaggi applicativi<Natura e struttura dei messaggi applicativi>`
+per il robot.
+
+.. code:: java
+    
+    public final static String turnrightcmd  = 
+        "{\"robotmove\":\"turnRight\"   , \"time\": \"300\"}";
+    public final static String turnleftcmd  = 
+        "{\"robotmove\":\"turnLeft\"     , \"time\": \"500\"}";   
+    public final static String forwardcmd   = 
+        "{\"robotmove\":\"moveForward\"  , \"time\": TIME}";
+    public final static String backwardcmd  = 
+        "{\"robotmove\":\"moveBackward\" , \"time\": TIME}";
+    public final static String haltcmd      = 
+        "{\"robotmove\":\"alarm\" ,        \"time\": \"10\"}";
+    public final static String stepcmd      = 
+        "{\"robotmove\":\"moveForward\"  , \"time\": \"350\"}";
+    ...
+
+
+Il supporto richiesto per le comunicazioni con :ref:`VirtualRobot23` viene ottenuto da
+una chiamata a :ref:`unibo.basicomm23.utils.ConnectionFactory` da parte del main applicativo.
+
+------------------------------------
+Supporti HL-robot 
+------------------------------------
+
+La classe  :ref:`VrobotHLMovesHTTP<unibo.supports.VrobotHLMovesHTTP>` fornisce mosse di alto livelo del robot 
+usando  :ref:`HttpConnection` per le interazioni con WEnv.
+
+In prospettiva, svilupperemo di certo anche una classe  :ref:`VrobotHLMovesWS<unibo.supports.VrobotHLMovesWS>`
+come supporto per mosse di alto livelo del robot 
+usando  :ref:`WsConnection` per le interazioni con WEnv.
+
+E' quindi opportuno introdurre anche una factory per costruire l'opportuno oggetto di supporto alla comunicazione
+con il robot che implementa l'intefaccia :ref:`IVrobotMoves<unibo.common.IVrobotMoves>` 
+usando ``HTTP`` o ``WS``.
+
+
+++++++++++++++++++++++++++++++++++++++
+unibo.supports.VrobotHLSupportFactory
+++++++++++++++++++++++++++++++++++++++
+
+- :ref:`IVrobotMoves<unibo.common.IVrobotMoves>`
+- :ref:`HttpConnection`
+- :ref:`WsConnection`
+
+.. code:: java
+
+   public class VrobotHLSupportFactory {
+    public static IVrobotMoves create(String hostIp, ProtocolType protocol) throws Exception {
+        if( protocol == ProtocolType.http ) return supportForHTTP(hostIp);
+        else if( protocol == ProtocolType.ws ) return supportForWS(hostIp);
+        else throw new Exception("VrobotHLSupportFactory protocol not allowed");
+    }
+    public static IVrobotMoves supportForHTTP(String hostIp){
+        Interaction2021 connToWEnv = HttpConnection.create(hostIp+":8090/api/move");
+        return new VrobotHLMovesHTTP( connToWEnv  );
+    }
+    public static IVrobotMoves supportForWS(String hostIp){
+        Interaction2021 connToWEnv = WsConnection.create(hostIp+":8091");
+        return new VrobotHLMovesWS( connToWEnv  );
+    }
+    public static IVrobotMoves supportForWSPlanned(String hostIp, IObserver obs, boolean fastPc){
+        Interaction2021 connToWEnv = WsConnection.create(hostIp+":8091");
+        Planner23Util planner          = new Planner23Util();
+        return new VrobotHLMovesWSPlanned((WsConnection) connToWEnv, planner, obs, fastPc );
+    }    
+
+--------------------------------------------
+Il contratto applicativo
+--------------------------------------------
+
+L'applicazione può essere vista come un componente che realizza l'insieme di operazione definite dalla
+seguente interfaccia.
+
++++++++++++++++++++++++++++++++++
+IApplication1
++++++++++++++++++++++++++++++++++
+
+L'applicazione viene concepita come un POJO **oserervabile** (per la motivazione si veda 
+:ref:`Application1HTTPCore observable`) che offre operazioni per l'aggiunta di observer:
+
+.. code:: java
+
+  public interface IApplication1 {
+      public void start() throws Exception;
+      public void stop();
+      public void resume();
+      public void addAnObserverOnAppl(IObserver o);
+  }
+
+- :ref:`start<metodi start/stop/resume>`: che attiva l'applicazione (nel Thread corrente);
+- :ref:`stop<metodi start/stop/resume>`: che ferma l'applicazione, se questa esegue :ref:`walkBySteppingWithStop`;
+- :ref:`resume<metodi start/stop/resume>`: che riattiva l'applicazione.
+
+
+Il codice che esprime la business logic è quello già introdotto in :ref:`codice di unibo.appl1.http.Application1HTTPCore`.
+
+Tuttavia, per agevolare lo sviluppo di diverse versioni dell'applicazione, introduciamo la classe astratta 
+:ref:`unibo.appl1.common.Application1AbstractBase` che 
+realizza le funzionalità ``stert/stop/resume`` di :ref:`IApplication1`, lasciando a classi specializzate il compito di definire 
+il metodo che stabilisce il comportamento della specifica applicazione:
+
+- :blue:`abstract void doJob()` throws Exception 
+  
++++++++++++++++++++++++++++++++++++++++++++++
+unibo.appl1.common.Application1AbstractBase
++++++++++++++++++++++++++++++++++++++++++++++
+
+*Application1AbstractBase* implementa :ref:`IApplication1` e definisce le operazioni che permettono stop e resume.
+
+.. code:: java
+
+    public abstract class Application1AbstractBase implements IApplication1, IObserver{
+    protected ProtocolType protocolToWEnv;
+        public Application1AbstractBase(String name, String hostIp,  boolean fastPc){
+            this(name,hostIp,  fastPc, new Vector<IObserver>() );
+        }
+        public Application1AbstractBase(String name, String hostIp, 
+                ProtocolType boolean fastPc, Vector<IObserver> externalObs){
+            this.name      = name;
+            this.fastPc    = fastPc;
+        }
+        public void addAnObserverOnAppl(IObserver o){ obs.add( o ); }
+        protected void updateObservers(String msg){ obs.forEach( o -> o.update(msg)); }
+    
+        protected synchronized void waitResume(){ ... }
+        @Override
+        public  void stop(){ stopped = true; }
+        @Override
+        public void start(   ) throws Exception {
+        if( ! started ){ doJob();
+        }else CommUtils.outyellow(name + " | already started");
+        
+        @Override
+        public void update(String s) {
+        if( s.equals("move(w)")) {
+            if( stopped ) waitResume();
+        }else{
+            //updateObservers(s);
+        }
+        @Override
+        public void update(Observable o, Object arg) {update(""+arg);}
+
+        protected abstract void doJob() throws Exception;        
+     }
+
+Il parametro `fastPc` passato al costrutture permette di fossare parametri temporali diversi per computer 'veloci' o 'lenti'.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+unibo.appl1.interaction.Application1CoreConn
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Per aumentare la flessibilità, la nuova versione dell'applicazione 
+(che generalizza :ref:`Application1Core<codice di unibo.appl1.http.Application1HTTPCore>` )
+riceve nel costruttore 
+il parametro :blue:`hostIp` che denota l'indirizzo del nodo che esegue il 
+:ref:`VirtualRobot23` ed il parametro :blue:`protocolToWEnv` che denota il protocollo da
+usare per le intera<zioni con WEnv. 
+
+.. code:: java
+
+   public class Application1CoreConn extends Application1AbstractBase {
+   protected final static boolean fastPc = false;
+   protected ProtocolType protocolToWEnv;
+
+    public Application1CoreConn(String name, String hostIp, ProtocolType protocolToWEnv){
+        super(name,hostIp,protocolToWEnv,fastPc);    
+        try {
+            this.protocolToWEnv = protocolToWEnv;
+            vr = VrobotHLSupportFactory.create(hostIp,protocolToWEnv);
+        } catch (Exception e) {...}
+    }
+    @Override
+    protected void doJob() throws Exception {
+        walkAtBoundary();
+        CommUtils.delay(1500); ////To see the asynch messages (if any)
+        CommUtils.outblue(name + " | doJob BYE "  );
+    }
+    public static void main( String[] args ) throws Exception {
+        Application1CoreConn appl = new Application1CoreConn("Application1CoreConn","localhost", ProtocolType.ws ); 
+        //L'applicazione si blocca in attesa del comando start
+        //appl.addObserver( new Appl1Observer() );
+        //I comandi vengono inviati da altri programmi (remoti)
+        appl.start();
+    }
+   }
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+Interazioni Console-Appl1
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Affrontiamo ora le interazioni :remark:`CmdConsole --> Appl1`, osservando che:
+
+#. *Appl1* deve 'evolvere' in modo da poter ricevere messaggi: normalmente questo obiettivo implica la introduzione 
+   di un :blue:`server`.
+#. *CmdConsole* deve operare come un :blue:`client` nei confronti del server relativo ad *Appl1*.
+
+.. image:: ./_static/img/Appl1/ArchCmdConsoleAppl.png
+   :width: 80% 
+
+ 
+
+Il progetto :ref:`unibo.basicomm23`  fornisce supporti per entrambe queste esigenze, attraverso due 'enti abilitatori':
+
+#. :ref:`EnablerAsServer<unibo.basicomm23.enablers.EnablerAsServer>`
+#. :ref:`CallerAsClient<unibo.basicomm23.enablers.CallerAsClient>`
+
+.. image:: ./_static/img/Appl1/CallerAsClient.png
+   :width: 50% 
+
+
+
+-------------------------------
+CmdConsole
+-------------------------------
+
+#. *CmdConsole* deve diventare un ente attivo che interagisce con un utente umano e che invia comandi ad ``Appl1``
+   usando un protocollo ``P`` tra quelli definiti in :ref:`ProtocolType<unibo.basicomm23.msg.ProtocolType>`.
+
+Dopo colloquio con il committente, si è convenuto di usare ``TCP``.
+
+Piano di lavoro:
+
+#. In primo luogo definiamo un simulatore simile a :ref:`unibo.console.CmdConsoleSimulator` che denominiamo 
+   :blue:`CmdConsoleRemote`, per evidenziare che non opera più con interazioni locali a procedure call 
+#. Successivamente, definiamo una :ref:`StartStopGui<unibo.console.gui.StartStopGuiRemote>` in Java, che offre ad un utente umano un insieme di pulsanti 
+   per inviare ad Appl1 i comandi  ``start/stop/resume``.
+
++++++++++++++++++++++++++++++++++++++++++++++
+unibo.appl1.interaction.CmdConsoleRemote
++++++++++++++++++++++++++++++++++++++++++++++
+*CmdConsoleRemote* estende l'abilitatore :ref:`CallerAsClient<unibo.basicomm23.enablers.CallerAsClient>`  
+che stabilsce una :ref:`Interconnessione<unibo.basicomm23.interfaces.Interaction2021>` con :ref:`VirtualRobot23` 
+usando il ``protocol`` dato.
+L'uso di :ref:`CommUtils<unibo.basicomm23.utils.CommUtils>` e di :ref:`VrobotMsgs<unibo.appl1.common.VrobotMsgs>` 
+rende il codice più snello e leggibile.
+
+.. code:: java
+
+   public class CmdConsoleRemote extends CallerAsClient {
+    public CmdConsoleRemote(
+            String name, String host, String entry, ProtocolType protocol) {
+        super(name, host, entry, protocol); //Realizza connessione
+        activateSimulation();
+    }
+
+    public void activateSimulation(   ) {
+         ...
+      IApplMessage startMsg = 
+         CommUtils.buildDispatch(name.toLowerCase(),"cmd","start","appl1");
+         CommUtils.forwardOnInterconn(getConn(),startMsg.toString());
+         ...
+      IApplMessage stopMsg = 
+         CommUtils.buildDispatch(name.toLowerCase(),"cmd","'"+VrobotMsgs.stoprobot+"'","appl1");
+         CommUtils.forwardOnInterconn( getConn(), startMsg.toString());
+         ...
+    }
+   }
+
++++++++++++++++++++++++++++++++++++++++++++++
+unibo.console.gui.StartStopGuiRemote
++++++++++++++++++++++++++++++++++++++++++++++
+
+La classe *StartStopGui* realizza una semplice GUI Java, che si presenta all'utente come segue:
+
+.. image:: ./_static/img/Appl1/StartStopGui.png
+   :width: 20% 
+
+La classe è defiita come un ``java.util.Observer`` il cui metodo ``update`` viene invocato 
+dal ``java.awt.event.ActionListener`` realizzato da ``ButtonAsGui`` che 
+estende ``java.util.Observable`` e che crea i pulsanti su un ``java.awt.Frame``:
+
+.. code:: java
+
+   public class StartStopGuiRemote implements  Observer{
+   private String[] buttonLabels  = new String[] {"start", "stop", "resume", "exit" };
+   private String destName;
+   private Interaction2021 conn;
+
+      public StartStopGuiRemote(String destName, ProtocolType protocol, String port) {
+         ButtonAsGui concreteButton = ButtonAsGui.createButtons( "", buttonLabels );
+         concreteButton.addObserver( this );
+         this.destName = destName; 
+         ...
+         conn = ConnectionFactory.createClientSupport(protocol,"localhost", port);           
+      }
+      @Override //For Observer
+      public void update( Observable o , Object arg ) { 
+         String move = arg.toString();
+         ...
+         IApplMessage msg = CommUtils.buildDispatch("gui", move, move, destName);
+         conn.forward(msg.toString());
+      }
+      public static void main( String[] args) {
+         new StartStopGui( "Appl1GuiRemote", 
+            Application1SystemBuilder.protocol, Application1SystemBuilder.port );
+      }
+   }
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+unibo.appl1.interaction.Application1SystemBuilder
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+:ref:`Application1SystemBuilder<unibo.appl1.interaction.Application1SystemBuilder>` è il componente che
+definisce il protocollo  e la porta del server e  crea l'architettura del sistema applicativo mostrata nella figura che segue:
+
+.. list-table:: 
+  :widths: 50,50
+  :width: 100%
+
+  * - .. image:: ./_static/img/Appl1/Appl1Enabler.png
+         :width: 100% 
+    -  - I componenti con freccia rappresentano enti attivi
+       - :ref:`Appl1MsgHandler<unibo.appl1.interaction.Appl1MsgHandler>` gestisce i messaggi ricevuti
+         da  :ref:`EnablerAsServer<unibo.basicomm23.enablers.EnablerAsServer>` invocando i metodi di
+         :ref:`Application1CoreConn<unibo.appl1.interaction.Application1CoreConn>`.
+
+
+.. code:: java
+
+   package unibo.appl1.interaction;
+   public class Application1SystemBuilder {
+    public static final ProtocolType protocol = ProtocolType.tcp;
+    public static final String port           = "8030";
+    public static final int portNum            = 8030;
+    
+    private IApplication1MsgHandler applMsgHandler;
+    private EnablerAsServer server;
+
+    public Application1SystemBuilder(
+            String name, IApplication1MsgHandler  applMsgHandler ) throws Exception{
+         this.name            = name;
+         this.applMsgHandler  = applMsgHandler;
+         server               = new EnablerAsServer(name,portNum, protocol,applMsgHandler);
+         server.start();
+    }
+
+    public IApplication1MsgHandler getHandler(){ return  applMsgHandler; }
+    public void terminate(){ server.stop(); }
+
+    public static void main(String[] args) throws Exception{
+         Application1SystemBuilder appl = new Application1SystemBuilder(
+                  "appl1Server",new Appl1MsgHandler("appl1MsgHandler") );
+    }
+   }
+
+--------------------------------------
+Appl1: il server
+--------------------------------------
+ 
+Il gestore di messaggi :ref:`Appl1MsgHandler<unibo.appl1.interaction.Appl1MsgHandler>` :blue:`crea`
+(durante la gestione del messaggio ``start``) il POJO 
+:ref:`Application1CoreConn<unibo.appl1.interaction.Application1CoreConn>` che definisce l'applicazione
+e ne invoca poi i metodi relativi ai messaggi ``stop/resume`` ricevuti.
+
+Il gestore applicativo dei messaggi deve realizzare l'interfaccia 
+:ref:`IApplMsgHandler<unibo.basicomm23.interfaces IApplMsgHandler>` e deve funzionare come oggetto
+osservabile ai fini di testing, logging, etc. Il suo contratto è
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+unibo.appl1.interaction.IApplication1MsgHandler
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+.. code:: java
+
+   public interface IApplication1MsgHandler extends IApplMsgHandler {
+      public Appl1Observer getApplObserver();
+   }
+
+In questa fase riusiamo oggetti observer di classe :ref:`unibo.appl1.common.Appl1Observer`.
+
++++++++++++++++++++++++++++++++++++++++++++
+unibo.appl1.interaction.Appl1MsgHandler
++++++++++++++++++++++++++++++++++++++++++++
+
+Il metodo ``walkAtBoundary`` (che rappresenta la fase proattiva dell'applicazione) viene invocato all'interno 
+di un nuovo Thread, per permettere la gestione di un messaggio di ``stop``.
+
+.. code:: java
+
+   public class Appl1MsgHandler extends ApplMsgHandler implements IApplication1MsgHandler{
+    private Application1CoreConn appl;
+    private Appl1Observer obs  = new Appl1Observer();
+
+    public Appl1MsgHandler(String name ) {
+        super(name);
+    }
+
+    @Override //per ApplMsgHandler IApplication1MsgHandler
+    public void elaborate(IApplMessage msg, Interaction2021 conn) {
+        if( msg.msgContent().contains("create")){
+        //MESSAGGIO DI CREAZIONE DELLA APPLICAZIONE
+            createAppl(msg);
+        }else if( msg.msgContent().contains("start")){
+         //MESSAGGIO DI ATTIVAZIONE DELLA APPLICAZIONE
+            if( appl == null ) createAppl(msg);
+                new Thread(){
+                    public void run(){
+                        try {
+                            appl.walkAtBoundary();
+                        }catch (Exception e) {... }
+                    }
+                }.start();
+
+        }else if( msg.msgContent().contains("stop")){
+            //MESSAGGIO DI STOP
+            if( appl !=null ) appl.stop(  );
+        }else if( msg.msgContent().contains("resume")){
+            //MESSAGGIO DI RESUME
+            if( appl !=null ) appl.resume(  );
+        } 
+    }
+    
+    protected void createAppl(IApplMessage msg){
+        String hostIp= "localhost";
+        appl = new Application1CoreConn(hostIp);
+        obs.init();
+        appl.addObserver( obs );
+    }
+
+    @Override //per IApplication1MsgHandler
+    public Appl1Observer getApplObserver(){
+        return obs;
+    }
+   }
+
+Il metodo ``getApplObserver`` restituisce l'osservatore 
+(di classe :ref:`unibo.appl1.common.Appl1Observer`)
+posto sull'applicazione che abbiamo in precedena introdotto ai fini di testing, logging, etc.
+
+
+
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++
+Appl1: architettura finale
+++++++++++++++++++++++++++++++++++++++++++++
+
+.. image:: ./_static/img/Appl1/Appl1FinalArchitecture.png
+   :width: 80% 
+
+ 
+--------------------------------------------------
+Testing del sistema distribuito
+--------------------------------------------------
+
+La struttura del codice di testing è simile a quanto introdotto in
+:ref:`unibo.appl1.http.TestCommonAppl1HTTPLocal`.
+
+In questo caso:
+
+- nella fase iniziale (``@Before``) che precede ogni metodo di testing, attiviamo 
+  :ref:`Application1SystemBuilder<unibo.appl1.interaction.Application1SystemBuilder>`;
+- nella fase terminale  (``@After``) terminiamo il builder, che a sua volta termina il server;
+- le procedure di testing inviano messaggi (``dispatch``) via TCP alla porta di ingresso di 
+  :ref:`EnablerAsServer<unibo.basicomm23.enablers.EnablerAsServer>`.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+unibo.appl1.interaction.TestAApplication1System
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. code:: java
+
+   public class TestAApplication1System {
+   private IApplication1MsgHandler applMsgHandler;
+   private Application1SystemBuilder builder;
+
+    @Before
+    public void startTheServer(){
+        try {
+            applMsgHandler = new Appl1MsgHandler("appl1MsgHandler");
+            builder        = new Application1SystemBuilder("appl1Server",applMsgHandler);
+         } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @After
+    public void terminateTheServer() {
+        builder.terminate();
+        CommUtils.delay(2000);
+    }
+
+    @Test
+    public void testStartNoStop(){
+        CommUtils.outmagenta("testStartNoStop");
+        //startTheApplication();
+        CallerAsClient caller = new CallerAsClient( "testerCaller", "localhost",
+                 Application1SystemBuilder.port, Application1SystemBuilder.protocol);
+        IApplMessage startMsg = CommUtils.buildDispatch("tester", "cmd", "start", "appl1");
+        CommUtils.forwardOnInterconn(caller.getConn(),startMsg.toString()); 
+        applMsgHandler.getApplObserver().waitApplTerminated();
+        assert( true );
+    }
+
+    @Test
+    public void testStop(){
+        try {
+            CallerAsClient caller = new CallerAsClient( "testerCaller", "localhost", 
+                    Application1SystemBuilder.port, Application1SystemBuilder.protocol);
+            IApplMessage startMsg = CommUtils.buildDispatch("tester", "cmd", "start", "appl1");
+            CommUtils.forwardOnInterconn(caller.getConn(),startMsg.toString());
+            CommUtils.delay(2000); //Attendo un pò ...
+            IApplMessage stopMsg = CommUtils.buildDispatch(
+                  "tester", "cmd", "'" + VrobotMsgs.stoprobot + "'", "appl1");
+            CommUtils.forwardOnInterconn(caller.getConn(),stopMsg.toString());
+            checkHistoryAfterStop();
+            CommUtils.delay(1000 );//Attendo un pò ...
+            continueToHome( caller );
+        } catch (Exception e) {
+            fail("TestAppl1HTTPLocal | testStart " + e.getMessage());
+        }
+    }
+
+    private void continueToHome( CallerAsClient caller ){
+        IApplMessage resumeMsg = CommUtils.buildDispatch(
+            "tester", "cmd", "'" + VrobotMsgs.resumerobot + "'", "appl1");
+        CommUtils.forwardOnInterconn(caller.getConn(),resumeMsg.toString());
+        applMsgHandler.getApplObserver().waitApplTerminated();
+    }
+
+    private void checkHistoryAfterStop(){
+        CommUtils.delay(1500); //Per elaborare ultime stringhe negli observers (Non bello)
+        Vector<String> h = applMsgHandler.getApplObserver().getHistory();
+        assert( h.elementAt(0).equals("robot-athomebegin"));
+        assert( h.elementAt(1).equals("robot-moving"));
+        if( h.size() > 3 ) assert( h.elementAt(2).equals("robot-stable"));
+        //Dopo il secondo item ci possono essere altre coppie robot-moving/robot-stable
+        assert( h.elementAt(h.size()-1).equals("robot-stopped"));
+        assert( true );
+    }
+   }
+
+------------------------------------------
+Appl1: Modifica ai protocolli
+------------------------------------------
+
+#. L'interazione tra :ref:`Application1CoreConn<unibo.appl1.interaction.Application1CoreConn>` 
+   e :ref:`VirtualRobot23` potrebbe essere basata su ``WebSocket``, anzichè su ``HTTP``.
+#. L'interazioe tra :ref:`unibo.console.gui.StartStopGuiRemote` e 
+   :ref:`EnablerAsServer<unibo.basicomm23.enablers.EnablerAsServer>` porebbe essere basata su ``UDP``,
+   anzichè su ``TCP`` o anche su un protocollo RESTful come ``Coap``.
+
+Il secondo caso può essere ottenuto con la modifica a una linea di codice 
+in :ref:`unibo.appl1.interaction.Application1SystemBuilder`; ad esempio:
+
+.. code:: java
+
+    public class Application1SystemBuilder {
+    public static final ProtocolType protocol = ProtocolType.udp;
+
+Il primo caso, di sostituzione di ``HTTP`` con ``WebSocket`` al posto di ``HTTP`` potrebbe essere ottenuta nello stesso 
+modo, ma è opportuno esaminare questo caso più da vicino,
+in quanto implica :ref:`Interazione asincrona` con :ref:`VirtualRobot23`: lo faccaimo in :ref:`Applicazione1-WS`.

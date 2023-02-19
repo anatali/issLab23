@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>TemaFinale22 &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="TemaFinaleNote" href="TemaFinaleNote.html" />
+    <link rel="prev" title="ConclusioniISS22" href="ConclusioniISS22.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="temafinale22">
+<h1>TemaFinale22<a class="headerlink" href="#temafinale22" title="Permalink to this headline">¶</a></h1>
+<p>A company intends to build a <span class="blue">WasteService</span> for the <em>separate collection of waste</em>,  composed of a set of elements:</p>
+<ol class="arabic">
+<li><p>a service area (rectangular, flat) that includes:</p>
+<ul class="simple">
+<li><p>an <span class="blue">INDOOR</span> port, to enter waste material</p></li>
+<li><p>a <span class="blue">PlasticBox</span> container, devoted to store objects made of plastic, upto <strong>MAXPB</strong> kg of material.</p></li>
+<li><p>a <span class="blue">GlassBox</span> container, devoted to store objects made of glass, upto <strong>MAXGB</strong> kg of material.</p></li>
+</ul>
+<p>The service area is free from internal obstacles, as shown in the following picture:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/WasteServiceRoom.PNG"><img alt="_images/WasteServiceRoom.PNG" class="align-center" src="_images/WasteServiceRoom.PNG" style="width: 60%;" /></a>
+</div></blockquote>
+</li>
+<li><p>a DDR robot working as a <span class="blue">transport trolley</span>, that is intially situated in its <span class="blue">HOME</span> location.
+The transport trolley has  the form of a square of side length <strong>RD</strong>.</p>
+<p>The <cite>transport trolley</cite> is used to performa a <span class="blue">deposit action</span> that consists in the following phases:</p>
+<ol class="arabic simple">
+<li><p>pick up a waste-load from a <span class="blue">Waste truck</span> located on the <cite>INDOOR</cite></p></li>
+<li><p>go from the <cite>INDOOR</cite> to the proper waste container</p></li>
+<li><p>deposit the waste-load in the container</p></li>
+</ol>
+</li>
+<li><p>a <span class="blue">Service-manager</span> (an human being) which supervises the state of the service-area by using a
+<span class="blue">WasteServiceStatusGUI</span>.</p></li>
+<li><p>a <span class="blue">Sonar</span> and a <span class="blue">Led</span> connected to a RaspnerryPi. The <cite>Led</cite> is used as a <em>warning devices</em>,
+according to the following scheme:</p>
+<ul class="simple">
+<li><p>the <cite>Led</cite> is <strong>off</strong> when the  <cite>transport trolley</cite> is at <cite>HOME</cite></p></li>
+<li><p>the <cite>Led</cite> <strong>blinks</strong> while the <cite>transport trolley</cite> is moving</p></li>
+<li><p>the <cite>Led</cite> is <strong>on</strong> when <cite>transport trolley</cite> is stopped.</p></li>
+</ul>
+<p>The <cite>Sonar</cite> is used as an ‘alarm device’: when it measures a distance less that a prefixed value <strong>DLIMT</strong>,
+the <cite>transport trolley</cite> must be stopped.
+It will be resumed when <cite>Sonar</cite> detects again a distance higher than  <strong>DLIMT</strong>.</p>
+</li>
+</ol>
+<section id="tfrequirements">
+<h2>TFRequirements<a class="headerlink" href="#tfrequirements" title="Permalink to this headline">¶</a></h2>
+<p>The main goal of the <span class="blue">WasteService</span> software is to allow a <span class="blue">Waste truck</span> to deposit its load of
+<strong>TruckLoad</strong> kg plastic or glass in the proper container.</p>
+<p>The global story can be described as follows:</p>
+<ol class="arabic simple">
+<li><p>The <cite>Waste truck</cite> driver approaches the <cite>INDOOR</cite> and sends (using a smart device) a request to store the load,
+by specifyng the <cite>type of  the material</cite> (plastic or glass) and its <cite>TruckLoad</cite>.</p></li>
+<li><p>The <cite>WasteService</cite> sends the answer <em>loadaccept</em> if the final content of proper container will not surpass the
+maximum value allowed (<em>MAXPB</em> or <em>MAXGB</em>). Otherwise, it sends the answer <em>loadrejecetd</em> and the  <cite>Waste truck</cite>
+leaves the <cite>INDOOR</cite> area.</p></li>
+<li><p>When the load is accepted, the <cite>transport trolley</cite> reaches the <cite>INDOOR</cite>, picks up the material, goes to the
+proper container and settles the material. During this activity, the <cite>WasteService</cite> <strong>blinks</strong> the <cite>Led</cite></p></li>
+<li><p>When the deposit action is terminated, the <cite>transport trolley</cite>  excutes another deposit command (if any)
+or returns to its <cite>HOME</cite>.</p></li>
+</ol>
+<p>The <cite>WasteService</cite> must create a <span class="blue">WasteServiceStatusGUI</span> that shows to the <em>Service-manager</em>:</p>
+<ul>
+<li><p>the current state of the <cite>transport trolley</cite> and it position in the room</p></li>
+<li><p>the current weigth of the material stored in the two waste-containers</p></li>
+<li><p>the current state of the <cite>Led</cite></p>
+<p><span class="remark">Da leggere …</span></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="TemaFinaleNote.html#temafinalenote"><span class="std std-ref">TemaFinaleNote</span></a></p></li>
+<li><p><a class="reference external" href="../../../../../it.unibo.issLabStart/userDocs/domande.html">domande.html</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actors22.html">Actors22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleaner.html">RobotCleaner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleanerWeb.html">RobotCleanerWeb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsoDiunPlanner.html">Uso di un planner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotExplorer.html">RobotExplorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebApplications.html">WebApplication con SpringBoot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AttoriCoap.html">Attori come risorse CoAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OltreTcp.html">Oltre TCP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QakIntro.html">QActor (meta)model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BasicRobot22.html">BasicRobot22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Applicazioni22.html">Applicazioni 2022</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KotlinNotes.html">KotlinNotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo2022.html">demo2022</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Architetture.html">Architetture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConclusioniISS22.html">ConclusioniISS22</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">TemaFinale22</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tfrequirements">TFRequirements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="TemaFinaleNote.html">TemaFinaleNote</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ConclusioniISS22.html" title="previous chapter">ConclusioniISS22</a></li>
+      <li>Next: <a href="TemaFinaleNote.html" title="next chapter">TemaFinaleNote</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/TemaFinale22.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

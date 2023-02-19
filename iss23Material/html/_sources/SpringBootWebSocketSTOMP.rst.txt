@@ -1,0 +1,439 @@
+.. role:: red 
+.. role:: blue 
+.. role:: remark
+.. role:: worktodo  
+
+.. _Applicazione web: https://it.wikipedia.org/wiki/Applicazione_web    
+.. _WebappFrameworks: https://www.geeksforgeeks.org/top-10-frameworks-for-web-applications/
+.. _Springio: https://spring.io/
+.. _WebSocket: https://it.wikipedia.org/wiki/WebSocket
+.. _Node.js: https://nodejs.org/it/
+.. _Express: https://expressjs.com/it/
+.. _CleanArchitecture: https://clevercoder.net/2018/09/08/clean-architecture-summary-review
+.. _Buster: https://www.raspberrypi.com/news/buster-the-new-version-of-raspbian/
+.. _Bullseye: https://www.raspberrypi.com/news/raspberry-pi-os-debian-bullseye/
+.. _REST : https://en.wikipedia.org/wiki/Representational_state_transfer
+.. _HATEOAS: https://en.wikipedia.org/wiki/HATEOAS
+.. _BannerTool: https://manytools.org/hacker-tools/ascii-banner/
+
+.. _WebSocket: https://it.wikipedia.org/wiki/WebSocket
+.. _SockJs: https://openbase.com/js/sockjs/documentation#what-is-sockjs
+.. _Bootstrap: https://getbootstrap.com/
+.. _jsdelivr: https://www.jsdelivr.com/
+.. _WebJars: https://mvnrepository.com/artifact/org.webjars
+.. _WebJarsExplained: https://www.baeldung.com/maven-webjars 
+.. _WebJarsDocs: https://getbootstrap.com/docs/5.1/getting-started/introduction/
+.. _WebJarsExamples: https://getbootstrap.com/docs/5.1/examples/
+.. _WebJarsContainer: https://getbootstrap.com/docs/5.1/layout/containers/
+.. _Heart-beating: https://stomp.github.io/stomp-specification-1.2.html#Heart-beating
+
+
+=======================================
+SpringBootWebSocketSTOMP
+=======================================
+
+.. https://www.toptal.com/java/stomp-spring-boot-websocket
+
+Il protocollo WebSocket consente di implementare la comunicazione bidirezionale tra le applicazioni. 
+È importante sapere che HTTP viene utilizzato solo per l'handshake iniziale. 
+Dopo che ciò accade, la connessione HTTP viene aggiornata a una connessione TCP/IP appena aperta utilizzata da un WebSocket.
+
+Il protocollo WebSocket è un protocollo di livello piuttosto basso. 
+Definisce come un flusso di byte viene trasformato in frame. Un frame può contenere un testo o un messaggio binario. 
+Poiché il messaggio stesso non fornisce alcuna informazione aggiuntiva su come instradarlo o elaborarlo, 
+è difficile implementare applicazioni più complesse senza scrivere codice aggiuntivo. 
+Fortunatamente, la specifica WebSocket consente l'utilizzo di sottoprotocolli che operano 
+a un livello di applicazione superiore. Uno di questi, supportato dallo Spring Framework, è STOMP.
+
+STOMP è un semplice protocollo di messaggistica basato su testo che è stato inizialmente creato 
+per linguaggi di scripting come Ruby, Python e Perl per connettersi a broker di messaggi aziendali. 
+Grazie a STOMP, clienti e broker sviluppati in diverse lingue possono inviare e ricevere messaggi 
+gli uni dagli altri. Il protocollo WebSocket è talvolta chiamato TCP per Web. Analogamente, 
+STOMP si chiama HTTP per il Web. Definisce una manciata di tipi di frame mappati su frame WebSocket, 
+ad esempio , CONNECT, SUBSCRIBE, UNSUBSCRIBE, ACKo SEND. Questi comandi da un lato sono molto utili 
+per gestire la comunicazione mentre dall'altro ci permettono di implementare soluzioni con funzionalità 
+più sofisticate come il riconoscimento dei messaggi.
+
+
+------------------------------------------------------
+WebSocket in SpringBoot: versione STOMP
+------------------------------------------------------
+:blue:`Simple Text Oriented Message Protocol`
+(STOMP) è un protocollo di messaggistica text-based progettato per operare con MOM 
+(Message Orinented Middleware) ed originariamente creato per l'uso 
+in linguaggi di scripting con frame ispirati a HTTP. 
+E' una alternativa a AMQP (Advanced Message Queuing Protocol) e JMS (Java Messaging Service).
+
+STOMP può essere utilizzato anche senza WebSocket, ad esempio tramite una connessione 
+Telnet, HTTP o un  message broker. Tuttavia,
+STOMP è ampiamente supportato e adatto per l'uso su WebSocket e sul web.
+
+Un meccansimo noto come Heart-beating_ può essere usato opzionalmente per verificare lo stato 
+della sottostante connessione TCP e che l'endpoint remoto sia operativo.
+ 
+STOMP è progettato per interagire con un :blue:`broker di messaggi` realizzato in memoria (lato server);
+dunque, rispetto all'uso delle WebSocket, rende più semplice inviare messaggi solo 
+a un particolare utente o ad utenti che sono iscritti a un particolare argomento. 
+
+++++++++++++++++++++++++++++++++++++++++++++++++
+Setup e Dipendenze
+++++++++++++++++++++++++++++++++++++++++++++++++
+
+Partendo dal SetUp precedente `SetupNoStomp`_, aggiungiamo nel file ``build.gradle``
+alcune dipendenze  rispetto alle precenti setupdependencies_.
+
+.. code::
+
+  dependencies {
+    ...    
+    //Added for STOMP
+    implementation 'org.webjars:stomp-websocket:2.3.4' 
+
+ 
+++++++++++++++++++++++++++++++++++++++++++++++++ 
+WebSocket vs. SockJs
+++++++++++++++++++++++++++++++++++++++++++++++++
+A partire dal 2018, il supporto WebSocket nei browser è quasi onnipresente. 
+Tuttavia, per supportare vecchi browser, potrebbe essere necessario fare uso di 
+SockJS_, con le seguenti avvertenze:
+
+- Le convenzioni del protocollo URL sono diverse per WebSocket ( ``ws:/`` o ``wss:``) e SockJS ( ``http:`` o ``https:``).
+- Le sequenze di handshake interne sono diverse, quindi alcuni broker utilizzeranno punti finali diversi per entrambi i protocolli.
+- Nessuno di questi consente di impostare intestazioni personalizzate durante l'handshake *HTTP*.
+- *SockJS* supporta internamente diversi meccanismi di trasporto. Si potrebbe dover affrontare limitazioni 
+  specifiche a seconda del trasporto effettivo in uso.
+- La riconnessione automatica non è abbastanza affidabile con *SockJS*.
+- Gli heartbeat potrebbero non essere supportati su *SockJS* da alcuni broker.
+- *SockJS* non consente più di una connessione simultanea allo stesso broker. 
+  Questo di solito non è un problema per la maggior parte delle applicazioni.
+
+ 
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++
+Configurazione 
+++++++++++++++++++++++++++++++++++++++++++++++++
+
+Specifichiamo la porta ``8087``,  ponendo in *resources/application.properties*
+
+    .. code:: Java
+
+       server.port = 8087
+
+Il servizio in versione STOMP viene configurato in SpringBoot da una classe che implementa l'interfaccia 
+``WebSocketMessageBrokerConfigurer`` :
+
+.. code:: java
+
+   @Configuration
+   @EnableWebSocketMessageBroker
+   public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
+
+   @Override
+   public void configureMessageBroker(MessageBrokerRegistry config){
+    config.enableSimpleBroker("/demoTopic");            //(a)
+    config.setApplicationDestinationPrefixes(           //(b)
+                   "/demoInput","/anotherInput");
+   }
+
+   @Override
+   public void registerStompEndpoints(StompEndpointRegistry registry) {
+     registry.addEndpoint("/unibo");  //.withSockJS();  //(c)
+   }
+   }  
+
+Nella configurazione specificata, il servizio:
+
+- Crea il broker di messaggi in memoria con una o più destinazioni per l'invio e la ricezione dei messaggi. 
+  
+  - **(a)** abilita un broker su memoria comune, con prefisso di destinazione ``demoTopic``. I client 
+    si possono sottoscrivere a endpoint che iniziano con questo prefisso, ad es. ``/demoTopic/output``.
+  - **(b)** imposta``demoInput`` (e ``anotherInput``) come prefissi di destinazione dell'applicazione. 
+    Il prefisso ``demoInput`` viene utilizzato per filtrare le destinazioni gestite dai metodi annotati 
+    con ``@MessageMapping`` (si veda :ref:`Il controller`).
+    I clienti quindi invieranno messaggi agli endpoint che iniziano con ``/demoInput/unibo`` oppure
+    ``/anotherInput/unibo``.
+- **(c)** abilita  il supporto STOMP su *WebSocket* (escludiamo *SockJS*) registrando l'endpoint ``unibo``.  
+  Dunque l'indirizzo per connetersi sarà: ``ws://<serverIP>:8080/unibo``.
+
+
+
+    .. Vi è una convenzione secondo cui le destinazioni per i messaggi da trasmettere a tutti i client 
+    .. sottoscritti tramite il modello pub-sub devono essere precedute da ``topic``. 
+    .. D'altra parte, le destinazioni per i messaggi privati ​​sono generalmente precedute da ``queue``.
+
+.. image:: ./_static/img/Spring/StompArch.PNG 
+         :align: center
+         :width: 80%
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++ 
+Componenti
+++++++++++++++++++++++++++++++++++++++++++++++++
+I componenti-base della applicazione in versione STOMP sono quindi oggetti DTO (:blue:`Data Transfer Object`)
+rappresentati dalle classi ``InputMessage`` e ``OutputMessage`` .
+  
+
+.. list-table::
+   :width: 100%
+   :widths: 50,50
+   
+   * - .. code:: Java
+          
+        public class InputMessage { 
+        private String input;
+        public InputMessage(String input) {
+            this.input = input;}
+        public String getInput(){return input;}
+        public void setInput(String input){
+            this.input = input;}
+        }
+     - .. code:: Java
+          
+        public class OutputMessage{
+        private String content;
+        public OutputMessage(String content){
+            this.content = content; }
+        public String getContent(){ 
+            return content; }
+        }
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++ 
+La funzione del servizio
+++++++++++++++++++++++++++++++++++++++++++++++++
+
+Il servizio:
+
+#. riceve un messaggio (in formato JSON) inviato su endpoint= ``/demoInput/unibo``;
+   il messaggio viene mappato in Java usando come DTO (:blue:`Data Transfer Object`) 
+   la classe ``InputMessage``
+#. elabora il messaggio
+#. costruisce un messaggio di risposta di tipo ``OutputMessage`` e lo pubblica
+   (ancora in formato JSON) su endpoint ``/demoTopic/output``.
+
+La conversione dei messaggi da JSon a Java e viceversa è effettuata in modo automatico 
+in SpringBoot, una volta definito un opportuno Controller.
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++ 
+Il controller
+++++++++++++++++++++++++++++++++++++++++++++++++
+
+Il controller specifica la gestione delle richieste ``WebSocket``, che avviene in modo simile 
+alle normali richieste ``HTTP``, ma utilizzando ``@SubscribeMappinge`` o ``@MessageMapping`` 
+(e non ``@RequestMapping`` o ``@GetMapping``).
+
+Nel caso specifico, utilizziamo ``@MessageMapping`` per mappare i messaggi diretti a ``unibo``.
+
+.. code:: Java
+
+    @Controller
+    public class HIController {
+
+	@MessageMapping("/unibo")     
+	@SendTo("/demoTopic/output")	    
+	public OutputMessage elabInput(
+                    InputMessage msg) throws Exception{
+		return new OutputMessage("Elaborated: " 
+               + HtmlUtils.htmlEscape(msg.getInput()) + " ");
+	}
+
+     
+    }
+
+- L'annotazione ``@SendTo`` indica che il valore di ritorno   
+  deve essere inviato come ``OutputMessage`` alla destinazione specificata ``/demoTopic/output``.
+- L'operazione ``HtmlUtils.htmlEscape`` elabora il testo nel messaggio di input in modo da poter
+  essere reso nel DOM lato client.
+
+L'applicazione STOMP si limita alla gestione di messaggi di tipo testo, offrendo all'utente due diverse 
+pagine: una con layout 'naive' e una con layout basato su Bootstrap:
+
+.. code:: Java
+
+	@RequestMapping("/")
+	public String entryMinimal() { 
+        return "indexNaive"; //usa wsStompMinimal.js
+    }
+
+	@RequestMapping("/better")
+	public String entryBetter() {
+		return "indexBetter";	 //usa wsStompBetter.js
+	}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Pagina indexNaive.html
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+Il file  ``indexNaive.html`` restituito da ``HIController`` nella richiesta di default 
+è simile a quanto già introdotto nella versione 
+non-STOMP `index`_, con un set più ampio di dipendenze:
+
+.. code:: html
+
+    <html>
+    <head>
+        <style>
+            .messageAreaStyle {
+                text-align: left;
+                width: 80%;
+                padding: 1em;
+                border: 1px solid black;
+            }
+        </style>
+        <link href="/webjars/bootstrap/css/bootstrap.min.css" 
+                                              rel="stylesheet">
+        <link href="/main.css" rel="stylesheet">
+        <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+        <title>wsdemoNoStomp</title>
+    </head>
+
+    <body>
+    <h1>Welcome</h1>
+    <div id="messageArea"  class="messageAreaStyle"></div>
+
+    <div class="input-fields">
+        <p>Type a message and hit send:</p>
+        <input id="inputmessage"/><button id="send">Send</button>
+    </div>
+ 
+    <script src="wsStompMinimal.js"></script>
+
+    </body>
+    </html>
+
+La pagina HTML utilizza il file ``wsStompMinimal.js`` identico a `wsminimal`_ della versione non-STOMP per
+quanto riguarda la parte relativa alla gestione della pagina e con nuove funzioni per quanto riguarda
+la parte di interazione:
+
+.. code:: js
+
+    //Parte di gestione pagina
+    ...
+
+    //Parte di interazione
+    function connect() {
+        var host       = document.location.host;
+        var addr       = "ws://" + host  + "/unibo"  ;
+        var socket     = new WebSocket(addr);
+
+        socket.onopen = function (event) {
+            addMessageToWindow("Connected");
+        };
+
+        socket.onmessage = function (event) {
+            addMessageToWindow(`Got Message: ${event.data}`);
+
+        };
+
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            addMessageToWindow("Connected " + frame);
+            stompClient.subscribe('/demoTopic/output', function (greeting) {
+                showAnswer(JSON.parse(greeting.body).content);
+            });
+        });
+    }
+
+    function showAnswer(message) {
+        addMessageToWindow("Answer:" + message);
+    }
+
+    function sendMessage(message) {
+        var jsonMsg = JSON.stringify( {'input': message});
+        stompClient.send("/demoInput/unibo", {}, jsonMsg);
+        addMessageToWindow("Sent Message: " + message );
+    }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Pagina indexBetter.html
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+Il file  ``indexBetter.html`` restituito da ``HIController`` nella richiesta   */better* 
+è simile a `indexAlsoImages`_ e fa uso del file  ``wsStompBetter.js`` simile a  `wsalsoimages`_
+
+ 
+ 
+
+
+
+
+ 
+ 
+
+ 
+
+++++++++++++++++++++++++++++++++++++++++++++++++
+Client (in Java per programmi)
+++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. code:: Java
+ 
+    public class StompClient {
+
+    private static final String URL = "ws://localhost:8080/unibo";  
+
+    private static WebSocketStompClient stompClient;
+
+    protected static void connectForSockJs(){
+        List<Transport> transports = new ArrayList<>(2);
+        transports.add(new WebSocketTransport(new StandardWebSocketClient()));
+        transports.add(new RestTemplateXhrTransport());
+
+        SockJsClient sockjsClient = new SockJsClient(transports);
+        stompClient               = new WebSocketStompClient(sockjsClient);
+
+    }
+    protected static void connectForWebSocket(){
+        WebSocketClient client  = new StandardWebSocketClient();
+         stompClient            = new WebSocketStompClient(client);
+    }
+    public static void main(String[] args) {
+        //connectForSockJs();  //To be used when the server is based
+        connectForWebSocket();
+        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+
+        StompSessionHandler sessionHandler = new MyStompSessionHandler();
+        stompClient.connect(URL, sessionHandler);
+
+        new Scanner(System.in).nextLine(); // Don't close immediately.
+    }
+    }
+
+
+.. code:: Java
+
+    public class MyStompSessionHandler extends StompSessionHandlerAdapter {
+    @Override
+    public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+         session.subscribe("/demoTopic/output", this);
+         session.send("/anotherInput/unibo", getSampleMessage());
+     }
+
+    @Override
+    public void handleException(StompSession session, 
+      StompCommand command, StompHeaders headers, byte[] payload, Throwable exception) {
+        ....
+    }
+
+    @Override
+    public Type getPayloadType(StompHeaders headers) {
+        return OutputMessage.class;
+    }
+
+    @Override
+    public void handleFrame(StompHeaders headers, Object payload) {
+         if( payload instanceof OutputMessage) {
+            OutputMessage msg = (OutputMessage) payload;
+         }
+    }
+    
+    private InputMessage getSampleMessage() {
+        InputMessage msg = new InputMessage();
+        msg.setInput("Nicky");
+        return msg;
+    }
+    }
+ 
+ 

@@ -1,0 +1,207 @@
+.. role:: red 
+.. role:: blue 
+.. role:: brown 
+.. role:: remark
+.. role:: worktodo
+.. role:: remark
+
+
+==========================================
+Movimenti pianificati
+==========================================
+
+
+ 
+------------------------------------
+Supporti HL-robot con planner
+------------------------------------
+
+Il robot (virtuale o reale) viene considerato un oggetto inscirvibile in un cerchio di raggio ``R``.
+
+Muovere il robot con mossa ``step(T)`` con tempo ``T`` tale da spostare il robot (con velocità prefissata)
+di uno spazio ``R``, permette di costruire una mappa della stanza formata da celle quadrate ``RxR``.
+Ad esempio:
+
+.. code::
+
+      0  1  2  3  4  5  6  7 .... x 
+    0 |r, 1, 1, 1, 1, 1, 1, X, 
+    1 |1, 1, 1, 1, X, X, 1, X, 
+    2 |1, 1, X, 1, X, X, 1, X, 
+    3 |1, 1, X, 1, 1, 1, 1, X, 
+    4 |1, 1, 1, 1, 1, 1, 1, X, 
+    5 |X, X, X, X, X, X, X, X,
+    .
+    y
+
+  RobotPos=(0,0) direction=downDir
+
+- **0** denoita una cella mai percorsa
+- **1** denota una cella libreria
+- **X** denota una cella occupata da un ostacolo
+- **r** denota la posizione corrente del robot
+
+L'uso di un *planner* come quello fornito in ``unibo.planner23-1.0.jar`` permette di 
+calcolare una sequenza delle mosse con cui il robot può muoversi dalla posizione corrente **r**
+a un'altra posizione sulla mappa.
+
+++++++++++++++++++++++++++++++++++++++++
+unibo.appl1.map.VrobotHLMovesWSPlanned
+++++++++++++++++++++++++++++++++++++++++
+
+
+La classe *VrobotHLMovesWSPlanned* estende :ref:`VrobotHLMovesWS<unibo.supports.VrobotHLMovesWS>` 
+in modo che ogni mossa del robot effettuata con successo produce una modifica della sua posizione
+(**r**) e definisce i seguenti metodi di utilità per le applicazioni:
+
+.. code:: java
+
+   public class VrobotHLMovesWSPlanned extends VrobotHLMovesWS {
+
+      public VrobotHLMovesWSPlanned(WsConnection conn, 
+         Planner23Util planner, IObserver obs, boolean isfast){...}
+      @Override
+      public void forward(int time) throws Exception {
+            throw new Exception( name + " | forward not allowed as planned move");
+      }
+      @Override
+      public void turnLeft() throws Exception {
+         super.turnLeft();
+         planner.doMove("a");
+      }     
+
+      public boolean attemptStep(int time) throws Exception {...}
+      public void completeTheMap(int stepTime) throws Exception {...}
+      protected void doObstacleTuning(int backTime) throws Exception {...}    
+      protected boolean executePlan(List<Action> actions, 
+         int stepTime, IObserver obs) throws Exception{...}
+      protected boolean reachPos(int stepT,int x,int y) throws Exception{...}
+      protected void backToHome(int stepTime) throws Exception {...}
+   }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+attemptStep
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Il metodo ``public boolean attemptStep(int time) throws Exception`` esegue uno ``step(time)`` di 
+:ref:`VrobotHLMovesWS<unibo.supports.VrobotHLMovesWS>`  e poi:
+
+- posiziona il robot nella cella successiva (lungo la direzione corrente) se la mossa ha successo
+- riposiziona il robot nella cella di partenza (usando :ref:`doObstacleTuning`) se la mossa fallisce
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+doObstacleTuning
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Il metodo ``void doObstacleTuning(int backTime) throws Exception`` usa l'operazione ``backward`` di 
+:ref:`VrobotHLMovesWS<unibo.supports.VrobotHLMovesWS>`
+per spostare  il robot all'indietro, lungo la direzione corrente, per il tempo dato ``backTime``.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+executePlan
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Il metodo ``boolean executePlan(List<Action> actions) throws Exception`` esegue le mosse date in ``actions`` usando  
+ :ref:`attemptStep`; restituisce ``true`` in caso di successo e ``false`` al primo fallimento.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+reachPos
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Il metodo ``boolean reachPos(int stepT, int x, int y) throws Exception`` usa il planner per definire la sequenza di mosse 
+necessarie a raggiunere la cella ``(x,y)`` dalla cella corrente e invoca :ref:`executePlan` per eseguire la sequenza.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+backToHome
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Il metodo ``void backToHome() throws Exception``  usa :ref:`reachPos` per cercare di tornare in HOME dalla cella corrente;    
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+completeTheMap
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Il metodo ``public void completeTheMap() throws Exception`` usa il planner ed :ref:`executePlan` per muovere il robot
+alle celle non ancora percorse (di valore **0**) per fissarne il vaore a **1** (cella libera) 
+o **X** (cella con ostacolo fisso).
+
+
+-------------------------------------
+Estensione a VrobotHLSupportFactory
+-------------------------------------
+
+Estendiamo  :ref:`VrobotHLSupportFactory<unibo.supports.VrobotHLSupportFactory>` in modo da tenere contro del nuovo supporto 
+
+.. code:: java
+
+   public class VrobotHLSupportFactory {
+    public static IVrobotMoves create(String hostIp, ProtocolType protocol) throws Exception {
+        if( protocol == ProtocolType.http ) return supportForHTTP(hostIp);
+        else if( protocol == ProtocolType.ws ) return supportForWS(hostIp);
+        else throw new Exception("VrobotHLSupportFactory protocol not allowed");
+    }
+   ...
+    public static IVrobotMoves supportForWSPlanned(String hostIp, IObserver obs, boolean fastPc){
+        Interaction2021 connToWEnv = WsConnection.create(hostIp+":8091");
+        Planner23Util planner          = new Planner23Util();
+        return new VrobotHLMovesWSPlanned((WsConnection) connToWEnv, planner, obs, fastPc );
+    }    
+
+
+----------------------------------------
+unibo.console.gui.VrobotHLCmdGuiLocal
+----------------------------------------
+
+.. image::  ./_static/img/VirtualRobot/VrobotHLCmdGuiLocalArch.png
+   :align: center 
+   :width: 70% 
+
+.. code:: java
+
+   public class VrobotHLCmdGuiLocal implements  Observer{
+   private String[] buttonLabels  = new String[] {"p", "w", "s", "l", "r", "h" };
+      private	IVrobotMoves vrsupport ;
+
+      public VrobotHLCmdGuiLocal() {
+         ButtonAsGui concreteButton = ButtonAsGui.createButtons( "", buttonLabels );
+         concreteButton.addObserver( this );
+         try {
+            vrsupport = VrobotHLSupportFactory.create("localhost", ProtocolType.ws);
+         } catch (Exception e) {...}
+      }
+      @Override
+      public void update( Observable o , Object arg ) {
+         try {
+            String move = arg.toString();
+            CommUtils.outgreen("GUI input move=" + move);
+            if( move.equals("exit")) System.exit(1);
+            switch( move ){
+               case "w" :  {vrsupport.forward(1500);break;}
+               case "s"  : {vrsupport.backward(1500);break;}
+               case "l"  : {vrsupport.turnLeft();break;}
+               case "r"  : {vrsupport.turnRight();break;}
+               case "h"  : {vrsupport.halt();break;}
+               case "p"  : {vrsupport.step(500);break;}
+            }
+         } catch (Exception e) {...}	
+      }
+	
+      public static void main( String[] args) {
+         new VrobotHLCmdGuiLocal(   );
+      }
+  }
+
+
+----------------------------------------
+unibo.console.gui.VrobotHLCmdGuiRemote
+----------------------------------------
+
+.. image::  ./_static/img/VirtualRobot/VrobotHLCmdGuiRemoteArch.png
+   :align: center 
+   :width: 80% 
+
+- ``MsgToObj``: componente attivo, per ora non meglio precisato, che accetta un 
+  :ref:`messaggio<Natura e struttura dei messaggi applicativi>` inviato con uno dei 
+  :ref:`Tipi di Protocollo` citati  e trasla questo comando in una chiamata al corrispondente metodo di 
+  :ref:`unibo.common.IVrobotMoves`, inviando poi una risposta (se è il caso) al mittente remoto del messaggio.
+- il messaggio-comando con payload ``step`` si aspetta la risposta ``stepOk`` o ``stapFail``
+- il chiamante si attende di poter ricevere anche informazioni sullo :ref:`stato del robot`  o 
+  sullo :ref:`stato di elaborazione` dell'applicazione.   

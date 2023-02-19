@@ -1,0 +1,696 @@
+.. role:: red 
+.. role:: blue 
+.. role:: brown   
+.. role:: remark
+.. role:: worktodo
+.. role:: slide 
+.. role:: slide1 
+
+.. _gradle : https://gradle.org/ 
+.. _Leggi di Lehman : https://en.wikipedia.org/wiki/Lehman%27s_laws_of_software_evolution
+.. _SOLID : https://clevercoder.net/2018/09/08/clean-architecture-summary-review/
+.. _Clean Architecture : https://clevercoder.net/2018/09/08/clean-architecture-summary-review/
+.. _Design Pattern : https://it.wikipedia.org/wiki/Design_pattern
+.. _12FactorAppIllustrated : https://www.redhat.com/architect/12-factor-app
+
+.. _MealyMachines : https://en.wikipedia.org/wiki/Mealy_machine
+.. _MooreMAchines : https://en.wikipedia.org/wiki/Moore_machine
+
+.. _gerarchia di Chomsky : https://it.wikiversity.org/wiki/Classificazione_delle_grammatiche
+
+.. _Meta Object Facility: https://it.wikipedia.org/wiki/Meta-Object_Facility
+.. _Ecore : https://wiki.eclipse.org/Ecore
+.. _Linguaggio di modellazione : https://it.wikipedia.org/wiki/Linguaggio_di_modellazione
+.. _Linguaggio formale : https://it.wikipedia.org/wiki/Linguaggio_formale
+.. _Domain Specific Languages: https://www.jetbrains.com/mps/concepts/domain-specific-languages/
+.. _Linguaggi di programmazione: https://it.wikipedia.org/wiki/Linguaggio_di_programmazione
+.. _Linguaggio assembly : https://it.wikipedia.org/wiki/Linguaggio_assembly
+.. _Minsky Machine : https://en.wikipedia.org/wiki/Counter_machine
+.. _Turing Machine : https://plato.stanford.edu/entries/turing-machine/
+.. _Automa a stati finiti : https://it.wikipedia.org/wiki/Automa_a_stati_finiti
+.. _pushdown automaton : https://it.wikipedia.org/wiki/Automa_a_pila
+.. _Raspberry Pi TM : https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/turing-machine/one.html
+.. _UML : https://it.wikipedia.org/wiki/Unified_Modeling_Language
+.. _Use Cases Diagrams : https://it.wikipedia.org/wiki/Use_Case_Diagram
+.. _User Stories : https://en.wikipedia.org/wiki/User_story
+.. _Software testing : https://en.wikipedia.org/wiki/Software_testing 
+.. _Software testing IBM : https://www.ibm.com/it-it/topics/software-testing
+.. _Software testing quotes : https://softwaretestingfundamentals.com/software-testing-quotes/
+.. _Automated-Testing-Plan FAQ : http://sqa.fyicenter.com/FAQ/Automated-Testing-Plan/
+.. _Junit FAQ : http://sqa.fyicenter.com/FAQ/JUnit/What_Is_JUnit_.html
+.. _DevOps : https://it.wikipedia.org/wiki/DevOps
+
+
+=====================================
+Principi
+=====================================
+
+------------------------------
+I Sistemi software
+------------------------------
+
+Un :blue:`sistema` può essere definito come l'unità fisica e funzionale, costituita da più parti 
+o sottosistemi (organi, componenti o elementi ecc.) **interagenti** (o in relazione funzionale) tra loro 
+(e con altri sistemi), che formano un tutt'uno in cui ogni parte dà il proprio contributo 
+per una finalità comune.
+
+A livello di sistema, si possono presentare :blue:`nuove proprietà`, che non possono essere dedotte dai suoi sottosistemi, 
+ma che :slide1:`derivano dall'interazione delle parti`.
+
+Rispetto alla semplice denominazione di *software*, l'uso del termine :blue:`sistema software` enfatizza 
+in genere prodotti software complessi, e che sono costruiti o studiati in termini di macro-componenti, 
+della loro organizzazione e delle loro interazioni. 
+
+La struttura di un sistema software è anche detta :blue:`architettura software`.
+
+
+----------------------------
+Dimensioni
+----------------------------
+
+
+La descrizione di un sistema software può avvenire 
+focalizzando l'attenzione su almeno tre diversi punti di vista:
+
+
+.. list-table::
+  :widths: 50,50
+  :width: 100%
+  
+  * - .. image:: ./_static/img/Architectures/Dimensioni.PNG
+         :width: 100%
+         :align: center
+    -  
+       - l'organizzazione del sistema in parti (**struttura**);
+       - il modo in cui le diverse parti scambiano informazione implicita o esplicita tra loro (**interazione**);
+       - il funzionamento del tutto e di ogni singola parte (**comportamento**).
+
+------------------------------
+Componenti software
+------------------------------
+
+Oggi è ormai scontata la transizione del software da una dimensioen di livello algoritmico 
+a una dimensione  di tipo sistemistico che vede come componenti entità quali:
+
+
+- funzioni 
+- oggetti
+- processi
+- plugin, bundle ...
+- attori
+- servizi 
+- microservizi
+
+.. list-table::
+  :widths: 50,50
+  :width: 100%
+  
+  * - :remark:`Astrazioni di componenti software`
+  
+      .. image:: ./_static/img/Architectures/legendComponets.PNG
+         :width: 30%
+         :align: center 
+    
+    - :remark:`Astrazioni di interazione tra componenti software`
+      
+      .. image:: ./_static/img/Architectures/legendMessages.PNG
+         :width: 44%    
+         :align: center 
+
++++++++++++++++++++++++++++++++++++++++++++
+Problematiche relative ai componenti
++++++++++++++++++++++++++++++++++++++++++++
+ 
+- Come li individuo?
+- Come li metto insieme?
+- Come li rendo disponibili?
+- Come li trovo/seleziono dinamicamente?
+- Come li sostitusico?
+- Come ne controllo/monitoro il funzionamento?
+- Come specifico ciò che richiedono per funzionare?
+- Come li progetto?
+- Come li uso per costruire il sistema? (in modo top-down o botton-up?)
+- Quali :ref:`Principi di costruzione` posso adottare?
+  
+------------------------------
+Interazione
+------------------------------
+
+Le interazioni tra **oggetti** avvengono tramite :blue:`procedure-call`, cioè a trasferimento di controllo.
+
+Le interazioni tra **componenti attivi** possono avvenire trameite :blue:`oggetti condivisi`, allocati su memoria comune,
+oppure tramite :blue:`messaggi` che riguardano *informazioni* o *stream di dati* e che possono essere scambiati
+in forma sincrona, asincrona o isocrona.
+
+- In una interazione **asincrona**, la comunicazione è "bufferizzata" senza alcuna 
+  limitazione sulle dimensioni del buffer. 
+  L'emittente non deve attendere alcuna informazione di ritorno anche quando invia informazione 
+  ad uno specifico destinatario. Il ricevente attende solo quando il buffer è vuoto. 
+  Nel caso di stream, non vi sono vincoli di tempo per la ricezione.
+
+- In una interazione **sincrona**, la comunicazione avviene senza l'uso di alcun buffer. 
+  L'emittente e il desinatario scambiano informazione unificando concettualmente le proprie attività. 
+  Nel caso di stream, il destinatario si aspetta di ricevere i dati con un ritardo (delay) 
+  che non supera un massimo prefissato.
+
+- Una interazione **isocrona** riguarda solo stream; il destinatario si aspetta di ricevere i dati 
+  con un delay compreso tra un minimo e un massimo.
+
+Le interazioni a messaggi vengono anche spesso suddivise secondo quattro pattern principali:
+
+- **Fire and forget**: il caso di invio di  messaggi.
+- **Sync with server**: il caso request-response.
+- **Poll objects**: il sender invia una request delegando ad un oggetto (*poll object*) la responsabilità 
+  di ricevere la risposta. Il sender usa il poll object per verificare ed acquisire la disponibilità della risposta.
+- **Result callback**: il sender invia una request specificando un oggetto (*callback object*) che implementa 
+  un metodo che verrà invocato dal supporto non appena il receiver invierà la risposta.
+
+Questi punti costituiscono il cuore del passaggio da OOP a message-passing.
+
+
+++++++++++++++++++++++++++++++++++++++
+Terminologia di riferimento
+++++++++++++++++++++++++++++++++++++++
+
+Faremo riferimento alla seguente terminologia:
+
+
+- **Messaggio** (:blue:`message`): termine generico per denotare informazione scambiata mediante
+  l'uso di un opportuno supporto di comunicazione.
+- **Dispaccio** (:blue:`dispatch`): messaggio inviato in modo asincrono a N (N>=1) specifici destinatari, 
+  noti alla emittente, con l'aspettativa che questi lo ricevano e lo elaborino; l'emittente non si aspetta 
+  alcuna informazione di ritorno.  
+- **Invito** (:blue:`invitation`): messaggio inviato a N (N>=1) destinatari, con l'aspettativa che almeno uno lo riceva 
+  e invii al mittente un messaggio di *conferma*.
+- **Conferma** (:blue:`ack`): messaggio inviato al mittente di un *invitation*. 
+  Il contenuto del messaggio rappresenta un riconoscimento di avvenuta ricezione.
+- **Richiesta** (:blue:`request`): messaggio inviato a uno specifico destinatario; il contenuto del messaggio 
+  rappresenta la richiesta di esecuzione di una attività, con aspettativa da parte del mittente 
+  che questa attività si concluda con una risposta pertinente alla richiesta.
+- **Risposta** (:blue:`reply, response`): messaggio inviato da un destinatario al mittente di una richiesta.
+  il contenuto del messaggio rappresenta informazione pertinente alla richiesta.
+- **Evento** (:blue:`event`): messaggio emesso (più o meno consapevolmente) in modo asincrono da una sorgente 
+  senza alcuna particolare nozione di destinatario e senza alcuna aspettativa da parte dell'emittente.
+- **Segnale** (:blue:`signal`): messaggio emesso in modo consapevole e asincrono a N (N>=1) destinatari, 
+  noti o meno all'emittente, 
+  con l'aspettativa che venga ricevuto da qualcuno, al fine di eseguire un'azione che potrebbe portare vantaggio 
+  all'emittente, al ricevente e/o al sistema nel suo complesso.
+
+------------------------------
+Comportamento
+------------------------------
+
+Per esprimere il comportamento di un componente software, si distinguono classicamente tre diversi 'stili':
+
+- imperativo
+- funzionale
+- logico-dichiarativo
+
+Il funzionamento di un componente comporta spesso l'individuazione 
+di un insieme di :blue:`operazioni primitive`, sulla base delle quali costruire ogni altra operazione 
+di manipolazione/gestione del componente.  
+
+Si pensi per esempio al caso di un *oggetto lista*, le cui primitive 
+sono il costruttore ``cons``, i selettori ``head, tail`` e il predicato ``empty``. Un volta data la lista vuota (l'oggetto ``emptyList``)
+ogni lista può essere costruita e manipolata attraverso l'uso di queste primitive.
+
+
+.. list-table::
+  :widths: 50,50
+  :width: 100%
+  
+  * - Spesso si qualifica il comportamento di un componente facendo riferimento a tipi diversi di 
+      :blue:`macchine astratte`, iniziando dalla 
+      `Turing Machine`_ (**TM**), che individua, in stile imperativo, le mosse-base (*primitive*) 
+      di un automa che permette di realizzare qualunque calcolo.
+    - .. image:: ./_static/img//Intro/TuringMachine.PNG
+        :width: 100%
+        :align: center
+      
+      Si veda `Raspberry Pi TM`_
+
+
+.. list-table::
+  :widths: 50,50
+  :width: 100%
+  
+  * - Un automa equivalente che ottiene lo stesso risultato con una sorta di `Linguaggio assembly`_ minimale è la
+      `Minsky Machine`_ (nota anche come *Counter Machine*) 
+    - .. image:: ./_static/img//Intro/MinskyMachine.PNG
+        :width: 100%
+        :align: center
+
+
+Un tipo meno potente di macchina astratta rispetto alla **TM** è il `pushdown automaton`_ (**PDA**) che però è l'automa 
+di riferimento per il riconoscimento delle frasi di un inguaggio con *sintassi context-free*, di tipo 2 nella 
+`gerarchia di Chomsky`_ . 
+
+
+
+++++++++++++++++++++++++++++++++++++++
+Automi a stati finiti
+++++++++++++++++++++++++++++++++++++++
+
+Un ulteriore tipo di automa meno potente della TM, ma su cui si fonda sia la TM sia il PDA 
+è l'`Automa a stati finiti`_ (*Finite State Machine* - **FSM**)
+il cui funzionamento può essere formalmente descritto da una 5-tuple (``States, Inputs, Outputs, Transitions, InitialState``):
+
+- **States**: insieme di possibili stati in cui l'automa si può trovare.
+- **Inputs**: insieme delle informazioni di ingresso, denotabili attraverso un *input alphabet*; nel nostro caso 
+  possiamo pensare che ogni simbolo dell'alfabeto  denoti un messggio.
+- **Outputs**: insieme della informazioni di uscita, denotabili attraverso un *output alphabet*;   nel nostro caso 
+  possiamo pensare che ogni simbolo dell'alfabeto denoti una **azione**.
+- **InitialState**: lo stato iniziale (unico) in cui l'automa si trova quando viene creato.
+- **Transizione**: definisce il nuovo stato e l'output dell'automa in funzione dello stato corrente e del simbolo corrente in ingresso.
+  E' spesso espressa da una coppia di funzioni:
+
+   .. code ::
+
+      nextState:      States x Inputs -> States
+      output:         States x Inputs -> Outputs
+
+Normalmente, gli automi a stati finiti si suddividono in due grandi categorie:
+
+- `MealyMachines`_: una FSM il cui output è determinato sia dallo stato corrente sia dall'input corrente.
+- `MooreMachines`_: una FSM il cui output dipende unicamente dallo stato corrente (``SCUR``) in cui l'automa si trova.
+
+**FSM** di tipo  `MooreMachines`_ avranno per noi un ruolo fondamentale.
+Quando l'automa si trova nello stato corrente ``SCUR``:
+
+#. esegue una sequenza (che **deve terminare**) di azioni;
+#. al termine della sequenza di azioni controlla che vi sia almeno un input (messaggio) 
+   capace di attivare una delle transizioni verso un ulteriore stato (``SNEXT``);
+#. attiva una delle transizioni possibili pasando dallo stato ``SCUR`` allo stato ``SNEXT`` (che potrebbe anche coincidere
+   con ``SCUR``);
+#. se non vi sono transizioni attivabili, rimane nello stato ``SCUR`` da cui potrà sbloccarsi solo in conseguenza di un 
+   ulteriore messaggio di input.
+
+
+--------------------------------------------
+Principi di costruzione
+--------------------------------------------
+
+Nel corso degli anni si sono imposti alla attenzione degli sviluppatori,
+alcuni principi, metodologie, schemi di riferimento etc. che aiutano nella progettazione e sviluppo
+di sistemi software.
+
+Qui ne ricordiamo alcuni, che useremo nel seguito.
+
+++++++++++++++++++++++++++++
+Design patterns
+++++++++++++++++++++++++++++
+
+.. list-table::
+  :widths: 40,60
+  :width: 100%
+  
+  * - Agli anni 90 del secolo scorso risale l'idea di :blue:`pattern`, culminata nella pubblicazione 
+      nel ``1995`` dell'ormai famoso testo sui `Design Pattern`_  della così detta *Gang-of-Four*
+      (**GoF**): *Erich Gamma, Richard Helm, Ralph Johnson e John Vlissides*).
+
+    - .. image:: ./_static/img/Intro/DesignPatternGof.PNG
+         :width: 100%
+         :align: center
+
+:slide1:`Pattern POSA`
+
+.. list-table::
+  :widths: 40,60
+  :width: 100%
+  
+  * - Da allora si sono susseguiti molte altre conferenze e lavori. 
+      I riferimenti più noti sono i cinque testi ``POSA`` (si veda in :ref:`books`) sulle *Pattern oriented Software Architectures*
+      e i convegni ``PLoP`` (*Pattern Languages of Programming*).
+
+    - .. image:: ./_static/img/Intro/Posa.PNG
+         :width: 100%
+         :align: center
+
+
+ 
+++++++++++++++++++++++++++++
+SOLID
+++++++++++++++++++++++++++++
+
+
+Dal sito `Clean Architecture`_ (Uncle Bob) leggiamo:
+
+- :blue:`Single responsibility principle` : una classe dovrebbe avere una, e una sola, ragione per cambiare.
+- :blue:`Open-closed principle` : una classe dovrebbe essere aperta per l'estensione ma chiusa per la modifica.
+- :blue:`Liskov’s substitution principle` : gli oggetti in un programma dovrebbero essere sostituibili con istanze dei loro sottotipi senza alterare la correttezza di quel programma.
+- :blue:`Interface segregation principle` : molte interfacce specifiche del client sono migliori di un'interfaccia generica.
+- :blue:`Dependency inversion principle` : si dovrebbe dipendere dalle astrazioni, non dalle implementazioni. 
+    
+
+++++++++++++++++++++++++++++
+Dependency inversion 
+++++++++++++++++++++++++++++
+
+Se il codice sorgetne di un componente di alto livello dipende da quello di un componente di basso livello,
+i cambiamenti nei componenti di basso livello si diffonderanno al componente di alto livello. 
+Pertanto, poniamo un confine tra i due, :remark:`usando il polimorfismo per invertire il flusso logico`. 
+
+Questo è il principio di inversione della dipendenza. Vediamo un esempio, preso da `Clean Architecture`_:
+
+.. list-table::
+  :widths: 40,60
+  :width: 100%
+  
+  * - .. image:: ./_static/img/Architectures/EsempioInversioneDip.PNG
+         :width: 100%
+         :align: center
+    -   Le regole aziendali dipendono dall'interfaccia anziché dalla classe di database concreta.
+        
+        Il database diventa un plug-in delle regole aziendali: un componente di basso livello
+        che può essere modificato senza influenzare le regole aziendali (componente di alto livello).
+
+
+
+
+++++++++++++++++++++++++++++
+Architettura esagonale
+++++++++++++++++++++++++++++
+
+L'architettura esagonale (anche nota come :ref:`Port-Adapter<Architettura Esagonale (Port-Adapter)>`) è, 
+tra le tante veda :ref:`Architetture` 
+di sistemi software oggi in uso, quella cui noi faremo particolare attenzione.
+
+.. list-table::
+  :widths: 60,40
+  :width: 100%
+  
+  * - .. image:: ./_static/img/Architectures/portAdapterArch.PNG
+         :width: 100%
+         :align: center
+    -  Si identificano quattro layer principali
+       
+       - :blue:`Entities`: oggetti che contengono la logica aziendale critica.
+       - :blue:`Use-cases`: regole aziendali specifiche dell'applicazione
+       - :blue:`Interface adapters`: gateway, presentatori e controller. Ad esempio, questo livello contiene l'architettura MVC della GUI e anche oggetti che trasformano i dati tra il formato del database e i casi d'uso.
+       - :blue:`Frameworks and drivers`: framework web, database, la vista di MVC
+
+
+ 
+++++++++++++++++++++++++++++
+12 Factor App
+++++++++++++++++++++++++++++
+
+Una delle soluzioni oggi adottate per affrontare i problemi di operare su scala Web,
+è la metodologia :blue:`Twelve-Factor App`, pubblicato nel ``2011`` da Adam Wiggins. 
+
+La :blue:`12 Factor App` è un insieme di principi per la creazione di applicazioni *software-as-a-service*,
+che descrivono un modo di creare software che consente alle aziende di 
+creare codice che può essere rilasciato in modo affidabile, ridimensionato rapidamente e mantenuto 
+in modo coerente e prevedibile.
+ 
+.. Queste best practice sono progettate per consentire la creazione di applicazioni con portabilità  e resilienza quando distribuite sul Web. 
+.. https://12factor.net/it/
+
+#. :blue:`Codebase`: Una sola codebase sotto controllo di versione, tanti deployment.
+#. :blue:`Dipendenze`: Dipendenze dichiarate e isolate; nessun affidamento implicito su strumenti o librerie di sistema.
+#. :blue:`Configurazione`: Memorizza le informazioni di configurazione nell’ambiente.
+#. :blue:`Baking service`: I servizi di supporto vengono trattati come risorse collegate e scollegate dall'ambiente di esecuzione.
+#. :blue:`Costruisci, rilascia, esegui`: Separare in modo netto lo stadio di build dall'esecuzione
+#. :blue:`Processi`: Esegui l'applicazione come uno o più processi stateless. I dati persistenti sono archiviati su un servizio di supporto
+#. :blue:`Binding delle Porte`: I servizi autonomi dovrebbero rendersi disponibili ad altri servizi tramite porte specificate.
+#. :blue:`Concorrenza`: La concorrenza è sostenuta dal ridimensionamento dei singoli processi.
+#. :blue:`Disponibilità`: Massimizzare la robustezza con avvii veloci e chiusure non brusche.
+#. :blue:`Parità Sviluppo/Produzione`: Tutti gli ambienti dovrebbero essere il più simili possibile.
+#. :blue:`Log`: Tratta i log come stream di eventi e lascia l'ambiente di esecuzione per l'aggregazione.
+#. :blue:`Processi di Amministrazione`: Tutte le attività di amministrazione necessarie devono essere mantenute nel controllo 
+   del codice sorgente e incluse nel pacchetto dell'applicazione.
+
+Si veda  anche: `12FactorAppIllustrated`_
+
+.. https://en.wikipedia.org/wiki/Twelve-Factor_App_methodology
+
+++++++++++++++++++++++++++++
+Linguaggi di programmazione
+++++++++++++++++++++++++++++
+
+Costrutti per esprimere strutture (di dati e di controllo), forme di comportamento e meccanismi di interazione 
+sono presenti in tutti i `Linguaggi di programmazione`_.
+
+Un punto importante consiste nel capire fino a che punto i costrutti di un linguaggio debbano influenzare 
+il progettista (se non lo stesso analista). 
+Fino alla fine degli anni 90 il linguaggio di programmazione è stato il veicolo principale per introdurre 
+nuovi concetti sia sul piano computazionale sia sul sul piano della organizzazione del software.
+
+.. list-table::
+  :widths: 40,60
+  :width: 100%
+  
+  * - .. image:: ./_static/img/Intro/historyHLPL.PNG
+         :width: 100%
+         :align: center
+    - La figura  mostra una visione sintetica dello sviluppo nel tempo di questa evoluzione linguistica,
+      con riferimento ad alcuni dei linguaggi più noti (in `Linguaggi di programmazione`_ si dice che oggi
+      si usano più di 2500 linguaggi di programmazione).
+
+      L'avvento della programmazione ad oggetti sembra avere segnato il culmine di questo processo; 
+      un motivo può certo essere il raggiungimento di una sufficiente maturità nella capacità espressiva 
+      in ciascuna delle :ref:`Dimensioni` citate.
+ 
+
+
+ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Sintassi astratta  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Il motivo principale di una relativa (e solo apparente) 
+stagnazione nello sviluppo di nuovi linguaggi, può essere ricondotto all'idea che un linguaggio 
+non deve essere necessariamente accompagnato da una sintassi concreta ma può essere suffciente 
+definire una **sintassi astratta** utilizzando un :blue:`meta-linguaggio` come ad esempio ``MOF``
+(si veda `Meta Object Facility`_) unitamente alla semantica del linguaggio e a un framework di supporto.
+
+.. list-table::
+  :widths: 60,40
+  :width: 100%
+  
+  * - .. image:: ./_static/img/Intro/mofUml.PNG
+         :width: 100%
+         :align: center
+    - La `Meta Object Facility`_ di UML2 nella versione incorporata in Eclipse
+      (denominata `Ecore`_) può essere usata per definire un linguaggio che permette di esprimere sistemi software come
+      oggetti attivi (**attori**) che interagiscono tra loro a scambio di messaggi si comportano come `MooreMachines`_.
+
+      Questa idea ha come riferimento i `Domain Specific Languages`_.
+ 
+.. https://www.jetbrains.com/help/mps/fast-track-to-mps.html#step5-projectionaleditingtipsandtricks
+
+Il codice in MPS non è testo, ma è invece una proiezione della sintassi astratta (AST)
+
+.. https://medium.com/@mikhail.barash.mikbar/a-tale-about-domain-specific-languages-bde2ace22f6c
+
+----------------------------------------
+Domain Specific Languages
+----------------------------------------
+.. https://www.jetbrains.com/mps/whatsnew/
+
+.. https://www.jetbrains.com/help/mps/fast-track-to-mps.html#step3-mpsfromtheprogrammersperspective
+.. https://www.youtube.com/watch?v=1Dx4yrd5ISQ
+.. https://lp.jetbrains.com/mps-in-academia/
+
+.. https://medium.com/@mikhail.barash.mikbar/looking-at-code-through-the-prism-of-jetbrains-mps-8e9b70e3257d IMPORTANTE
+.. https://www.jetbrains.com/help/mps/basic-notions.html#generator  IMPORTANTE
+.. https://www.youtube.com/watch?v=iN2PflvXUqQ  MPS Projectional editor
+
+.. https://martinfowler.com/articles/mpsAgree.html            FOWLER 2005
+.. https://martinfowler.com/articles/languageWorkbench.html   FOWLER 2005
+
+.. https://www.youtube.com/watch?v=6FaIPPUgiDI  KAJA
+.. https://www.youtube.com/watch?v=OyIj5D6ORXs
+
+.. https://www.jetbrains.com/help/mps/shapes-an-introductory-mps-tutorial.html FORME
+.. https://www.youtube.com/watch?v=Mb1QzHx83M4
+
+.. https://www.jetbrains.com/help/mps/mps-calculator-language-tutorial.html CALCULATOR
+
+ 
+Un `Domain Specific Languages` (DSL) è un linguaggio che aumenta il livello di astrazione oltre la programmazione,
+utilizzanso direttamente concetti e regole da uno specifico dominio del problema
+ 
+
+Tra i vantaggi dell'uso di un DSL:
+
+- usando un DSL e un *motore di trasformazione*, il  lavoro nel particolare aspetto dello sviluppo 
+  del software coperto dal DSL diventa molto più efficiente, perché il lavoro di colmare l'abstraction gap 
+  vine svolto dal motore di trasformazione;
+- l'uso usare delle *astrazioni specifiche del dominio* può avvenire senza sovraccarico runtime, 
+  perché il motore di trasformazione, proprio come un compilatore, può rimuovere le astrazioni 
+  e generare codice efficiente;
+- il *modo di pensare* del progettista software diventa più chiaro perché il codice non è ingombrato 
+  dai dettagli dell'implementazione;
+- la *logica dell'applicazione* espressa nel codice DSL è indipendente dalla piattaforma di destinazione;  
+- si promuove un'ottima *integrazione* tra gli svluppatori software e gli esperti del dominio.
+
+:slide1:`Programmazione orientata al linguaggio`
+
+La *programmazione orientata al linguaggio* incoraggia esplicitamente gli sviluppatori 
+a creare i propri DSL o ad estendere i linguaggi esistenti con concetti specifici del dominio.
+
+.. https://en.wikipedia.org/wiki/Language-oriented_programming
+
+.. Il Meta-Programming System (MPS) di JetBrains
+
+++++++++++++++++++++++++++++
+Modelli
+++++++++++++++++++++++++++++
+Nel linguaggio comune, il termine :blue:`modello` è spesso usato per denotare un'astrazione 
+di qualcosa che esiste nella realtà, come ad esempio il modello che posa per un artista, 
+una riproduzione in miniatura, un esempio di modo di svolgere un'attività, una forma 
+da cui ricavare vestiti, un ideale da seguire, etc.. 
+
+Alcuni (tra cui gli ingegneri) intendono per modello un sistema matematico o fisico che ubbidisce 
+a specifici vincoli e che può essere utilizzato per descrivere e comprendere un sistema 
+(fisico, biologico, sociale, etc.) attraverso relazioni di analogia.
+
+:slide1:`Modello=rappresentazione dell'essenza di un sistema`
+
+.. list-table::
+  :widths: 60,40
+  :width: 100%
+  
+  * - .. image:: ./_static/img/Intro/Modello.PNG
+         :width: 70%
+         :align: center
+    - .. image:: ./_static/img/Intro/ModelloNumeri.PNG
+         :width: 100%
+         :align: center
+ 
+.. Nel contesto dei processi di costruzione del software, il termine modello va primariamente 
+.. inteso come un insieme di concetti e proprietà volti a catturare aspetti essenziali di un sistema, 
+.. collocandosi in un preciso spazio concettuale.   
+
+
+.. Per l'ingegnere del software quindi un modello costituisce una visione semplificata di un sistema 
+.. che rende il sistema stesso più accessibile alla comprensione e alla valutazione e facilita 
+.. il trasferimento di informazione e la collaborazione tra persone, 
+.. soprattutto quando è espresso in forma visuale.
+ 
+
+
+Nel concepire un modello come visione semplificata di un sistema software si assume che il sistema 
+abbia già una sua esistenza concreta. 
+In alcune fasi di lavoro (in particolare nella fase di analisi) il sistema è il modello; 
+un raffinamento o una variazione del modello corrisponde in questo caso ad una variazione del sistema.
+
+La produzione esplicita di modelli si rivela utile in quanto i diversi attori di un processo 
+di produzione di software (committenti, analisti, progettisti, utenti, etc) 
+operano a diversi livelli di astrazione e con fini diversi. 
+
+Definendo opportuni modelli del sistema da realizzare, in ogni fase del processo di produzione 
+l'attenzione può essere focalizzata sugli aspetti rilevanti in quella fase, utilizzando una 
+forma di comunicazione comprensibile ad attori diversi. 
+Per garantire coesione e interoperabilità, si cerca di individuare regole di corrispondenza 
+e di trasformazione automatica tra modelli.
+
+
+++++++++++++++++++++++++++++
+Linguaggi di modellazione
+++++++++++++++++++++++++++++
+
+Un `Linguaggio di modellazione`_ è un `Linguaggio formale`_ 
+che può essere utilizzato per descrivere (modellare) un sistema di qualche natura.
+
+UML (*Unified Modeling Language*) è un linguaggio di modellazione e di specifica 
+di sistemi software basato sul paradigma orientato agli oggetti. 
+
+Nel contesto dell'ingegneria del software, UML viene usato soprattutto per descrivere il dominio applicativo 
+di un sistema software e/o il comportamento e la struttura del sistema stesso. 
+
+Il modello è strutturato secondo un insieme di viste che rappresentano diversi aspetti della cosa modellata 
+(funzionamento, struttura, comportamento e così via), a scopo sia di analisi sia di progetto, 
+mantenendo la tracciabilità dei concetti impiegati nelle diverse viste.
+
+
+
+++++++++++++++++++++++++++++
+Testing
+++++++++++++++++++++++++++++
+
+
+L’obiettivo della fase di testing è quello di trovare il maggior numero di situazioni che conducono ad errori 
+con il minimo numero di casi di prova. 
+Un  piano di testing  ha di solito lo scopo di stabilire la gerarchia con cui i test vanno eseguiti, 
+i metodi di esecuzione, i criteri di accettazione e prevede diverse tipologie di test, tra cui:
+
+
+- **Unit test** (Test di unità o di modulo)
+  Ha l’obiettivo di individuare gli errori nel singolo modulo software. 
+ 
+- **Integration Test** (Test di integrazione)
+  Ha l’obiettivo di individuare gli errori nel software quando tutti i moduli che compongono un sottosistema 
+  o l’intero sistema vengono fatti lavorare assieme. 
+
+- **System Test** (Test di sistema)
+  Ha l’obiettivo di garantire che il prodotto software nel suo complesso soddisfi completamente 
+  i requisiti iniziali. E' un collaudo interno. 
+
+- **User Acceptance Test** (Test di accettazione)
+  Ha l’obiettivo di valutare la rispondenza dell’applicazione software rispetto ai requisiti 
+  espressi inizialmente nel contratto e di ottenere l’accettazione formale del cliente di quanto realizzato. 
+  Il test viene effettuato dal cliente nel suo ambiente di test, e da un gruppo di utenti. 
+
+- **Alpha test e Beta test**
+  Un :blue:`alpha test` è un test preliminare di un’applicazione software anche non ancora completa, 
+  eseguito da alcuni potenziali utenti rappresentati da un team. 
+
+  Un :blue:`beta test` ha l’obiettivo di far valutare al cliente, prima della distribuzione ufficiale del sistema, 
+  la reale funzionalità, completezza ed operatività dell’applicazione. 
+  
+- **Regression Test** (test di non regressione)
+  Ha l’obiettivo di verificare a valle di una manutenzione, dopo che un bug è stato individuato e corretto 
+  e sono stati eseguiti esattamente gli stessi test che erano stati effettuati quando era stato individuato il problema.
+
+- **Stress test** (test di carico)
+  Ha l’obiettivo di determinare il punto di rottura di un sistema software, 
+  oltre il quale si verificano instabilità del sistema, perdita dei dati o interruzione del servizio.
+
+
+Sul problema del testing si trova moltissimo materiale in rete. Riportiamo qui alcuni riferimenti utili sul 'piano pragmatico':
+
+- `Software testing`_ (wikipedia)
+- `Software testing quotes`_
+- `Automated-Testing-Plan FAQ`_
+- `JUnit FAQ`_
+
+
+++++++++++++++++++++++++++++++++
+Dal testing a DevOps
+++++++++++++++++++++++++++++++++
+
+
+La fase di testing del software è  attività imprescindibile per garantirne la qualità ed è anche 
+indispensabile per garantire all’utente una *user experience* soddisfacente. 
+
+In `Software testing IBM`_  leggiamo che:
+
+- Negli anni '90 c'è stata una transizione dai test a un processo più completo denominato 
+  :blue:`controllo di qualità`, che copre l'intero ciclo di sviluppo del software e riguarda 
+  i processi di pianificazione, progettazione, creazione ed esecuzione di casi di test. 
+- I test del software sono stati tradizionalmente separati dal resto dello sviluppo, ma
+  molti team di sviluppo  usano ora una metodologia nota come :blue:`test continuo`. 
+  
+Il *test continuo* è parte dell'approccio `DevOps`_, in cui sviluppo e operazioni collaborano 
+per l'intero ciclo di vita del prodotto. L'obiettivo è quello di accelerare la fornitura del software, 
+bilanciando al tempo stesso i costi, la qualità e i rischi.   
+
+Noi porremo particolare attenzione al fatto che la definizione di test (autmatizzabili) può essere vista come
+la **formalizzazione** delle `User Stories`_  e che l'uso dei modelli (esguibili) può permettere 
+di anticipare questa formalizzazione fin dalle fasi di analisi.
+
+Nella fase di analisi, l'obiettivo non è quello di eseguire dei test, ma quello di trovare il modo migliore 
+per definire i test in modo che possano individuare in modo automatico le falle del software rispetto ai requisiti.
+
+L'obiettivo di definire un TestPlan automatizzabile introduce di fatto un **nuovo requisito**: 
+:blue:`rendere  l'applicazione osservabile`, o meglio:
+
+:remark:`renderne verificabili, da parte di una macchina, gli effetti dell'applicazione`.
+
+
+
+
+

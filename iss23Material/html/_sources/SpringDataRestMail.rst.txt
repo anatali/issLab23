@@ -1,0 +1,255 @@
+.. role:: red 
+.. role:: blue 
+.. role:: brown 
+.. role:: remark
+.. role:: worktodo
+  
+==============================
+SpringDataRest mail
+==============================
+
+
+
+---------------------------------
+Requisito SpringDataRest mail
+---------------------------------
+Inviare una mail a un destinatario precisato dal committente, quando un elemento viene aggiunto ai dati.
+
++++++++++++++++++++++++++++++++++++++
+SpringDataRest-Mail: user story
++++++++++++++++++++++++++++++++++++++
+
+Come utente del servizio, mi aspetto che una mail venga inviata al destinatario specificato
+in un file di configurazione dell'applicazione:
+
+- se effettuo un `SpringDataRest: accesso a HI con curl` - Creare dati (POST)
+- se eseguio un programma che invoca (con successo) l'operazione *createPerson* di 
+  :ref:`SpringDataRest - M2MController`
+
+---------------------------------
+SpringDataRest-Mail: analisi
+---------------------------------
+Dal punto di vista tecnologico, il problema implica l'utilizzo di un mail server e di una libreria Java 
+di supporto al mailing; ad esempio:
+
+- mail server: :blue:`gmail` (*smtp.gmail.com*) oppure il testing tool :blue:`mailtrap` (*smtp.mailtrap.io*)  
+- libreria Java: *javax.mail*
+
+Dal punto di vista logico, si pone il seguente problema:
+
+:remark:`Quale compoenente del sistema ha la responsabilità di iniviare la mail?`
+
+#. I controller :ref:`SpringDataRest - M2MController` e :ref:`SpringDataRest - HIController`.
+#. Il :ref:`DataHandler`.
+#. Un nuovo componente che fa 'polling' su :ref:`DataHandler`, invocandone il metodo *getLast* 
+   e invia una mail quando trova questa info cmodificata.
+#. Un nuovo componente, che capisce quando il :ref:`DataHandler` ha terminato l'operazione *addPerson*.
+
+Notiamo subito che:
+
+- Affidare il compito ai controller significa non includere questa parte nel 'core' della business logic.
+- Introdurre un ente attivo che fa polling significa sprecare risorse e non avere sicurezza che 
+  venga inviata una mail ad ogni inserzione (si pensi al caso di una inserzione seguita da eliminazione
+  e una frequenza di polling cui sfugge il cambiamento).
+
+
+Il punto essenziale è che la business logic venga riorganizzata in modo che una mail vemga inviata
+ogni volta che il :ref:`DataHandler` ha terminato l'operazione *addPerson*.
+Questo comportamento  costituisce una estensione delle funzionalità del gestore logico dei dati,
+che può essere tecnicamente ottenuta in diversi modi:
+
+#. definire una classe specializzazione di :ref:`DataHandler`. Qui però va ricordato il principio di Occam.
+#. modificare il codice *addPerson* di :ref:`DataHandler` in modo che realizzi l'invio della mail,
+   avvaledosi di una utility di supporto
+#. impostare il :ref:`DataHandler` come un **oggetto osservabile**, che aggiorna gli observer al termine
+   dell'operazione  *addPerson*. Un observer che viene registrato presso il :ref:`DataHandler` 
+   rappresenta il nuovo componente, che 'capisce' quando è il momento di inviare la mail.
+
+Il terzo tipo di riorganizzazione architetturale sembra più complesso ma è sicuramente più flssibile che
+non cablare nuovi possibili comportamenti 'marginali' nel codice del gestore.
+Si pensi ad esempio all'aggiunta di nuovi requisiti come:
+
+- registare in un file di log il completamento con successo di ogni operazione;
+- emettere un suono di allarme quando un elemento viene eliminato;
+- accendere un led quando il :ref:`DataHandler` è in esecuzione;
+- utilizzare un protocollo *publish-subscribe* per inviare informazioni al mondo esterno  
+  o per aprire nuovi canali di richiesta;
+- ... 
+
+Inoltre, in accordo al :blue:`principio di singola resposabilità`,
+l'invio della  mail è incapsulato nel codice dell'observer, liberando il :ref:`DataHandler`
+da questo ulteriore compito.
+
+Per realizzare la nuova funzionalità conviene impostare un nuovo SPRINT.
+
+---------------------------------
+SpringDataRest mail sprint 1 
+---------------------------------
+
+Aggiungiamo dunque in *build.gradle* la dipendenza a *javax.mail*:
+
+  .. code::
+  
+     implementation 'com.sun.mail:javax.mail:1.5.5'
+
+La logica per creare la sessione differisce in base al tipo di server SMTP; 
+ad esempio, se il server SMTP non richiede alcuna autenticazione, possiamo 
+creare l'oggetto Session con alcune semplici proprietà mentre se richiede 
+l'autenticazione TLS o SSL, la logica da creare sarà diversa . 
+
+Il protocollo :blue:`SSL` ed il suo successore :blue:`TLS` permettono una comunicazione sicura dal sorgente 
+al destinatario (end-to-end) su reti TCP/IP offrendo autenticazione, integrità dei dati 
+e cifratura operando al di sopra del livello di trasporto.
+
+
+++++++++++++++++++++++++++++++++++
+SpringDataRest-Mail: progetto
+++++++++++++++++++++++++++++++++++
+
+
+Introduciamo la classe *EmailService* come utility per l'invio dei messaggi di mail
+capace di usare due diversi mail servers:
+
+- :blue:`gmail` (*smtp.gmail.com*) per inviare messaggi in modo reale
+- :blue:`mailtrap` (*smtp.mailtrap.io*) per scopi di testing
+
+Il programma Java per inviare e-mail contiene i seguenti passaggi:
+
+- Creazione di un oggetto *javax.mail.Session*
+- Creando un oggetto *javax.mail.internet.MimeMessage*, dobbiamo impostare diverse proprietà in questo oggetto 
+  come l'indirizzo e-mail del destinatario, l'oggetto dell'e-mail, l'e-mail di risposta, 
+  il corpo dell'e-mail, gli allegati ecc.
+- Utilizzo di *javax.mail.Transport* per inviare il messaggio di posta elettronica.
+
+
+Il :blue:`principio di singola resposabilità`, induce a delegare l'invio della mail a un componente
+specializzato, come ad esempio:
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+EmailService
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+.. code:: Java
+
+  public interface Mailer{
+    public void sendMail( 
+          String msg, String destination ) throws Exception;
+  }
+
+  public class EmailService implements Mailer{
+  private String userName="";
+  private String userPswd="";
+  private boolean useTrueMail = false;
+
+    public EmailService() {
+        readUserData(  );
+    }
+
+    protected void readUserData(  )   {
+    //legge da file i valori userName e userPswd 
+    }
+
+    public void sendMail( String msg, String destination ) {
+      try {
+        sendMailUsingGoogle(msg,destination);
+        sendMailUsingMailTrap(msg,destination);
+      }catch(Exception e){... }
+    }
+
+Le operazioni *sendMailUsingGoogle*
+
+.. code:: Java
+
+    private void sendMailUsingGoogle(String msg, String destination){
+      try {
+        prop = new Properties();
+       //prop.setProperty("mail.debug", "true");
+        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.port", 25);  //587 porta TLS
+        prop.put("mail.smtp.auth", true);
+        prop.put("mail.smtp.starttls.enable", "true");//richiesto dal server gmail
+        prop.put("mail.smtp.ssl.trust", "*");//evita 'Could not convert socket to TLS'
+        Session session = Session.getInstance(prop, new Authenticator() {
+           @Override
+          protected PasswordAuthentication getPasswordAuthentication() {
+            //Password set su Google Mail:  Password per le app
+              return new PasswordAuthentication("...", "...");
+          }
+        });
+        sendMail(session, msg, destination);
+      } catch (Exception e) {...}
+    }
+
+    private void sendMail(Session session, String msg, String destination ) throws Exception{
+        Message message = new MimeMessage(session);
+        //message.setFrom(new InternetAddress("fittizio@gmail.com"));
+        message.addRecipients(Message.RecipientType.TO, 
+          InternetAddress.parse(destination)); //"agoognat@gmail.com"
+        message.setSubject("System informazioni");
+        message.setText(msg);
+        Transport.send(message);  //javax.mail.Service
+    }
+
+Questo componente può essere invocato direttamente da :ref:`DataHandler`
+oppure essere incapsulato in un observer.
+
+Esso funge da *adapter* per la comunicazione dell'applicazione verso il mondo
+esterno, in accordo con gli schemi della cleanArchitecture.
+
+.. image:: ./_static/img/Architectures/cleanArch.jpg 
+    :align: center
+    :width: 60%
+  
+.. implementation 'com.github.tntim96:fakesmtp:2.0'   
+.. https://mailtrap.io/register/signup
+.. java -jar fakeSMTP.jar  -m   //save in memory
+
+----------------------------------------------
+SpringDataRest: refactoring a messaggi
+----------------------------------------------
+
+- La business logic può essere scorporata e resa disponibile in rete senza l'uso di Spring
+- La business logic può essere vista come una risorsa, in ottica HATEOAS
+
+
+----------------------------------
+SpringBoot cli 
+----------------------------------
+
+.. https://www.digitalocean.com/community/tutorials/spring-boot-cli-setup-and-helloworld-example
+.. https://github.com/PacktPublishing/Hands-On-Microservices-with-Spring-Boot-and-Spring-Cloud
+.. code put in C:\Didattica\microservices
+
+
+.. code::
+
+  set PATH=
+     C:\DidatticaTools\Spring\spring-2.7.5\bin;%PATH%
+
+  /spring-boot-cli-2.7.5-bin.zip
+  bin/spring --help
+  set JAVA_HOME=C:\Program Files\Java\jdk-11.0.8
+  bin/spring.bat
+
+  spring init --force ^
+  --boot-version=2.7.5 ^
+  --build=gradle ^
+  --java-version=1.8 ^
+  --packaging=jar ^
+  --name=product-service ^
+  --package-name=it.unibo.core.core.product ^
+  --groupId=it.unibo ^
+  --dependencies=actuator,webflux ^
+  --version=1.0.0 ^
+  product-service
+
+  //ESECUZIONE
+  gradlew build 
+  cd build/libs 
+  java -jar product-service-1.0.0.jar 
+  curl http://localhost:7001/product/3
+  {"productId":3,"name":"name-3","weight":123,
+  "serviceAddress":"natDell/192.168.1.132:7001"}
+
+  curl http://localhost:8080/RestApi/person/1
+  curl http://localhost:8080/RestApi/person/1?arg=abc   OK

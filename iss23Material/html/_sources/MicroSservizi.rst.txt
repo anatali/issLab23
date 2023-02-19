@@ -1,0 +1,203 @@
+=================================
+Microservizi
+=================================
+
+https://vitolavecchia.altervista.org/caratteristiche-e-differenza-tra-api-e-microservizi-in-informatica/
+
+DEFINIZIONE
+
+Le API sono un insieme di protocolli di comunicazione e strumenti per la creazione di software. 
+È un insieme di metodi predefiniti di comunicazione tra vari componenti. Le API sono come porte che consentono 
+agli sviluppatori di interagire con un’applicazione. 
+I microservizi possono essere visti come un’architettura leggera orientata ai servizi (SOA) per lo sviluppo di sistemi software. 
+Divide le diverse funzioni di un’applicazione in componenti più piccoli chiamati servizi.
+
+CONCETTO
+
+I microservizi (o architettura dei microservizi) sono un approccio architetturale e organizzativo allo sviluppo 
+del software che consiste nel suddividere componenti di grandi dimensioni in componenti più piccoli, 
+più agili e più gestibili. Le API sono le interfacce che possono essere utilizzate per esporre 
+la funzionalità in tali componenti. In particolare, le API vengono utilizzate per la creazione di 
+sistemi software distribuiti, i cui componenti sono accoppiati in modo lasco.
+
+FUNZIONE
+
+I due sono concetti separati. Le API offrono un modo semplice per connettersi, 
+integrarsi ed estendere un sistema software. 
+Le API forniscono un’interfaccia riutilizzabile a cui diverse applicazioni possono connettersi facilmente. 
+Tuttavia, di solito non sono visibili in superficie; 
+invece, operano sotto il cofano e sono chiamati direttamente da altre applicazioni. 
+L’architettura dei microservizi è generalmente organizzata in base alle capacità e alle priorità 
+aziendali ed è progettata per risolvere problemi grandi e complessi.
+
+
+https://kinsta.com/it/blog/microservizi-vs-api/
+
+I componenti principali dei microservizi sono le API, la logica aziendale, il livello di accesso ai dati 
+e il database. Vediamo la versione estesa dei diversi componenti:
+
+- Clienti: Possono essere applicazioni, siti web o altri servizi. L’architettura dei microservizi include vari tipi di client per gestire alcune attività come l’esecuzione di una ricerca, la configurazione, la costruzione, ecc.
+
+- Gateway API: È il punto di ingresso per i client che possono così inoltrare le richieste ai servizi adatti. Il motivo per cui si usa un gateway API è che i clienti non chiamano direttamente i servizi. L’uso dei gateway API offre molti vantaggi, come il mantenimento dei servizi aggiornati, il load balancing, la sicurezza e altro ancora.
+
+- Gestori di identità: Le richieste dei clienti vengono inoltrate ai gestori di identità che autenticano le richieste e le comunicano ai servizi interni tramite un gateway API.
+
+- Gestione dei dati: I microservizi hanno database privati per archiviare le informazioni e implementare le funzionalità aziendali.
+
+- Messaggistica: I microservizi interagiscono tra loro tramite messaggi per gestire le richieste dei clienti. Questi messaggi possono essere di due tipi: sincroni, in cui il server attende una risposta in tempo reale, o asincroni, in cui il client non attende alcuna risposta prima di agire.
+
+- Contenuto statico: I microservizi, dopo aver comunicato tra loro, distribuiscono altri contenuti statici su un servizio di archiviazione cloud per consentire la consegna diretta dei contenuti ai clienti grazie a una rete di distribuzione dei contenuti, o Content Delivery Network (CDN).
+
+- Consegna del servizio: Si tratta di una guida per i microservizi per trovare i percorsi di comunicazione tra i microservizi. Gestisce un elenco di servizi in cui si trovano i nodi.
+
+
+I microservizi possono essere classificati in due grandi tipologie: microservizi stateless e stateful.
+
+- Microservizi stateless: Sono gli elementi costitutivi dei sistemi distribuiti. Non mantengono o memorizzano alcuno stato di sessione tra due richieste, da cui il nome di microservizi “stateless”. Inoltre, anche se un’istanza del servizio viene rimossa, la logica di elaborazione complessiva del servizio non ne risente. Ecco perché i sistemi distribuiti sfruttano i microservizi stateless.
+- Microservizi statici: I microservizi statici mantengono o memorizzano gli stati o i dati della sessione nel codice. I microservizi che comunicano tra loro mantengono sempre le richieste di servizio.
+
+
+- Microservizi: Si tratta di un insieme di funzioni e servizi che agiscono come elementi costitutivi di un’applicazione.
+- API RESTful: Rappresentano i protocolli, i comandi e le regole per integrare tutti i microservizi in un’unica applicazione.
+
+
+I microservizi riguardano lo stile di progettazione e l’architettura di un’applicazione e potete costruire microservizi 
+con o senza l’utilizzo di un’API RESTful. Detto questo, l’utilizzo di RESTful renderà molto 
+più facile lo sviluppo di microservizi ad accoppiamento libero.
+
+RESTful e i microservizi possono risolvere problemi diversi, ma possono comunque lavorare insieme.
+
+L’interfaccia di programmazione delle applicazioni (API) è un intermediario software tra due applicazioni 
+che interagiscono tra loro. Collega due computer o programmi informatici attraverso un’interfaccia.
+
+Le API semplificano la programmazione e possono nascondere i dettagli interni di un sistema, come per esempio il suo funzionamento, ed esporre le parti utili per il programmatore mantenendo le parti coerenti nonostante le modifiche interne. Al giorno d’oggi è possibile trovare una varietà di API per vari scopi, come sistemi operativi, librerie software, linguaggi di programmazione, hardware per computer, ecc.
+
+Inoltre, la creazione di un’API richiede il rispetto di uno standard o di un documento chiamato specifica 
+API che indica come usare o costruire un’API.
+
+
+----------------------------------
+MICROSERVICES PATTERNS
+----------------------------------
+
+
+.. 292 Testing
+
+- Requisiti funzionali, Prodotto, Architettura, Processo, Collaudo, Deployment.
+
+.. 46 159 Domain model, 54 subdomain, 151 DDD, 152 aggregate, boundaries, 160 domain events
+
+
+- Struttura, interazione, comportamento
+
+.. 8  ..38 esagonale style
+
+- Requisiti non funzionali, Architettura esagonale, Architettura Microservice, Scale cube
+
+.. 29 
+
+- Architettura, processo, organizzazione (Conway ribaltata)
+
+.. 65 IPC, 67 interaction styles, 97 Transactional messaging, 100 EventuatedTram
+
+.. 110 sages, 112 Distributed transactions, 127 Anomalies
+
+- From ACID to ACD
+
+.. 259
+
+- API gateway
+
+++++++++++++++++++++++++++++++++++++++
+Lista Pattern libro
+++++++++++++++++++++++++++++++++++++++
+- Application architecture patterns
+  
+  - Monolithic architecture (40)
+  - Microservice architecture (40)
+- Decomposition patterns
+  
+  - Decompose by business capability (51)
+  - Decompose by subdomain (54)
+- Messaging style patterns
+  
+  - Messaging (85)
+  - Remote procedure invocation (72)
+- Reliable communications patterns
+  
+  - Circuit breaker (78)
+- Service discovery patterns
+  
+  - 3rd party registration (85)
+  - Client-side discovery (83)
+  - Self-registration (82)
+  - Server-side discovery (85)
+- Transactional messaging patterns
+
+   - Polling publisher (98)
+   - Transaction log tailing (99)
+   - Transactional outbox (98)
+- Data consistency patterns
+  
+   - Saga (114)
+- Business logic design patterns
+
+  - Aggregate (150)
+  - Domain event (160)
+  - Domain model (150)
+  - Event sourcing (184)
+  - Transaction script (149)
+- Querying patterns
+
+  - API composition (223)
+  - Command query responsibility segregation (228)
+- External API patterns
+
+  - API gateway (259)
+  - Backends for frontends (265)
+- Testing patterns
+  
+  - Consumer-driven contract test (302)
+  - Consumer-side contract test (303)
+  - Service component test (335)
+- Security patterns
+  
+  - Access token (354)
+- Cross-cutting concerns patterns
+  
+  - Externalized configuration (361)
+  - Microservice chassis (379)
+- Observability patterns
+  
+  - Application metrics (373)
+  - Audit logging (377)
+  - Distributed tracing (370)
+  - Exception tracking (376)
+  - Health check API (366)
+  - Log aggregation (368)
+- Deployment patterns
+  
+  - Deploy a service as a container (393)
+  - Deploy a service as a VM (390)
+  - Language-specific packaging format (387)
+  - Service mesh (380)
+  - Serverless deployment (416)
+  - Sidecar (410)
+- Refactoring to microservices patterns
+  
+  - Anti-corruption layer (447)
+  - Strangler application (432)
+
+
+
+++++++++++++++++++++++++++++++++++++++
+Lista Pattern da fare
+++++++++++++++++++++++++++++++++++++++
+
+- Microservice architecture (40)
+- Decompose by subdomain (54)
+- Domain model (150)
+- Aggregate (150)
+- Messaging (85)
+- Circuit breaker (78)
+- Transactional messaging patterns

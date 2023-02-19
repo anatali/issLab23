@@ -1,0 +1,191 @@
+.. role:: red 
+.. role:: blue 
+.. role:: brown 
+.. role:: remark
+.. role:: worktodo
+
+.. _tuPrologNew: https://apice.unibo.it/xwiki/bin/view/Tuprolog/
+.. _tuProlog: http://amsacta.unibo.it/5450/7/tuprolog-guide.pdf
+.. _Prolog: https://it.wikipedia.org/wiki/Prolog
+.. _Json: https://it.wikipedia.org/wiki/JavaScript_Object_Notation
+
+=============================================
+Interaction2021
+=============================================
+
+
+
+Protocolli punto-a-punto come ``TCP, HTTP, CoAP``, etc.
+sono in grado di stabilire una :blue:`connessione` stabile sulla quale inviare e ricevere messaggi.
+Il protocollo ``UDP`` non stabilisce una connessione, ma può comunque essere usato per inviare messaggi 
+e ricevere risposte.
+
+--------------------------------
+Interconnessione 
+--------------------------------
+
+Nel seguito, useremo il termine :blue:`Interconnessione` nel senso **astratto** di 
+*canale di comunicazione bidirezionale*
+tra due end-points, realizzato  da un oggetto che implementa la seguente interfaccia:
+
++++++++++++++++++++++++++++++++++++++++++++++++++
+unibo.interaction.interfaces.Interaction2021
++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. code:: Java
+
+  interface Interaction2021  {	 //In unibo.interaction.interfaces
+    public void forward(  String msg ) throws Exception;
+    public String request(  String msg ) throws Exception;
+    public void reply(  String msg ) throws Exception;
+    public String receiveMsg(  )  throws Exception;
+    public void close( )  throws Exception;
+  }
+
+Ogni metodo rappresenta una modalità di invio   (``forward/reply/request``) 
+o di ricezione (``receiveMsg``) di informazione.
+
+
+Il metodo ``forward`` è un metodo di trasmissione :blue:`'fire-and-forget'`, mentre il metodo ``request`` denota 
+l'invio di informazione cui deve corrispondere una *ack* o una :blue:`response` da parte del ricevente.
+
+Concettualmente, un componente che invia una *response/ack* sulla *comunicazione connessa* con un client,
+effettua una operazione di ``reply``, assimilabile alla ``forward`` di un messaggio con appropriato contenuto informativo. 
+
+La ``String`` restituita dal metodo ``receiveMsg`` può quindi rappresentare la risposta a un messaggio
+inviato in precedenza con ``forward``.
+
+L'informazione scambiata è rappresenta da una ``String`` che è un tipo di dato presente in tutti
+i linguaggi di programmazione.
+Non viene introdotto un tipo  diverso (ad esempio ``Message``) perchè non si vuole stabilire 
+il vincolo che gli end-points della connessione siano componenti codificati nel medesimo linguaggio di programmazione.
+ 
+
+.. Ovviamente la definizione di questa interfaccia potrà essere estesa e modificata in futuro, 
+.. a partire dalla fase di progettazione, ma rappresenta una forte indicazione dell'analista di 
+.. pensare alla costruzione di componenti software che possano ridurre il costo delle applicazioni future.
+
+
+
+-----------------------------------------------
+Natura e struttura dei messaggi applicativi
+-----------------------------------------------
+I messaggi  sono logicamente suddivisi in diverse categorie:
+
+ .. code:: java
+
+  enum ApplMessageType{
+      event, dispatch, request, reply, invitation
+  }   
+
+.. list-table:: 
+  :widths: 70,30
+  :width: 100%
+
+  * - - :blue:`dispatch`: un messaggio inviato a un preciso destinatario senza attesa  di una risposta 
+        (in modo detto anche  `fire-and-forget`);
+      - :blue:`invitation`: un messaggio inviato a un preciso destinatario aspettandosi un 'ack' da parte di questi;
+      - :blue:`request`: un messaggio inviato a un preciso destinatario aspettandosi da parte di questi una 
+        :blue:`reply` **logicamente correlata alla richiesta**;
+      - :blue:`event`: un messaggio inviato a chiunque sia in grado di elaborarlo.
+
+    - .. image:: ./_static/img/Architectures/legendMessages.PNG
+        :align: center
+        :width: 80%
+
+
+Le stringhe che denotano i messaggi devono essere della forma
+
+``msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )``
+
+ove
+
+ .. code:: java
+
+  - MSGID:    identificativo del messaggio
+  - MSGTYPE:  tipo del msg (Dispatch, Invitation,Request,Reply,Event)  
+  - SENDER:   nome del componente che invia il messaggio
+  - CONTENT:  contenuto applicativo (payload) del messaggio 
+  - RECEIVER: nome del componente chi riceve il messaggio 
+  - SEQNUM:   numero di sequenza del messaggio
+
+Questa struttura dei messaggi, costituisce uno :blue:`standard interno` sulla struttura delle informazioni 
+scambiate via rete:
+
++++++++++++++++++++++++++++
+Sintassi dei messaggi
++++++++++++++++++++++++++++
+
+La rappresentazione in forma di String dei messaggi segue (per motivi 'storici') le regole della sintassi `Prolog`_. 
+In particolare:
+
+- gli identificatori ``MSGID,SENDER,RECEIVER`` sono espressi da **atomi** Prolog formati da lettere minuscole;
+- ``MSGTYPE`` è un atomo prefissato: ``dispatch, request, reply, event``;
+- ``CONTENT`` è un **termine** Prolog;
+- ``SEQNUM`` è un intero.
+
+Esempi di messaggi:
+
+.. code:: java
+
+   msg(sonarcmd,dispatch,controller,sonar,deactivate,0)
+   msg(cmd,dispatch,controller,led,eecute(turnOn),1)
+   msg(req,request,main,sonar,getDistance,2)
+   msg(req,request,main,led,info(getState),3)
+
+-----------------------------------------------
+unibo.interaction: Classi di utilità
+-----------------------------------------------
+
+Una appropriata interfaccia definisce i metodi per l'accesso ai diversi campi del messaggio 
+e i predicati che permettono di testarne il tipo
+
++++++++++++++++++++++++++++++++++++++++++++
+unibo.interaction.interfaces.IApplMessage
++++++++++++++++++++++++++++++++++++++++++++
+
+ .. code:: java
+
+   public interface IApplMessage {
+    public String msgId();
+    public String msgType();
+    public String msgSender();
+    public String msgReceiver();
+    public String msgContent();
+    public String msgNum();
+    public boolean isDispatch();
+    public boolean isRequest();
+    public boolean isReply();
+    public boolean isEvent();
+  }
+
+++++++++++++++++++++++++++++++++++++++++++
+unibo.interaction.msg.ApplMessage
+++++++++++++++++++++++++++++++++++++++++++
+
+Quesat è la classe di utilità che implementa :ref:`IApplMessage<unibo.interaction.interfaces.IApplMessage>`.
+
+.. code::
+
+  public class ApplMessage implements IApplMessage {
+
+    //Costruttori
+    public ApplMessage( String MSGID, String MSGTYPE, 
+        String SENDER, String RECEIVER, String CONTENT, String SEQNUM ) { ...  }
+    public ApplMessage( String msg ) {
+        Struct msgStruct = (Struct) Term.createTerm(msg);
+        ...
+    }
+    //Predicati 
+    public boolean isDispatch(){
+        return msgType.equals( ApplMessageType.dispatch.toString() );
+    }
+    public boolean isRequest(){ ... }
+    public boolean isReply(){ ... }
+    ...
+  }
+
+
+Vediamo ora in qualche dettaglio il progetto :ref:`unibo.basicomm23` che realizza queste 'specifiche' fornendo supporti 
+che utilizzano diversi protocolli, che rimangono ora 'nascosti' al livello applicativo.
+ 

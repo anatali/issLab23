@@ -1,0 +1,58 @@
+.. role:: red 
+.. role:: blue 
+.. role:: brown   
+.. role:: remark
+.. role:: worktodo
+.. role:: slide 
+.. role:: slide1 
+
+==================================
+Books
+==================================
+
+The following list of books is just to give some reference relted to the main topics covered 
+or mentioned in the course. Please check always for some more recent publications.
+
+-----------------------
+Hot topics
+-----------------------
+- :blue:`Building Microservices`. S. Newman. O'Reilly 2016. ISBN 978-1491950357
+- :blue:`Building the Web of Things: With Examples in Node.js and Raspberry Pi`. Dominique Guinard, Vlad M. Trifa, Manning 2016, ISBN-10: 1617292680
+- :blue:`Domain Driven Design`. E. Evans. Addison-Wesley 2004. ISBN 0321125215 978-0321125217
+- :blue:`Implementing Domain-Driven Design`. Vaughn Vernon. Addison Wesley. ISBN-10: 0321834577
+- :blue:`Enterprise Integration Patterns: Designing, Building, and Deploying Messaging Solutions`. Gregor Hohpe, Bobby Woolf. ISBN-10: 0133065103
+- :blue:`Reactive Messaging Patterns with the Actor Model: Applications and Integration in Scala and Akka`. Vaughn Addison-Wesley 2016. Vernon.ISBN-10: 0133846830
+- :blue:`Microservices Patterns: With examples in Java`. Chris L. Richardson. Manning; 1st edition.  ISBN-10 1617294543
+- :blue:`Microservices with Spring Boot and Spring Cloud`: *Build resilient and scalable microservices using Spring Cloud, Istio, and Kubernetes*. Magnus Larsson. Packt Publishing; 2nd ed. edition. ISBN-10 1801072973 
+  
+-----------------------
+Technologies
+-----------------------
+
+- :blue:`Concepts, Techniques, and Models of Computer Programming`. S. Haridi, P. Van-Roy, Mit Press, ISBN-10: 0262220695
+- :blue:`Pattern.oriented software architecture. A System of Patterns`. (POSA) Frank Buschmann, RegineMeunier Hans, Rohnert Peter Sommerlad, Michael Stal. ISBN-10 ‏ : ‎ 0470845252. ohn Wiley & Sons Inc; Volume 3 edizione (23 aprile 2004)
+- :blue:`Dsl Engineering: Designing, Implementing and Using Domain-specific Languages`. M. Voelter. CreateSpace Independent Publishing Platform. ISBN-10: 1481218581
+- :blue:`Domain Specific Languages`. M. Fowler. Addison Wesley. ISBN-10: 0321712943
+- :blue:`Implementing Domain Specific Languages with Xtext and Xtend`. Second edition. Lorenzo Bettini. Packt Publishing. ISBN-10: 1786464969
+- :blue:`Akka in Action`. Rob Bakker.Rob BakkerManning Publications ISBN-10: 1617291013
+- :blue:`Speaking JavaScript: An In-Depth Guide for Programmers`. Axel Rauschmayer. O'Reilly. 2014. ISBN-10: 1449365035
+- :blue:`Understanding Ecmascript 6: The Definitive Guide for Javascript Developers`. Nicholas C. Zakas. 2016. ISBN-10: 1593277571
+- :blue:`Getting MEAN with Mongo, Express, Angular, and Node`. Simon Holmes. Manning Publications. ISBN-10: 1617292036
+- :blue:`REST in Practice: Hypermedia and Systems Architecture`. Jim Webber, Savas Parastatidis, Ian Robinson. O'Reilly Media, ISBN-10: 0596805829.
+
+-----------------------
+Tools
+-----------------------
+
+- :blue:`Gradle in Action`. B. Muschko. Manning 2014. ISBN 978-1617291302
+- :blue:`Java Concurrency in practice`. B. Goetz. Addison-Wesley 2013. ISBN 0321349601 978-0321349606
+- :blue:`Programming Concurrenncy on the JVM`. V.Subramaniam, 2011, The Pragmatic Bookshelf
+- :blue:`Reactive Programming with RxJava: Creating Asynchronous, Event-Based Applications`. Tomasz Nurkiewicz, Ben Christensen. O'Reilly 2016. ISBN-10: 1491931655
+
+
+-----------------------
+Others
+-----------------------
+- :blue:`Embedded Software Development: The Open-Source Approach`. Ivan Cibrario Bertolotti, Tingting Hu, CRC press, 2016. ISBN-10: 146659392X
+
+ 

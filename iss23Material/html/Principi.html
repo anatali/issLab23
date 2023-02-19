@@ -1,0 +1,681 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Principi &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Workflow23" href="Workflow23.html" />
+    <link rel="prev" title="Primi passi operativi" href="Primipassioperativi.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Workflow23.html" title="Workflow23"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Primipassioperativi.html" title="Primi passi operativi"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Principi</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="principi">
+<h1>Principi<a class="headerlink" href="#principi" title="Permalink to this headline">¶</a></h1>
+<section id="i-sistemi-software">
+<h2>I Sistemi software<a class="headerlink" href="#i-sistemi-software" title="Permalink to this headline">¶</a></h2>
+<p>Un <span class="blue">sistema</span> può essere definito come l’unità fisica e funzionale, costituita da più parti
+o sottosistemi (organi, componenti o elementi ecc.) <strong>interagenti</strong> (o in relazione funzionale) tra loro
+(e con altri sistemi), che formano un tutt’uno in cui ogni parte dà il proprio contributo
+per una finalità comune.</p>
+<p>A livello di sistema, si possono presentare <span class="blue">nuove proprietà</span>, che non possono essere dedotte dai suoi sottosistemi,
+ma che <span class="slide1">derivano dall’interazione delle parti</span>.</p>
+<p>Rispetto alla semplice denominazione di <em>software</em>, l’uso del termine <span class="blue">sistema software</span> enfatizza
+in genere prodotti software complessi, e che sono costruiti o studiati in termini di macro-componenti,
+della loro organizzazione e delle loro interazioni.</p>
+<p>La struttura di un sistema software è anche detta <span class="blue">architettura software</span>.</p>
+</section>
+<section id="dimensioni">
+<h2>Dimensioni<a class="headerlink" href="#dimensioni" title="Permalink to this headline">¶</a></h2>
+<p>La descrizione di un sistema software può avvenire
+focalizzando l’attenzione su almeno tre diversi punti di vista:</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/Dimensioni.PNG"><img alt="_images/Dimensioni.PNG" class="align-center" src="_images/Dimensioni.PNG" style="width: 100%;" /></a>
+</td>
+<td><ul class="simple">
+<li><p>l’organizzazione del sistema in parti (<strong>struttura</strong>);</p></li>
+<li><p>il modo in cui le diverse parti scambiano informazione implicita o esplicita tra loro (<strong>interazione</strong>);</p></li>
+<li><p>il funzionamento del tutto e di ogni singola parte (<strong>comportamento</strong>).</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="componenti-software">
+<h2>Componenti software<a class="headerlink" href="#componenti-software" title="Permalink to this headline">¶</a></h2>
+<p>Oggi è ormai scontata la transizione del software da una dimensioen di livello algoritmico
+a una dimensione  di tipo sistemistico che vede come componenti entità quali:</p>
+<ul class="simple">
+<li><p>funzioni</p></li>
+<li><p>oggetti</p></li>
+<li><p>processi</p></li>
+<li><p>plugin, bundle …</p></li>
+<li><p>attori</p></li>
+<li><p>servizi</p></li>
+<li><p>microservizi</p></li>
+</ul>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><span class="remark">Astrazioni di componenti software</span></p>
+<a class="reference internal image-reference" href="_images/legendComponets.PNG"><img alt="_images/legendComponets.PNG" class="align-center" src="_images/legendComponets.PNG" style="width: 30%;" /></a>
+</td>
+<td><p><span class="remark">Astrazioni di interazione tra componenti software</span></p>
+<a class="reference internal image-reference" href="_images/legendMessages.PNG"><img alt="_images/legendMessages.PNG" class="align-center" src="_images/legendMessages.PNG" style="width: 44%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<section id="problematiche-relative-ai-componenti">
+<h3>Problematiche relative ai componenti<a class="headerlink" href="#problematiche-relative-ai-componenti" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Come li individuo?</p></li>
+<li><p>Come li metto insieme?</p></li>
+<li><p>Come li rendo disponibili?</p></li>
+<li><p>Come li trovo/seleziono dinamicamente?</p></li>
+<li><p>Come li sostitusico?</p></li>
+<li><p>Come ne controllo/monitoro il funzionamento?</p></li>
+<li><p>Come specifico ciò che richiedono per funzionare?</p></li>
+<li><p>Come li progetto?</p></li>
+<li><p>Come li uso per costruire il sistema? (in modo top-down o botton-up?)</p></li>
+<li><p>Quali <a class="reference internal" href="#principi-di-costruzione"><span class="std std-ref">Principi di costruzione</span></a> posso adottare?</p></li>
+</ul>
+</section>
+</section>
+<section id="interazione">
+<h2>Interazione<a class="headerlink" href="#interazione" title="Permalink to this headline">¶</a></h2>
+<p>Le interazioni tra <strong>oggetti</strong> avvengono tramite <span class="blue">procedure-call</span>, cioè a trasferimento di controllo.</p>
+<p>Le interazioni tra <strong>componenti attivi</strong> possono avvenire trameite <span class="blue">oggetti condivisi</span>, allocati su memoria comune,
+oppure tramite <span class="blue">messaggi</span> che riguardano <em>informazioni</em> o <em>stream di dati</em> e che possono essere scambiati
+in forma sincrona, asincrona o isocrona.</p>
+<ul class="simple">
+<li><p>In una interazione <strong>asincrona</strong>, la comunicazione è “bufferizzata” senza alcuna
+limitazione sulle dimensioni del buffer.
+L’emittente non deve attendere alcuna informazione di ritorno anche quando invia informazione
+ad uno specifico destinatario. Il ricevente attende solo quando il buffer è vuoto.
+Nel caso di stream, non vi sono vincoli di tempo per la ricezione.</p></li>
+<li><p>In una interazione <strong>sincrona</strong>, la comunicazione avviene senza l’uso di alcun buffer.
+L’emittente e il desinatario scambiano informazione unificando concettualmente le proprie attività.
+Nel caso di stream, il destinatario si aspetta di ricevere i dati con un ritardo (delay)
+che non supera un massimo prefissato.</p></li>
+<li><p>Una interazione <strong>isocrona</strong> riguarda solo stream; il destinatario si aspetta di ricevere i dati
+con un delay compreso tra un minimo e un massimo.</p></li>
+</ul>
+<p>Le interazioni a messaggi vengono anche spesso suddivise secondo quattro pattern principali:</p>
+<ul class="simple">
+<li><p><strong>Fire and forget</strong>: il caso di invio di  messaggi.</p></li>
+<li><p><strong>Sync with server</strong>: il caso request-response.</p></li>
+<li><p><strong>Poll objects</strong>: il sender invia una request delegando ad un oggetto (<em>poll object</em>) la responsabilità
+di ricevere la risposta. Il sender usa il poll object per verificare ed acquisire la disponibilità della risposta.</p></li>
+<li><p><strong>Result callback</strong>: il sender invia una request specificando un oggetto (<em>callback object</em>) che implementa
+un metodo che verrà invocato dal supporto non appena il receiver invierà la risposta.</p></li>
+</ul>
+<p>Questi punti costituiscono il cuore del passaggio da OOP a message-passing.</p>
+<section id="terminologia-di-riferimento">
+<h3>Terminologia di riferimento<a class="headerlink" href="#terminologia-di-riferimento" title="Permalink to this headline">¶</a></h3>
+<p>Faremo riferimento alla seguente terminologia:</p>
+<ul class="simple">
+<li><p><strong>Messaggio</strong> (<span class="blue">message</span>): termine generico per denotare informazione scambiata mediante
+l’uso di un opportuno supporto di comunicazione.</p></li>
+<li><p><strong>Dispaccio</strong> (<span class="blue">dispatch</span>): messaggio inviato in modo asincrono a N (N&gt;=1) specifici destinatari,
+noti alla emittente, con l’aspettativa che questi lo ricevano e lo elaborino; l’emittente non si aspetta
+alcuna informazione di ritorno.</p></li>
+<li><p><strong>Invito</strong> (<span class="blue">invitation</span>): messaggio inviato a N (N&gt;=1) destinatari, con l’aspettativa che almeno uno lo riceva
+e invii al mittente un messaggio di <em>conferma</em>.</p></li>
+<li><p><strong>Conferma</strong> (<span class="blue">ack</span>): messaggio inviato al mittente di un <em>invitation</em>.
+Il contenuto del messaggio rappresenta un riconoscimento di avvenuta ricezione.</p></li>
+<li><p><strong>Richiesta</strong> (<span class="blue">request</span>): messaggio inviato a uno specifico destinatario; il contenuto del messaggio
+rappresenta la richiesta di esecuzione di una attività, con aspettativa da parte del mittente
+che questa attività si concluda con una risposta pertinente alla richiesta.</p></li>
+<li><p><strong>Risposta</strong> (<span class="blue">reply, response</span>): messaggio inviato da un destinatario al mittente di una richiesta.
+il contenuto del messaggio rappresenta informazione pertinente alla richiesta.</p></li>
+<li><p><strong>Evento</strong> (<span class="blue">event</span>): messaggio emesso (più o meno consapevolmente) in modo asincrono da una sorgente
+senza alcuna particolare nozione di destinatario e senza alcuna aspettativa da parte dell’emittente.</p></li>
+<li><p><strong>Segnale</strong> (<span class="blue">signal</span>): messaggio emesso in modo consapevole e asincrono a N (N&gt;=1) destinatari,
+noti o meno all’emittente,
+con l’aspettativa che venga ricevuto da qualcuno, al fine di eseguire un’azione che potrebbe portare vantaggio
+all’emittente, al ricevente e/o al sistema nel suo complesso.</p></li>
+</ul>
+</section>
+</section>
+<section id="comportamento">
+<h2>Comportamento<a class="headerlink" href="#comportamento" title="Permalink to this headline">¶</a></h2>
+<p>Per esprimere il comportamento di un componente software, si distinguono classicamente tre diversi ‘stili’:</p>
+<ul class="simple">
+<li><p>imperativo</p></li>
+<li><p>funzionale</p></li>
+<li><p>logico-dichiarativo</p></li>
+</ul>
+<p>Il funzionamento di un componente comporta spesso l’individuazione
+di un insieme di <span class="blue">operazioni primitive</span>, sulla base delle quali costruire ogni altra operazione
+di manipolazione/gestione del componente.</p>
+<p>Si pensi per esempio al caso di un <em>oggetto lista</em>, le cui primitive
+sono il costruttore <code class="docutils literal notranslate"><span class="pre">cons</span></code>, i selettori <code class="docutils literal notranslate"><span class="pre">head,</span> <span class="pre">tail</span></code> e il predicato <code class="docutils literal notranslate"><span class="pre">empty</span></code>. Un volta data la lista vuota (l’oggetto <code class="docutils literal notranslate"><span class="pre">emptyList</span></code>)
+ogni lista può essere costruita e manipolata attraverso l’uso di queste primitive.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Spesso si qualifica il comportamento di un componente facendo riferimento a tipi diversi di
+<span class="blue">macchine astratte</span>, iniziando dalla
+<a class="reference external" href="https://plato.stanford.edu/entries/turing-machine/">Turing Machine</a> (<strong>TM</strong>), che individua, in stile imperativo, le mosse-base (<em>primitive</em>)
+di un automa che permette di realizzare qualunque calcolo.</p></td>
+<td><a class="reference internal image-reference" href="_images/TuringMachine.PNG"><img alt="_images/TuringMachine.PNG" class="align-center" src="_images/TuringMachine.PNG" style="width: 100%;" /></a>
+<p>Si veda <a class="reference external" href="https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/turing-machine/one.html">Raspberry Pi TM</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Un automa equivalente che ottiene lo stesso risultato con una sorta di <a class="reference external" href="https://it.wikipedia.org/wiki/Linguaggio_assembly">Linguaggio assembly</a> minimale è la
+<a class="reference external" href="https://en.wikipedia.org/wiki/Counter_machine">Minsky Machine</a> (nota anche come <em>Counter Machine</em>)</p></td>
+<td><a class="reference internal image-reference" href="_images/MinskyMachine.PNG"><img alt="_images/MinskyMachine.PNG" class="align-center" src="_images/MinskyMachine.PNG" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Un tipo meno potente di macchina astratta rispetto alla <strong>TM</strong> è il <a class="reference external" href="https://it.wikipedia.org/wiki/Automa_a_pila">pushdown automaton</a> (<strong>PDA</strong>) che però è l’automa
+di riferimento per il riconoscimento delle frasi di un inguaggio con <em>sintassi context-free</em>, di tipo 2 nella
+<a class="reference external" href="https://it.wikiversity.org/wiki/Classificazione_delle_grammatiche">gerarchia di Chomsky</a> .</p>
+<section id="automi-a-stati-finiti">
+<h3>Automi a stati finiti<a class="headerlink" href="#automi-a-stati-finiti" title="Permalink to this headline">¶</a></h3>
+<p>Un ulteriore tipo di automa meno potente della TM, ma su cui si fonda sia la TM sia il PDA
+è l’<a class="reference external" href="https://it.wikipedia.org/wiki/Automa_a_stati_finiti">Automa a stati finiti</a> (<em>Finite State Machine</em> - <strong>FSM</strong>)
+il cui funzionamento può essere formalmente descritto da una 5-tuple (<code class="docutils literal notranslate"><span class="pre">States,</span> <span class="pre">Inputs,</span> <span class="pre">Outputs,</span> <span class="pre">Transitions,</span> <span class="pre">InitialState</span></code>):</p>
+<ul>
+<li><p><strong>States</strong>: insieme di possibili stati in cui l’automa si può trovare.</p></li>
+<li><p><strong>Inputs</strong>: insieme delle informazioni di ingresso, denotabili attraverso un <em>input alphabet</em>; nel nostro caso
+possiamo pensare che ogni simbolo dell’alfabeto  denoti un messggio.</p></li>
+<li><p><strong>Outputs</strong>: insieme della informazioni di uscita, denotabili attraverso un <em>output alphabet</em>;   nel nostro caso
+possiamo pensare che ogni simbolo dell’alfabeto denoti una <strong>azione</strong>.</p></li>
+<li><p><strong>InitialState</strong>: lo stato iniziale (unico) in cui l’automa si trova quando viene creato.</p></li>
+<li><p><strong>Transizione</strong>: definisce il nuovo stato e l’output dell’automa in funzione dello stato corrente e del simbolo corrente in ingresso.
+E’ spesso espressa da una coppia di funzioni:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nextState</span><span class="p">:</span>      <span class="n">States</span> <span class="n">x</span> <span class="n">Inputs</span> <span class="o">-&gt;</span> <span class="n">States</span>
+<span class="n">output</span><span class="p">:</span>         <span class="n">States</span> <span class="n">x</span> <span class="n">Inputs</span> <span class="o">-&gt;</span> <span class="n">Outputs</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p>Normalmente, gli automi a stati finiti si suddividono in due grandi categorie:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Mealy_machine">MealyMachines</a>: una FSM il cui output è determinato sia dallo stato corrente sia dall’input corrente.</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">MooreMachines</a>: una FSM il cui output dipende unicamente dallo stato corrente (<code class="docutils literal notranslate"><span class="pre">SCUR</span></code>) in cui l’automa si trova.</p></li>
+</ul>
+<p><strong>FSM</strong> di tipo  <a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">MooreMachines</a> avranno per noi un ruolo fondamentale.
+Quando l’automa si trova nello stato corrente <code class="docutils literal notranslate"><span class="pre">SCUR</span></code>:</p>
+<ol class="arabic simple">
+<li><p>esegue una sequenza (che <strong>deve terminare</strong>) di azioni;</p></li>
+<li><p>al termine della sequenza di azioni controlla che vi sia almeno un input (messaggio)
+capace di attivare una delle transizioni verso un ulteriore stato (<code class="docutils literal notranslate"><span class="pre">SNEXT</span></code>);</p></li>
+<li><p>attiva una delle transizioni possibili pasando dallo stato <code class="docutils literal notranslate"><span class="pre">SCUR</span></code> allo stato <code class="docutils literal notranslate"><span class="pre">SNEXT</span></code> (che potrebbe anche coincidere
+con <code class="docutils literal notranslate"><span class="pre">SCUR</span></code>);</p></li>
+<li><p>se non vi sono transizioni attivabili, rimane nello stato <code class="docutils literal notranslate"><span class="pre">SCUR</span></code> da cui potrà sbloccarsi solo in conseguenza di un
+ulteriore messaggio di input.</p></li>
+</ol>
+</section>
+</section>
+<section id="principi-di-costruzione">
+<h2>Principi di costruzione<a class="headerlink" href="#principi-di-costruzione" title="Permalink to this headline">¶</a></h2>
+<p>Nel corso degli anni si sono imposti alla attenzione degli sviluppatori,
+alcuni principi, metodologie, schemi di riferimento etc. che aiutano nella progettazione e sviluppo
+di sistemi software.</p>
+<p>Qui ne ricordiamo alcuni, che useremo nel seguito.</p>
+<section id="design-patterns">
+<h3>Design patterns<a class="headerlink" href="#design-patterns" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Agli anni 90 del secolo scorso risale l’idea di <span class="blue">pattern</span>, culminata nella pubblicazione
+nel <code class="docutils literal notranslate"><span class="pre">1995</span></code> dell’ormai famoso testo sui <a class="reference external" href="https://it.wikipedia.org/wiki/Design_pattern">Design Pattern</a>  della così detta <em>Gang-of-Four</em>
+(<strong>GoF</strong>): <em>Erich Gamma, Richard Helm, Ralph Johnson e John Vlissides</em>).</p></td>
+<td><a class="reference internal image-reference" href="_images/DesignPatternGof.PNG"><img alt="_images/DesignPatternGof.PNG" class="align-center" src="_images/DesignPatternGof.PNG" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="slide1">Pattern POSA</span></p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Da allora si sono susseguiti molte altre conferenze e lavori.
+I riferimenti più noti sono i cinque testi <code class="docutils literal notranslate"><span class="pre">POSA</span></code> (si veda in <a class="reference internal" href="Books.html#books"><span class="std std-ref">Books</span></a>) sulle <em>Pattern oriented Software Architectures</em>
+e i convegni <code class="docutils literal notranslate"><span class="pre">PLoP</span></code> (<em>Pattern Languages of Programming</em>).</p></td>
+<td><a class="reference internal image-reference" href="_images/Posa.PNG"><img alt="_images/Posa.PNG" class="align-center" src="_images/Posa.PNG" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id1">
+<h3>SOLID<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Dal sito <a class="reference external" href="https://clevercoder.net/2018/09/08/clean-architecture-summary-review/">Clean Architecture</a> (Uncle Bob) leggiamo:</p>
+<ul class="simple">
+<li><p><span class="blue">Single responsibility principle</span> : una classe dovrebbe avere una, e una sola, ragione per cambiare.</p></li>
+<li><p><span class="blue">Open-closed principle</span> : una classe dovrebbe essere aperta per l’estensione ma chiusa per la modifica.</p></li>
+<li><p><span class="blue">Liskov’s substitution principle</span> : gli oggetti in un programma dovrebbero essere sostituibili con istanze dei loro sottotipi senza alterare la correttezza di quel programma.</p></li>
+<li><p><span class="blue">Interface segregation principle</span> : molte interfacce specifiche del client sono migliori di un’interfaccia generica.</p></li>
+<li><p><span class="blue">Dependency inversion principle</span> : si dovrebbe dipendere dalle astrazioni, non dalle implementazioni.</p></li>
+</ul>
+</section>
+<section id="dependency-inversion">
+<h3>Dependency inversion<a class="headerlink" href="#dependency-inversion" title="Permalink to this headline">¶</a></h3>
+<p>Se il codice sorgetne di un componente di alto livello dipende da quello di un componente di basso livello,
+i cambiamenti nei componenti di basso livello si diffonderanno al componente di alto livello.
+Pertanto, poniamo un confine tra i due, <span class="remark">usando il polimorfismo per invertire il flusso logico</span>.</p>
+<p>Questo è il principio di inversione della dipendenza. Vediamo un esempio, preso da <a class="reference external" href="https://clevercoder.net/2018/09/08/clean-architecture-summary-review/">Clean Architecture</a>:</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/EsempioInversioneDip.PNG"><img alt="_images/EsempioInversioneDip.PNG" class="align-center" src="_images/EsempioInversioneDip.PNG" style="width: 100%;" /></a>
+</td>
+<td><p>Le regole aziendali dipendono dall’interfaccia anziché dalla classe di database concreta.</p>
+<p>Il database diventa un plug-in delle regole aziendali: un componente di basso livello
+che può essere modificato senza influenzare le regole aziendali (componente di alto livello).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="architettura-esagonale">
+<h3>Architettura esagonale<a class="headerlink" href="#architettura-esagonale" title="Permalink to this headline">¶</a></h3>
+<p>L’architettura esagonale (anche nota come <a class="reference internal" href="Architetture.html#architettura-esagonale-port-adapter"><span class="std std-ref">Port-Adapter</span></a>) è,
+tra le tante veda <a class="reference internal" href="Architetture.html#architetture"><span class="std std-ref">Architetture</span></a>
+di sistemi software oggi in uso, quella cui noi faremo particolare attenzione.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/portAdapterArch.PNG"><img alt="_images/portAdapterArch.PNG" class="align-center" src="_images/portAdapterArch.PNG" style="width: 100%;" /></a>
+</td>
+<td><p>Si identificano quattro layer principali</p>
+<ul class="simple">
+<li><p><span class="blue">Entities</span>: oggetti che contengono la logica aziendale critica.</p></li>
+<li><p><span class="blue">Use-cases</span>: regole aziendali specifiche dell’applicazione</p></li>
+<li><p><span class="blue">Interface adapters</span>: gateway, presentatori e controller. Ad esempio, questo livello contiene l’architettura MVC della GUI e anche oggetti che trasformano i dati tra il formato del database e i casi d’uso.</p></li>
+<li><p><span class="blue">Frameworks and drivers</span>: framework web, database, la vista di MVC</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="factor-app">
+<h3>12 Factor App<a class="headerlink" href="#factor-app" title="Permalink to this headline">¶</a></h3>
+<p>Una delle soluzioni oggi adottate per affrontare i problemi di operare su scala Web,
+è la metodologia <span class="blue">Twelve-Factor App</span>, pubblicato nel <code class="docutils literal notranslate"><span class="pre">2011</span></code> da Adam Wiggins.</p>
+<p>La <span class="blue">12 Factor App</span> è un insieme di principi per la creazione di applicazioni <em>software-as-a-service</em>,
+che descrivono un modo di creare software che consente alle aziende di
+creare codice che può essere rilasciato in modo affidabile, ridimensionato rapidamente e mantenuto
+in modo coerente e prevedibile.</p>
+<ol class="arabic simple">
+<li><p><span class="blue">Codebase</span>: Una sola codebase sotto controllo di versione, tanti deployment.</p></li>
+<li><p><span class="blue">Dipendenze</span>: Dipendenze dichiarate e isolate; nessun affidamento implicito su strumenti o librerie di sistema.</p></li>
+<li><p><span class="blue">Configurazione</span>: Memorizza le informazioni di configurazione nell’ambiente.</p></li>
+<li><p><span class="blue">Baking service</span>: I servizi di supporto vengono trattati come risorse collegate e scollegate dall’ambiente di esecuzione.</p></li>
+<li><p><span class="blue">Costruisci, rilascia, esegui</span>: Separare in modo netto lo stadio di build dall’esecuzione</p></li>
+<li><p><span class="blue">Processi</span>: Esegui l’applicazione come uno o più processi stateless. I dati persistenti sono archiviati su un servizio di supporto</p></li>
+<li><p><span class="blue">Binding delle Porte</span>: I servizi autonomi dovrebbero rendersi disponibili ad altri servizi tramite porte specificate.</p></li>
+<li><p><span class="blue">Concorrenza</span>: La concorrenza è sostenuta dal ridimensionamento dei singoli processi.</p></li>
+<li><p><span class="blue">Disponibilità</span>: Massimizzare la robustezza con avvii veloci e chiusure non brusche.</p></li>
+<li><p><span class="blue">Parità Sviluppo/Produzione</span>: Tutti gli ambienti dovrebbero essere il più simili possibile.</p></li>
+<li><p><span class="blue">Log</span>: Tratta i log come stream di eventi e lascia l’ambiente di esecuzione per l’aggregazione.</p></li>
+<li><p><span class="blue">Processi di Amministrazione</span>: Tutte le attività di amministrazione necessarie devono essere mantenute nel controllo
+del codice sorgente e incluse nel pacchetto dell’applicazione.</p></li>
+</ol>
+<p>Si veda  anche: <a class="reference external" href="https://www.redhat.com/architect/12-factor-app">12FactorAppIllustrated</a></p>
+</section>
+<section id="id2">
+<h3>Linguaggi di programmazione<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Costrutti per esprimere strutture (di dati e di controllo), forme di comportamento e meccanismi di interazione
+sono presenti in tutti i <a class="reference external" href="https://it.wikipedia.org/wiki/Linguaggio_di_programmazione">Linguaggi di programmazione</a>.</p>
+<p>Un punto importante consiste nel capire fino a che punto i costrutti di un linguaggio debbano influenzare
+il progettista (se non lo stesso analista).
+Fino alla fine degli anni 90 il linguaggio di programmazione è stato il veicolo principale per introdurre
+nuovi concetti sia sul piano computazionale sia sul sul piano della organizzazione del software.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/historyHLPL.PNG"><img alt="_images/historyHLPL.PNG" class="align-center" src="_images/historyHLPL.PNG" style="width: 100%;" /></a>
+</td>
+<td><p>La figura  mostra una visione sintetica dello sviluppo nel tempo di questa evoluzione linguistica,
+con riferimento ad alcuni dei linguaggi più noti (in <a class="reference external" href="https://it.wikipedia.org/wiki/Linguaggio_di_programmazione">Linguaggi di programmazione</a> si dice che oggi
+si usano più di 2500 linguaggi di programmazione).</p>
+<p>L’avvento della programmazione ad oggetti sembra avere segnato il culmine di questo processo;
+un motivo può certo essere il raggiungimento di una sufficiente maturità nella capacità espressiva
+in ciascuna delle <a class="reference internal" href="#dimensioni"><span class="std std-ref">Dimensioni</span></a> citate.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<section id="sintassi-astratta">
+<h4>Sintassi astratta<a class="headerlink" href="#sintassi-astratta" title="Permalink to this headline">¶</a></h4>
+<p>Il motivo principale di una relativa (e solo apparente)
+stagnazione nello sviluppo di nuovi linguaggi, può essere ricondotto all’idea che un linguaggio
+non deve essere necessariamente accompagnato da una sintassi concreta ma può essere suffciente
+definire una <strong>sintassi astratta</strong> utilizzando un <span class="blue">meta-linguaggio</span> come ad esempio <code class="docutils literal notranslate"><span class="pre">MOF</span></code>
+(si veda <a class="reference external" href="https://it.wikipedia.org/wiki/Meta-Object_Facility">Meta Object Facility</a>) unitamente alla semantica del linguaggio e a un framework di supporto.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/mofUml.PNG"><img alt="_images/mofUml.PNG" class="align-center" src="_images/mofUml.PNG" style="width: 100%;" /></a>
+</td>
+<td><p>La <a class="reference external" href="https://it.wikipedia.org/wiki/Meta-Object_Facility">Meta Object Facility</a> di UML2 nella versione incorporata in Eclipse
+(denominata <a class="reference external" href="https://wiki.eclipse.org/Ecore">Ecore</a>) può essere usata per definire un linguaggio che permette di esprimere sistemi software come
+oggetti attivi (<strong>attori</strong>) che interagiscono tra loro a scambio di messaggi si comportano come <a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">MooreMachines</a>.</p>
+<p>Questa idea ha come riferimento i <a class="reference external" href="https://www.jetbrains.com/mps/concepts/domain-specific-languages/">Domain Specific Languages</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Il codice in MPS non è testo, ma è invece una proiezione della sintassi astratta (AST)</p>
+</section>
+</section>
+</section>
+<section id="id3">
+<h2>Domain Specific Languages<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>Un <cite>Domain Specific Languages</cite> (DSL) è un linguaggio che aumenta il livello di astrazione oltre la programmazione,
+utilizzanso direttamente concetti e regole da uno specifico dominio del problema</p>
+<p>Tra i vantaggi dell’uso di un DSL:</p>
+<ul class="simple">
+<li><p>usando un DSL e un <em>motore di trasformazione</em>, il  lavoro nel particolare aspetto dello sviluppo
+del software coperto dal DSL diventa molto più efficiente, perché il lavoro di colmare l’abstraction gap
+vine svolto dal motore di trasformazione;</p></li>
+<li><p>l’uso usare delle <em>astrazioni specifiche del dominio</em> può avvenire senza sovraccarico runtime,
+perché il motore di trasformazione, proprio come un compilatore, può rimuovere le astrazioni
+e generare codice efficiente;</p></li>
+<li><p>il <em>modo di pensare</em> del progettista software diventa più chiaro perché il codice non è ingombrato
+dai dettagli dell’implementazione;</p></li>
+<li><p>la <em>logica dell’applicazione</em> espressa nel codice DSL è indipendente dalla piattaforma di destinazione;</p></li>
+<li><p>si promuove un’ottima <em>integrazione</em> tra gli svluppatori software e gli esperti del dominio.</p></li>
+</ul>
+<p><span class="slide1">Programmazione orientata al linguaggio</span></p>
+<p>La <em>programmazione orientata al linguaggio</em> incoraggia esplicitamente gli sviluppatori
+a creare i propri DSL o ad estendere i linguaggi esistenti con concetti specifici del dominio.</p>
+<section id="modelli">
+<h3>Modelli<a class="headerlink" href="#modelli" title="Permalink to this headline">¶</a></h3>
+<p>Nel linguaggio comune, il termine <span class="blue">modello</span> è spesso usato per denotare un’astrazione
+di qualcosa che esiste nella realtà, come ad esempio il modello che posa per un artista,
+una riproduzione in miniatura, un esempio di modo di svolgere un’attività, una forma
+da cui ricavare vestiti, un ideale da seguire, etc..</p>
+<p>Alcuni (tra cui gli ingegneri) intendono per modello un sistema matematico o fisico che ubbidisce
+a specifici vincoli e che può essere utilizzato per descrivere e comprendere un sistema
+(fisico, biologico, sociale, etc.) attraverso relazioni di analogia.</p>
+<p><span class="slide1">Modello=rappresentazione dell’essenza di un sistema</span></p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/Modello.PNG"><img alt="_images/Modello.PNG" class="align-center" src="_images/Modello.PNG" style="width: 70%;" /></a>
+</td>
+<td><a class="reference internal image-reference" href="_images/ModelloNumeri.PNG"><img alt="_images/ModelloNumeri.PNG" class="align-center" src="_images/ModelloNumeri.PNG" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Nel concepire un modello come visione semplificata di un sistema software si assume che il sistema
+abbia già una sua esistenza concreta.
+In alcune fasi di lavoro (in particolare nella fase di analisi) il sistema è il modello;
+un raffinamento o una variazione del modello corrisponde in questo caso ad una variazione del sistema.</p>
+<p>La produzione esplicita di modelli si rivela utile in quanto i diversi attori di un processo
+di produzione di software (committenti, analisti, progettisti, utenti, etc)
+operano a diversi livelli di astrazione e con fini diversi.</p>
+<p>Definendo opportuni modelli del sistema da realizzare, in ogni fase del processo di produzione
+l’attenzione può essere focalizzata sugli aspetti rilevanti in quella fase, utilizzando una
+forma di comunicazione comprensibile ad attori diversi.
+Per garantire coesione e interoperabilità, si cerca di individuare regole di corrispondenza
+e di trasformazione automatica tra modelli.</p>
+</section>
+<section id="linguaggi-di-modellazione">
+<h3>Linguaggi di modellazione<a class="headerlink" href="#linguaggi-di-modellazione" title="Permalink to this headline">¶</a></h3>
+<p>Un <a class="reference external" href="https://it.wikipedia.org/wiki/Linguaggio_di_modellazione">Linguaggio di modellazione</a> è un <a class="reference external" href="https://it.wikipedia.org/wiki/Linguaggio_formale">Linguaggio formale</a>
+che può essere utilizzato per descrivere (modellare) un sistema di qualche natura.</p>
+<p>UML (<em>Unified Modeling Language</em>) è un linguaggio di modellazione e di specifica
+di sistemi software basato sul paradigma orientato agli oggetti.</p>
+<p>Nel contesto dell’ingegneria del software, UML viene usato soprattutto per descrivere il dominio applicativo
+di un sistema software e/o il comportamento e la struttura del sistema stesso.</p>
+<p>Il modello è strutturato secondo un insieme di viste che rappresentano diversi aspetti della cosa modellata
+(funzionamento, struttura, comportamento e così via), a scopo sia di analisi sia di progetto,
+mantenendo la tracciabilità dei concetti impiegati nelle diverse viste.</p>
+</section>
+<section id="testing">
+<h3>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h3>
+<p>L’obiettivo della fase di testing è quello di trovare il maggior numero di situazioni che conducono ad errori
+con il minimo numero di casi di prova.
+Un  piano di testing  ha di solito lo scopo di stabilire la gerarchia con cui i test vanno eseguiti,
+i metodi di esecuzione, i criteri di accettazione e prevede diverse tipologie di test, tra cui:</p>
+<ul>
+<li><p><strong>Unit test</strong> (Test di unità o di modulo)
+Ha l’obiettivo di individuare gli errori nel singolo modulo software.</p></li>
+<li><p><strong>Integration Test</strong> (Test di integrazione)
+Ha l’obiettivo di individuare gli errori nel software quando tutti i moduli che compongono un sottosistema
+o l’intero sistema vengono fatti lavorare assieme.</p></li>
+<li><p><strong>System Test</strong> (Test di sistema)
+Ha l’obiettivo di garantire che il prodotto software nel suo complesso soddisfi completamente
+i requisiti iniziali. E’ un collaudo interno.</p></li>
+<li><p><strong>User Acceptance Test</strong> (Test di accettazione)
+Ha l’obiettivo di valutare la rispondenza dell’applicazione software rispetto ai requisiti
+espressi inizialmente nel contratto e di ottenere l’accettazione formale del cliente di quanto realizzato.
+Il test viene effettuato dal cliente nel suo ambiente di test, e da un gruppo di utenti.</p></li>
+<li><p><strong>Alpha test e Beta test</strong>
+Un <span class="blue">alpha test</span> è un test preliminare di un’applicazione software anche non ancora completa,
+eseguito da alcuni potenziali utenti rappresentati da un team.</p>
+<p>Un <span class="blue">beta test</span> ha l’obiettivo di far valutare al cliente, prima della distribuzione ufficiale del sistema,
+la reale funzionalità, completezza ed operatività dell’applicazione.</p>
+</li>
+<li><p><strong>Regression Test</strong> (test di non regressione)
+Ha l’obiettivo di verificare a valle di una manutenzione, dopo che un bug è stato individuato e corretto
+e sono stati eseguiti esattamente gli stessi test che erano stati effettuati quando era stato individuato il problema.</p></li>
+<li><p><strong>Stress test</strong> (test di carico)
+Ha l’obiettivo di determinare il punto di rottura di un sistema software,
+oltre il quale si verificano instabilità del sistema, perdita dei dati o interruzione del servizio.</p></li>
+</ul>
+<p>Sul problema del testing si trova moltissimo materiale in rete. Riportiamo qui alcuni riferimenti utili sul ‘piano pragmatico’:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Software_testing">Software testing</a> (wikipedia)</p></li>
+<li><p><a class="reference external" href="https://softwaretestingfundamentals.com/software-testing-quotes/">Software testing quotes</a></p></li>
+<li><p><a class="reference external" href="http://sqa.fyicenter.com/FAQ/Automated-Testing-Plan/">Automated-Testing-Plan FAQ</a></p></li>
+<li><p><a class="reference external" href="http://sqa.fyicenter.com/FAQ/JUnit/What_Is_JUnit_.html">JUnit FAQ</a></p></li>
+</ul>
+</section>
+<section id="dal-testing-a-devops">
+<h3>Dal testing a DevOps<a class="headerlink" href="#dal-testing-a-devops" title="Permalink to this headline">¶</a></h3>
+<p>La fase di testing del software è  attività imprescindibile per garantirne la qualità ed è anche
+indispensabile per garantire all’utente una <em>user experience</em> soddisfacente.</p>
+<p>In <a class="reference external" href="https://www.ibm.com/it-it/topics/software-testing">Software testing IBM</a>  leggiamo che:</p>
+<ul class="simple">
+<li><p>Negli anni ‘90 c’è stata una transizione dai test a un processo più completo denominato
+<span class="blue">controllo di qualità</span>, che copre l’intero ciclo di sviluppo del software e riguarda
+i processi di pianificazione, progettazione, creazione ed esecuzione di casi di test.</p></li>
+<li><p>I test del software sono stati tradizionalmente separati dal resto dello sviluppo, ma
+molti team di sviluppo  usano ora una metodologia nota come <span class="blue">test continuo</span>.</p></li>
+</ul>
+<p>Il <em>test continuo</em> è parte dell’approccio <a class="reference external" href="https://it.wikipedia.org/wiki/DevOps">DevOps</a>, in cui sviluppo e operazioni collaborano
+per l’intero ciclo di vita del prodotto. L’obiettivo è quello di accelerare la fornitura del software,
+bilanciando al tempo stesso i costi, la qualità e i rischi.</p>
+<p>Noi porremo particolare attenzione al fatto che la definizione di test (autmatizzabili) può essere vista come
+la <strong>formalizzazione</strong> delle <a class="reference external" href="https://en.wikipedia.org/wiki/User_story">User Stories</a>  e che l’uso dei modelli (esguibili) può permettere
+di anticipare questa formalizzazione fin dalle fasi di analisi.</p>
+<p>Nella fase di analisi, l’obiettivo non è quello di eseguire dei test, ma quello di trovare il modo migliore
+per definire i test in modo che possano individuare in modo automatico le falle del software rispetto ai requisiti.</p>
+<p>L’obiettivo di definire un TestPlan automatizzabile introduce di fatto un <strong>nuovo requisito</strong>:
+<span class="blue">rendere  l’applicazione osservabile</span>, o meglio:</p>
+<p><span class="remark">renderne verificabili, da parte di una macchina, gli effetti dell’applicazione</span>.</p>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Principi</a><ul>
+<li><a class="reference internal" href="#i-sistemi-software">I Sistemi software</a></li>
+<li><a class="reference internal" href="#dimensioni">Dimensioni</a></li>
+<li><a class="reference internal" href="#componenti-software">Componenti software</a><ul>
+<li><a class="reference internal" href="#problematiche-relative-ai-componenti">Problematiche relative ai componenti</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#interazione">Interazione</a><ul>
+<li><a class="reference internal" href="#terminologia-di-riferimento">Terminologia di riferimento</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#comportamento">Comportamento</a><ul>
+<li><a class="reference internal" href="#automi-a-stati-finiti">Automi a stati finiti</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#principi-di-costruzione">Principi di costruzione</a><ul>
+<li><a class="reference internal" href="#design-patterns">Design patterns</a></li>
+<li><a class="reference internal" href="#id1">SOLID</a></li>
+<li><a class="reference internal" href="#dependency-inversion">Dependency inversion</a></li>
+<li><a class="reference internal" href="#architettura-esagonale">Architettura esagonale</a></li>
+<li><a class="reference internal" href="#factor-app">12 Factor App</a></li>
+<li><a class="reference internal" href="#id2">Linguaggi di programmazione</a><ul>
+<li><a class="reference internal" href="#sintassi-astratta">Sintassi astratta</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id3">Domain Specific Languages</a><ul>
+<li><a class="reference internal" href="#modelli">Modelli</a></li>
+<li><a class="reference internal" href="#linguaggi-di-modellazione">Linguaggi di modellazione</a></li>
+<li><a class="reference internal" href="#testing">Testing</a></li>
+<li><a class="reference internal" href="#dal-testing-a-devops">Dal testing a DevOps</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Primipassioperativi.html"
+                          title="previous chapter">Primi passi operativi</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="Workflow23.html"
+                          title="next chapter">Workflow23</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Principi.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Workflow23.html" title="Workflow23"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Primipassioperativi.html" title="Primi passi operativi"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Principi</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

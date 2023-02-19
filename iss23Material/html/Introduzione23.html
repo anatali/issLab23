@@ -1,0 +1,516 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Introduzione &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Criteri di valutazione" href="CriteriValutazione.html" />
+    <link rel="prev" title="iss23" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="CriteriValutazione.html" title="Criteri di valutazione"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="iss23"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Introduzione</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="introduzione">
+<h1>Introduzione<a class="headerlink" href="#introduzione" title="Permalink to this headline">¶</a></h1>
+<a class="reference internal image-reference" href="_images/fig0-2022.png"><img alt="_images/fig0-2022.png" class="align-center" src="_images/fig0-2022.png" style="width: 100%;" /></a>
+<section id="evoluzione-del-software">
+<h2>Evoluzione del software<a class="headerlink" href="#evoluzione-del-software" title="Permalink to this headline">¶</a></h2>
+<p><span class="slide">Non solo istruzioni e dati …</span></p>
+<p>Il software ha circa <code class="docutils literal notranslate"><span class="pre">80</span></code> anni, e la sua evoluzione, ancora impetuosa, avviene in modo simile alla evoluzione
+(più o meno Darwiniana) degli esseri viventi.</p>
+<p>Sin dall’inizio si è sviluppata una evoluzione relativa a diversi aspetti:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#evoluzione-dei-paradigmi-e-dei-linguaggi-di-programmazione"><span class="std std-ref">Evoluzione dei paradigmi e dei linguaggi di programmazione</span></a></p></li>
+<li><p><a class="reference internal" href="#evoluzione-delle-architetture"><span class="std std-ref">Evoluzione delle architetture</span></a></p></li>
+<li><p><a class="reference internal" href="#evoluzione-dei-processi-di-produzione"><span class="std std-ref">Evoluzione dei processi di produzione</span></a></p></li>
+</ul>
+<section id="evoluzione-dei-paradigmi-e-dei-linguaggi-di-programmazione">
+<h3>Evoluzione dei paradigmi e dei linguaggi di programmazione<a class="headerlink" href="#evoluzione-dei-paradigmi-e-dei-linguaggi-di-programmazione" title="Permalink to this headline">¶</a></h3>
+<p>Sin dall’inizio si è sviluppata una evoluzione a livello di paradigma di programmazione,
+ovvero dell’insieme di strumenti concettuali forniti da un linguaggio di programmazione per la stesura del
+codice sorgente di un programma, definendo dunque il modo in cui il programmatore modella,
+concepisce e percepisce il programma stesso.</p>
+<p>In questa sede ridordiamo solo</p>
+<ul class="simple">
+<li><p>anni 60: programmazione procedurale (FORTRAN, COBOL)</p></li>
+<li><p>primni anni 70: programmazione strutturata (Paascal, C)</p></li>
+<li><p>metà anni 70: programmazione modulare  (Modula)</p></li>
+<li><p>tardi anni 70: programmazione per tipi di dati astratti</p></li>
+<li><p>anni 80: programmazione orientata agli oggetti (Smalltalk, Java, …)</p></li>
+</ul>
+<p>Stili di programmazione</p>
+<ul class="simple">
+<li><p>Programmazione concorrente</p></li>
+<li><p>Programmazione logica</p></li>
+<li><p>Programmazione orientata agli eventi</p></li>
+<li><p>Programmazione funzionale</p></li>
+<li><p>Programmazione a vincoli</p></li>
+</ul>
+<p><span class="slide">… ma anche architetture</span></p>
+</section>
+<section id="evoluzione-delle-architetture">
+<h3>Evoluzione delle architetture<a class="headerlink" href="#evoluzione-delle-architetture" title="Permalink to this headline">¶</a></h3>
+<p>L’architettura è la forma di un sistema ed include la divisione del sistema in componenti,
+la disposizione di tali componenti e il modo in cui tali componenti comunicano tra loro.</p>
+<p>Lo scopo dell’architettura è facilitare lo sviluppo, l’implementazione, il funzionamento e la manutenzione del sistema,
+lasciando aperte quante più opzioni possibili, il più a lungo possibile.</p>
+<p>Pertanto l’architettura non dovrebbe solo supportare il comportamento, ma anche fornire flessibilità
+nel ciclo di vita del sistema.</p>
+<p>Su queste premesse, si comprendono i diversi tipi di architetture dei sistemi software che sono state
+proposte e sviluppate nel corso del tempo:</p>
+<ul class="simple">
+<li><p>single machine</p></li>
+<li><p>monolitiche</p></li>
+<li><p>cient-server</p></li>
+<li><p>distribuite (service-based, event-driven, space-based, service-oriented, microservices)</p></li>
+<li><p>evolutive</p></li>
+</ul>
+</section>
+<section id="evoluzione-dei-sistemi">
+<h3>Evoluzione dei sistemi<a class="headerlink" href="#evoluzione-dei-sistemi" title="Permalink to this headline">¶</a></h3>
+<p>Oltre a evoluzione di tipo generale, si può parlare anche di evoluzione dei singoli sistemi software.</p>
+<p>Lehman, studioso dell’Imperial College di Londra, ha studiato per anni l’evoluzione di sistemi software
+che operano nel mondo reale (denominati  <cite>E-type systems</cite>)
+cercando di individuare un insieme di comportamenti evolutivi, oggi noti come <a class="reference external" href="https://en.wikipedia.org/wiki/Lehman%27s_laws_of_software_evolution">Leggi di Lehman</a>.</p>
+<p>L’evoluzione del software, per il suo rapido percorso rispetto ad altre entità create dall’uomo, è stata vista da Lehman come
+il <em>“moscerino della frutta”</em> dello studio dell’evoluzione dei sistemi artificiali.</p>
+<p><span class="slide">Come si costruisce</span></p>
+</section>
+<section id="evoluzione-dei-processi-di-produzione">
+<h3>Evoluzione dei processi di produzione<a class="headerlink" href="#evoluzione-dei-processi-di-produzione" title="Permalink to this headline">¶</a></h3>
+<p>I processi  <a class="reference external" href="https://it.wikipedia.org/wiki/Modello_a_cascata">waterfall</a> dell’ingegneria tradizionale, lasciano il posto a processi basati su
+<a class="reference external" href="https://it.wikipedia.org/wiki/Metodologia_agile">Metodologia agile</a>, di tipo <strong>iterativo</strong> e <strong>incrementale</strong>.</p>
+<p>Nell’<strong>ingegneria tradizionale</strong> (meccanica, edile, etc) il costo del materiale costituisce spesso più del 50%
+del costo totale di un progetto, mentre nella produzione del software è il costo del lavoro ad essere preponderante:
+si parte dal 70% fino a giungere quasi al 100%.</p>
+<p>L’ingegneria tradizionale ha anche sperimentato che un cambiamento
+di costo 1 in fase di analisi potrebbe costare 1000 in fase di produzione.</p>
+<blockquote>
+<div><table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/WaterFall.PNG"><img alt="_images/WaterFall.PNG" src="_images/WaterFall.PNG" style="width: 100%;" /></a>
+</td>
+<td><p>Per questo l’ingegneria classica diversifica le fasi di produzione delineando un ben noto flusso di lavoro
+(<em>workflow</em>) costituito da un insieme di passi (o tasks):</p>
+<ol class="arabic simple">
+<li><p>definizione e analisi dei requisiti</p></li>
+<li><p>analisi del problema</p></li>
+<li><p>progetto della soluzione</p></li>
+<li><p>realizzazione del prodotto</p></li>
+<li><p>collaudo</p></li>
+<li><p>messa in opera e manutenzione</p></li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p><span class="slide1">Waterfall poco adatto per il software</span></p>
+<p>Nella costruzione del software, il modello a cascata porta spesso ad
+alti costi di produzione del software spesso dovuti al modello a cascata,
+a causa delle specifiche poco complete e ai molti interventi successivi per introdurre funzionalità
+non previste in partenza.</p>
+<p>Capita, quindi, che le pecche del modello vadano a ricadere sulla <strong>manutenzione</strong>, causandone costi crescenti,
+o che, al contrario, si operi con una manutenzione sommaria producendo un software con un’implementazione
+che diverge dalle specifiche dei requisiti.</p>
+<p>La letteratura  (si veda ad esempio <a class="reference external" href="Software_engineering_disasters">SEDisasters</a>) riporta inoltre casi di fallimento di un numero
+sorprendentemente rilevante di progetti software, evidenziando un insieme di cause principali:</p>
+<ul class="simple">
+<li><p>Cattiva specifica e gestione dei requisiti.</p></li>
+<li><p>Comunicazioni ambigue ed imprecise tra i diversi attori del processo di produzione
+(utenti, manager, analisti, progettisti, implementatori).</p></li>
+<li><p>Architetture finali del sistema fragili (non robuste).</p></li>
+<li><p>Inconsistenze tra requisiti, progetto e realizzazione.</p></li>
+<li><p>Collaudi inadeguati o insufficienti.</p></li>
+<li><p>Inadeguata capacità di valutare e gestire i rischi e di controllare la propagazione dei cambiamenti.</p></li>
+</ul>
+<p>Queste potenziali fonti di insuccesso hanno amplificato la loro influenza nel momento in cui
+l’intera disciplina ha vissuto la <span class="blue">transizione</span> da una dimensione prevalentemente <span class="blue">algoritmico-trasformazionale</span>
+a un dimensione fortemente <span class="blue">sistemistico-architetturale</span>.</p>
+<p><span class="slide1">Meglio processi agili e incrementali</span></p>
+<p>Oggi si ritiene che un approccio <span class="blue">INCREMENTALE</span> sia  indispensabile per aggredire la complessità del problema e per
+mettere in luce in primis LE COSE
+PIU’ IMPORTANTI e PIU’ CRITICHE senza perdersi in dettagli che possono distogliere
+l’attenzione per formare un quadro generale di riferimento.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="_images/AgileDevelop.PNG" src="_images/AgileDevelop.PNG" />
+</td>
+<td><p>L’approccio descritto in <a class="reference external" href="https://scrumguides.org/">SCRUM Guide</a> è oggi un punto di riferimento.</p>
+<p>I vari SPRINT dovrebbero effettuare uno ZOOMING entro MACRO-COMPONENTI
+innescando un processo ITERATIVO di analisi, progetto , sviluppo e testing di
+quel componente o del SOTTOSISTEMA  che lo SPRINT vuole costruire.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="slide1">Principi ispiratori</span></p>
+<p>Per la progettazione di sistemi software si fa spesso ricorso a un insieme di <a class="reference internal" href="Principi.html#principi"><span class="std std-ref">Principi</span></a>, tra cui:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="Principi.html#design-patterns"><span class="std std-ref">Design patterns</span></a></p></li>
+<li><p><a class="reference internal" href="Principi.html#id1"><span class="std std-ref">SOLID</span></a></p></li>
+<li><p><a class="reference internal" href="Principi.html#factor-app"><span class="std std-ref">12 Factor App</span></a></p></li>
+<li><p><a class="reference internal" href="Principi.html#architettura-esagonale"><span class="std std-ref">Architettura esagonale</span></a></p></li>
+</ul>
+<p>Al centro del processo di sviluppo, oggi viene posto il concetto di <span class="blue">modello del dominio</span> applicativo.</p>
+<a class="reference internal image-reference" href="_images/agileEMDE.PNG"><img alt="_images/agileEMDE.PNG" class="align-center" src="_images/agileEMDE.PNG" style="width: 70%;" /></a>
+<p><span class="slide">Il nostro metodo</span></p>
+<ol class="arabic simple">
+<li><p>Partiamo da un insieme di requisiti espressi in linguaggio naturale</p></li>
+<li><p>Impostiamo una analisi dei requisiti che mira a esprimerli in modo formale e comprensibile a una macchina</p></li>
+<li><p>Imppostiamo una analisi del problema che mira a definire:</p>
+<ul class="simple">
+<li><p>una architettura logica del sistema</p></li>
+<li><p>un piano di lavoro</p></li>
+<li><p>un insieme di piani di testing,  espressi in MODO comprensibile a una macchina</p></li>
+<li><p>un primo SPRINT relizzativo</p></li>
+</ul>
+</li>
+<li><p>Impostiamo ogni SPRINT come un <strong>sottoprogetto</strong> con sua propria spiegazione e testing.</p>
+<ul class="simple">
+<li><p>Lo SPRINT <span class="math notranslate nohighlight">\(n+1\)</span> parte dai risultati dello sprint <span class="math notranslate nohighlight">\(n\)</span> e costruisce un sottosistema (funzionante)
+che sarà l’input dello SPRINT <span class="math notranslate nohighlight">\(n+2\)</span>.</p></li>
+</ul>
+</li>
+<li><p>Facciamo seguire ad ogni SPRINT una fase di <a class="reference external" href="https://www.agileway.it/sprint-review-meeting/">Sprint review</a>  i cui meeting saranno</p>
+<ul class="simple">
+<li><p><span class="remark">un nuovo modo di concepire le ore di ricevimento-studenti</span>.</p></li>
+</ul>
+</li>
+<li><p>Per ogni  SPRINT, compiliamo un documento (si veda <a class="reference external" href="_static/templateToFill.html">template2023</a>)  per <span class="blue">rendere esplcite</span> le conoscenze,
+le decisioni, i modelli, etc. introdotti nello SPRINT, fornendo indicazioni su come eseguire lo SPRINT.</p></li>
+</ol>
+<p><span class="slide1">Il template come diario di bordo</span></p>
+<p><a class="reference internal" href="Template23.html#il-template"><span class="std std-ref">Il template</span></a> va inteso come un <span class="remark">diario di bordo</span>, da compilare <strong>in itinere</strong> man mano si svolge
+il processo di produzione e <span class="brown">non dopo</span> avere sviluppato il codice.</p>
+<p><span class="slide">Il motto</span></p>
+<p>Per focalizzare l’attenzione sulla nostra metodologia di costruzione, cercheremo di tenere fede al seguente motto:</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Design first</p></td>
+<td><p>TopDown process</p></td>
+</tr>
+<tr class="row-even"><td><img alt="_images/Motto.png" src="_images/Motto.png" />
+</td>
+<td><img alt="_images/TopDownHowWhat.png" src="_images/TopDownHowWhat.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="contenuti-del-corso">
+<h2>Contenuti del corso<a class="headerlink" href="#contenuti-del-corso" title="Permalink to this headline">¶</a></h2>
+<p>Partendo da queste premesse, riportiamo qui quanto si legge nel <a class="reference external" href="https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2022/468003">Sito Web del corso</a> :</p>
+<p>Al termine del corso lo studente:</p>
+<ul class="simple">
+<li><p>è in grado di impostare <span class="blue">processi di sviluppo cooperativo</span> del software basati su approcci agili
+(in particolare SCRUM) avvalendosi anche di modelli eseguibili, espressi mediante meta-modelli custom;</p></li>
+<li><p>è’ in grado di progettare e sviluppare sistemi software e relativi piani di testing in modo <span class="blue">incrementale
+ed evolutivo</span>, partendo dal problema e dal dominio applicativo piuttosto che dalla tecnologia realizzativa,
+attraverso la definizione di modelli eseguibili dell’<span class="blue">analisi dei requisiti e dell’analisi del problema</span>;</p></li>
+<li><p>è in grado di <span class="blue">valutare in modo critico</span> le continua evoluzione delle tecnologie informatiche,
+sia a livello computazionale, sia livello di sviluppo-software, acquisendo <span class="blue">conoscenze teorico-operative</span>
+su linguaggi, metododologie e strumenti quali <em>Kotlin, Gradle, SCRUM, SpringBoot, Docker</em>;</p></li>
+<li><p>è in grado di comprendere il ruolo dei diversi <span class="blue">stili di architetture software</span>
+(layers, client-server, pipeline, microkernel, service-based, event-driven, space-based, microservices)
+e di come <span class="blue">scegliere lo stile architetturale più opportuno</span> per i diversi sotto-sistemi individuati;</p></li>
+<li><p>è in grado di affrontare l’analisi, il progetto e la costruzione di applicazioni distribuite ed eterogenee
+di tipo proattivo e/o reattivo (unitamente a loro possibili piattaforme di sviluppo e di supporto run-time)
+con particolare riferimento a <span class="blue">modelli computazionali a scambio di messaggi e ad eventi</span>;</p></li>
+<li><p>è in grado di realizzare le <span class="blue">interazioni a scambio di messaggi</span> tra componenti distribuiti utilizzando
+modelli logici di alto livello e implementazioni basate su protocolli diversi (TCP, UDP, HTTP, CoAP, MQTT);</p></li>
+<li><p>è in grado di comprendere come sia possibile progettare e costruire ambienti di sviluppo custom capaci
+di <span class="blue">generazione automatica di codice</span> (Software Factories in ‘ecosistemi’ come Eclipse/IntelliJ),
+basandosi su <em>Model Driven Software Development</em> (MDSD) e sull’uso di Domain Specific Languages (DSL);</p></li>
+<li><p>è in grado di sviluppare applicazioni <span class="blue">capaci di combinare</span> aspetti di alto livello (in particolare di AI)
+con aspetti di basso livello relativi a dispositivi di Internet of Things (IOT), utilizzando sia ambienti
+virtuali sia dispositivi reali costruibili utilizzando elaboratori a basso costo quali RaspberryPi e Arduino;</p></li>
+<li><p>è in grado di <span class="blue">applicare</span> i concetti, i dispositivi, e gli strumenti sviluppati in modo concreto ed operativo
+durante il corso per lo sviluppo di una <span class="blue">applicazione finale</span> che utilizza uno o più dispositivi IOT ‘situati’,
+con particolare riferimento a <em>Differental Drive Robots</em> (DDR) con sensori
+che possono agire in modo relativamente autonomo in <span class="blue">diversi</span> ambienti virtuali o reali,
+senza modificare il software che esprime la ‘business logic’ del problema.</p></li>
+</ul>
+<p><span class="slide">Fasi del corso</span></p>
+<p>Pe raggiungere questi obiettivi, il corso 2022-2023 si articolerà in tre fasi:</p>
+<p><span class="remark">Tutto il software sviluppato durante il corso sarà utile per l’applicazione finale</span></p>
+<section id="fase1">
+<h3>FASE1<a class="headerlink" href="#fase1" title="Permalink to this headline">¶</a></h3>
+<p><span class="slide1">Dalla OOP ai sistemi a scambio di messaggi</span></p>
+<p>Questa fase verrà svolta alternando considerazioni teorico-metodologiche alla costruzione effettiva
+di prodotti software, articolata in diversi <a class="reference external" href="https://www.humanwareonline.com/project-management/center/pianificare-sprint-scrum/">SPRINT</a>,
+con  <strong>autovalutazione del lavoro svolto</strong>, nel quadro delle <a class="reference external" href="https://www.agileway.it/sprint-review-meeting/">Sprint review</a>.</p>
+<p>Inizieremo con un <span class="blue">approccio bottom-up</span>, partendo dalle tecnologie disponibili.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 65%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/bottomUp.png"><img alt="_images/bottomUp.png" class="align-center" src="_images/bottomUp.png" style="width: 100%;" /></a>
+</td>
+<td><p>Svilupperemo applicazioni  <strong>proattive/reattive</strong> basate su
+componenti che interagiscono <span class="blue">a scambio di messaggi</span> con interazioni sincrone e/o asincrone.</p>
+<p>A tal fine, useremo un ambiente virtuale (denominato <code class="docutils literal notranslate"><span class="pre">WEnv</span></code>)  che fornisce una scena
+in cui opera un <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot</span></a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Durante lo sviluppo di queste applicazioni, a complessità crescente, avremo modo di costruire
+<strong>infrastrutture</strong> di supporto e <strong>astrazioni di componenti e di comunicazione</strong> capaci di agevolare il compito
+dell’application-designer.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/legendComponets.PNG"><img alt="_images/legendComponets.PNG" class="align-center" src="_images/legendComponets.PNG" style="width: 30%;" /></a>
+</td>
+<td><a class="reference internal image-reference" href="_images/legendMessages.PNG"><img alt="_images/legendMessages.PNG" class="align-center" src="_images/legendMessages.PNG" style="width: 30%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="slide1">Da oggetti ad attori che scambiano messaggi</span></p>
+<ul class="simple">
+<li><p>Il modello di programmazione a scambio di messaggi portato a livello di componenti.</p></li>
+<li><p>Introduzione al linguaggio Kotlin.</p></li>
+<li><p>Dalle coroutine Kotlin agli attori Kotlin.</p></li>
+<li><p>Da attori message-driven ad attori message-based che operano come automi a stati finiti.</p></li>
+<li><p>Definizione di una infrastruttura per attori come supporto alla costruzione di software distribuiti ed eterogeni.</p></li>
+</ul>
+</section>
+<section id="fase2">
+<h3>FASE2<a class="headerlink" href="#fase2" title="Permalink to this headline">¶</a></h3>
+<p><span class="slide1">Da bottom-up a top-down: il ruolo dei modelli</span></p>
+<p>L’esperienza maturata nella FASE1 ci porta a valutare, durante
+<a class="reference internal" href="Template23.html#l-analisi-del-problema"><span class="std std-ref">L’analisi del problema</span></a>  l’<em>abstraction gap</em> tra un problema dato e le tecnologie esistenti</p>
+<p><span class="slide1">L’abstraction gap</span></p>
+<section id="abstraction-gap">
+<h4>Abstraction gap<a class="headerlink" href="#abstraction-gap" title="Permalink to this headline">¶</a></h4>
+<p>Con il termine <span class="blue">abstraction gap</span> intendiamo denotare
+la <strong>distanza</strong> tra le mosse di base fornite da un automa o da un linguaggio di
+programmazione (general-purpose) e quelle necessarie per affrontare
+in modo adeguato un problema applicativo.</p>
+<p>Un abstraction gap elevato induce ad impostare il processo di produzione in modo <span class="blue">TopDown</span>,
+cercando di trovare le strategie migliori per colmare il gap, <strong>scegliendo o sviluppando</strong>
+le tecnologie disponibili più opportune, che non sono più un assunto a-priori.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="_images/TopDownBottomUp1.PNG" src="_images/TopDownBottomUp1.PNG" />
+</td>
+<td><img alt="_images/topDown.png" src="_images/topDown.png" />
+</td>
+</tr>
+</tbody>
+</table>
+<p>slide1:<cite>I QActor</cite></p>
+<p>In questa fase:</p>
+<ul class="simple">
+<li><p>Presenteremo la definizione di un linguaggio/metamodello custom (<span class="blue">QActor</span>) per la costruzione di sistemi
+basati su attori</p></li>
+<li><p>Cercheremo di valutare il vantaggio dell’uso di <strong>modelli eseguibili</strong> nelle fasi di analisi dei requisiti e del problema
+e come premessa per l’abbattimento dei costi (e degli imprevisti) di produzione.</p></li>
+</ul>
+</section>
+</section>
+<section id="fase3">
+<h3>FASE3<a class="headerlink" href="#fase3" title="Permalink to this headline">¶</a></h3>
+<p>Applicazione di quanto sviluppato per lo sviluppo di una <span class="slide1">applicazione finale IOT</span> che
+prevede anche l’utilizzo di <a class="reference external" href="_static/devsDdr.html">robot reali</a>, costruiti estendendo il sistema della FASE1.</p>
+<a class="reference internal image-reference" href="_images/mbotIot.png"><img alt="_images/mbotIot.png" class="align-center" src="_images/mbotIot.png" style="width: 70%;" /></a>
+</section>
+</section>
+<section id="materiale-didattico">
+<h2>Materiale didattico<a class="headerlink" href="#materiale-didattico" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Documento  <a class="reference external" href="_static/templateToFill.html">template2023</a>: costituisce un punto di riferimento  ‘process agnostic’,
+cioè non indica il processo di sviluppo che adottiamo per costruirlo.</p></li>
+<li><p>Alcuni <a class="reference external" href="_static/books.html">Libri</a> importanti/utili</p></li>
+<li><p>Video tema finale studenti (Panopto) <a class="reference external" href="https://unibo.cloud.panopto.eu/Panopto/Pages/Sessions/List.aspx#folderID=%222f957969-7f72-4609-a690-aca900aeba02%22">VideoStudenti</a></p></li>
+</ul>
+<p><span class="slide">LINKS</span></p>
+<p>Siti del corso:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2022/468003">https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2022/468003</a></p></li>
+<li><p><a class="reference external" href="https://virtuale.unibo.it/course/view.php?id=35152">https://virtuale.unibo.it/course/view.php?id=35152</a></p></li>
+<li><p>GITHUB del corso:  <a class="reference external" href="https://github.com/anatali/issLab23">https://github.com/anatali/issLab23</a></p></li>
+</ul>
+</section>
+<section id="valutazione-finale">
+<h2>Valutazione finale<a class="headerlink" href="#valutazione-finale" title="Permalink to this headline">¶</a></h2>
+<p>Dal <a class="reference external" href="https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2022/468003">Sito Web del corso</a>  leggiamo:</p>
+<ul>
+<li><p>Le attività di laboratorio sono intrinsecamente connesse in modo continuo a una <span class="remark">autovalutazione</span>
+del lavoro svolto da parte di ogni singolo studente.</p></li>
+<li><p>Al termine del corso, viene proposto un tema di progetto come naturale
+<span class="remark">sintesi delle attività svolte</span>, da affrontare in due fasi.</p>
+<ol class="arabic simple">
+<li><p>La prima fase inizia con la pubblicazione di un testo di requisiti per la costruzione di un prototipo
+La costruzione del prototipo mira a verificare il raggiungimento di adeguate abilità teorico/pratiche
+e può essere effettuata in modo individuale o in un gruppo di non più di tre studenti.</p></li>
+<li><p>Al termine di questa fase seguirà una una discussione individuale orale sul lavoro svolto,
+volta a valutare il livello di conoscenza, consapevolezza e di autonomia analitico/progettuale
+del singolo studente.</p></li>
+</ol>
+<blockquote>
+<div><p>In questa fase lo studente è invitato a porre in luce gli aspetti salienti del lavoro svolto
+e le scelte effettuate alla luce delle nozioni teorico/pratiche apprese durante il corso.</p>
+</div></blockquote>
+</li>
+</ul>
+<p><span class="slide1">Criteri di valutazione</span></p>
+<p>Maggiori dettagli si trovano in <a class="reference internal" href="CriteriValutazione.html#criteri-di-valutazione"><span class="std std-ref">Criteri di valutazione</span></a>.</p>
+</section>
+<section id="da-fare">
+<h2>DA FARE<a class="headerlink" href="#da-fare" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Si veda <a class="reference internal" href="Primipassioperativi.html#installazioni-su-pc"><span class="std std-ref">Installazioni su PC</span></a></p></li>
+<li><p>Eseguire quanto riportato in <a class="reference internal" href="VirtualRobot23.html#come-attivare-wenv"><span class="std std-ref">Come attivare WEnv</span></a></p></li>
+</ol>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Introduzione</a><ul>
+<li><a class="reference internal" href="#evoluzione-del-software">Evoluzione del software</a><ul>
+<li><a class="reference internal" href="#evoluzione-dei-paradigmi-e-dei-linguaggi-di-programmazione">Evoluzione dei paradigmi e dei linguaggi di programmazione</a></li>
+<li><a class="reference internal" href="#evoluzione-delle-architetture">Evoluzione delle architetture</a></li>
+<li><a class="reference internal" href="#evoluzione-dei-sistemi">Evoluzione dei sistemi</a></li>
+<li><a class="reference internal" href="#evoluzione-dei-processi-di-produzione">Evoluzione dei processi di produzione</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#contenuti-del-corso">Contenuti del corso</a><ul>
+<li><a class="reference internal" href="#fase1">FASE1</a></li>
+<li><a class="reference internal" href="#fase2">FASE2</a><ul>
+<li><a class="reference internal" href="#abstraction-gap">Abstraction gap</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fase3">FASE3</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#materiale-didattico">Materiale didattico</a></li>
+<li><a class="reference internal" href="#valutazione-finale">Valutazione finale</a></li>
+<li><a class="reference internal" href="#da-fare">DA FARE</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">iss23</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="CriteriValutazione.html"
+                          title="next chapter">Criteri di valutazione</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Introduzione23.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="CriteriValutazione.html" title="Criteri di valutazione"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="iss23"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Introduzione</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

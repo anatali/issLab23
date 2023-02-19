@@ -1,0 +1,389 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Primi passi operativi &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Principi" href="Principi.html" />
+    <link rel="prev" title="Il template" href="Template23.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Principi.html" title="Principi"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Template23.html" title="Il template"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Primi passi operativi</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="primi-passi-operativi">
+<h1>Primi passi operativi<a class="headerlink" href="#primi-passi-operativi" title="Permalink to this headline">¶</a></h1>
+<section id="installazioni-su-pc">
+<h2>Installazioni su PC<a class="headerlink" href="#installazioni-su-pc" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Installare <span class="blue">Java JDK 11</span>  (non useremo versioni più recenti)</p></li>
+<li><p>Installare <span class="blue">GIT</span> <a href="#id1"><span class="problematic" id="id2">:brown:`PERSONALE PRIVATO`</span></a> e dare accesso al docente</p></li>
+<li><p>Compilare <a class="reference external" href="_static/templateToFill.html">template2023</a> inserendo Fotografia, email e numero di matricola</p></li>
+<li><p>Clonare <a class="reference external" href="https://github.com/anatali/issLab23">https://github.com/anatali/issLab23</a> in una directory vuota e.g. <code class="docutils literal notranslate"><span class="pre">C:/.../issLab23</span></code></p></li>
+<li><p>Installare <span class="blue">Gradle</span>  (7.6)</p></li>
+<li><p>Installare <span class="blue">IntelliJ</span></p></li>
+<li><p>Installare <span class="blue">Eclipse IDE</span> for <a href="#id3"><span class="problematic" id="id4">:brown:`Java and DSL Developers`</span></a> (2022 06)</p></li>
+<li><p>Installare <span class="blue">Docker</span></p></li>
+<li><p>Installare <span class="blue">Node.js</span></p></li>
+<li><p>Installare <span class="blue">Python (3.8.8)</span></p></li>
+</ol>
+</section>
+<section id="creazione-progetto-con-gradle">
+<h2>Creazione progetto con Gradle<a class="headerlink" href="#creazione-progetto-con-gradle" title="Permalink to this headline">¶</a></h2>
+<p>Gradle è uno strumento open source per automatizzare la costruzione (build) del software.</p>
+<p>Gradle è ormai uno standard di fatto in questo settore ed è interessante non solo in quanto
+strumento, ma anche perchè applica i principi del <a class="reference external" href="https://it.wikipedia.org/wiki/Domain-driven_design">Domain Driven Design</a> (<strong>DDD</strong>)
+per modellare il suo proprio  domain-building software.</p>
+<p>Per un approfondimento su Gradle si veda  <a class="reference external" href="../../../../GradleIntro/userdocs/Gradle.intro.html">GradleIntro</a>.</p>
+<p>Iniziamo creando un progetto con l’aiuto di <a class="reference external" href="https://gradle.org/">Gradle</a></p>
+<ol class="arabic">
+<li><p>Apro sul PC una directory di lavoro (ad esempio <strong>issLab23</strong>) e mi posiziono in essa.</p></li>
+<li><p>Creo la directory <strong>unibolibs</strong>, che conterrà le librerie (file <code class="docutils literal notranslate"><span class="pre">.jar</span></code>) da noi sviluppate.
+Per il momento, inserisco le seguenti librerie:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">2p301</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uniboInterfaces.jar</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unibo.basicomm23-1.0</span></code></p></li>
+</ul>
+</li>
+<li><p>Creo una directory per il progetto di nome <span class="blue">Appl1</span> e mi posiziono in essa.</p></li>
+<li><p>Eseguo il comando</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradle</span> <span class="n">init</span> <span class="p">(</span><span class="n">select</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="p">,</span> <span class="o">-</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>La risposta <code class="docutils literal notranslate"><span class="pre">2</span></code> alla prima domanda, implica che Gradle costruisca una applicazione-base che possiamo subito
+eseguire e testare.</p>
+</li>
+<li><p>Eseguo il codice generato:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradlew</span> <span class="n">build</span> <span class="o">-</span><span class="n">x</span> <span class="n">test</span>  <span class="o">//</span><span class="n">esclude</span> <span class="n">i</span> <span class="n">test</span>
+<span class="n">gradlew</span> <span class="n">run</span>
+</pre></div>
+</div>
+<p>L’output dovrebbe essere:</p>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&gt; Task :app:run
+Hello World!
+BUILD SUCCESSFUL in 2s
+2 actionable tasks: 1 executed, 1 up-to-date
+</pre></div>
+</div>
+</li>
+<li><p>Apro il progetto in <a class="reference external" href="https://www.jetbrains.com/idea/">IntelliJ</a> , noto le directories <code class="docutils literal notranslate"><span class="pre">main</span></code> e <code class="docutils literal notranslate"><span class="pre">test</span></code></p></li>
+<li><p>Osservo il contenuto di  <code class="docutils literal notranslate"><span class="pre">app/build.gradle</span></code>:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plugins</span> <span class="p">{</span>
+    <span class="o">//</span> <span class="n">Apply</span> <span class="n">the</span> <span class="n">application</span> <span class="n">plugin</span>
+    <span class="o">//</span><span class="n">to</span> <span class="n">add</span> <span class="n">support</span> <span class="k">for</span> <span class="n">building</span> <span class="n">a</span> <span class="n">CLI</span> <span class="n">application</span> <span class="ow">in</span> <span class="n">Java</span><span class="o">.</span>
+    <span class="nb">id</span> <span class="s1">&#39;application&#39;</span>
+<span class="p">}</span>
+<span class="n">repositories</span> <span class="p">{</span>
+    <span class="o">//</span> <span class="n">Use</span> <span class="n">Maven</span> <span class="n">Central</span> <span class="k">for</span> <span class="n">resolving</span> <span class="n">dependencies</span><span class="o">.</span>
+    <span class="n">mavenCentral</span><span class="p">()</span>
+<span class="p">}</span>
+<span class="n">dependencies</span> <span class="p">{</span>
+    <span class="o">//</span> <span class="n">Use</span> <span class="n">JUnit</span> <span class="n">test</span> <span class="n">framework</span><span class="o">.</span>
+    <span class="n">testImplementation</span> <span class="s1">&#39;junit:junit:4.13.2&#39;</span>
+    <span class="o">//</span> <span class="n">This</span> <span class="n">dependency</span> <span class="ow">is</span> <span class="n">used</span> <span class="n">by</span> <span class="n">the</span> <span class="n">application</span><span class="o">.</span>
+    <span class="n">implementation</span> <span class="s1">&#39;com.google.guava:guava:30.1.1-jre&#39;</span>
+<span class="p">}</span>
+<span class="n">application</span> <span class="p">{</span>
+    <span class="o">//</span> <span class="n">Define</span> <span class="n">the</span> <span class="n">main</span> <span class="k">class</span> <span class="nc">for</span> <span class="n">the</span> <span class="n">application</span><span class="o">.</span>
+    <span class="n">mainClass</span> <span class="o">=</span> <span class="s1">&#39;Appl1.App&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>L’applicazione del plug-in <code class="docutils literal notranslate"><span class="pre">application</span></code> applica implicitamente anche il plug-in <code class="docutils literal notranslate"><span class="pre">Java</span></code>,
+il quale assume <code class="docutils literal notranslate"><span class="pre">src/main/java</span></code> e <code class="docutils literal notranslate"><span class="pre">src/test/java</span></code> come directory di origine predefinite.</p>
+</div></blockquote>
+</li>
+<li><p>Osservo il contenuto del file <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code>:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ignore Gradle project-specific cache directory</span>
+<span class="o">.</span><span class="n">gradle</span>
+<span class="c1"># Ignore Gradle build output directory</span>
+<span class="n">build</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Eseguo i test (usando una command shell o il Terminal di <code class="docutils literal notranslate"><span class="pre">IntelliJ</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradlew</span> <span class="n">build</span>   <span class="o">//</span><span class="n">does</span> <span class="n">also</span> <span class="n">the</span> <span class="n">testing</span>
+<span class="n">gradlew</span> <span class="n">test</span>    <span class="o">//</span><span class="n">does</span> <span class="n">only</span> <span class="n">the</span> <span class="n">tests</span>
+</pre></div>
+</div>
+</li>
+<li><p>Osservo <code class="docutils literal notranslate"><span class="pre">app/build/reports/tests/test/index.html</span></code></p></li>
+</ol>
+<p>Lasciamo come pro-memoria questa configurazione e creaimo la nostra applicazione</p>
+<section id="applicazione">
+<h3>Applicazione<a class="headerlink" href="#applicazione" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p>Creo una nuova directory <strong>application1</strong> entro <span class="blue">Appl1</span></p></li>
+<li><p>Nel file <strong>settings.gradle</strong> modifico la frase <em>include(‘app’)</em> in <code class="docutils literal notranslate"><span class="pre">include('application1')</span></code></p></li>
+<li><p>Creo in <code class="docutils literal notranslate"><span class="pre">application1</span></code> le directories (come in <em>app</em>):</p>
+<ul class="simple">
+<li><p><em>src/main/java</em> e <em>src/main/resources</em></p></li>
+<li><p><em>scr/test/java</em> e <em>scr/test/resources</em></p></li>
+</ul>
+</li>
+<li><p>Creo la directory   <em>src/main/java</em>/<strong>unibo</strong>, che funge da nuovo package</p></li>
+<li><p>Creo in <code class="docutils literal notranslate"><span class="pre">application1/src/main/java</span></code> un file di prova</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unibo.basicomm23.utils.CommUtils</span><span class="p">;</span>
+<span class="n">package</span> <span class="n">unibo</span><span class="p">;</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">Application1</span> <span class="p">{</span>
+        <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span> <span class="n">String</span><span class="p">[]</span> <span class="n">args</span> <span class="p">){</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Application1 hello&quot;</span><span class="p">);</span>
+            <span class="n">CommUtils</span><span class="o">.</span><span class="n">outblue</span><span class="p">(</span><span class="s2">&quot;Application1 hello again&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Creo in <code class="docutils literal notranslate"><span class="pre">application1</span></code> un file <code class="docutils literal notranslate"><span class="pre">build.gradle</span></code> con il seguente contenuto:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plugins</span> <span class="p">{</span>
+   <span class="nb">id</span> <span class="s1">&#39;application&#39;</span>
+   <span class="nb">id</span> <span class="s1">&#39;eclipse&#39;</span>
+   <span class="nb">id</span> <span class="s1">&#39;jacoco&#39;</span>
+<span class="p">}</span>
+
+<span class="n">version</span> <span class="s1">&#39;1.0&#39;</span>
+<span class="n">sourceCompatibility</span> <span class="o">=</span> <span class="mf">1.8</span>
+
+<span class="n">repositories</span> <span class="p">{</span>
+    <span class="n">mavenCentral</span><span class="p">()</span>
+    <span class="n">flatDir</span> <span class="p">{</span> <span class="n">dirs</span> <span class="s1">&#39;../../unibolibs&#39;</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">dependencies</span> <span class="p">{</span>
+    <span class="o">//</span> <span class="n">Use</span> <span class="n">JUnit</span> <span class="n">test</span> <span class="n">framework</span><span class="o">.</span>
+    <span class="n">testImplementation</span> <span class="s1">&#39;junit:junit:4.13.2&#39;</span>
+
+    <span class="o">//</span> <span class="n">This</span> <span class="n">dependency</span> <span class="ow">is</span> <span class="n">used</span> <span class="n">by</span> <span class="n">the</span> <span class="n">application</span><span class="o">.</span>
+    <span class="n">implementation</span> <span class="s1">&#39;com.google.guava:guava:30.1.1-jre&#39;</span>
+
+    <span class="o">//</span><span class="n">CUSTOM</span> <span class="n">unibo</span>
+    <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;unibo.basicomm23-1.0&#39;</span>
+<span class="p">}</span>
+
+ <span class="n">application</span> <span class="p">{</span>
+    <span class="o">//</span> <span class="n">Define</span> <span class="n">the</span> <span class="n">main</span> <span class="k">class</span> <span class="nc">for</span> <span class="n">the</span> <span class="n">application</span><span class="o">.</span>
+    <span class="n">mainClass</span> <span class="o">=</span> <span class="s1">&#39;unibo.Application1&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Creo la directory <code class="docutils literal notranslate"><span class="pre">Appl1/userDocs</span></code> e vi inserisco in <code class="docutils literal notranslate"><span class="pre">userDocs</span></code> copia del file  <a class="reference external" href="_static/templateToFill.html">template2023</a> con la mia foto,
+lo ridenomino <cite>application1.html</cite> e vi copio i requisiti dati dal committente.</p></li>
+<li><p>Usando una command shell o il Terminal di <code class="docutils literal notranslate"><span class="pre">IntelliJ</span></code>:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradlew</span> <span class="n">run</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</section>
+</section>
+<section id="uso-di-git">
+<h2>Uso di GIT<a class="headerlink" href="#uso-di-git" title="Permalink to this headline">¶</a></h2>
+<p>Una volta creato il progetto, è opportuno salvarlo su un nostro repository GIT.</p>
+<p>Per un aiuto ad usare GIT può essere utile consultare <a class="reference external" href="https://confluence.atlassian.com/bitbucketserver/basic-git-commands-776639767.html">Basic Git commands</a>
+e/o guardare il video <a class="reference external" href="https://www.youtube.com/watch?v=HVsySz-h9r4">Video on GIT</a> di cui  riportiamo l’inizio di alcuni punti salienti:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span><span class="p">:</span><span class="mi">00</span>  <span class="o">-</span> <span class="n">Introduction</span>
+<span class="mi">1</span><span class="p">:</span><span class="mi">31</span>  <span class="o">-</span> <span class="n">Distributed</span> <span class="n">vs</span> <span class="n">Central</span> <span class="n">Version</span> <span class="n">Control</span>
+<span class="mi">3</span><span class="p">:</span><span class="mi">17</span>  <span class="o">-</span> <span class="n">Installing</span> <span class="n">Git</span>
+<span class="mi">3</span><span class="p">:</span><span class="mi">39</span>  <span class="o">-</span> <span class="n">First</span> <span class="n">Time</span> <span class="n">Setup</span>
+<span class="mi">6</span><span class="p">:</span><span class="mi">36</span>  <span class="o">-</span> <span class="n">Getting</span> <span class="n">Started</span> <span class="p">(</span><span class="n">Local</span> <span class="n">repository</span><span class="p">)</span>
+<span class="mi">10</span><span class="p">:</span><span class="mi">41</span> <span class="o">-</span> <span class="n">Git</span> <span class="n">File</span> <span class="n">Control</span>
+<span class="mi">14</span><span class="p">:</span><span class="mi">55</span> <span class="o">-</span> <span class="n">Getting</span> <span class="n">Started</span> <span class="p">(</span><span class="n">Remote</span> <span class="n">repository</span><span class="p">)</span>
+<span class="mi">20</span><span class="p">:</span><span class="mi">37</span> <span class="o">-</span> <span class="n">Branching</span>
+<span class="mi">20</span><span class="p">:</span><span class="mi">50</span> <span class="o">-</span> <span class="n">Common</span> <span class="n">Workflow</span>
+<span class="mi">23</span><span class="p">:</span><span class="mi">03</span> <span class="o">-</span> <span class="n">Push</span> <span class="n">Branch</span> <span class="n">on</span> <span class="n">remote</span>
+<span class="mi">27</span><span class="p">:</span><span class="mi">38</span> <span class="o">-</span> <span class="n">Faster</span> <span class="n">Example</span>
+<span class="mi">29</span><span class="p">:</span><span class="mi">41</span> <span class="o">-</span> <span class="n">Conclusion</span>
+</pre></div>
+</div>
+<p>Per quanto riguarda il nostro progetto:</p>
+<ol class="arabic">
+<li><p>Mi posiziono sulla directory  <code class="docutils literal notranslate"><span class="pre">issLab23</span></code>.</p></li>
+<li><p>Eseguo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">init</span>  <span class="o">//</span><span class="n">creates</span> <span class="n">the</span> <span class="n">directory</span> <span class="o">.</span><span class="n">git</span>
+<span class="n">git</span> <span class="n">status</span>
+</pre></div>
+</div>
+</li>
+<li><p>Osservo il contenuto del file generato <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ignore Gradle project-specific cache directory</span>
+<span class="o">.</span><span class="n">gradle</span>
+<span class="c1"># Ignore Gradle build output directory</span>
+<span class="n">build</span>
+
+<span class="n">git</span> <span class="n">status</span> <span class="o">--</span><span class="n">ignored</span>      <span class="o">//</span><span class="n">see</span> <span class="n">ignored</span> <span class="n">files</span>
+</pre></div>
+</div>
+<p>I files elencati non saranno salvati sul repository.</p>
+</li>
+<li><p>Eseguo i comandi
+.. code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">add</span> <span class="o">-</span><span class="n">A</span>
+<span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s2">&quot;Appl1&quot;</span>
+<span class="n">git</span> <span class="n">log</span>   <span class="o">//</span><span class="n">q</span> <span class="n">to</span> <span class="n">exit</span>
+<span class="n">git</span> <span class="n">status</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<section id="creazione-di-un-repository-remoto">
+<h3>Creazione di un repository remoto<a class="headerlink" href="#creazione-di-un-repository-remoto" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p>Supponendo di avere accesso su <a class="reference external" href="https://github.com/">github</a> come user di nome <code class="docutils literal notranslate"><span class="pre">userxyz</span></code>, creiamo un repository personale di nome
+<code class="docutils literal notranslate"><span class="pre">iss2023</span></code>, selezionando il tipo <strong>private</strong>, con <em>README</em> file e   <strong>Add .gitignore</strong> (<em>template Java</em>).
+Quindi aggiungiamo il nostro progetto al repository:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">origin</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">userxyz</span><span class="o">/</span><span class="n">iss2023</span>
+<span class="n">git</span> <span class="n">remote</span> <span class="o">-</span><span class="n">v</span>   <span class="o">//</span><span class="n">osservo</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Rendo visibile al docente del corso il progetto su <a class="reference external" href="https://github.com/">github</a></p></li>
+<li><p>Posizionato sulla directory <code class="docutils literal notranslate"><span class="pre">issLab23</span></code>, salvo il progetto corrente sul repository remoto.</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">master</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</section>
+</section>
+<section id="su-raspberrypi">
+<h2>Su RaspberryPi<a class="headerlink" href="#su-raspberrypi" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Acquisire RaspberryPi 3 Model B+,</p></li>
+<li><p>Sarebbe bene acquisire anche <cite>HC-SR04</cite> Distance Sensor e qualche Led che useremo nella FASE1</p></li>
+<li><p>Al termine della FASE1 faremo anche uso di una (usb) WebCam</p></li>
+<li><p>Per i robot si veda  <a href="#id5"><span class="problematic" id="id6">`robot reali`_</span></a></p></li>
+</ol>
+<ul class="simple">
+<li><p><a class="reference internal" href="#creazione-progetto-con-gradle"><span class="std std-ref">Creazione progetto con Gradle</span></a></p></li>
+<li><p><a class="reference internal" href="#applicazione"><span class="std std-ref">Applicazione</span></a></p></li>
+<li><p><a class="reference internal" href="#uso-di-git"><span class="std std-ref">Uso di GIT</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Primi passi operativi</a><ul>
+<li><a class="reference internal" href="#installazioni-su-pc">Installazioni su PC</a></li>
+<li><a class="reference internal" href="#creazione-progetto-con-gradle">Creazione progetto con Gradle</a><ul>
+<li><a class="reference internal" href="#applicazione">Applicazione</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#uso-di-git">Uso di GIT</a><ul>
+<li><a class="reference internal" href="#creazione-di-un-repository-remoto">Creazione di un repository remoto</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#su-raspberrypi">Su RaspberryPi</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Template23.html"
+                          title="previous chapter">Il template</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="Principi.html"
+                          title="next chapter">Principi</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Primipassioperativi.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Principi.html" title="Principi"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Template23.html" title="Il template"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Primi passi operativi</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

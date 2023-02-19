@@ -1,0 +1,789 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>basicrobot 2021</title></head>
+    
+<body>
+<div id="top">
+<h1>LabIss2021 | basic generic robot <font size="5"></font> </h1>
+</div>  
+
+<div class="body"> 
+ 
+<h2>Introduction</h2>
+We introduce here a component that executes robot-move commands in a <ks>'technology-independent way'</ks>, with respect
+to the nature of the robot (virtual or real).<br/>
+This goal is achieved by introducing a set of different low-level supports, and a proper <i>configuration phase</i> that
+selects the proper support for the robot-type specified in a robot-configuration file.
+
+<br/><br/>
+
+<table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:50%">
+
+<h3>The basicrobot project</h3>
+
+
+<center><img src="./img/basicrobotproject.png" alt="basicrobotproject" width="100%" ></center>
+ 
+ 
+</td>
+<td> The <a href="../../it.unibo.qak21.basicrobot/src/basicrobot.qak" target="code">basicrobot.qak</a> (in project <i>it.unibo.qak21.basicrobot</i>):
+<ul>
+<li>is able to execute basic move commands, by handling a <bc>dispatch</bc> (for the elementary commands <tt>w | s | ... </tt>)
+and a <bc>request</bc> (for the command <tt>step</tt>);<br/><br/></li>
+</li>
+<li>is a CoAP-observable resource that maintains information on its current functional state (variable <ks>ActorResourceRep</ks>);<br/><br/>   </li>
+<li>interacts with a concrete robot  by means of a (<a href="https://en.wikipedia.org/wiki/Plain_old_Java_object" target="web">POJO</a>) object 
+(<a href="../resources/unibo/robot/robotSupport.kt" target="code">resources/unibo/robot/robotSupport.kt</a>)
+working as an adapter for devices described in the configuration file
+<a href="../basicrobotConfig.json" target="code">basicrobotConfig.json</a>
+;<br/><br/>   </li>
+<li>is a source of <bc>obstacle events</bc>, that are generated after receiving a <bc>obstacle message</bc> by the 
+<a href="#lowlevel">low-level robot support</a> 
+</li>
+</ul> 
+ 
+ </m>
+ 
+</td>
+</tr>
+
+<tr>
+<td style="width:50%" ><h3 id="basicrobot">The basicrobot model <a href="../src/basicrobot.qak" target="code">basicrobot.qak</a></h3>
+
+<ul>
+<li>The robot-code is defined as a 
+<a href="../../it.unibo.qakactor/userDocs/LabQakIntro2021.html" target="lab">qak model </a>
+that builds its own low-level supports by reading the configuration file 
+<a href="../basicrobotConfig.json" target="code">basicrobotConfig.json</a>.
+</li>
+<li>The interaction with the robot is defined, in terms of message-passing operations, as follows:
+<m>
+<h4>Command messages</h4>
+<pre>
+Dispatch cmd        : cmd(MOVE)     
+Dispatch end        : end(ARG)  
+ 
+Request step       : step( TIME )	
+Reply   stepdone   : stepdone(V)  
+Reply   stepfail   : stepfail(DURATION, CAUSE)
+
+</pre>
+<h4>basicrobot MQTT topics</h4>
+<m>
+<ul>
+<li><ks>unibo/basicrobot</ks>:  input topic (the basicrobots subscribes to receive commands)
+</li>
+<li><ks>unibo/qak/basicrobot</ks>:  output topic (the basicrobots publishes information)
+</li>
+</ul>
+</m>
+<h4>Emitted events</h4>
+
+<ul>
+<li><ks>Event <k>obstacle</k>:obstacle( V )</ks>: When the robot hits an obstacle 
+ 
+</li>
+<li><ks>Event <k>sonar</k>:sonar( V )</ks>: When the robot ... 
+ 
+</li>
+</ul>
+</m>
+
+ </li>
+</ul>
+
+</td>
+
+<td><h3 id="basicrobot">The configuration file</h3>
+The configuration file <a href="../basicrobotConfig.json" target="code">basicrobotConfig.json</a> is written by the application designer:
+
+<m>
+<pre>
+<bc>Virtual robot</bc>
+{"type":"virtual","port":"8090","ipvirtualrobot":"192.168.1.132"}
+
+<bc>Nano robot</bc>
+{"type":"realnano","port":"8020","ipvirtualrobot":"dontcare"}
+
+<bc>Mbot robot</bc>
+<kc>//Arduino connected to the PC:</kc>
+{"type":"realmbot","port":"COM6","ipvirtualrobot":"dontcare"}	
+
+<kc>//Arduino connected to the Raspberry:</kc>
+{"type":"realmbot", "port":"/dev/ttyUSB0", "ipvirtualrobot":"-"} 
+</pre>
+</m>
+
+<h3>The observable state</h3>
+<m>
+The <a href="../src/basicrobot.qak" target="code">basicrobot.qak</a> is a CoAP observable resource
+that updates an internal observable state (<em>RObState</em>) implemented as a simple <k>String</k>.<br/>
+See <a href="#obsstring">The basicrobot as CoAP-observable resource</a>. 
+</m>
+</td>
+ 
+</tr>
+
+<tr>
+<td><h3>The move commands</h3>
+<ul>
+<li><bc>halt</bc> (<ks>cmd : cmd(h)</ks>): the robot stops.	</li>
+<li><bc>step</bc> (<ks>step : step(T)</ks>): the robot moves forwards for a prefixed time <k>T</k>. 
+If the command is executed with success, it replies	with <ks>stepdone : stepdone(<k>T</k>)</ks>;
+otherwise, if it fails after the time <k>D</k> for some reason <k>C</k>,  it replies swith 
+<ks>stepfail : stepfail(<k>D</k>, <k>C</k>)</ks>.</li>
+<li><bc>forward</bc> (<ks>cmd : cmd(w)</ks>): the robot moves forwards for a prefixed time <tt>TF</tt>, being able to
+receive and execute the <bc>halt</bc> command before the end of <tt>TF</tt> and 
+to emit a <k>obstacle</k> event if it stops after the collision with an obstacle.</li>
+<li><bc>backward</bc> (<ks>cmd : cmd(s)</ks>): the robot moves backward for a prefixed time <tt>TF</tt>, being able to
+emit a <k>obstacle</k> event if it stops after the collision with an obstacle.</li>
+<li><bc>turnLeft</bc> (<ks>cmd : cmd(l)</ks>): the robot rotates on the left of <tt>90</tt> degrees.</li>
+<li><bc>turnRight</bc> (<ks>cmd : cmd(l)</ks>): the robot rotates on the right of <tt>90</tt> degrees.</li>
+ 
+</ul>
+
+</td>
+<td><h3>Behavior details</h3>
+<m>
+The <a href="../src/basicrobot.qak" target="code">basicrobot.qak</a> defines, in the qak-language, a behaviour similar to
+the <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/robotService/BasicStepRobotActor.kt" target="code"><ks>BasicStepRobotActor.kt</ks></a>.
+described in
+<a href="../../it.unibo.kotlinSupports/userDocs/ActorWithKotlinSupport.html" target="lab">LabIss2021 | support for Actors based on Kotlin</a>.
+<br/><br/>
+The robot-moves are implemented by the low-level support related to robot-type selected in the configuration file
+<a href="../basicrobotConfig.json" target="code">basicrobotConfig.json</a>, as described in section
+<a href="#robotSupport">Supports for the robot types</a>.
+<br/><br/>
+As a general rule we can state that:
+ <ul>
+<li>the support for the virtualrobot <k>automatically terminates</k> a <ks>forward(w)/ 	backward(s)</ks> 
+command (i.e. it <i>halts</i> the robot)  after a prefixed amount of time.
+More details are given in the section <a href="#virtualrobot">The virtual robot</a>.
+</li>
+<li>the support for a real robot <k>does not automatically terminate</k>  a <ks>w/s</ks> command.
+More details are given in the section <a href="#realrobots">The real robots</a>.</li>
+<!--
+<li>a robot-move for the virtualrobot can be executed in <k>synchronous</k> way (i.e. the caller waits for the end of the move that could be
+<i>true, false or notallowed</i>) or in
+<k>asynchronus</k> way (i.e. the caller will detected the effects of the move with proper 'observations').</li>
+
+<li>a robot-move for a real robot is executed by activating the motors in a proper way</li>
+<li>the default duration of the commands <ks>w / s</ks> is quite long, since their effective duration 
+is decided by the <a href="../src/basicrobot.qak" target="code">basicrobot</a> itself (by sending a <k>halt(h)</k> )
+or by the world (when the robot hits an obstacle).
+
+Therefore, the <ks>w / s</ks> commands for the virtualrobot are called  in asynchronous way.
+</li>
+<li>the commands <k>turnLeft   (l)</k> and <k>turnRight  (rs)</s> are executed in synchronous way, since we do not expect to hit obstacles</li>
+ 
+<li>All the commands sent as a dispatch are executed in synchronous way. However, since no answer is returned
+the effects of the command are show.</li>
+ -->
+</ul>
+
+<h4 obsstring>The <a href="../src/basicrobot.qak" target="code">basicrobot</a> as CoAP-observable resource</h4>
+The <em>RObState</em> is uspdated with the string:
+ <ul>
+<li> <ks>basicrobot(start)</ks>, when the <tt>basicrobot</tt> is activated.</li>
+<li> <ks>moveactivated(M}</ks>, when the <tt>basicrobot</tt> has activated a non-step move <tt>M</tt>.</li>
+<li> <ks>step(ST}</ks>, when the <tt>basicrobot</tt> has activated a step with time <tt>ST</tt>.</li>
+<li> <ks>stepDone(ST}</ks>, when the <tt>basicrobot</tt> has terminated with success a step with time <tt>ST</tt>.</li>
+<li> <ks>stepFail(D}</ks>, when the <tt>basicrobot</tt> has failed a step after time <tt>D&lt;ST</tt>.</li>
+<li> <ks>obstacle(M)</ks>, when the <tt>basicrobot</tt> hits an obstacle while executing the move <tt>M</tt>.</li>
+<li> <ks>basicrobot(end)</ks>, when the <tt>basicrobot</tt> terminates.</li>
+</ul>
+
+An observer: <a href="../resources/CoapObserver.kt" target="code">CoapObserver.kt</a>
+</m>
+</td>
+</tr>
+ </tbody>
+</table>
+
+<h2 id="lowlevel">The low-level supports </h2>
+
+<table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:50%" ><h3 id="robotSupport">Supports for the robot types</h3>
+The Kotlin object
+  <a href="../resources/unibo/robot/robotSupport.kt" target="code">robotSupport.kt</a>
+reads the given configuration file <a href="../basicrobotConfig.json" target="code">basicrobotConfig.json</a> 
+and creates the proper low-level support for three types of 'concrete' robots:
+
+<ul>
+<li><hr/>
+<bc>virtual</bc>: <br/><m>the virtual robot described in
+<a href="../../it.unibo.virtualRobot2020/userDocs/VirtualRobot2021.html" target="robot">Virtual robot 2021</a>,
+that can be launched by using the docker-compose file  
+<a href="../../it.unibo.issLabStart/Dockercompose/virtualRobotOnly2.0.yaml" target="code">virtualRobotOnly2.0.yaml</a></m>.
+<!-- and called by using the support described in:
+<a href="../../it.unibo.kotlinSupports/userDocs/ActorWithKotlinSupport.html#IssWsHttpKotlinSupport" target="lab">IssWsHttpKotlinSupport</a>-->
+<center><img src="./img/wenvscene1.png" alt="wenvscene1" width="40%" height="60%"></center>	
+<br/>
+The support is: <a href="../resources/robotVirtual/virtualrobotSupport2021.kt" target="code">virtualrobotSupport2021.kt</a>
+
+</li>
+
+
+<li><hr/>
+<bc>nano</bc>: <br/><m>the self-made robot described in 
+<a href="LabNanoRobot.html" target="robot">LabNanoRobot | The home-made basicrobot</a></m>
+<center><img src="./img/robotsUnibo.jpg" alt="robotsUnibo" width="40%" height="60%"></center>	
+<br/>
+The support is: <a href="../resources/robotNano/nanoSupport.kt" target="code">nanoSupport.kt</a>
+</li>
+
+
+<li><hr/>
+<bc>mbot</bc>: <br/><m>the  robot described in 
+<a href="Mbot3030.html" target="robot">Mbot3030 | The reference ddr robot</a> </m>
+<center><img src="./img/mbot.png" alt="mbot" width="40%"></center>	
+<br/>
+The support is: <a href="../resources/robotMbot/mbotSupport.kt" target="code">mbotSupport.kt</a>
+</li>
+</ul>
+ 
+  
+</td>
+<td> 
+The project 
+<a href="../../it.unibo.qak21.robots" target="code"><bc>it.unibo.qak21.robots</bc></a>
+defines a robot-command console and supports for interaction with the 
+<a href="../src/basicrobot.qak" target="code">basicrobot.qak</a>
+ via <tt>TCP, HTTP, MQTT and Coap</tt>.
+
+<h3 id="console">A command-console</h3>
+<a href="../../it.unibo.qak21.robots/resources/consoles/consoleGuiSimple.kt" target="code"><bc>consoleGuiSimple.kt</bc></a>
+<center><img src="./img/consoleCoap.png" alt="consoleCoap" width="30%" height="60%"></center>	
+ 
+
+<h3 id="connQakbase">Supports for interaction</h3>
+<ul>
+<li><a href="../../it.unibo.qak21.robots/resources/connQak/connQakBase.kt" target="code">connQakBase.kt</a>:
+a factory class that creates protocol-specific supports by reading the information stored in
+<a href="../../it.unibo.qak21.robots/resources/connQak/configurator.kt" target="code">configurator.kt</a>.
+It defines also the set of implemented protocols:
+<pre>enum class <k>ConnectionType</k> { TCP, MQTT, COAP, HTTP }</pre>
+<hr/>
+</li>
+<m> 
+<li><a href="../../it.unibo.qak21.robots/resources/connQak/connQakTcp.kt" target="code">connQakTcp.kt</a>:
+a specialization for <ks>TCP</ks> that exploits the library <tt>it.unibo.supports.FactoryProtocol</tt>
+</li>
+<li><a href="../../it.unibo.qak21.robots/resources/connQak/connQakCoap.kt" target="code">connQakCoap.kt</a>:
+a specialization for <ks>CoAP</ks> that exploits the library <tt>org.eclipse.californium</tt>
+
+</li>
+<li><a href="../../it.unibo.qak21.robots/resources/connQak/connQakHttp.kt" target="code">connQakHttp.kt</a>
+a specialization for <ks>HTTP</ks> that exploits the library <tt>org.apache.http.client</tt>
+</li>
+<li><a href="../../it.unibo.qak21.robots/resources/connQak/connQakMqtt.kt" target="code">connQakMqtt.kt</a>
+a specialization for <ks>MQTT</ks> that exploits the library <tt>org.eclipse.paho.client.mqttv3</tt>
+</li>
+</m>
+</ul>
+
+<tr>
+<td style="width:50%" >
+<h3 id="virtualrobot">The virtual robot</h3>
+<div class="remark"><m>
+In a virtual robot:
+<ul>
+<li>a robot-move command sent in synchronous or asynchronous way, activates an action that terminates after a prefixed time;</li>
+<li>a robot-move command <b>cannot be interrupted</b> by another command different from <bc>halt</bc>;</li>
+<li>a robot-move command called in <i>synchronous</i> way,  produces a result that gives information on the state of the world or of the robot.</li>
+<li>a robot-move command called in <i>asynchronous</i> way, produces information that can be perceived and handled by proper 'observers'.</li>
+</ul>
+</m>
+</div>
+<m>
+The low-level support  <a href="../resources/robotVirtual/virtualrobotSupport2021.kt" target="code">virtualrobotSupport2021.kt</a>
+interacts with the virtual robot by sending  commands expressed in the
+<a href="../../it.unibo.virtualRobot2020/userDocs/VirtualRobot2021.html#cril" target="code">cril language</a> using objects of class
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/supports/IssWsHttpKotlinSupport.kt" target="code">IssWsHttpKotlinSupport.kt</a>.
+More precisely, it:
+ <br/> <br/>
+<ul>
+<li>implements <bc>backward</bc>, <bc>turnLeft</bc>, <bc>turnRight</bc>, <bc>halt </bc> by calling
+the <em>synchronous sendHttp</em>.  
+When the answer is <tt>{"endmove":"false","move":"..."}</tt>, the support generates the event <k>obstacle:obstacle(virtual)</k>.
+<br/><br/>
+ </li>
+<li>implements <bc>forward</bc>, <bc>step</bc> by sending the 'long move' cril command <tt>{"robotmove":"moveForward", "time": <k>1000</k>}</tt>
+using the <em>asynchronous sendWs</em>. The information produced as a consequance of move is handled by the
+<a href="../resources/robotVirtual/WsSupportObserver.kt" target="code">WsSupportObserver.kt</a>, that 
+generates the event <k>obstacle:obstacle(virtual)</k> when such information is <tt>{"collision":true,"move":"..."}</tt>.
+
+</li>
+</ul>
+See also the <a href="#deployvr">deploy section</a> related to the virtual robot.
+</m>
+<hr/>
+<h4>Usage</h4>
+On the PC (in <tt><m><k>issLab2021/it.unibo.issLabStart/Dockercompose</k></m></tt>):
+<m><pre>
+docker-compose -f virtualRobotOnly2.0.yaml up <kc>//activate the robot</kc>
+
+localhost:8090	<kc>//open the WEnv gui</kc>
+</pre></m>
+
+
+
+</td>
+<td>
+<h3 id="realrobots">The real robots</h3>
+<m>
+A real robot executes a robot-move command by activating the motors using proper device-dependent utiilities. <br/>
+The obstacles are detected by means of a <tt>HC-SR04</tt> Distance Sensor, as introduced in
+<a href="../../it.unibo.sonarAsResource/userDocs/LabSonarAsResource.html" target="code">LabSonarAsResource.html</a>.
+<div class="remark">
+In a real robot:
+<ul>
+<li>each robot-move command activates an 'endless' (depending on the battery charge and the obstacles) action, that 
+<b>can be always replaced</b> ('interrupted') by another move;</li>
+<li>a robot-move produces effects (on the world or on the robot itself) that must be detected by sensors.</li>
+</ul>
+</m>
+</div>
+<h4>The Nano robot</h4>
+The low-level  <a href="../resources/robotNano/nanoSupport.kt" target="code">nanoSupport.kt</a>
+interacts with the real Nano-robot by using the utility <a href="../resources/robotNano/Motors.c" target="code">legonanoMotors.c</a>
+and <a href="../resources/robotNano/SonarAlone.c" target="code">SonarAlone.c</a>
+
+<h4>The Mbot robot</h4>
+The low-level   <a href="../resources/robotMbot/mbotSupport.kt" target="code">mbotSupport.kt</a>
+interacts with the real Mbot-robot by using the utility <a href="../resources/robotMbot/robotDataSourceArduino.kt" target="code">robotDataSourceArduino.kt</a>
+
+
+<hr/>
+<h4>Usage</h4>
+On the RaspberryPi (in <tt><m>/home/pi/nat/<k>it.unibo.qak21.basicrobot-1.0/bin</k></m></tt>):
+<m><pre>
+copy: <k>basicrobot.pl</k>, <k>basicrobotConfig.json</k>
+
+it.unibo.qak21.basicrobot  <kc>//activate the robot</kc>
+
+<ks>Command the ronot using a remote console</ks> 	
+</pre></m>
+
+</td>
+</tr>
+
+<tr>
+<td>
+<h3 id="robotusage">Moving using the console</h3>
+The project 
+<a href="../../it.unibo.qak21.robots" target="code"><bc>it.unibo.qak21.robots</bc></a>
+defines  a console to to send commands to the basicrobot.
+<br/><br/>
+<ul>
+<li><a href="../../it.unibo.qak21.robots/resources/consoles/consoleGuiSimple.kt" target="code">consoleGuiSimple.kt</a>:
+a factory class that creates a console using a specific protocol of type <k>ConnectionType</k>
+as defined in <a href="../../it.unibo.qak21.robots/resources/consoles/sysConnKb.kt" target="code">sysConnKb.kt</a>
+<br/><br/>
+</center>	<img src="./img/consoleCoap.png" alt="consoleCoap.png" width="40%"  /></center>	
+
+</li>
+<!--
+<m> 
+<li><a href="../../it.unibo.qak21.robots/consoles/consoleGuiTcp.kt" target="code">consoleGuiTcp.kt</a>:
+a specialization for <ks>TCP</ks>  
+</li>
+<li><a href="../../it.unibo.qak21.robots/resources/connQak/consoleGuiCoap.kt" target="code">consoleGuiCoap.kt</a>:
+a specialization for <ks>CoAP</ks>  
+
+</li>
+<li><a href="../../it.unibo.qak21.robots/resources/connQak/consoleGuiHttp.kt" target="code">consoleGuiHttp.kt</a>
+a specialization for <ks>HTTP</ks>  
+</li>
+<li><a href="../../it.unibo.qak21.robots/resources/connQak/consoleGuiMqtt.kt" target="code">consoleGuiMqtt.kt</a>
+a specialization for <ks>MQTT</ks>  
+</li>
+</m>-->
+</ul>
+</td>
+ <td>
+<h3 id="robotusage">Moving using jupyter</h3>
+
+<ul>
+<li>
+<a href="../../it.unibo.issLabStart/resources/jupyter/qakbasicrobotcallerTCP.ipynb" target="code">qakbasicrobotcallerTCP.ipynb</a>
+</li>
+<li>
+<a href="../../it.unibo.issLabStart/resources/jupyter/qakbasicrobotcallerMQTT.ipynb" target="code">qakbasicrobotcallerMQTT.ipynb</a>
+</li>
+</ul>
+
+<h3 id="robotusage">Moving using a WebGui</h3>
+<a href="../../webBasicrobotqak/userDocs/webBasicrobotqak.html" target="lab">LabIss2021 | a Webgui for the basic generic robot</a> 
+
+<h3 id="robotusage">Observing</h3>
+<a href="../../it.unibo.qak21.robots/resources/basicrobotObservers/basicrobotObserver.java" target="code">basicrobotObserver.java</a>
+<br/>
+<a href="../../it.unibo.qak21.robots/resources/basicrobotObservers/basicrobotCoapObserver.kt" target="code">basicrobotCoapObserver.kt</a>
+
+</td>
+</tr>
+
+
+ </tbody>
+</table>
+
+<h2 id="deploy">Deployment for the virtual robot</h2>
+
+ 
+
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%" >
+<h3 id="deployvr">The virtual robot </h3>
+Project <a href="../../it.unibo.virtualRobot2020" target="code">it.unibo.virtualRobot2020</a>
+(updated in June 2021).<br/><br/>
+<m>
+This version of the virtual robot provides support to achieve a behaviour similar to that of a real robot.
+In particular, it:
+<ul>
+<li>accepts <k>synch-calls</k> via HTTP on port <tt>8090</tt> (POST path=<ks>/api/move</ks>) </li>
+<li>accepts <k>asynch-calls</k> via websocket on port <tt>8091</tt> </li>
+<li>for a <i><k>synch</k>-call</i>, sends the answer at the end of the move-time, with result <ks>true, false, halted, notallowed</ks></li>
+<li>for a <i><k>asynch</k>-call</i>, executes the move, without sending any answr</li>
+<li><b><i>rejects</i></b> (answer  <ks>notallowed</ks>, if the call is <i>synch</i>) a call for a move,
+ while it is still running a move activated in synch way</li>
+<li><b><i>accepts</i></b> a synch call call for a move also while it is still running a move activated in asynch way</li>
+<li>always accepts a call for <k>h</k></li>
+</ul>
+As said in a <a href="#virtualrobot">section above</a>, the <a href="../resources/robotVirtual/virtualrobotSupport2021.kt" target="code">virtualrobotSupport2021.kt</a>
+performs calls for <ks>w,s</ks> is <k>asynch</k> way, and the calls for <ks>r,l,h</ks> in <k>synch</k> way.
+
+</m>
+
+<hr/>
+<ul>
+<li><a href="../../it.unibo.virtualRobot2020/Dockerfile">Dockerfile</a>
+<pre><m>gradle  -b build2021.gradle distZip
+docker build -f Dockerfile -t virtualrobotdisi:2.0 .
+
+<kc>//check</kc>
+docker run -it --rm --name virtualrobotdisi
+    -p8090:8090/tcp -p8091:8091/tcp 	 
+    virtualrobotdisi:2.0  /bin/bash
+
+<kc>//change the scene</kc>
+docker cp sceneConfig.js 
+  &lt;inagsid>:/home/node/WEnv/WebGLScene/sceneConfig.js
+
+docker tag virtualrobotdisi:2.0 natbodocker/virtualrobotdisi:2.0
+docker push natbodocker/virtualrobotdisi:2.0
+</m></pre>
+
+
+</li>
+ 
+</ul>
+</td>
+<td>
+<h3>The basic robot </h3>
+Project <a href="../../it.unibo.qak21.basicrobot" target="code">it.unibo.qak21.basicrobot</a>: 
+<hr/>
+<ul>
+<li><a href="../../it.unibo.qak21.basicrobot/Dockerfileforrasp" target="code">Dockerfileforrasp</a> 
+<pre><m>gradle  -b build2021.gradle distZip
+docker build -t basicrobot21:1.0 .
+docker run -it --rm --name basicrobot21
+    -p8020:8020/tcp -p8020:8020/udp 	<kc/>//udp required by CoAP</kc>
+    <k>--privileged</k> basicrobot21  /bin/bash
+</m></pre></li>
+
+
+<h3>The basicrobot with webgui </h3>
+Project <a href="../../webBasicrobotqak" target="code">webBasicrobotqak</a>: 
+<hr/>
+<ul>
+<li><a href="../../webBasicrobotqak/Dockerfileforpc" target="code">Dockerfileforpc</a> 
+ <pre><m>gradlew build
+docker build -f Dockerfileforpc -t webbasicrobotqakforpc:1.0 .
+docker tag webbasicrobotqakforpc:1.0 natbodocker/webbasicrobotqakforpc:1.0
+docker push natbodocker/webbasicrobotqakforpc:1.0
+</m></pre></li>
+<li><a href="../../webBasicrobotqak/webbasicrobotqakonpc.yaml" target="code">webbasicrobotqakonpc.yaml</a> 
+<pre><m>docker-compose -f webbasicrobotqakonpc.yaml up 
+</m></pre></li>
+
+</ul>
+</td>
+</tr>
+ </tbody>
+</table>
+
+<h2 id="deploy">Deployment for the real robot</h2>
+
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%" >
+<h3>Mbot-robot</h3>
+<ul>
+<li></li>
+<li></li>
+</ul>
+</td>
+<td>
+<h3>Nano-robot</h3>
+<ul>
+<li></li>
+<li></li>
+</ul>
+</td>
+</tr>
+ </tbody>
+</table>
+
+<ol>
+<li><h3>Create the library</h3>
+<pre>
+gradlew distJar
+
+<kc>Creates the file <ks>app-2.0.jar</ks>, renamed in <k>IssActorKotlinRobotSupport-2.0.jar</k></kc></pre>
+</li>
+
+<li><h3>Copy the library</h3>
+<pre>
+Copy from <ks>it.unibo.kotlinSupports/app/build/libs/IssActorKotlinRobotSupport-2.0.jar</ks> into 
+<k>/unibolibs/IssActorKotlinRobotSupport-2.0.jar</k></kc></pre>
+</li>
+<ol>
+
+
+ 
+
+
+
+
+
+
+
+
+   <!--
+<ol>
+<li></li>
+<li></li>
+<li></li>
+</ol>
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%" >
+ 
+
+</td>
+<td>
+</td>
+</tr>
+ </tbody>
+</table>
+-->
+	      	
+<br/><br/> 	
+</div>  
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI  
+</div>
+</body>
+</html>

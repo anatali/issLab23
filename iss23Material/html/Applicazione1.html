@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Applicazione1 &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Books" href="Books.html" />
+    <link rel="prev" title="VirtualRobot23" href="VirtualRobot23.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Books.html" title="Books"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="VirtualRobot23.html" title="VirtualRobot23"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Applicazione1</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="applicazione1">
+<h1>Applicazione1<a class="headerlink" href="#applicazione1" title="Permalink to this headline">¶</a></h1>
+<p>In <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a> si è detto che l’ambiente WEnv verrà utilizzato nello sviluppo di
+<em>applicazioni proattive/reattive</em> basate su
+componenti che interagiscono a scambio di messaggi con <em>interazioni sincrone e/o asincrone</em>.</p>
+<p>Introduciamo qui i requisiti di una prima applicazione di questo tipo, dopo avere costruito il nostro ambiente
+di lavoro (<em>workspace</em>) come riportato in <a class="reference internal" href="Primipassioperativi.html#primi-passi-operativi"><span class="std std-ref">Primi passi operativi</span></a>.</p>
+<p><span class="slide">KEY-POINTS</span></p>
+<ul class="simple">
+<li><p>Analisi e progetto ‘discorsivi’</p></li>
+<li><p>Piani di testing funzionale</p></li>
+<li><p>Piano di lavoro</p></li>
+<li><p>Interazione sincrona</p></li>
+<li><p>Divide et impera e single responsibility principle</p></li>
+<li><p>Supporti alle comunicazioni di basso livello</p></li>
+<li><p>Supporti alle comunicazioni di alto livello</p></li>
+<li><p>Osservabilità in ambiente locale</p></li>
+<li><p>Testing automatizzato in ambiente locale</p></li>
+<li><p>Interazione asincrona</p></li>
+</ul>
+<section id="appl1-requisiti">
+<h2>Appl1: Requisiti<a class="headerlink" href="#appl1-requisiti" title="Permalink to this headline">¶</a></h2>
+<p>Scrivere un programma Java che possa inviare al robot:</p>
+<ul class="simple">
+<li><p>un comando <strong>start</strong> per attivare
+il robot in modo che percorra il bordo perimetrale della stanza rappresentata ne <a class="reference internal" href="VirtualRobot23.html#la-scena-di-wenv"><span class="std std-ref">La scena di WEnv</span></a></p></li>
+<li><p>un comando <strong>stop</strong> per bloccare l’azione del robot</p></li>
+<li><p>un comando di <strong>resume</strong> per riattivare l’azione del robot</p></li>
+</ul>
+<p><span class="slide">Analisi e progetto</span></p>
+</section>
+<section id="appl1-analisi-dei-requisiti">
+<h2>Appl1: Analisi dei requisiti<a class="headerlink" href="#appl1-analisi-dei-requisiti" title="Permalink to this headline">¶</a></h2>
+<p>Dopo opportuni colloqui con il committente, possiano affermare che :</p>
+<ul class="simple">
+<li><p>il robot si trova inizialmente nella situazione descritta come <a class="reference internal" href="VirtualRobot23.html#stato-iniziale-del-virtualrobot"><span class="std std-ref">Stato iniziale del virtualrobot</span></a></p></li>
+<li><p>l’applicazione può inviare comandi al robot sia con  <a class="reference internal" href="VirtualRobot23.html#interazione-sincrona"><span class="std std-ref">Interazione sincrona</span></a> sia con <a class="reference internal" href="VirtualRobot23.html#interazione-asincrona"><span class="std std-ref">Interazione asincrona</span></a></p></li>
+<li><p>un comando di <strong>stop</strong> inviato al robot che ha terminato il percorso non ha effetto</p></li>
+<li><p>un comando di <strong>resume</strong> inviato al robot che ha terminato il percorso equivale a un comando di <strong>start</strong></p></li>
+<li><p>l’applicazione invia i comandi <strong>stop/resume</strong> sotto il controllo di un utente umano, attraverso una console
+di comando, anche <span class="blue">remota</span></p></li>
+</ul>
+</section>
+<section id="appl1-analisi-del-problema">
+<h2>Appl1: Analisi del problema<a class="headerlink" href="#appl1-analisi-del-problema" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Una volta inviato il comando <strong>start</strong>, il robot presenta un comportamento al contempo <em>proattivo</em> (in quanto
+deve effettuare in modo autonomo un giro della stanza) e <em>reattivo</em>
+(in quanto deve essere capace di percepire ed eseguire i comandi <strong>stop/resume</strong>)</p></li>
+<li><p>Il componente sofware che realizza l’applicazione presenta un comportamento <em>reattivo</em> in quanto agisce quando
+l’utente agisce sulla console di comando.</p></li>
+<li><p>Per  <span class="blue">console remota</span>  si intende il fatto che la console di comando potrebbe essere collocata su un
+computer diverso da quello in cui gira l’applicazione.</p></li>
+</ul>
+<section id="appl1-architettura-logica">
+<h3>Appl1: Architettura logica<a class="headerlink" href="#appl1-architettura-logica" title="Permalink to this headline">¶</a></h3>
+<p>In base a questa analisi, si può introdurre l’Architettura Logica del sistema da realizzare:</p>
+<a class="reference internal image-reference" href="_images/Appl1Arch0.png"><img alt="_images/Appl1Arch0.png" src="_images/Appl1Arch0.png" style="width: 70%;" /></a>
+<p>il sistema è logicamente formato da tre componenti:</p>
+<ul class="simple">
+<li><p><em>VirtualRobot23</em> (o meglio <code class="docutils literal notranslate"><span class="pre">WEnv</span></code>), che viene fornito dal committente</p></li>
+<li><p><em>Appl1</em>, che dobbiamo realizzare</p></li>
+<li><p><em>CmdConsole</em>, che dobbiamo realizzare</p></li>
+</ul>
+<section id="appl1-natura-dei-componenti">
+<h4>Appl1: Natura dei componenti<a class="headerlink" href="#appl1-natura-dei-componenti" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Il <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a> fornito da committente è un componente reattivo/proattivo che opera come un server che può ricevere
+comandi via rete tramita HTTP  (<a class="reference internal" href="VirtualRobot23.html#interazione-sincrona"><span class="std std-ref">Interazione sincrona</span></a>) sulla porta <code class="docutils literal notranslate"><span class="pre">8090</span></code> e
+tramite <em>Connessione WebSocket</em> (<code class="docutils literal notranslate"><span class="pre">WS</span></code>) sulla porta <code class="docutils literal notranslate"><span class="pre">8091</span></code> (<a class="reference internal" href="VirtualRobot23.html#interazione-asincrona"><span class="std std-ref">Interazione asincrona</span></a>.
+Il server può anche inviare su <code class="docutils literal notranslate"><span class="pre">WS</span></code>  messaggi che non siano risposte a comandi (si veda <a class="reference internal" href="VirtualRobot23.html#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a>).</p></li>
+<li><p>Il componente <em>Appl1</em> si presenta come un ente attivo che attende un comando (<code class="docutils literal notranslate"><span class="pre">start/stop/resume</span></code>) da <em>CmdConsole</em>.
+QUesti comandi possono essere inviati come messaggi via rete tramite un qualche protocolllo, non specificato; tra le scelte plausibili
+vi sono <code class="docutils literal notranslate"><span class="pre">TCP,</span> <span class="pre">UDP,</span> <span class="pre">MQTT,</span> <span class="pre">Bluetooth,</span> <span class="pre">CoAP</span></code>. <em>Appl1</em> <span class="blue">interpreta</span> i messaggi ricevuti,  convertendoli in comandi a <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a>.</p></li>
+<li><p>Il componente <em>CmdConsole</em> si presenta come un ente attivo che interagisce con un utente umano e che invia comandi via rete
+ad <em>Appl1</em>.</p></li>
+</ul>
+<p>Siamo di fronte a un sistema distribuito, che può operrare su 3 nodi computazionali, che si riducono a 2 se la <em>CmdConsole</em>
+risiede sullo stesso nodo in cui risiede l’applicazione <em>Appl1</em> e a 1 se anche <em>WEnv</em> viene attivato
+sullo stesso nodo in cui risiede l’applicazione.</p>
+<p><span class="slide">Piano di lavoro</span></p>
+</section>
+<section id="appl1-piano-di-lavoro">
+<h4>Appl1: Piano di lavoro<a class="headerlink" href="#appl1-piano-di-lavoro" title="Permalink to this headline">¶</a></h4>
+<p>Il <span class="blue">core-business</span> dell’applicazione  è di competenza del componente <em>Appl1</em>, che conviene sia progettato e realizzato
+per primo. La <em>CmdConsole</em> potrà essere progettata e realizzata in un secondo momento, prima in locale e poi nel distribuito.</p>
+<p>Prima di procedere alla stesura del codice è però di fondamentale importanza affrontare la seguente problematica,
+del tutto generale:</p>
+<ul class="simple">
+<li><p><span class="remark">Come verificare in modo automatizzato che l’applicazione soddisfa i requisiti?</span></p></li>
+</ul>
+<p><span class="slide">Piani di testing</span></p>
+</section>
+</section>
+<section id="appl1-piani-di-testing-funzionale">
+<h3>Appl1: Piani di testing funzionale<a class="headerlink" href="#appl1-piani-di-testing-funzionale" title="Permalink to this headline">¶</a></h3>
+<p>Un punto cruciale  è concepire la fase di testing come un processo eseguibile <span class="blue">in modo automatizzato</span>,
+cioè attraverso un programma che sia in grado, senza intervento umano,
+di controllare se l’applicazione, una volta attivata, fa tutto quello che ci si aspetta da lei.</p>
+<p>Nascono quindi nuove importanti problematiche:</p>
+<ul class="simple">
+<li><p><strong>Consoscenza sullo stato</strong>: <code class="docutils literal notranslate"><span class="pre">Come</span> <span class="pre">può</span> <span class="pre">una</span> <span class="pre">procedura</span> <span class="pre">di</span> <span class="pre">testing</span> <span class="pre">conoscere</span> <span class="pre">lo</span> <span class="pre">stato</span> <span class="pre">del</span> <span class="pre">robot?</span></code></p></li>
+<li><p><strong>Concetto di stato</strong>: <code class="docutils literal notranslate"><span class="pre">Cosa</span> <span class="pre">si</span> <span class="pre">intende</span> <span class="pre">per</span> <span class="pre">stato</span> <span class="pre">del</span> <span class="pre">robot?</span></code></p></li>
+</ul>
+<section id="appl1-stato-del-robot">
+<h4>Appl1: Stato del robot<a class="headerlink" href="#appl1-stato-del-robot" title="Permalink to this headline">¶</a></h4>
+<p>Dopo ulteriore collquio con il committente, si ritiene significativo, al momento, sapere, al termine della esecuzione
+dell’applicazione:</p>
+<ol class="arabic simple">
+<li><p>se il robot è fermo in HOME e <strong>ha</strong> effettuato il giro della stanza</p></li>
+<li><p>quanti comandi di <code class="docutils literal notranslate"><span class="pre">stop/resume</span></code> trasmessi, il robot ha ricevuto ed elaborato</p></li>
+</ol>
+<p>Si anche convenuto, che <span class="brown">in futuro</span>, potrebbe essere utile sapere:</p>
+<ul class="simple">
+<li><p>quale <span class="blue">posizione</span> il robot occupa nella stanza in un certo istante</p></li>
+<li><p>quale è il livello di autonomia del robot (risptto alla sua fonte di alimentazione)</p></li>
+<li><p>etc/etc</p></li>
+</ul>
+</section>
+<section id="appl1-azioni-di-testing-pianificate">
+<h4>Appl1: Azioni di testing pianificate<a class="headerlink" href="#appl1-azioni-di-testing-pianificate" title="Permalink to this headline">¶</a></h4>
+<p>Concentrando al momento l’attenzione sul componente <em>Appl1</em>, possiamo pianificare le seguenti azioni di testing:</p>
+<ul class="simple">
+<li><p><span class="brown">testStartNoStop</span>. Dopo che <em>Appl1</em> ha ricevuto (da <em>CmdConsole</em>) il comando <strong>start</strong>, occorre verificare che il robot
+abbia iniziato la sua attività, cioè sia in moto e che, dopo un certo tempo, esso risulti
+fermo in HOME avendo completato un giro.</p></li>
+<li><p><span class="brown">testStop</span>. Dopo che <em>Appl1</em> ha ricevuto (da <em>CmdConsole</em>) il comando <strong>stop</strong>, occorre verificare che il robot
+sia fermo.</p></li>
+<li><p><span class="brown">testResume</span>. Dopo che <em>Appl1</em> ha ricevuto (da <em>CmdConsole</em>) il comando <strong>resume</strong>, occorre  procedere come per
+<em>testStartNoStop</em>.</p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Applicazione1</a><ul>
+<li><a class="reference internal" href="#appl1-requisiti">Appl1: Requisiti</a></li>
+<li><a class="reference internal" href="#appl1-analisi-dei-requisiti">Appl1: Analisi dei requisiti</a></li>
+<li><a class="reference internal" href="#appl1-analisi-del-problema">Appl1: Analisi del problema</a><ul>
+<li><a class="reference internal" href="#appl1-architettura-logica">Appl1: Architettura logica</a><ul>
+<li><a class="reference internal" href="#appl1-natura-dei-componenti">Appl1: Natura dei componenti</a></li>
+<li><a class="reference internal" href="#appl1-piano-di-lavoro">Appl1: Piano di lavoro</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#appl1-piani-di-testing-funzionale">Appl1: Piani di testing funzionale</a><ul>
+<li><a class="reference internal" href="#appl1-stato-del-robot">Appl1: Stato del robot</a></li>
+<li><a class="reference internal" href="#appl1-azioni-di-testing-pianificate">Appl1: Azioni di testing pianificate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="VirtualRobot23.html"
+                          title="previous chapter">VirtualRobot23</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="Books.html"
+                          title="next chapter">Books</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Applicazione1.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Books.html" title="Books"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="VirtualRobot23.html" title="VirtualRobot23"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Applicazione1</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

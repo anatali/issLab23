@@ -30,9 +30,10 @@ body {
   }
 
   .worktodo{
-    background-color: #ffb3d9;
+    background-color: #66ff66;
     padding: 3px;
     margin: 10px;
+    font-size: 30px; 
     line-height: 1.4;
     border-radius: 20px;
   }

@@ -99,6 +99,7 @@ l’utente agisce sulla console di comando.</p></li>
 <li><p>Per  <span class="blue">console remota</span>  si intende il fatto che la console di comando potrebbe essere collocata su un
 computer diverso da quello in cui gira l’applicazione.</p></li>
 </ul>
+<p><span class="slide1">Architettura logica</span></p>
 <section id="appl1-architettura-logica">
 <h3>Appl1: Architettura logica<a class="headerlink" href="#appl1-architettura-logica" title="Permalink to this headline">¶</a></h3>
 <p>In base a questa analisi, si può introdurre l’Architettura Logica del sistema da realizzare:</p>
@@ -122,7 +123,7 @@ vi sono <code class="docutils literal notranslate"><span class="pre">TCP,</span>
 <li><p>Il componente <em>CmdConsole</em> si presenta come un ente attivo che interagisce con un utente umano e che invia comandi via rete
 ad <em>Appl1</em>.</p></li>
 </ul>
-<p>Siamo di fronte a un sistema distribuito, che può operrare su 3 nodi computazionali, che si riducono a 2 se la <em>CmdConsole</em>
+<p>Siamo di fronte a un sistema distribuito, che può operare su 3 nodi computazionali, che si riducono a 2 se la <em>CmdConsole</em>
 risiede sullo stesso nodo in cui risiede l’applicazione <em>Appl1</em> e a 1 se anche <em>WEnv</em> viene attivato
 sullo stesso nodo in cui risiede l’applicazione.</p>
 <p><span class="slide">Piano di lavoro</span></p>

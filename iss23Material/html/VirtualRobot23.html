@@ -59,7 +59,8 @@ indipendenti l’una dall’altra.</p>
 <li><p>ruotare di 90° a destra o sinistra</p></li>
 </ul>
 <p>Queste mosse sono realizzate inviando opportuni comandi al robot simulato.</p>
-<p>Il robot virtuale (e in futuro anche quelli reali) viene considerato un oggetto inscirvibile in un cerchio di raggio <code class="docutils literal notranslate"><span class="pre">R</span></code>.</p>
+<p>Il robot virtuale (e in futuro anche quelli reali) viene considerato
+<span class="slide1">un oggetto inscrivibile in un cerchio di raggio R</span>.</p>
 <p><span class="slide">Usare WEnv</span></p>
 <section id="la-scena-di-wenv">
 <h2>La scena di WEnv<a class="headerlink" href="#la-scena-di-wenv" title="Permalink to this headline">¶</a></h2>
@@ -80,8 +81,9 @@ Procedendo dal bordo superiore e muovendoci in senso oriario, i nomi delle paret
 </ul>
 <p><span class="slide1">Usando Docker</span></p>
 <p>WEnv viene anche distribuito come immagine Docker, attivabile direttamente o con <em>docker-compose</em>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">ti</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8090</span><span class="p">:</span><span class="mi">8090</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8091</span><span class="p">:</span><span class="mi">8091</span> <span class="o">--</span><span class="n">rm</span>  <span class="n">docker</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">natbodocker</span><span class="o">/</span><span class="n">virtualrobotdisi</span><span class="p">:</span><span class="mf">4.0</span>
-<span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="o">-</span><span class="n">f</span> <span class="n">virtualRobotOnly4</span><span class="o">.</span><span class="mf">0.</span><span class="n">yaml</span>  <span class="n">up</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">ti</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8090</span><span class="p">:</span><span class="mi">8090</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8091</span><span class="p">:</span><span class="mi">8091</span> <span class="o">--</span><span class="n">rm</span>  <span class="n">docker</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">natbodocker</span><span class="o">/</span><span class="n">virtualrobotdisi23</span><span class="p">:</span><span class="mf">1.0</span>
+<span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="o">-</span><span class="n">f</span> <span class="n">virtualRobot23</span><span class="o">.</span><span class="n">yaml</span>  <span class="n">up</span>
+<span class="o">//</span><span class="n">Per</span> <span class="n">terminare</span><span class="p">:</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="o">-</span><span class="n">f</span> <span class="n">virtualRobot23</span><span class="o">.</span><span class="n">yaml</span>  <span class="n">down</span>
 </pre></div>
 </div>
 </section>
@@ -106,6 +108,15 @@ il progetto definisce una pagina HTML (file <code class="docutils literal notran
 e in modo asicrono (via WebSocket)</p></li>
 <li><p>visualizzare nella <code class="docutils literal notranslate"><span class="pre">DisplayArea</span></code> le informazioni emesse da WEnv (<a class="reference internal" href="#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a>).</p></li>
 </ul>
+<p>Ponendo il mouse sulla scena, si possono inviare al robot comandi tramite tastiera:</p>
+<ul class="simple">
+<li><p>tasto <span class="blue">w</span>: avanti</p></li>
+<li><p>tasto <span class="blue">s</span>: indietro</p></li>
+<li><p>tasto <span class="blue">a</span>: ruota a sinistra di <cite>90°</cite></p></li>
+<li><p>tasto <span class="blue">d</span>: ruota a destra di <cite>90°</cite></p></li>
+</ul>
+<p>Sulla scena compare un meno <span class="blue">Open controls</span> che presenta conandi con cui modificare la scena,
+inserendo/eliminando oggetti. Le modifiche vengono perse al reload della pagina.</p>
 <p>La pagina si presenta come segue:</p>
 <a class="reference internal image-reference" href="_images/NaiveGui.PNG"><img alt="_images/NaiveGui.PNG" class="align-center" src="_images/NaiveGui.PNG" style="width: 50%;" /></a>
 <p>Attraverso questa GUI possiamo effettuare esperimenti come quelli che seguono:</p>
@@ -161,7 +172,7 @@ di situazioni anomale, come ad esempio un calo dell’alimentazione o un incendi
 in relazione alle situazioni che si possono avere.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;endmove&quot;</span><span class="p">:</span><span class="s2">&quot;RESULT&quot;</span><span class="p">,</span> <span class="s2">&quot;move&quot;</span><span class="p">:</span><span class="s2">&quot;MINFO&quot;</span> <span class="p">}</span>
 <span class="n">RESULT</span>  <span class="p">:</span><span class="o">:=</span> <span class="n">true</span> <span class="o">|</span> <span class="n">false</span>  <span class="o">|</span> <span class="n">notallowed</span>
-<span class="n">MINFO</span>   <span class="p">:</span><span class="o">:=</span> <span class="n">MOVEID</span> <span class="o">|</span> <span class="n">MOVEID</span><span class="o">-</span><span class="n">collision</span> <span class="o">|</span> <span class="n">MOVEID_interrupted</span>
+<span class="n">MINFO</span>   <span class="p">:</span><span class="o">:=</span> <span class="n">MOVEID</span> <span class="o">|</span> <span class="n">MOVEID</span><span class="o">-</span><span class="n">collision</span> <span class="o">|</span> <span class="n">MOVEID</span><span class="o">-</span><span class="n">interrupted</span>
 <span class="n">MOVEID</span>  <span class="p">:</span><span class="o">:=</span> <span class="n">moveForward</span> <span class="o">|</span> <span class="n">moveBackward</span> <span class="o">|</span> <span class="n">turnLeft</span> <span class="o">|</span> <span class="n">turnRight</span>
 </pre></div>
 </div>
@@ -206,7 +217,7 @@ il comando ha comunque durata <code class="docutils literal notranslate"><span c
 </tr>
 </tbody>
 </table>
-<p>Tuttavia, i client-WS ricevono ANCHE l’informazione (<a class="reference internal" href="#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a>) <em>collision</em> , che assume la forma che segue:</p>
+<p>Tuttavia, i client-WS ricevono ANCHE l’informazione (<a class="reference internal" href="#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a>) <em>collision</em>, che assume la forma che segue:</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">{&quot;collision&quot;:&quot;moveForward&quot;,&quot;target&quot;:&quot;OBSTACLEID&quot;}</span></code></p>
 </div></blockquote>
@@ -214,6 +225,7 @@ il comando ha comunque durata <code class="docutils literal notranslate"><span c
 non è possibile nel mondo reale, ma al momento può essere utile per comprendere meglio il comportamento
 delle applicazioni.</p>
 <p>Riportiamo nel seguito  alcuni casi rilevanti, dopo avere collocato il robot nello stao iniziale convenzionale <span class="brown">HOME</span>.</p>
+<p><span class="slide1">HOME</span></p>
 </section>
 <section id="stato-iniziale-del-virtualrobot">
 <h3>Stato iniziale del virtualrobot<a class="headerlink" href="#stato-iniziale-del-virtualrobot" title="Permalink to this headline">¶</a></h3>
@@ -299,13 +311,13 @@ in essi riporteremo solo la forma di <code class="docutils literal notranslate">
 informazioni sull’esito del comando  (<em>Messaggio di stato</em>), con la seguente sintassi:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;endmove&quot;</span><span class="p">:</span><span class="s2">&quot;RESULT&quot;</span><span class="p">,</span> <span class="s2">&quot;move&quot;</span><span class="p">:</span><span class="s2">&quot;MINFO&quot;</span><span class="p">}</span>
 <span class="n">RESULT</span>  <span class="p">:</span><span class="o">:=</span> <span class="n">true</span> <span class="o">|</span> <span class="n">false</span>
-<span class="n">MINFO</span>   <span class="p">:</span><span class="o">:=</span> <span class="n">MOVEID</span> <span class="o">|</span>  <span class="n">MOVEID_notallowed</span> <span class="p">(</span><span class="n">asynch</span><span class="p">)</span> <span class="o">|</span> <span class="n">MOVEID_interrupted</span>
+<span class="n">MINFO</span>   <span class="p">:</span><span class="o">:=</span> <span class="n">MOVEID</span> <span class="o">|</span>  <span class="n">MOVEID_notallowed</span> <span class="p">(</span><span class="n">asynch</span><span class="p">)</span> <span class="o">|</span> <span class="n">MOVEID</span><span class="o">-</span><span class="n">interrupted</span>
 <span class="n">MOVEID</span>  <span class="p">:</span><span class="o">:=</span> <span class="n">moveForward</span> <span class="o">|</span> <span class="n">moveBackward</span> <span class="o">|</span> <span class="n">turnLeft</span> <span class="o">|</span> <span class="n">turnRight</span>
 </pre></div>
 </div>
 <p>Il significato dei valori di <code class="docutils literal notranslate"><span class="pre">MINFO</span></code> è il seguente:</p>
 <ul class="simple">
-<li><p><strong>MOVEID_interrupted</strong>: mossa <code class="docutils literal notranslate"><span class="pre">MOVEID</span></code> interrotta perchè il robot ha ricevuto un comando  <code class="docutils literal notranslate"><span class="pre">alarm</span></code></p></li>
+<li><p><strong>MOVEID-interrupted</strong>: mossa <code class="docutils literal notranslate"><span class="pre">MOVEID</span></code> interrotta perchè il robot ha ricevuto un comando  <code class="docutils literal notranslate"><span class="pre">alarm</span></code></p></li>
 <li><p><strong>MOVEID_notallowed (asynch)</strong>: mossa <code class="docutils literal notranslate"><span class="pre">MOVEID</span></code> rifiutata (non eseguita) in quanto la mossa relativa al comando precedente
 non è ancora terminata.</p></li>
 </ul>
@@ -339,8 +351,44 @@ Questi dati sono automaticamente convertiti in messaggi <a class="reference inte
 </pre></div>
 </div>
 </div></blockquote>
-<p><span class="slide">Controllo del robot da programmi</span></p>
+<p><span class="slide">Come è fatto WEnv</span></p>
 </section>
+</section>
+</section>
+<section id="wenv-note-di-implementazione">
+<h2>WEnv - note di implementazione<a class="headerlink" href="#wenv-note-di-implementazione" title="Permalink to this headline">¶</a></h2>
+<p>L’implementazione di WEnv si basa su due componenti principali:</p>
+<ul class="simple">
+<li><p><strong>server</strong>: che definisce il programma <code class="docutils literal notranslate"><span class="pre">WebpageServer.js</span></code> scritto con il framework  <a class="reference external" href="https://www.tutorialspoint.com/nodejs/nodejs_express_framework.htm">Node Express</a></p></li>
+<li><p><strong>WebGLScene</strong>: componente che gestisce la scena</p></li>
+</ul>
+<section id="architettura-di-wenv">
+<h3>Architettura di WEnv<a class="headerlink" href="#architettura-di-wenv" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="_images/WenvArch.PNG"><img alt="_images/WenvArch.PNG" class="align-center" src="_images/WenvArch.PNG" style="width: 100%;" /></a>
+<p><code class="docutils literal notranslate"><span class="pre">WebpageServer.js</span></code> utilizza due diversi tipi  di WebSocket:</p>
+<ul>
+<li><p>un socket (detto <strong>sceneSocket</strong>) basato sulla libreria <a class="reference external" href="https://socket.io/docs/v4/">socket.io</a> che viene utilizzato per gestire
+l’interazione con <strong>WebGLScene</strong>.</p>
+<p><span class="remark">socket.io non è un’implementazione WebSocket.</span></p>
+<p>Sebbene <a class="reference external" href="https://socket.io/docs/v4/">socket.io</a> utilizzi effettivamente WebSocket come trasporto quando possibile,
+aggiunge alcuni metadati a ciascun pacchetto: il tipo di pacchetto, lo spazio dei nomi
+e l’ID di riconoscimento quando è necessario un riconoscimento del messaggio.
+Ecco perché un client WebSocket non sarà in grado di connettersi correttamente a un server Socket.IO
+e un client <a class="reference external" href="https://socket.io/docs/v4/">socket.io</a> non sarà in grado di connettersi a un server WebSocket.</p>
+</li>
+<li><p>il websocker <strong>8091</strong> basato sulla libreria <a class="reference external" href="https://www.npmjs.com/package/ws">ws</a> : questo socket viene utilizzato per gestire comandi
+applicativi asincroni per muovere il robot inviati da client remoti e per inviare a client remoti un
+<a class="reference internal" href="#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a>.</p>
+<p>WEnv utilizza la libreria Node <a class="reference external" href="https://github.com/einaros/ws">einaros</a> per accettare questi comendi.</p>
+<p><span class="remark">Il modulo ws non funziona nel browser: bisogna utilizzare l’oggetto WebSocket nativo.</span></p>
+</li>
+</ul>
+<p>Quando <code class="docutils literal notranslate"><span class="pre">WebvGLScene</span></code> rileva una collisione tra il robot virtuale e un ostacolo,
+invoca l’utilità <code class="docutils literal notranslate"><span class="pre">eventBus.js</span></code> per ‘emettere un evento collisione’
+oltre lo <strong>sceneSocket</strong>.</p>
+<p>Questo evento è gestito da un apposito handler (vedi <code class="docutils literal notranslate"><span class="pre">sceneSocketInfoHandler</span></code> in <code class="docutils literal notranslate"><span class="pre">WebpageServer.js</span></code>),
+che reindirizza le informazioni a tutti i client connessi sulla  <code class="docutils literal notranslate"><span class="pre">8091</span></code>.</p>
+<p><span class="slide">Controllo del robot da programmi</span></p>
 </section>
 </section>
 <section id="esempi-di-uso-naive-di-wenv">
@@ -352,16 +400,19 @@ infrastrutture di supporto e astrazioni di comunicazione capaci di agevolare il 
 <p>Prima di procedere in questa direzione, introduciamo acluni esempi di controllo del robot attraverso programmi
 Java scritti in modo ‘naive’, avvalendoci nel modo più semplice e diretto
 delle librerie disponibili come supporto alle comunicazioni vie rete.</p>
+<p><span class="slide1">Uso di HTTP library</span></p>
 <section id="testmovesusinghttp">
 <h3>TestMovesUsingHttp<a class="headerlink" href="#testmovesusinghttp" title="Permalink to this headline">¶</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">javasrc/it/unibo/virtualRobot2023/clients</span></code></p>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
 <col style="width: 60%" />
 <col style="width: 40%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><em>it.unibo.virtualRobot2023.clients.TestMovesUsingHttp.java</em></p>
-<p>Esegue  mosse di base del robot inviando vie <code class="docutils literal notranslate"><span class="pre">HTTP</span></code>  comandi espressi in in <a class="reference internal" href="#comandi-base-per-il-robot-in-cril"><span class="std std-ref">cril</span></a></p>
+<tr class="row-odd"><td><p><span class="remark">TestMovesUsingHttp.java</span></p>
+<p>Esegue  mosse di base del robot inviando vie <code class="docutils literal notranslate"><span class="pre">HTTP</span></code>
+comandi espressi in in <a class="reference internal" href="#comandi-base-per-il-robot-in-cril"><span class="std std-ref">cril</span></a></p>
 </td>
 <td><p><span class="blue">Key point</span>: Richiesta <span class="blue">sincrona</span>.</p>
 <p>Richiede 1 thread.</p>
@@ -372,8 +423,7 @@ delle librerie disponibili come supporto alle comunicazioni vie rete.</p>
 <p>Dal punto di vista ‘sistemistico’ osserviamo che:</p>
 <ul class="simple">
 <li><p>Il codice di comunicazione è scritto completamente dal progettista dell’applicazione che usa la libreria <em>org.apache.http</em>.</p></li>
-<li><p>La gestione delle risposte JSON viene eseguita utilizzando la libreria  <a class="reference external" href="https://www.baeldung.com/java-org-json">org.json</a>
-(vedi anche <a class="reference external" href="https://www.baeldung.com/java-org-json">Introduzione a JSON-Java</a> ).</p></li>
+<li><p>La gestione delle risposte JSON viene eseguita utilizzando la libreria  <a class="reference external" href="https://code.google.com/archive/p/json-simple/">json-simple</a>.</p></li>
 </ul>
 <p>Dal punto di vista ‘applicativo’, osserviamo che:</p>
 <ul class="simple">
@@ -383,28 +433,31 @@ delle librerie disponibili come supporto alle comunicazioni vie rete.</p>
 <li><p>Una mossa che termina prima del tempo indicato nel comando (per interruzione o <a class="reference internal" href="#collision"><span class="std std-ref">Collision</span></a>,
 restituisce la risposta <code class="docutils literal notranslate"><span class="pre">{&quot;endmove&quot;:&quot;false&quot;,</span> <span class="pre">&quot;move&quot;:&quot;MINFO&quot;</span> <span class="pre">}</span></code> introdotta in <a class="reference internal" href="#interazione-sincrona"><span class="std std-ref">Interazione sincrona</span></a>.</p></li>
 </ul>
-<p>L’interazione mediante <code class="docutils literal notranslate"><span class="pre">HTTP</span></code> viene realizzata da una client <code class="docutils literal notranslate"><span class="pre">org.apache.http.client</span></code> invocato entro
+<p>L’interazione mediante <code class="docutils literal notranslate"><span class="pre">HTTP</span></code> viene realizzata da un client <code class="docutils literal notranslate"><span class="pre">org.apache.http.client</span></code> invocato entro
 una procedura di utilità definita come segue:</p>
 <section id="callhttp">
 <h4>callHTTP<a class="headerlink" href="#callhttp" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="n">JSONObject</span> <span class="nf">callHTTP</span><span class="p">(</span> <span class="n">String</span> <span class="n">crilCmd</span> <span class="p">)</span>  <span class="p">{</span>
-        <span class="n">JSONObject</span> <span class="n">jsonEndmove</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-        <span class="k">try</span> <span class="p">{</span>
-                <span class="n">StringEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringEntity</span><span class="p">(</span><span class="n">crilCmd</span><span class="p">);</span>
-                <span class="n">HttpUriRequest</span> <span class="n">httppost</span> <span class="o">=</span> <span class="n">RequestBuilder</span><span class="p">.</span><span class="na">post</span><span class="p">()</span>
-                                <span class="p">.</span><span class="na">setUri</span><span class="p">(</span><span class="k">new</span> <span class="n">URI</span><span class="p">(</span><span class="n">URL</span><span class="p">))</span>
-                                <span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;Content-Type&quot;</span><span class="p">,</span> <span class="s">&quot;application/json&quot;</span><span class="p">)</span>
-                                <span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;Accept&quot;</span><span class="p">,</span> <span class="s">&quot;application/json&quot;</span><span class="p">)</span>
-                                <span class="p">.</span><span class="na">setEntity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
-                                <span class="p">.</span><span class="na">build</span><span class="p">();</span>
-                <span class="n">CloseableHttpResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">httpclient</span><span class="p">.</span><span class="na">execute</span><span class="p">(</span><span class="n">httppost</span><span class="p">);</span>
-                <span class="n">String</span> <span class="n">jsonStr</span> <span class="o">=</span> <span class="n">EntityUtils</span><span class="p">.</span><span class="na">toString</span><span class="p">(</span> <span class="n">response</span><span class="p">.</span><span class="na">getEntity</span><span class="p">()</span> <span class="p">);</span>
-                <span class="n">jsonEndmove</span>    <span class="o">=</span> <span class="p">(</span><span class="n">JSONObject</span><span class="p">)</span> <span class="n">simpleparser</span><span class="p">.</span><span class="na">parse</span><span class="p">(</span><span class="n">jsonStr</span><span class="p">);</span>
-        <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">){...}</span>
-        <span class="k">return</span> <span class="n">jsonEndmove</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span>  <span class="n">JSONParser</span> <span class="n">simpleparser</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JSONParser</span><span class="p">();</span>
+
+     <span class="kd">protected</span> <span class="n">JSONObject</span> <span class="nf">callHTTP</span><span class="p">(</span> <span class="n">String</span> <span class="n">crilCmd</span> <span class="p">)</span>  <span class="p">{</span>
+             <span class="n">JSONObject</span> <span class="n">jsonEndmove</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+             <span class="k">try</span> <span class="p">{</span>
+                     <span class="n">StringEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringEntity</span><span class="p">(</span><span class="n">crilCmd</span><span class="p">);</span>
+                     <span class="n">HttpUriRequest</span> <span class="n">httppost</span> <span class="o">=</span> <span class="n">RequestBuilder</span><span class="p">.</span><span class="na">post</span><span class="p">()</span>
+                                     <span class="p">.</span><span class="na">setUri</span><span class="p">(</span><span class="k">new</span> <span class="n">URI</span><span class="p">(</span><span class="n">URL</span><span class="p">))</span>
+                                     <span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;Content-Type&quot;</span><span class="p">,</span> <span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+                                     <span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;Accept&quot;</span><span class="p">,</span> <span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+                                     <span class="p">.</span><span class="na">setEntity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+                                     <span class="p">.</span><span class="na">build</span><span class="p">();</span>
+                     <span class="n">CloseableHttpResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">httpclient</span><span class="p">.</span><span class="na">execute</span><span class="p">(</span><span class="n">httppost</span><span class="p">);</span>
+                     <span class="n">String</span> <span class="n">jsonStr</span> <span class="o">=</span> <span class="n">EntityUtils</span><span class="p">.</span><span class="na">toString</span><span class="p">(</span> <span class="n">response</span><span class="p">.</span><span class="na">getEntity</span><span class="p">()</span> <span class="p">);</span>
+                     <span class="n">jsonEndmove</span>    <span class="o">=</span> <span class="p">(</span><span class="n">JSONObject</span><span class="p">)</span> <span class="n">simpleparser</span><span class="p">.</span><span class="na">parse</span><span class="p">(</span><span class="n">jsonStr</span><span class="p">);</span>
+             <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">){...}</span>
+             <span class="k">return</span> <span class="n">jsonEndmove</span><span class="p">;</span>
+     <span class="p">}</span>
 </pre></div>
 </div>
+<p><span class="slide1">Operazioni di test</span></p>
 </section>
 <section id="testmovesusinghttp-tests">
 <h4>TestMovesUsingHttp tests<a class="headerlink" href="#testmovesusinghttp-tests" title="Permalink to this headline">¶</a></h4>
@@ -456,7 +509,7 @@ una procedura di utilità definita come segue:</p>
 </table>
 <section id="invio-di-alarm">
 <h5>Invio di alarm<a class="headerlink" href="#invio-di-alarm" title="Permalink to this headline">¶</a></h5>
-<p>Per inviare al robot un comando <em>halt</em> (messaggio <a class="reference internal" href="#alarm"><span class="std std-ref">alarm</span></a>) si possono usare diveri modi:</p>
+<p>Per inviare al robot un comando <em>halt</em> (messaggio <a class="reference internal" href="#alarm"><span class="std std-ref">alarm</span></a>) si possono usare diversi modi:</p>
 <ul>
 <li><p>Usare <a class="reference internal" href="#naivegui-html"><span class="std std-ref">NaiveGui.html</span></a>.</p></li>
 <li><p>Lanciare una nuova applicazione Java.</p></li>
@@ -483,13 +536,14 @@ lo stesso metodo <a class="reference internal" href="#callhttp"><span class="std
 </section>
 <section id="testmovesusingws">
 <h3>TestMovesUsingWs<a class="headerlink" href="#testmovesusingws" title="Permalink to this headline">¶</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">javasrc/it/unibo/virtualRobot2023/clients</span></code></p>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
 <col style="width: 60%" />
 <col style="width: 40%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><em>it.unibo.virtualRobot2023.clients.TestMovesUsingWs.java</em></p>
+<tr class="row-odd"><td><p><span class="remark">TestMovesUsingWs.java</span></p>
 <p>Esegue  mosse di base del robot inviando via <code class="docutils literal notranslate"><span class="pre">WebSocket</span></code>  comandi espressi in <a class="reference internal" href="#comandi-base-per-il-robot-in-cril"><span class="std std-ref">cril</span></a></p>
 </td>
 <td><p><span class="blue">Key point</span>: Richiesta <span class="blue">asincrona</span></p>
@@ -501,8 +555,9 @@ lo stesso metodo <a class="reference internal" href="#callhttp"><span class="std
 <p>Dal punto di vista ‘sistemistico’, osserviamo che:</p>
 <ul>
 <li><p>Il codice di comunicazione è scritto completamente dal progettista dell’applicazione, che utilizza
-la libreria <code class="docutils literal notranslate"><span class="pre">javax.websocket</span></code>  (vedi anche <a class="reference external" href="http://losviluppatore.it/i-websocket-comunicazione-asincrona-full-duplex-per-il-web/">I WebSocket Comunicazione Asincrona Full-Duplex Per Il Web</a> )</p></li>
-<li><p>Gli eventi del ciclo di vita dell’endpoint WebSocket sono gestiti mediante <span class="blue">Annotazioni</span>
+la libreria <code class="docutils literal notranslate"><span class="pre">javax.websocket</span></code>  (vedi anche <a class="reference external" href="http://losviluppatore.it/i-websocket-comunicazione-asincrona-full-duplex-per-il-web/">I WebSocket Comunicazione Asincrona Full-Duplex Per Il Web</a>)</p>
+<p><span class="slide1">Annotazioni</span></p>
+<p>Gli eventi del ciclo di vita dell’endpoint WebSocket sono gestiti mediante <span class="blue">Annotazioni</span>
 secondo lo schema che segue:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>@ClientEndpoint  //La classe viene trattata come un client WebSocket
 public class ... {
@@ -559,8 +614,8 @@ una procedura di utilità definita come segue:</p>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onMessage</span><span class="p">(</span><span class="n">String</span> <span class="n">message</span><span class="p">)</span>  <span class="p">{</span>
     <span class="kt">long</span> <span class="n">duration</span> <span class="o">=</span> <span class="n">System</span><span class="p">.</span><span class="na">currentTimeMillis</span><span class="p">()</span> <span class="o">-</span> <span class="n">startTime</span><span class="p">;</span>
     <span class="k">try</span> <span class="p">{</span>
-        <span class="c1">//{&quot;collision&quot;:&quot;true &quot;,&quot;move&quot;:&quot;...&quot;} or {&quot;sonarName&quot;:&quot;sonar2&quot;,&quot;distance&quot;:19,&quot;axis&quot;:&quot;x&quot;}</span>
-            <span class="n">CommUtils</span><span class="p">.</span><span class="na">outmagenta</span><span class="p">(</span><span class="s">&quot;TestMovesUsingWs | onMessage:&quot;</span> <span class="o">+</span> <span class="n">message</span> <span class="o">+</span> <span class="s">&quot; duration=&quot;</span><span class="o">+</span><span class="n">duration</span><span class="p">);</span>
+      <span class="c1">//{&quot;collision&quot;:&quot;true &quot;,&quot;move&quot;:&quot;...&quot;} or</span>
+      <span class="c1">//{&quot;sonarName&quot;:&quot;sonar2&quot;,&quot;distance&quot;:19,&quot;axis&quot;:&quot;x&quot;}</span>
       <span class="n">JSONObject</span> <span class="n">jsonObj</span> <span class="o">=</span> <span class="p">(</span><span class="n">JSONObject</span><span class="p">)</span> <span class="n">simpleparser</span><span class="p">.</span><span class="na">parse</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
       <span class="k">if</span> <span class="p">(</span><span class="n">jsonObj</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;endmove&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span>
             <span class="kt">boolean</span> <span class="n">endmove</span> <span class="o">=</span> <span class="n">jsonObj</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;endmove&quot;</span><span class="p">).</span><span class="na">toString</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;true&quot;</span><span class="p">);</span>
@@ -646,121 +701,18 @@ una procedura di utilità definita come segue:</p>
 </tr>
 </tbody>
 </table>
-<p><span class="slide">BoundaryWalk</span></p>
-</section>
-</section>
-</section>
-<section id="boundarywalknaive">
-<h2>BoundaryWalkNaive<a class="headerlink" href="#boundarywalknaive" title="Permalink to this headline">¶</a></h2>
-<p>Interagire con WEnv in modo sincrono (usando librerie per <code class="docutils literal notranslate"><span class="pre">HTTP</span></code>) o in modo asincrono (usando
-librerie per <code class="docutils literal notranslate"><span class="pre">WebSocket</span></code>) porta a strutture di codice diverse.</p>
-<p>Proviamo ad esempio a definire codice che induce il robot
-a percorrere (una volta) il bordo perimetrale della stanza rappresentata ne <a class="reference internal" href="#la-scena-di-wenv"><span class="std std-ref">La scena di WEnv</span></a>.</p>
-<section id="boundarywalknaiveusinghttp">
-<h3>BoundaryWalkNaiveUsingHttp<a class="headerlink" href="#boundarywalknaiveusinghttp" title="Permalink to this headline">¶</a></h3>
-<p><em>Strategia</em>: invia un comando <code class="docutils literal notranslate"><span class="pre">forward</span></code> con tempo <code class="docutils literal notranslate"><span class="pre">TF</span></code> tale da garatire una collisione
-con la parete di fronte.
-Dopo la collisione ruota a sinistra e ripete altre <code class="docutils literal notranslate"><span class="pre">3</span></code> volte.</p>
-<p>L’interazione mediante <code class="docutils literal notranslate"><span class="pre">HTTP</span></code> viene realizzata introducendo il metodo <a class="reference internal" href="#callhttp"><span class="std std-ref">callHTTP</span></a>
-visto in precedenza.</p>
-<p>La soluzione potrebbe essere strutturata come segue:</p>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">walkAtBoundary</span><span class="p">()</span> <span class="p">{</span>
-             <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="mi">4</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-   <span class="n">answer</span> <span class="o">=</span> <span class="n">walkAheadUntilCollision</span><span class="p">();</span>
-   <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="n">answer</span> <span class="p">)</span> <span class="k">break</span><span class="p">;</span>
-             <span class="p">}</span>
-      <span class="p">}</span>
-      <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">walkAheadUntilCollision</span><span class="p">()</span> <span class="p">{</span>
- <span class="n">JSONObject</span> <span class="n">result</span> <span class="o">=</span> <span class="n">callHTTP</span><span class="p">(</span>  <span class="n">forwardcmd</span>  <span class="p">);</span>
-             <span class="k">if</span><span class="p">(</span> <span class="n">result</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;collision&quot;</span><span class="p">))</span> <span class="p">{</span>
-                     <span class="n">callHTTP</span><span class="p">(</span>  <span class="n">turnleftcmd</span>  <span class="p">);</span>
-                     <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-             <span class="p">}</span><span class="k">else</span><span class="p">{</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">outred</span><span class="p">(</span><span class="s">&quot;fatal error: no collision&quot;</span><span class="p">);</span>
-                    <span class="k">return</span> <span class="n">fale</span> <span class="p">;}</span>
-      <span class="p">}</span>
-</pre></div>
-</div>
-<p>La durata del processo è dell’ordine di <code class="docutils literal notranslate"><span class="pre">4TF</span> <span class="pre">+</span> <span class="pre">4TL</span></code> con <code class="docutils literal notranslate"><span class="pre">TL=</span></code> tempo di rotazione.</p>
-</section>
-<section id="boundarywalknaiveusingws">
-<h3>BoundaryWalkNaiveUsingWs<a class="headerlink" href="#boundarywalknaiveusingws" title="Permalink to this headline">¶</a></h3>
-<p><em>Strategia</em>: invia un comando <code class="docutils literal notranslate"><span class="pre">forward</span></code> con tempo <code class="docutils literal notranslate"><span class="pre">TF</span></code> tale da garatire una collisione
-con la parete di fronte.
-Dopo la collisione ruota a sinistra e ripete altre <code class="docutils literal notranslate"><span class="pre">3</span></code> volte.</p>
-<p>L’interazione mediante <code class="docutils literal notranslate"><span class="pre">WebSocket</span></code> viene realizzata introducendo il metodo <a class="reference internal" href="#callws"><span class="std std-ref">callWS</span></a>
-visto in precedenza.</p>
-<p>Diversamente da <a class="reference internal" href="#boundarywalknaiveusinghttp"><span class="std std-ref">BoundaryWalkNaiveUsingHttp</span></a>, un client che usa la connessione su Websocket viene indotto ad impostare la
-logica applicativa all’interno del metodo <code class="docutils literal notranslate"><span class="pre">onMessage</span></code> che riceve il <a class="reference internal" href="#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a> conseguente
-a un comando asincrono. Nel dettaglio:</p>
-<ol class="arabic">
-<li><p>Il client invia un comando di movimento in avanti del robot (che parte in HOME) con una durata
-che garantisce una collisione con la parete <code class="docutils literal notranslate"><span class="pre">wallDown</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">callWS</span><span class="p">(</span>  <span class="n">forwardlongcmd</span>  <span class="p">);</span>
-</pre></div>
-</div>
-</li>
-<li><p>Il client  definisce il metodo onmessage in modo da realizzare la business logic:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>@OnMessage //richiamato quando  arriva un  messaggio di stato
-public void onMessage(String message)  {
-    try {
-        long duration = System.currentTimeMillis() - startTime;
-        totalDuration += duration;
-        JSONObject jsonObj = (JSONObject) simpleparser.parse(message);
-        if (jsonObj.get(&quot;endmove&quot;) != null ) {
-            boolean endmove = jsonObj.get(&quot;endmove&quot;).toString().contains(&quot;true&quot;);
-            String  move    = (String) jsonObj.get(&quot;move&quot;) ;
-            if( ! endmove ){ //forward failed since collisiom
-                count++;
-                callWS(  turnleftcmd  );//CommUtils.delay(350);
-            }else //turnLeft completed
-            if( count &lt;= 4   ) callWS(  forwardlongcmd  );
-        } else if (jsonObj.get(&quot;collision&quot;) != null ) {
-            String move   = (String) jsonObj.get(&quot;collision&quot;);
-            String target = (String) jsonObj.get(&quot;target&quot;);
-            halt(); //Forza l&#39;emissione di {&quot;endmove&quot;:&quot;false&quot;,&quot;move&quot;:&quot;moveForward-collision&quot;}
-        }
-    } catch (Exception e) {... }
-}
-</pre></div>
-</div>
-</li>
+<p><span class="worktodo">TODO: Deliverable BoundaryWalk</span></p>
+<ol class="arabic simple">
+<li><p>Compilare la sezione <code class="docutils literal notranslate"><span class="pre">Problem</span> <span class="pre">analysis</span></code> del <a class="reference external" href="_static/templateToFill.html">template2023</a>   ponendo in luce i key-points
+del problema della interazione con il VirtualRobot23.</p></li>
+<li><p>Ridenominare il file <span class="remark">BoundaryWalkCognomeNome</span> e inserirlo nella directory <code class="docutils literal notranslate"><span class="pre">Deliverables</span></code>
+del proprio GIT repo privato.</p></li>
+<li><p>Compilare la sezione <code class="docutils literal notranslate"><span class="pre">Project</span></code> descrivendo una strategia di comandi (sincroni e/o asincroni)
+che induce il robot
+a percorrere (una volta) il bordo perimetrale della stanza rappresentata ne <a class="reference internal" href="#la-scena-di-wenv"><span class="std std-ref">La scena di WEnv</span></a>.</p></li>
+<li><p>Compilare la sezione <code class="docutils literal notranslate"><span class="pre">Testing</span></code> descrivendo una strategia di collaudo.</p></li>
 </ol>
-<p><span class="slide">Come è fatto WEnv</span></p>
 </section>
-</section>
-<section id="wenv-note-di-implementazione">
-<h2>WEnv - note di implementazione<a class="headerlink" href="#wenv-note-di-implementazione" title="Permalink to this headline">¶</a></h2>
-<p>L’implementazione di WEnv si basa su due componenti principali:</p>
-<ul class="simple">
-<li><p><strong>server</strong>: che definisce il programma <code class="docutils literal notranslate"><span class="pre">WebpageServer.js</span></code> scritto con il framework  <a class="reference external" href="https://www.tutorialspoint.com/nodejs/nodejs_express_framework.htm">Node Express</a></p></li>
-<li><p><strong>WebGLScene</strong>: componente che gestisce la scena</p></li>
-</ul>
-<section id="architettura-di-wenv">
-<h3>Architettura di WEnv<a class="headerlink" href="#architettura-di-wenv" title="Permalink to this headline">¶</a></h3>
-<a class="reference internal image-reference" href="_images/WenvArch.PNG"><img alt="_images/WenvArch.PNG" class="align-center" src="_images/WenvArch.PNG" style="width: 100%;" /></a>
-<p><code class="docutils literal notranslate"><span class="pre">WebpageServer.js</span></code> utilizza due diversi tipi  di WebSocket:</p>
-<ul>
-<li><p>un socket (detto <strong>sceneSocket</strong>) basato sulla libreria <a class="reference external" href="https://socket.io/docs/v4/">socket.io</a> che viene utilizzato per gestire
-l’interazione con <strong>WebGLScene</strong>.</p>
-<p><span class="remark">socket.io non è un’implementazione WebSocket.</span></p>
-<p>Sebbene <a class="reference external" href="https://socket.io/docs/v4/">socket.io</a> utilizzi effettivamente WebSocket come trasporto quando possibile,
-aggiunge alcuni metadati a ciascun pacchetto: il tipo di pacchetto, lo spazio dei nomi
-e l’ID di riconoscimento quando è necessario un riconoscimento del messaggio.
-Ecco perché un client WebSocket non sarà in grado di connettersi correttamente a un server Socket.IO
-e un client <a class="reference external" href="https://socket.io/docs/v4/">socket.io</a> non sarà in grado di connettersi a un server WebSocket.</p>
-</li>
-<li><p>il websocker <strong>8091</strong> basato sulla libreria <a class="reference external" href="https://www.npmjs.com/package/ws">ws</a> : questo socket viene utilizzato per gestire comandi
-applicativi asincroni per muovere il robot inviati da client remoti e per inviare a client remoti un
-<a class="reference internal" href="#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a>.</p>
-<p>WEnv utilizza la libreria Node <a class="reference external" href="https://github.com/einaros/ws">einaros</a> per accettare questi comendi.</p>
-<p><span class="remark">Il modulo ws non funziona nel browser: bisogna utilizzare l’oggetto WebSocket nativo.</span></p>
-</li>
-</ul>
-<p>Quando <code class="docutils literal notranslate"><span class="pre">WebvGLScene</span></code> rileva una collisione tra il robot virtuale e un ostacolo,
-invoca l’utilità <code class="docutils literal notranslate"><span class="pre">eventBus.js</span></code> per ‘emettere un evento collisione’
-oltre lo <strong>sceneSocket</strong>.</p>
-<p>Questo evento è gestito da un apposito handler (vedi <code class="docutils literal notranslate"><span class="pre">sceneSocketInfoHandler</span></code> in <code class="docutils literal notranslate"><span class="pre">WebpageServer.js</span></code>),
-che reindirizza le informazioni a tutti i client connessi sulla  <code class="docutils literal notranslate"><span class="pre">8091</span></code>.</p>
 </section>
 </section>
 </section>
@@ -799,6 +751,10 @@ che reindirizza le informazioni a tutti i client connessi sulla  <code class="do
 </li>
 </ul>
 </li>
+<li><a class="reference internal" href="#wenv-note-di-implementazione">WEnv - note di implementazione</a><ul>
+<li><a class="reference internal" href="#architettura-di-wenv">Architettura di WEnv</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#esempi-di-uso-naive-di-wenv">Esempi di uso naive di WEnv</a><ul>
 <li><a class="reference internal" href="#testmovesusinghttp">TestMovesUsingHttp</a><ul>
 <li><a class="reference internal" href="#callhttp">callHTTP</a></li>
@@ -814,15 +770,6 @@ che reindirizza le informazioni a tutti i client connessi sulla  <code class="do
 <li><a class="reference internal" href="#testmovesusingws-tests">TestMovesUsingWs tests</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a class="reference internal" href="#boundarywalknaive">BoundaryWalkNaive</a><ul>
-<li><a class="reference internal" href="#boundarywalknaiveusinghttp">BoundaryWalkNaiveUsingHttp</a></li>
-<li><a class="reference internal" href="#boundarywalknaiveusingws">BoundaryWalkNaiveUsingWs</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#wenv-note-di-implementazione">WEnv - note di implementazione</a><ul>
-<li><a class="reference internal" href="#architettura-di-wenv">Architettura di WEnv</a></li>
 </ul>
 </li>
 </ul>

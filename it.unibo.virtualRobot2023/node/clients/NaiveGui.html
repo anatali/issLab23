@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<meta charset = "utf-8" />
+<title>wsclientToWenv</title>
+<body>
+<script src="https://cdn.jsdelivr.net/webjars/org.webjars/jquery/2.1.0/jquery.js"></script>
+<script language="javascript" type="text/javascript">
+const socket = new WebSocket('ws://localhost:8091/');
+  socket.onopen = function () { console.log("socket connected on 8091") };
+
+  	socket.onmessage = function(evt) { 
+  		//console.log( "onmessage data=" + evt.data); 
+  	};
+
+	socket.addEventListener('message', event => {
+	   document.getElementById("display").innerHTML += event.data +"<br/>"
+	  //also UPDATES iframe
+	});
+
+    function doMove(move, time) {
+        const moveJson = '{"robotmove":"'+ move + '", "time":'+time+'}'
+        //console.log("doMove moveJson:" + moveJson);
+        if (socket && socket.bufferedAmount == 0) { socket.send(moveJson) }
+    }
+	
+$(document).ready(function(){ 
+    //Un altro modo rispetto alla funzione che segue
+	$( "#lsocket" ).click(function() {  
+	    //val t   = document.getElementById("asynchtime").value
+	    var msg = "{\"robotmove\":\"turnLeft\", \"time\": T }".replace("T",document.getElementById("asynchtime").value)
+		if (socket.bufferedAmount == 0) socket.send( msg );  //"{\"robotmove\":\"turnLeft\", \"time\": t }"
+	});
+});
+
+$(function () {
+	$( "#rsocket" ).click(function() {  doMove("turnRight",   document.getElementById("asynchtime").value);    })   
+	$( "#wsocket" ).click(function() {  doMove("moveForward", document.getElementById("asynchtime").value);    })
+	$( "#ssocket" ).click(function() {  doMove("moveBackward",document.getElementById("asynchtime").value);    })		
+	$( "#hsocket" ).click(function() {  doMove("alarm", 10);            })
+});
+</script>
+
+<script>
+
+         function clearDisplay(){
+            document.getElementById("display").innerHTML =""
+         }
+         function dohalt(){
+         	send('alarm',10);
+         }
+         function domove( ) {
+	        var robotmove   = document.getElementById("move").value;
+	        var timemove    = document.getElementById("time").value;
+	        send(robotmove,timemove);
+         }	
+         function send( robotmove,timemove ) {
+	        //var robotmove   = document.getElementById("move").value;
+	        //var timemove    = document.getElementById("time").value;
+            //alert(robotmove);
+            const json = {
+                  robotmove: robotmove,
+                  time: timemove,
+            };
+            //alert(JSON.stringify(json))
+            fetch("http://localhost:8090/api/move", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(json),
+            });
+            robotmove = ""
+         //console.log(JSON.stringify(json))
+        }
+
+</script>
+
+<h3>Virtual robot</h3>
+<table>
+ <tr>
+  <td><iframe src="http://localhost:8090" name="vrobot" height="300" width="300" title="Virtual robot"></iframe></td>
+  <td><h3>DISPLAY AREA <button onclick="clearDisplay()">CLEAR</button></h3>
+
+      <div id = "display"></div></td>
+
+ </tr>
+
+</table>
+
+
+<!-- <iframe src="vr.html" name="vrobot" height="400" width="400" title="Virtual robot"></iframe>
+<p><a href="http://localhost:8090" target="vrobot">Refresh</a></p>
+-->
+<h3>SYNCH (HTTP) COMMAND AREA</h3>
+<!--
+HTML provides no way to generate JSON from form data
+This is a form that shows the error
+<form id="frm0" name="frm0" action="http://localhost:8090/api/move" method="post">
+ <button name="data" value="{&quot;robotmove&quot;:&quot;turnLeft&quot; , &quot;time&quot;: &quot;300&quot;}">turnLeft</button>
+</form>
+-->
+
+
+    <!-- <form id="frm0" name="frm0" action="" method="post"> -->
+    <select style="width: 300px;" id="move" name="move" size="4">
+	    <option value="moveForward">moveForward</option>
+	    <option value="moveBackward">moveBackward</option>
+	    <option value="turnLeft">turnLeft</option>
+	    <option value="turnRight">turnRight</option>
+	    <!-- <option value="alarm">halt</option> -->
+    </select>
+    time:<input   id="time" value="2200" size="3"/>
+    <button onclick="domove( )">MOVE</button>
+    <!-- </form> -->
+
+
+
+
+ 
+<!-- <input id="move" value="alarm" size="10" />
+time:<input   id="time" value="300" size="3"/> -->
+<button onclick="dohalt( )">HALTPOST</button>
+ 
+ <hr/>
+
+ 
+<h3>ASYNCH COMMAND AREA</h3>
+
+ time:<input   id="asynchtime" value="1200" size="3"/>
+ <button id="lsocket" >turnLeft</button>
+ <button id="rsocket" >turnRight</button>
+ <button id="wsocket" >moveForward</button>  
+ <button id="ssocket" >moveBackward</button>
+ &nbsp <button id="hsocket" >HALT</button>
+ 
+
+
+
+
+
+
+</body>
+</html>

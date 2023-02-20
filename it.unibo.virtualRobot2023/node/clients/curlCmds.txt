@@ -1,0 +1,21 @@
+
+
+
+curl -d  "{\"robotmove\":\"turnLeft\" , \"time\": "300"}" -H "Content-Type: application/json"
+     -X POST http://localhost:8090/api/move
+Answer: {"endmove":true,"move":"turnLeft"}
+
+
+curl -d  "{\"robotmove\":\"moveForward\" , \"time\": "1500"}" -H "Content-Type: application/json"
+     -X POST http://localhost:8090/api/move
+Answer: {"endmove":true,"move":"moveForward"}
+
+
+curl -d  "{\"robotmove\":\"alarm\" , \"time\": "10"}" -H "Content-Type: application/json"
+     -X POST http://localhost:8090/api/move
+Answer:  {"endmove":"true","move":"halt"}
+
+-----------------------------------------------------------------------
+curl -d  "{\"robotmove\":\"alarm\" , \"time\": "10"}" -H "Content-Type: application/json"
+     -X POST ws://localhost:8091/api/move
+Answer:

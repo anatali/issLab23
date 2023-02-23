@@ -9,7 +9,7 @@ plugins {
 repositories {
     jcenter()
     //flatDir { dirs '../unibolibs' }
-    flatDir { dirs 'C:\\Didattica2023\\issLab2023\\unibolibs' }
+    flatDir { dirs './libs' }
 }
 
 version '1.0'

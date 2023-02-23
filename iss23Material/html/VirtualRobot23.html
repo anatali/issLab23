@@ -66,9 +66,11 @@ indipendenti l’una dall’altra.</p>
 <h2>La scena di WEnv<a class="headerlink" href="#la-scena-di-wenv" title="Permalink to this headline">¶</a></h2>
 <p>La scena del WEnv è costruita da una descrizione che può essere facilmente definita da un progettista di applicazioni
 modificando il file <code class="docutils literal notranslate"><span class="pre">node\WEnv\WebGLScene\sceneConfig.js</span></code>.</p>
-<p>Nel seguito, faremo riferimento a una stanza vuota rettangolare, racchiusa entro quattro pareti.
-Procedendo dal bordo superiore e muovendoci in senso oriario, i nomi delle pareti sono:
+<p>Nel seguito, faremo riferimento a una stanza rettangolare (vuota o con ostacoli), racchiusa entro quattro pareti.
+Procedendo dal bordo superiore e muovendoci in senso orario, i nomi delle pareti sono:
 <code class="docutils literal notranslate"><span class="pre">wallUp,</span> <span class="pre">wallRight,</span> <span class="pre">wallDown,</span> <span class="pre">wallLeft</span></code>.</p>
+<p>La scena può anche presentare uno o più dispositivi <span class="blue">Sonar</span> che rilevano la presenza del robot e ne misurano la distanza.</p>
+<p>Si veda <a class="reference internal" href="#naivegui-page"><span class="std std-ref">NaiveGui page</span></a>.</p>
 </section>
 <section id="come-attivare-wenv">
 <h2>Come attivare WEnv<a class="headerlink" href="#come-attivare-wenv" title="Permalink to this headline">¶</a></h2>
@@ -86,6 +88,7 @@ Procedendo dal bordo superiore e muovendoci in senso oriario, i nomi delle paret
 <span class="o">//</span><span class="n">Per</span> <span class="n">terminare</span><span class="p">:</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="o">-</span><span class="n">f</span> <span class="n">virtualRobot23</span><span class="o">.</span><span class="n">yaml</span>  <span class="n">down</span>
 </pre></div>
 </div>
+<p>Per un overview su Docker e DockerCompose si veda: <a class="reference external" href="./_static/IntroDocker23.html">Introduction to Docker and DockerCompose</a>.</p>
 </section>
 <section id="come-interagire-con-wenv">
 <h2>Come interagire con WEnv<a class="headerlink" href="#come-interagire-con-wenv" title="Permalink to this headline">¶</a></h2>
@@ -117,6 +120,8 @@ e in modo asicrono (via WebSocket)</p></li>
 </ul>
 <p>Sulla scena compare un meno <span class="blue">Open controls</span> che presenta conandi con cui modificare la scena,
 inserendo/eliminando oggetti. Le modifiche vengono perse al reload della pagina.</p>
+<section id="naivegui-page">
+<h4>NaiveGui page<a class="headerlink" href="#naivegui-page" title="Permalink to this headline">¶</a></h4>
 <p>La pagina si presenta come segue:</p>
 <a class="reference internal image-reference" href="_images/NaiveGui.PNG"><img alt="_images/NaiveGui.PNG" class="align-center" src="_images/NaiveGui.PNG" style="width: 50%;" /></a>
 <p>Attraverso questa GUI possiamo effettuare esperimenti come quelli che seguono:</p>
@@ -130,6 +135,7 @@ inserendo/eliminando oggetti. Le modifiche vengono perse al reload della pagina.
 <p>Si noti che un valore di tempo <code class="docutils literal notranslate"><span class="pre">-1</span></code> significa ‘forever’ e occorre sempre inviare un comando HALT
 per poterne effettuare un altro. Si consiglia di evitare l’uso del valore -1, a favore di valori
 interi positivi adeguatamenti alti in relazione al dominio applicativo.</p>
+</section>
 <section id="esperimento-misto">
 <h4>Esperimento misto<a class="headerlink" href="#esperimento-misto" title="Permalink to this headline">¶</a></h4>
 <ol class="arabic">
@@ -388,18 +394,18 @@ invoca l’utilità <code class="docutils literal notranslate"><span class="pre"
 oltre lo <strong>sceneSocket</strong>.</p>
 <p>Questo evento è gestito da un apposito handler (vedi <code class="docutils literal notranslate"><span class="pre">sceneSocketInfoHandler</span></code> in <code class="docutils literal notranslate"><span class="pre">WebpageServer.js</span></code>),
 che reindirizza le informazioni a tutti i client connessi sulla  <code class="docutils literal notranslate"><span class="pre">8091</span></code>.</p>
-<p><span class="slide">Controllo del robot da programmi</span></p>
+<p><span class="slide">Programmi naive di uso di WEnv</span></p>
 </section>
 </section>
-<section id="esempi-di-uso-naive-di-wenv">
-<h2>Esempi di uso naive di WEnv<a class="headerlink" href="#esempi-di-uso-naive-di-wenv" title="Permalink to this headline">¶</a></h2>
+<section id="programmi-naive">
+<h2>Programmi naive<a class="headerlink" href="#programmi-naive" title="Permalink to this headline">¶</a></h2>
 <p>L’ambiente WEnv verrà utilizzato nello sviluppo di applicazioni proattive/reattive basate su
 componenti che interagiscono a scambio di messaggi con interazioni sincrone e/o asincrone.</p>
 <p>Durante lo sviluppo di queste applicazioni, a complessità via via crescente, avremo modo di costruire
 infrastrutture di supporto e astrazioni di comunicazione capaci di agevolare il compito dell’application-designer.</p>
-<p>Prima di procedere in questa direzione, introduciamo acluni esempi di controllo del robot attraverso programmi
-Java scritti in modo ‘naive’, avvalendoci nel modo più semplice e diretto
-delle librerie disponibili come supporto alle comunicazioni vie rete.</p>
+<p>Prima di procedere in questa direzione, introduciamo alcuni esempi di controllo del robot attraverso programmi
+Java scritti in modo ‘naive’, <span class="remark">avvalendoci nel modo più semplice e diretto
+delle librerie</span> disponibili come supporto alle comunicazioni vie rete.</p>
 <p><span class="slide1">Uso di HTTP library</span></p>
 <section id="testmovesusinghttp">
 <h3>TestMovesUsingHttp<a class="headerlink" href="#testmovesusinghttp" title="Permalink to this headline">¶</a></h3>
@@ -439,22 +445,22 @@ una procedura di utilità definita come segue:</p>
 <h4>callHTTP<a class="headerlink" href="#callhttp" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span>  <span class="n">JSONParser</span> <span class="n">simpleparser</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JSONParser</span><span class="p">();</span>
 
-     <span class="kd">protected</span> <span class="n">JSONObject</span> <span class="nf">callHTTP</span><span class="p">(</span> <span class="n">String</span> <span class="n">crilCmd</span> <span class="p">)</span>  <span class="p">{</span>
-             <span class="n">JSONObject</span> <span class="n">jsonEndmove</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-             <span class="k">try</span> <span class="p">{</span>
-                     <span class="n">StringEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringEntity</span><span class="p">(</span><span class="n">crilCmd</span><span class="p">);</span>
-                     <span class="n">HttpUriRequest</span> <span class="n">httppost</span> <span class="o">=</span> <span class="n">RequestBuilder</span><span class="p">.</span><span class="na">post</span><span class="p">()</span>
-                                     <span class="p">.</span><span class="na">setUri</span><span class="p">(</span><span class="k">new</span> <span class="n">URI</span><span class="p">(</span><span class="n">URL</span><span class="p">))</span>
-                                     <span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;Content-Type&quot;</span><span class="p">,</span> <span class="s">&quot;application/json&quot;</span><span class="p">)</span>
-                                     <span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;Accept&quot;</span><span class="p">,</span> <span class="s">&quot;application/json&quot;</span><span class="p">)</span>
-                                     <span class="p">.</span><span class="na">setEntity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
-                                     <span class="p">.</span><span class="na">build</span><span class="p">();</span>
-                     <span class="n">CloseableHttpResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">httpclient</span><span class="p">.</span><span class="na">execute</span><span class="p">(</span><span class="n">httppost</span><span class="p">);</span>
-                     <span class="n">String</span> <span class="n">jsonStr</span> <span class="o">=</span> <span class="n">EntityUtils</span><span class="p">.</span><span class="na">toString</span><span class="p">(</span> <span class="n">response</span><span class="p">.</span><span class="na">getEntity</span><span class="p">()</span> <span class="p">);</span>
-                     <span class="n">jsonEndmove</span>    <span class="o">=</span> <span class="p">(</span><span class="n">JSONObject</span><span class="p">)</span> <span class="n">simpleparser</span><span class="p">.</span><span class="na">parse</span><span class="p">(</span><span class="n">jsonStr</span><span class="p">);</span>
-             <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">){...}</span>
-             <span class="k">return</span> <span class="n">jsonEndmove</span><span class="p">;</span>
-     <span class="p">}</span>
+<span class="kd">protected</span> <span class="n">JSONObject</span> <span class="nf">callHTTP</span><span class="p">(</span> <span class="n">String</span> <span class="n">crilCmd</span> <span class="p">)</span>  <span class="p">{</span>
+<span class="n">JSONObject</span> <span class="n">jsonEndmove</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+ <span class="k">try</span> <span class="p">{</span>
+   <span class="n">StringEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringEntity</span><span class="p">(</span><span class="n">crilCmd</span><span class="p">);</span>
+   <span class="n">HttpUriRequest</span> <span class="n">httppost</span> <span class="o">=</span> <span class="n">RequestBuilder</span><span class="p">.</span><span class="na">post</span><span class="p">()</span>
+      <span class="p">.</span><span class="na">setUri</span><span class="p">(</span><span class="k">new</span> <span class="n">URI</span><span class="p">(</span><span class="n">URL</span><span class="p">))</span>
+      <span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;Content-Type&quot;</span><span class="p">,</span> <span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;Accept&quot;</span><span class="p">,</span> <span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="na">setEntity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+      <span class="p">.</span><span class="na">build</span><span class="p">();</span>
+   <span class="n">CloseableHttpResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">httpclient</span><span class="p">.</span><span class="na">execute</span><span class="p">(</span><span class="n">httppost</span><span class="p">);</span>
+   <span class="n">String</span> <span class="n">jsonStr</span> <span class="o">=</span> <span class="n">EntityUtils</span><span class="p">.</span><span class="na">toString</span><span class="p">(</span> <span class="n">response</span><span class="p">.</span><span class="na">getEntity</span><span class="p">()</span> <span class="p">);</span>
+   <span class="n">jsonEndmove</span>    <span class="o">=</span> <span class="p">(</span><span class="n">JSONObject</span><span class="p">)</span> <span class="n">simpleparser</span><span class="p">.</span><span class="na">parse</span><span class="p">(</span><span class="n">jsonStr</span><span class="p">);</span>
+ <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">){...}</span>
+ <span class="k">return</span> <span class="n">jsonEndmove</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p><span class="slide1">Operazioni di test</span></p>
@@ -469,7 +475,7 @@ una procedura di utilità definita come segue:</p>
 <tbody>
 <tr class="row-odd"><td><img alt="_images/testHttpForwardOk.png" src="_images/testHttpForwardOk.png" />
 </td>
-<td><p><em>Forward ok</em></p>
+<td><p><span class="slide2">Muovi in avanti senza collisioni</span></p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">doForward</span><span class="p">()</span> <span class="p">{</span>
   <span class="n">String</span> <span class="n">forwardcmd</span><span class="o">=</span><span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveForward\&quot;,\&quot;time\&quot;:\&quot;1000\&quot;}&quot;</span><span class="p">;</span>
   <span class="n">CommUtils</span><span class="p">.</span><span class="na">waitTheUser</span><span class="p">(</span><span class="s">&quot;PUT ROBOT in HOME  and hit&quot;</span><span class="p">);</span>
@@ -482,7 +488,7 @@ una procedura di utilità definita come segue:</p>
 </tr>
 <tr class="row-even"><td><img alt="_images/testHttpForwardCollision.png" src="_images/testHttpForwardCollision.png" />
 </td>
-<td><p><em>Forward con collision</em></p>
+<td><p><span class="slide2">Muovi in avanti con collisione</span></p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">doCollision</span><span class="p">()</span> <span class="p">{</span>
   <span class="n">String</span> <span class="n">forwardcmd</span><span class="o">=</span><span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveForward\&quot;,\&quot;time\&quot;:\&quot;3000\&quot;}&quot;</span><span class="p">;</span>
   <span class="n">JSONObject</span> <span class="n">result</span> <span class="o">=</span> <span class="n">callHTTP</span><span class="p">(</span>  <span class="n">forwardcmd</span>  <span class="p">);</span>
@@ -494,7 +500,7 @@ una procedura di utilità definita come segue:</p>
 </tr>
 <tr class="row-odd"><td><img alt="_images/testHttpForwardHalted.png" src="_images/testHttpForwardHalted.png" />
 </td>
-<td><p><em>Forward halted</em></p>
+<td><p><span class="slide2">Muovi in avanti e ferma prima della fine</span></p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">doHalt</span><span class="p">()</span> <span class="p">{</span>
   <span class="n">String</span> <span class="n">forwardcmd</span><span class="o">=</span><span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveForward\&quot;,\&quot;time\&quot;:\&quot;3000\&quot;}&quot;</span><span class="p">;</span>
   <span class="n">sendAlarmAfter</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
@@ -531,6 +537,7 @@ lo stesso metodo <a class="reference internal" href="#callhttp"><span class="std
 </div>
 </li>
 </ul>
+<p><span class="slide1">Uso di javax.websocket library</span></p>
 </section>
 </section>
 </section>
@@ -583,6 +590,9 @@ public class ... {
 <li><p>Un eventuale <a class="reference internal" href="#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a> viene ‘iniettato’ nell’applicazione tramite una chiamata al metodo annotato
 con <code class="docutils literal notranslate"><span class="pre">&#64;OnMessage</span></code>.</p></li>
 <li><p>E’ possibile <span class="blue">interrompere</span> la esecuzione di una mossa inviando il comando <a class="reference internal" href="#alarm"><span class="std std-ref">alarm</span></a>.</p></li>
+<li><p>Per una mossa che termina prima del tempo indicato nel comando (per interruzione o <a class="reference internal" href="#collision"><span class="std std-ref">Collision</span></a>,
+vengono percepiti due <a class="reference internal" href="#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a>: <code class="docutils literal notranslate"><span class="pre">{&quot;collision&quot;:MOVEID,</span> <span class="pre">&quot;target&quot;:&quot;...&quot;</span> <span class="pre">}</span></code>
+e <code class="docutils literal notranslate"><span class="pre">{&quot;endmove&quot;:&quot;false&quot;,</span> <span class="pre">&quot;move&quot;:&quot;MINFO&quot;</span> <span class="pre">}</span></code></p></li>
 </ul>
 <p>L’interazione mediante <code class="docutils literal notranslate"><span class="pre">WebSocket</span></code> viene realizzata dalla libreria <code class="docutils literal notranslate"><span class="pre">javax.websocket</span></code> invocato entro
 una procedura di utilità definita come segue:</p>
@@ -651,7 +661,7 @@ una procedura di utilità definita come segue:</p>
 <tbody>
 <tr class="row-odd"><td><img alt="_images/testHttpForwardOk.png" src="_images/testHttpForwardOk.png" />
 </td>
-<td><p><em>Forward ok</em></p>
+<td><p><span class="slide2">Muovi in avanti senza collisioni</span></p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">doForward</span><span class="p">()</span> <span class="p">{</span>
   <span class="n">String</span> <span class="n">forwardcmd</span><span class="o">=</span><span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveForward\&quot;,\&quot;time\&quot;:\&quot;1000\&quot;}&quot;</span><span class="p">;</span>
   <span class="n">CommUtils</span><span class="p">.</span><span class="na">waitTheUser</span><span class="p">(</span><span class="s">&quot;PUT ROBOT in HOME  and hit&quot;</span><span class="p">);</span>
@@ -659,6 +669,9 @@ una procedura di utilità definita come segue:</p>
   <span class="n">callWS</span><span class="p">(</span>  <span class="n">forwardcmd</span>  <span class="p">);</span>
   <span class="n">CommUtils</span><span class="p">.</span><span class="na">waitTheUser</span><span class="p">(</span><span class="s">&quot;Hit to terminate doForward&quot;</span><span class="p">);</span>
 <span class="p">}</span>
+
+<span class="c1">//MESSAGGI DI STATO</span>
+<span class="nl">onMessage:</span><span class="p">{</span><span class="s">&quot;endmove&quot;</span><span class="p">:</span><span class="s">&quot;true&quot;</span><span class="p">,</span><span class="s">&quot;move&quot;</span><span class="p">:</span><span class="s">&quot;moveForward&quot;</span><span class="p">}</span> <span class="n">duration</span><span class="o">=</span><span class="mi">1055</span>
 </pre></div>
 </div>
 </td>
@@ -666,13 +679,14 @@ una procedura di utilità definita come segue:</p>
 <tr class="row-even"><td><img alt="_images/testWsForwardCollision.png" src="_images/testWsForwardCollision.png" />
 <img alt="_images/testWsForwardCollisionWithHalt.png" src="_images/testWsForwardCollisionWithHalt.png" />
 </td>
-<td><p><em>Forward con collision</em></p>
+<td><p><span class="slide2">Muovi in avanti con collisione</span></p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">doCollision</span><span class="p">()</span> <span class="p">{</span>
   <span class="n">String</span> <span class="n">forwardcmd</span>   <span class="o">=</span> <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveForward\&quot;, \&quot;time\&quot;:\&quot;3000\&quot;}&quot;</span><span class="p">;</span>
   <span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="p">.</span><span class="na">currentTimeMillis</span><span class="p">();</span>
   <span class="n">callWS</span><span class="p">(</span>  <span class="n">forwardcmd</span>  <span class="p">);</span>
 <span class="p">}</span>
 
+<span class="c1">//MESSAGGI DI STATO</span>
 <span class="c1">//SENZA halt in onMessage relativo a collision</span>
 <span class="nl">onMessage:</span><span class="p">{</span><span class="s">&quot;collision&quot;</span><span class="p">:</span><span class="s">&quot;moveForward&quot;</span><span class="p">,</span><span class="s">&quot;target&quot;</span><span class="p">:</span><span class="s">&quot;wallDown&quot;</span><span class="p">}</span> <span class="n">duration</span><span class="o">=</span><span class="mi">841</span>
 <span class="nl">onMessage:</span><span class="p">{</span><span class="s">&quot;endmove&quot;</span><span class="p">:</span><span class="s">&quot;false&quot;</span><span class="p">,</span><span class="s">&quot;move&quot;</span><span class="p">:</span><span class="s">&quot;moveForward-collision&quot;</span><span class="p">}</span> <span class="n">duration</span><span class="o">=</span><span class="mi">3019</span>
@@ -684,9 +698,26 @@ una procedura di utilità definita come segue:</p>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><img alt="_images/testHttpForwardHalted.png" src="_images/testHttpForwardHalted.png" />
+<tr class="row-odd"><td><img alt="_images/testWsNotallowed.png" src="_images/testWsNotallowed.png" />
 </td>
-<td><p><em>Forward halted</em></p>
+<td><p><span class="slide2">Muovi in avanti e ruota a sinistra prima della fine</span></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">doNotAllowed</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">forwardcmd</span><span class="o">=</span><span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveForward\&quot;,\&quot;time\&quot;:\&quot;1200\&quot;}&quot;</span><span class="p">;</span>
+  <span class="n">callWS</span><span class="p">(</span>  <span class="n">forwardcmd</span>  <span class="p">);</span>
+  <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
+  <span class="n">callWS</span><span class="p">(</span>  <span class="n">turnleftcmd</span>  <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">//MESSAGGI DI STATO</span>
+<span class="nl">onMessage:</span><span class="p">{</span><span class="s">&quot;endmove&quot;</span><span class="p">:</span><span class="s">&quot;false&quot;</span><span class="p">,</span><span class="s">&quot;move&quot;</span><span class="p">:</span><span class="s">&quot;turnLeft_notallowed (asynch)&quot;</span><span class="p">}</span>
+<span class="nl">onMessage:</span><span class="p">{</span><span class="s">&quot;endmove&quot;</span><span class="p">:</span><span class="s">&quot;true&quot;</span><span class="p">,</span><span class="s">&quot;move&quot;</span><span class="p">:</span><span class="s">&quot;moveForward&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><img alt="_images/testHttpForwardHalted.png" src="_images/testHttpForwardHalted.png" />
+</td>
+<td><p><span class="slide2">Muovi in avanti e ferma prima della fine</span></p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">doHalt</span><span class="p">()</span> <span class="p">{</span>
   <span class="n">String</span> <span class="n">forwardcmd</span><span class="o">=</span><span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveForward\&quot;,\&quot;time\&quot;:\&quot;3000\&quot;}&quot;</span><span class="p">;</span>
   <span class="n">callWS</span><span class="p">(</span>  <span class="n">forwardcmd</span>  <span class="p">);</span>
@@ -694,6 +725,7 @@ una procedura di utilità definita come segue:</p>
   <span class="n">callWS</span><span class="p">(</span>  <span class="n">haltcmd</span>  <span class="p">);</span>
 <span class="p">}</span>
 
+<span class="c1">//MESSAGGI DI STATO</span>
 <span class="nl">onMessage:</span><span class="p">{</span><span class="s">&quot;endmove&quot;</span><span class="p">:</span><span class="s">&quot;false&quot;</span><span class="p">,</span><span class="s">&quot;move&quot;</span><span class="p">:</span><span class="s">&quot;moveForward-interrupted&quot;</span><span class="p">}</span> <span class="n">duration</span><span class="o">=</span><span class="mi">1028</span>
 </pre></div>
 </div>
@@ -702,18 +734,31 @@ una procedura di utilità definita come segue:</p>
 </tbody>
 </table>
 <p><span class="worktodo">TODO: Deliverable BoundaryWalk</span></p>
-<ol class="arabic simple">
+</section>
+</section>
+</section>
+<section id="deliverableboundarywalk">
+<h2>DeliverableBoundaryWalk<a class="headerlink" href="#deliverableboundarywalk" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
 <li><p>Compilare la sezione <code class="docutils literal notranslate"><span class="pre">Problem</span> <span class="pre">analysis</span></code> del <a class="reference external" href="_static/templateToFill.html">template2023</a>   ponendo in luce i key-points
-del problema della interazione con il VirtualRobot23.</p></li>
+del problema della interazione con il VirtualRobot23.</p>
+<p>In Lab2: Collegarsi a <a class="reference external" href="https://app.wooclap.com/VR1DISI">https://app.wooclap.com/VR1DISI</a></p>
+</li>
 <li><p>Ridenominare il file <span class="remark">BoundaryWalkCognomeNome</span> e inserirlo nella directory <code class="docutils literal notranslate"><span class="pre">Deliverables</span></code>
 del proprio GIT repo privato.</p></li>
 <li><p>Compilare la sezione <code class="docutils literal notranslate"><span class="pre">Project</span></code> descrivendo una strategia di comandi (sincroni e/o asincroni)
-che induce il robot
-a percorrere (una volta) il bordo perimetrale della stanza rappresentata ne <a class="reference internal" href="#la-scena-di-wenv"><span class="std std-ref">La scena di WEnv</span></a>.</p></li>
+che induce il robot:</p>
+<ul class="simple">
+<li><p><span class="blue">Req1</span> : a percorrere (una volta) il bordo perimetrale della stanza rappresentata ne <a class="reference internal" href="#la-scena-di-wenv"><span class="std std-ref">La scena di WEnv</span></a></p></li>
+</ul>
+<p>In Lab2: Collegarsi a <a class="reference external" href="https://app.wooclap.com/VR1DISI">https://app.wooclap.com/VR1DISI</a></p>
+<p>In futuro il robot dovrà anche:</p>
+<ul class="simple">
+<li><p><span class="blue">Req2</span> : fermarsi di 5 sec quando rilevato dal sonar</p></li>
+</ul>
+</li>
 <li><p>Compilare la sezione <code class="docutils literal notranslate"><span class="pre">Testing</span></code> descrivendo una strategia di collaudo.</p></li>
 </ol>
-</section>
-</section>
 </section>
 </section>
 
@@ -732,6 +777,7 @@ a percorrere (una volta) il bordo perimetrale della stanza rappresentata ne <a c
 <li><a class="reference internal" href="#come-attivare-wenv">Come attivare WEnv</a></li>
 <li><a class="reference internal" href="#come-interagire-con-wenv">Come interagire con WEnv</a><ul>
 <li><a class="reference internal" href="#naivegui-html">NaiveGui.html</a><ul>
+<li><a class="reference internal" href="#naivegui-page">NaiveGui page</a></li>
 <li><a class="reference internal" href="#esperimento-misto">Esperimento misto</a></li>
 </ul>
 </li>
@@ -755,7 +801,7 @@ a percorrere (una volta) il bordo perimetrale della stanza rappresentata ne <a c
 <li><a class="reference internal" href="#architettura-di-wenv">Architettura di WEnv</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#esempi-di-uso-naive-di-wenv">Esempi di uso naive di WEnv</a><ul>
+<li><a class="reference internal" href="#programmi-naive">Programmi naive</a><ul>
 <li><a class="reference internal" href="#testmovesusinghttp">TestMovesUsingHttp</a><ul>
 <li><a class="reference internal" href="#callhttp">callHTTP</a></li>
 <li><a class="reference internal" href="#testmovesusinghttp-tests">TestMovesUsingHttp tests</a><ul>
@@ -772,6 +818,7 @@ a percorrere (una volta) il bordo perimetrale della stanza rappresentata ne <a c
 </li>
 </ul>
 </li>
+<li><a class="reference internal" href="#deliverableboundarywalk">DeliverableBoundaryWalk</a></li>
 </ul>
 </li>
 </ul>

@@ -1,0 +1,1182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+ 
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	 
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	 
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #E6E6E6;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 700px;
+    font-size: 15px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px; 
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 120%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 110%;
+}
+h4 {
+    background-color: #C0F0E0;
+    font-size: 100%;
+	width: 100%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+	
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}       
+div.remark{
+	background-color: #ffffff;	
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+} 
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}     
+
+table, th, td {
+	border: 2px solid #d5f2ed;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+	
+}
+
+a {
+	text-decoration: none;
+	color: #9C90E7;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+
+
+        
+</style>
+    
+<head>
+   
+<title>IntroDocker</title></head>
+    
+<body>
+<div id="body">
+<h1>LabIss | Introduction to Docker and DockerCompose<font size="5"></font> </h1>
+<p>
+Docker is a software that offers a set of platform-as-a-service products for developing and deploying applications by packaging software in containers.
+The container becomes the unit for distributing and testing of applications. They are great for continuous integration and continuous delivery (<bc>CI/CD</bc>) workflows.
+</p><p>
+Containers are lightweight, portable, virtual environments that developers can share without risking inconsistencies in development. 
+Due to these useful features, many organizations have switched from using 
+<a href="https://phoenixnap.com/kb/containers-vs-vms" target="web">virtual machines to Docker containers</a>.
+</p><p>
+See <a href="https://docs.docker.com/get-started/overview/"  target="web">Docker overview</a>, 
+ <a href="https://docs.docker.com/"  target="web">Docker docs</a>.
+
+ <center><table style="width:95%">
+<tr>
+ 	<td style="width:40%">
+	<h4>Docker Engine</h4> is a client-server application
+	<center><img src="./img/Docker/dockerengine-components-flow.png" alt="dockerengine-components-flow.png" width="90%"  /></center> </td>
+ 	<td><h4>Docker architecture</h4>
+	<center><img src="./img/Docker/architecture.svg" alt="architecture.svg" width="90%"  /></td>
+</tr>
+</table>
+</center> 
+<h3>Basic concepts</h3>
+<ul>
+<li>Docker is written in <a href="https://en.wikipedia.org/wiki/Go_(programming_language)" target="web">Go</a> 
+and takes advantage of several features of the Linux kernel to deliver its functionality.</li>
+<li>The Docker daemon (<tt>dockerd</tt>) listens for Docker API requests and manages Docker objects.</li>
+<li>A <em>container</em> is a runnable instance of an image. When you run a container, Docker creates a set of <em>namespaces</em>
+(each provides a layer of isolation) for that container:
+	<ul>
+	<li><bc>pid</bc> namespace: Process isolation (PID: Process ID).</li>
+	<li><bc>net</bc> namespace: Managing network interfaces (NET: Networking)</li>
+	<li><bc>ipc</bc> namespace: Managing access to IPC resources (IPC: InterProcess Communication)</li>
+	<li><bc>mnt</bc> namespace: Managing filesystem mount points (MNT: Mount)</li>
+	<li><bc>uts</bc> namespace: Isolating kernel and version identifiers. (UTS: Unix Timesharing System)</li>
+	</ul>
+ </li>
+ <li>A <em>cgroup</em> (control group) limits an application to a specific set of resources.
+ Control groups allow Docker Engine to share available hardware resources to containers and optionally enforce limits and constraints. 
+ For example, you can limit the memory available to a specific container.
+ </li>
+<li>An <em>image</em> is a read-only template with instructions for creating a Docker container.
+Often, an image is based on another image, with some additional customization</li>
+<li>The Docker client (<tt>docker</tt>) is the primary way that many Docker users interact with Docker.</li>
+<li>A <em>Docker registry</em> stores Docker images. <a href="https://hub.docker.com/" target="web">Docker Hub</a> is a public registry. </li>
+<li>To build your own image, you create a <em>Dockerfile</em>. Each instruction creates a <em>layer</em> in the image. 
+When you change the Dockerfile and rebuild the image, only those layers which have changed are rebuilt. 
+This is part of what makes images so lightweight, small, and fast, when compared to other virtualization technologies.</li>
+<li><em>Services</em> allow you to scale containers across multiple Docker daemons, which all work together as a <bc>swarm</bc> with multiple managers and workers.</li>
+</ul>
+
+ 
+
+</p>
+
+<h2>Install</h2>
+
+<h3>On Windows10</h3>
+<ul>
+<li>On ThinkPad (Virtualization enabled) I'm using <a href="https://docs.docker.com/docker-for-windows/install/">Docker  Desktop for Windows</a>  
+described in <a href="https://docs.docker.com/docker-for-windows/" target="web">Docker for Windows</a></li>
+<li>On another machine I'm using  <a href="https://docs.docker.com/toolbox/toolbox_install_windows/" target="web">Docker Toolbox on Windows</a> </li>
+</ul>
+
+ 
+<b>Note:</b> on windows Home and some older version of Windows Pro/enterprise you get the following error when installing Docker Desktop:
+<pre>Docker Desktop requires Windows 10 Pro or Enterprise version 15063 to run.</pre>
+In this case, you must install <a href="https://docs.docker.com/toolbox/toolbox_install_windows/">Docker Toolbox</a>, 
+which relies on VirtualBox instead of Hyper-V<br>
+<m><hr>Docker  Toolbox will install VirtualBox if not already present in your system and will create a virtual machine named <k>default</k>. 
+The resources of the docker containers (e.g. Memory, Number of available  CPUs, ...) will depend on the settings of this virtual machine. 
+To change the settings, enter the virtual machine (preferably when no Docker container is running!) and enter <k>sudo shutdown -h now</k>, 
+then right click on the virtual machine in the VirtualBox interface to access the settings panel.<hr></m>
+
+<h3>On RaspberryPi</h3>
+Raspberry Pis use the <tt>ARM</tt> architecture, and as a result, won't be compatible with all containers out of the box. 
+Images will need to be built from an <bc>ARM</bc> base image. 
+<br/>
+See <a href="https://www.docker.com/blog/happy-pi-day-docker-raspberry-pi/" target="web">Happy Pi Day with Docker and Raspberry Pi</a>.
+<br/>
+ <center><table style="width:95%">
+<tr>
+ 	<td style="width:30%">Install <bc>Docker</bc></td>
+ 	<td ><pre>curl -sSL https://get.docker.com | sh </pre></td>
+</tr>
+
+<tr>
+ 	<td>Add permission to run Docker Commands </td>
+ 	<td ><pre>sudo usermod -aG docker pi </pre>
+	<k>reboot !!!</k>
+	<pre><ks>sudo dockerd &</ks> <kc>//daemon runs with default configuration</kc>
+docker version		//20.10.6
+docker info</pre></td>
+</tr>
+
+<tr>
+ 	<td>Test Docker installation </td>
+ 	<td ><pre>docker run hello-world </pre></td>
+</tr>
+
+<tr>
+ 	<td>Install proper dependencies </td>
+ 	<td ><pre>sudo apt-get install -y libffi-dev libssl-dev
+sudo apt-get install -y python3 python3-pip
+sudo apt-get remove python-configparser </pre></td>
+</tr>
+
+<tr>
+ 	<td>Install <bc>Docker Compose</bc> </td>
+ 	<td ><pre>sudo pip3 install docker-compose </pre></td>
+</tr>
+
+<tr>
+ 	<td> </td>
+ 	<td ><pre> </pre></td>
+</tr>
+
+<tr>
+ 	<td> </td>
+ 	<td ><pre> </pre></td>
+</tr>
+
+</table>
+</center> 
+
+<h2>Docker Image Searching</h2>
+
+ <center><table style="width:95%">
+<tr>
+ 	<td style="width:40%">Search an image on a Docker registry </td>
+ 	<td ><pre>docker search [search term] </pre></td>
+</tr>
+
+<tr>
+ 	<td> </td>
+ 	<td ><pre> </pre></td>
+</tr>
+
+
+</table>
+</center> 
+
+<h2>Docker Image Commands</h2>
+See also <a href="https://phoenixnap.com/kb/create-docker-images-with-dockerfile" target="web">How to Create Docker Image with Dockerfile</a>
+or <a href="https://docs.docker.com/engine/reference/builder/" target="web">Dockerfile reference</a>.
+
+ <center><table style="width:95%">
+<tr>
+ 	<td style="width:40%">Create an image from a Dockerfile </td>
+ 	<td ><pre>docker build [URL] </pre></td>
+</tr>
+
+<tr>
+ 	<td>builds an image from a Dockerfile in the current directory and tags the image </td>
+ 	<td ><pre>docker build -t </pre></td>
+</tr>
+
+<tr>
+ 	<td>Pull an image from a registry </td>
+ 	<td ><pre>docker pull [IMAGE] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Push an image to a registry </td>
+ 	<td ><pre>docker push [IMAGE] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Create an image from a tarball </td>
+ 	<td ><pre>docker import [URL/FILE] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Create an image from a container </td>
+ 	<td ><pre>docker commit [CONTAINER] [NEW_IMAGE_NAME] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Remove an image </td>
+ 	<td ><pre>docker rmi [IMAGE] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Load an image from a tar archive or stdin </td>
+ 	<td ><pre>docker load [TAR_FILE/STDIN_FILE] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Save an image to a tar archive, streamed to STDOUT with all parent layers, tags, and versions </td>
+ 	<td ><pre>docker save [IMAGE] > [TAR_FILE] </pre></td>
+</tr>
+
+
+</table>
+</center> 
+
+<h2>Docker Commands for Container and Image Information</h2>
+ <center><table style="width:95%">
+<tr>
+ 	<td style="width:40%">List running containers </td>
+ 	<td ><pre>docker ps </pre></td>
+</tr>
+
+<tr>
+ 	<td>lists both running containers and ones that have stopped </td>
+ 	<td ><pre>docker ps -a </pre></td>
+</tr>
+
+<tr>
+ 	<td>List the logs from a running container </td>
+ 	<td ><pre>docker logs [CONTAINER]  </pre></td>
+</tr>
+
+<tr>
+ 	<td>List low-level information on Docker objects </td>
+ 	<td ><pre>docker inspect [OBJECT_NAME/ID] </pre></td>
+</tr>
+
+<tr>
+ 	<td>List real-time events from a container</td>
+ 	<td ><pre>docker events [CONTAINER] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Show port (or specific) mapping for a container </td>
+ 	<td ><pre>docker port [CONTAINER] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Show running processes in a container </td>
+ 	<td ><pre>docker top [CONTAINER] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Show live resource usage statistics of containers </td>
+ 	<td ><pre>docker stats [CONTAINER] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Show changes to files (or directories) on a filesystem </td>
+ 	<td ><pre>docker diff [CONTAINER] </pre></td>
+</tr>
+
+<tr>
+ 	<td>List all images that are locally stored with the docker engine </td>
+ 	<td ><pre>docker image ls </pre></td>
+</tr>
+
+<tr>
+ 	<td>Show the history of an image </td>
+ 	<td ><pre>docker history [IMAGE] </pre></td>
+</tr>
+
+
+<tr>
+ 	<td>Save-(copy)-restore an image </td>
+ 	<td ><pre>docker save qak20basicrobot:latest > qak20basicrobot.tar
+docker load < qak20basicrobot.tar</pre></td>
+</tr>
+
+
+</table>
+</center> 
+
+
+
+
+<h2>Docker Container Commands</h2>
+ <center><table style="width:95%">
+<tr>
+ 	<td style="width:40%">Create a container (without starting it)</td>
+ 	<td ><pre>docker create [IMAGE] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Rename an existing container</td>
+ 	<td ><pre>docker rename [CONTAINER_NAME] [NEW_CONTAINER_NAME] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Run a command in a new container </td>
+ 	<td ><pre>docker run [IMAGE] [COMMAND] 
+	
+docker run --rm [IMAGE]   <kc>//removes a container after it exits</kc>	
+docker run -td [IMAGE]    <kc>//starts a container and keeps it running</kc></pre></td>
+</tr>
+
+<tr>
+ 	<td>Starts a container, allocates a pseudo-TTY connected to the container's stdin, and creates an interactive bash shell in the container </td>
+ 	<td ><pre>docker run -it [IMAGE] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Creates, starts, and runs a command inside the container. Once it executes the command, the container is removed </td>
+ 	<td ><pre>docker run -it-rm [IMAGE] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Starts a container in background </td>
+ 	<td ><pre>docker run -d [IMAGE] 
+docker exec -ti [CONTAINER] [CMD]</pre></td>
+</tr>
+
+<tr>
+ 	<td>Delete a container (if it is not running) </td>
+ 	<td ><pre>docker rm [CONTAINER] 
+docker rm -f [CONTAINER]  <kc>//remove even still running</kc></pre></td>
+</tr>
+
+<tr>
+ 	<td>Update the configuration of one or more containers </td>
+ 	<td ><pre>docker update [CONTAINER] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Copy files/folders between a container and the local filesystem</td>
+ 	<td ><pre>docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH|-
+docker cp [OPTIONS] SRC_PATH|- CONTAINER:DEST_PATH</pre></td>
+</tr>
+
+</table>
+</center> 
+
+<h2>Starting and Stopping Containers</h2>
+ <center><table style="width:95%">
+<tr>
+ 	<td style="width:40%">Start a container </td>
+ 	<td ><pre>docker start [CONTAINER] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Stop a running container </td>
+ 	<td ><pre>docker stop [CONTAINER] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Stop a running container and start it up again </td>
+ 	<td ><pre>docker restart [CONTAINER] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Pause processes in a running container </td>
+ 	<td ><pre>docker pause [CONTAINER] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Unpause processes in a running container </td>
+ 	<td ><pre>docker unpause [CONTAINER] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Block a container until others stop (after which it prints their exit codes) </td>
+ 	<td ><pre>docker wait [CONTAINER] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Kill a container by sending a SIGKILL to a running container </td>
+ 	<td ><pre>docker kill [CONTAINER] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Attach local standard input, output, and error streams to a running container </td>
+ 	<td ><pre>docker attach [CONTAINER] </pre></td>
+</tr>
+
+
+
+</table>
+</center> 
+
+<h2>Networks</h2>
+See also <a href="https://phoenixnap.com/kb/how-to-share-data-between-docker-containers" target="web">How to Share Data Between Docker Containers</a>
+ <center><table style="width:95%">
+<tr>
+ 	<td style="width:40%">List networks </td>
+ 	<td ><pre>docker network ls </pre></td>
+</tr>
+
+
+<tr>
+ 	<td>Remove one or more networks </td>
+ 	<td ><pre>docker network rm [NETWORK] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Show information on one or more networks </td>
+ 	<td ><pre>docker network inspect [NETWORK] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Connects a container to a network </td>
+ 	<td ><pre>docker network connect [NETWORK] [CONTAINER] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Disconnect a container from a network </td>
+ 	<td ><pre>docker network disconnect [NETWORK] [CONTAINER] </pre></td>
+</tr>
+
+<tr>
+ 	<td>Disconnect a container from a network </td>
+ 	<td ><pre>docker exec -ti [CONTAINER] /etc/hosts </pre></td>
+</tr>
+
+</table>
+</center> 
+
+
+<h4>temp ...</h4>
+
+<pre>
+docker run -p 8484 -a stdin -a stdout -i -t --name natdocker node:nat /bin/bash
+
+  
+docker run -ti -p 1883:1883 -p 9001:9001 eclipse-mosquitto
+Run for MQTT + websocket:
+docker run -d -p 1883:1883 -p 9001:9001 --name=mosquitto sourceperl/mosquitto
+
+-------------------------------------------------
+docker pull eclipse-mosquitto
+docker run -it --name mosquitto -p 1883:1883 eclipse-mosquitto
+
+The -p 1883:1883 argument maps the docker container’s default MQTT socket 1883 the localhost (127.0.0.1) port 1883. 
+Alternatively, we could map that onto another localhost port if it clashed with a locally running 
+MQTT broker, e.g. -p 11883:1883.
+</pre>
+
+<h2>Example</h2>
+
+<h3>Spring-based front-end</h3>
+ <center><table style="width:95%">
+<tr>
+ 	<td style="width:25%"><a href="../../robotweb2020/Dockerfile" target="code">robotweb2020/Dockerfile</a> </td>
+ 	<td ><pre>FROM <k>openjdk:12.0.2</k>		<kc>#creates a layer from the given image</kc>
+EXPOSE 8080
+ADD ./build/distributions/robotWeb2020-1.0.tar / 
+ADD ./build/distributions/robotWeb2020-boot-1.0.tar / 
+ADD ./*.json / 			<kc>#we could also copy it ...</kc>
+RUN ls robotWeb2020-1.0/bin
+RUN ls robotWeb2020-boot-1.0/bin
+CMD ["bash","robotWeb2020-boot-1.0/bin/robotWeb2020"]</pre>
+
+Note that:
+<ul>
+<li><bc>ENTRYPOINT</bc> configures a container that will run as an executable.</li>
+<li><bc>CMD</bc> sets default command and/or parameters, which can be overwritten from command line when docker container runs.</li>
+<!-- <li><bc>RUN</bc> executes command(s) in a new layer and creates a new image. E.g., it is often used for installing software packages.</li> -->
+</ul>
+
+</td>
+</tr>
+
+<tr>
+ 	<td>Add a 
+	<a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config-multi-profile-yaml">
+	Spring Profile</a> configuration in <a href="../../robotweb2020/src/main/resources/application.yml" target="code">application.yml</a> </td>
+ 	<td ><pre>---
+spring.profiles: docker
+server.port: 8080</pre></td>
+</tr>
+
+<tr>
+ 	<td>Create the image</td>
+ 	<td ><pre>docker build -t <ks>frontendqak20basicrobot</ks> . 	<kc>//NOTE THE DOT !!!</kc> </pre></td>
+</tr>
+
+<tr>
+ 	<td>Run the image</td>
+ 	<td >
+<pre>docker run <k>--name</k> brfe -p8080:8080 <ks>frontendqak20basicrobot</ks> <kc>//starts the web server</kc>
+
+docker run <k>-it</k> --name brfe -p8080:8080 <ks>frontendqak20basicrobot</ks> <k>/bin/bash</k> <kc>//starts the shell</kc>
+
+docker run --name brfe -p8080:8080 		 <kc>//<k>-e</k> sets an env variable</kc>
+       <k>-e</k> "SPRING_PROFILES_ACTIVE=docker" <ks>frontendqak20basicrobot</ks>  </pre></td>
+</tr>
+
+<tr>
+ 	<td>Copy the configuration file <a href="../../robotweb2020/pageConfig.json" target="code">robotweb2020/pageConfig.json</a> </td>
+ 	<td >Launch the shell and copy the configuration file:
+<pre>docker run <k>-it</k> --name brfe -p8080:8080 frontendqak20basicrobot <k>/bin/bash</k>
+	
+docker <k>cp</k> robotweb2020/pageConfig.json <k>brfe</k>:/pageConfig.json</pre></td>
+</tr>
+
+</table>
+</center> 
+
+
+<h3>Basicrobot</h3>
+ <center><table style="width:95%">
+<tr>
+ 	<td style="width:25%"> </td>
+ 	<td >
+	
+<pre>FROM openjdk:12.0.2
+EXPOSE 8020
+ADD ./build/distributions/*.tar /
+ADD ./*.pl /
+ADD ./basicrobotConfig.json /
+CMD ["bash", "/it.unibo.qak20.basicrobot/bin/it.unibo.qak20.basicrobot"]
+ </pre></td>
+</tr>
+
+<tr>
+ 	<td>Generate the image </td>
+ 	<td ><pre>docker build -t qak20basicrobot . </pre></td>
+</tr>
+
+<tr>
+ 	<td>Run overcoming CMD </td>
+ 	<td ><pre>docker run -it --name qak20br -p8020:8020/tcp -p8020:8020/udp qak20basicrobot /bin/bash
+docker inspect --format '{{.NetworkSettings.IPAddress}}' qak20br   <kc>//'172.17.0.2'</kc> 
+	docker restart qak20br
+	docker exec -ti qak20br /bin/bash</pre></td>
+</tr>
+
+<tr>
+ 	<td>Copy from home to <tt>it.unibo.qak20.basicrobot-1.0/bin</tt></td>
+ 	<td >In project <i>it.unibo.qak20.basicrobot</i>:
+<pre>cd it.unibo.qak20.basicrobot-1.0/bin/
+cp ../../*.json ./		
+cp ../../*.pl ./
+</pre> </td>
+</tr> 
+
+<tr>
+ 	<td>Copy from PC to container   </td>
+ 	<td >In project <i>it.unibo.qak20.basicrobot</i>:
+<pre>docker cp basicrobotConfig.json  qak20br:/it.unibo.qak20.basicrobot-1.0/bin 
+docker cp basicrobot.pl qak20br:/it.unibo.qak20.basicrobot-1.0/bin
+docker cp sysRules.pl qak20br:/it.unibo.qak20.basicrobot-1.0/bin</pre> </td>
+</tr> 
+
+<tr>
+ 	<td>Activate</td>
+ 	<td > 
+<pre>bash it.unibo.qak20.basicrobot</pre> </td>
+</tr> 
+<tr>
+ 	<td>Activate after configuration </td>
+ 	<td ><pre>docker run --name qak20br -p8020:8020 qak20basicrobot </pre></td>
+</tr>
+
+
+</table>
+</center> 
+
+
+<h2><a href="https://docs.docker.com/compose/gettingstarted/" target="web">Docker Compose</a></h2>
+<a href="https://docs.docker.com/compose/gettingstarted/" target="web">Docker Compose</a> is a tool for defining and running multi-container Docker applications.
+Compose can be used in many different ways (see <a href="https://docs.docker.com/compose/#common-use-cases" target="web">Compose Common use cases</a>):
+<ul>
+<li>Development environments: The Compose file provides a way to document and configure all of the application’s service dependencies 
+(databases, queues, caches, web service APIs, etc). 
+Using the Compose command line tool you can create and start one or more containers for each dependency with a single command (<tt>docker-compose up</tt>).</li>
+<li>Automated testing environments: Automated end-to-end testing requires an environment in which to run tests. 
+Compose provides a convenient way to create and destroy isolated testing environments for your test suite.</li>
+<li>Single host deployments: You can use Compose to deploy to a remote Docker Engine. The Docker Engine may be a single instance provisioned with 
+<a href="https://docs.docker.com/machine/overview/" target="web">Docker Machine</a> or 
+an entire <a href="https://docs.docker.com/engine/swarm/" target="web">Docker Swarm</a> cluster.</li>
+</ul>
+<h3>About docker-compose.yml</h3>
+A <em>docker-compose.yml</em> file specifies (see <a href="https://gabrieltanner.org/blog/docker-compose" target="web">The definitive Guide to Docker compose</a>) 
+a set of rules expressed in multiple layers that are split using tab stops or spaces. A .yaml specification usually includes:<br/><br/>
+<ul>
+<li>The version of the compose file</li>
+<li>The services which will be built</li>
+<li>All used volumes</li>
+<li>The networks which connect the different services</li>
+</ul>
+
+Docker Compose reads two files by default, <i>a docker-compose.yml</i> file, and an <i>optional docker-compose.override.yml</i> file.
+ The <em>docker-compose.override</em> file can be used (<bc>-f</bc> option to <tt>docker-compose up</tt>) to store overrides of the existing 
+ services or define new services.<br/>
+This allows you to change your application for different environments (e.g. staging, dev, and production) and helps you run admin tasks 
+or tests against your application.<br/>
+
+<br/><br/>
+Almost every rule in a single <em>docker-compose.yml</em> configuration file replaces a specific Docker command.
+We can get dozens of configurations applied by Compose under the hood.
+<br/><br/>
+
+  <center><table style="width:95%">
+<tr>
+ 	<td style="width:45%"><k>Services</k>: the services tag contains all the containers which are included in the Compose file and acts as their parent tag. </td>
+ 	<td ><pre>services:
+  frontend:
+    build: <kc>/path/to/dockerfile/</kc>
+     ...
+  basicrobot:
+    image: basicrobot
+    ...
+ </pre>
+ Sometimes, the image we need for our service has already been published.<br/>
+ Here, we <em>build</em> an image from the source code by reading its Dockerfile.<br/>
+ The <em>image</em> name in conjunction with the build attribute, gives a name to the image once created, 
+ making it available to be used by other services.</td>
+</tr>
+
+<tr>
+ 	<td><k>Environment variables</k>: bring configuration data into your applications. </td>
+ 	<td ><pre> </pre></td>
+</tr>
+
+<tr>
+ 	<td><k>Commands</k>: are used to execute actions once the container is started and act as a replacement for the <ks>CMD</ks> action in your Dockerfile. </td>
+ 	<td ><pre> </pre></td>
+</tr>
+
+<tr>
+ 	<td><k>Volumes</k>: used to share data between containers and the Host system. </td>
+ 	<td > <center><img src="./img/Docker/volumes.png" alt="volumes.png" width="80%"  /></center> <pre> </pre></td>
+</tr>
+
+<tr>
+ 	<td><k>Networking</k>: define the communication rules between containers, and between containers and the host system. 
+	They can be configured to provide complete isolation for containers, which enables building applications that work together securely. </td>
+ 	<td ><pre> </pre></td>
+</tr>
+
+<tr>
+ 	<td><k>Links</k>:  define other names under which the container can be reached.</td>
+ 	<td >  <pre> </pre></td>
+</tr>
+
+
+
+
+</table>
+</center> 
+ 
+
+ 
+
+ <center><table style="width:95%">
+<tr>
+ 	<td style="width:40%"> Services:<br/> refer to containers' configuration</td>
+ 	<td ><pre>services:
+  frontend:
+    build: <kc>/path/to/dockerfile/</kc>
+    image: robotWeb2020
+    ...
+  basicrobot:
+    build: <kc>/path/to/dockerfile/</kc>
+    image: basicrobot
+    ...
+ </pre>
+ Sometimes, the image we need for our service has already been published.<br/>
+ Here, we <em>build</em> an image from the source code by reading its Dockerfile.<br/>
+ The <em>image</em> name in conjunction with the build attribute, gives a name to the image once created, 
+ making it available to be used by other services.
+ </td>
+</tr>
+
+<tr>
+ 	<td>Commands </td>
+ 	<td >create and start the containers, the networks, and the volumes defined in the configuration:
+	<pre>docker-compose up </pre>
+	start the services:
+<pre>docker-compose start</pre> 
+	stop - preserve containers, volumes, and networks, along with every modification made to them:
+<pre>docker-compose stop</pre>  
+destroy everything with only the exception of external volumes:
+<pre>docker-compose down</pre> </td>
+</tr>
+
+<tr>
+ 	<td>Environment Variables.<br/>
+There are different methods to provide those values to Compose:
+<ul>
+<li>key-value pairs</li>
+<li><k>.env</k> file in the same directory</li>
+<li> <k>.properties</k> file</li>
+<li> set them in the OS before calling the command docker-compose up</li>
+
+ 
+</ul>
+Priorty order:
+<ol>
+<li>Compose file</li>
+<li>Shell environment variables</li>
+<li>Environment file</li>
+<li>Dockerfile</li>
+<li>Variable not defined</li>
+</ol>
+
+
+<pre>
+docker run -d \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v /etc/localtime:/etc/localtime \
+    -e DISPLAY=unix$DISPLAY \
+    <yourcontainer>
+</pre>
+
+
+
+	</td>
+ 	<td ><pre>services:
+  frontend:
+    build: <kc>/path/to/dockerfile/</kc>
+    image: robotWeb2020
+    <k>environment:</k>
+       USER: "${USER}"   <kc>#dynamic variable</kc>
+	</pre></td>
+</tr>
+
+
+<tr>
+ 	<td>Networks:<br/> define the communication rules between containers, and between a container and the host.<br/><br/>
+	A service can communicate with another service on the same network by simply referencing it by container name and port 
+	(for example <tt>network-qak202:8020</tt>), provided that we've made the port accessible through the <em>expose</em> keyword.<br/>
+	It would also work without exposing, when the expose directive is already in the image Dockerfile.	  
+	</td>
+ 	<td >Docker containers communicate between themselves in networks created, implicitly or through configuration, by Docker Compose.
+	<pre>services:
+  network-qak202:
+    image: ...
+    expose:
+      - "8020" 
+    ports:
+      - "8020:8020"
+	  </pre>
+Port <tt>8020</tt> will now be visible from the host.	<br/>
+Let us now make port <tt>3000</tt> of our two containers be available on ports <tt>8080</tt> and <tt>8081</tt> in the host.  
+ 
+	<pre>services:
+  network-qak202:
+    image: ...
+    ports:
+      - "8020:8020"
+  frontend:
+    build: <kc>/path/to/dockerfile/</kc>
+    image: robotWeb2020
+    ports:
+      - "8080:3000"
+   ...
+  basicrobot:
+    build: <kc>/path/to/dockerfile/</kc>
+    image: basicrobot
+    ports:
+      - "8081:3000"
+    ...
+	  </pre> 
+	  
+ This powerful mechanism allows us to run different containers exposing the same ports without collisions.	 
+	  </td>
+</tr>
+
+
+
+
+<tr>
+ 	<td>Dependencies:<br/>
+allow to create a dependency chain between our services, so that some services get loaded before (and unloaded after) other ones	</td>
+ 	<td ><pre>services:
+  frontend:
+    build: <kc>/path/to/dockerfile/</kc>
+    image: robotWeb2020
+    <k>depends_on</k>:
+      - basicrobot
+    ...
+  basicrobot:
+    build: <kc>/path/to/dockerfile/</kc>
+    image: basicrobot
+     ...	</pre>
+ Compose will not wait for the basicrobot service to finish loading before starting the frontend service: it will simply wait for it to start.	
+ For more advanced control, eee
+ <a href="https://docs.docker.com/compose/startup-order/" target="web">Control startup and shutdown order in Compose</a> 
+	 </td>
+</tr>
+
+
+
+<tr>
+ 	<td> </td>
+ 	<td ><pre> </pre></td>
+</tr>
+
+<tr>
+ 	<td>Volume: <br/>a shared directory in the host, visible from some or all containers. 
+	There are three types of volumes: 
+	<ul>
+	<li>anonymous (used in older versions of Docker)</li>
+	<li>named</li>
+	<li>host</li>
+	</ul>
+Docker manages both anonymous and named volumes, automatically mounting them in self-generated directories in the host. <br/>
+Host volumes also allow us to specify an existing folder in the host.	
+	
+	</td>
+ 	<td ><pre> </pre></td>
+</tr>
+
+<tr>
+ 	<td>Virtual networks:<br/>
+	 define additional virtual networks to segregate our containers
+	</td>
+ 	<td ><pre>services:
+  network-example-service:
+    image: karthequian/helloworld:latest
+    networks: 
+      - my-shared-network
+    ...
+  another-service-in-the-same-network:
+    image: alpine:latest
+    networks: 
+      - my-shared-network
+    ...
+  another-service-in-its-own-network:
+    image: alpine:latest
+    networks: 
+      - my-private-network
+    ...
+networks:
+  my-shared-network: {}
+  my-private-network: {} </pre></td>
+</tr>
+<tr>
+ 	<td> </td>
+ 	<td ><pre>docker run --name dcs -p8039:8039/tcp -p8039:8039/udp dcsender
+docker run --name dcr -p8037:8037/tcp -p8037:8037/udp dcreceiver</pre></td>
+</tr>
+
+
+
+</table>
+</center> 
+
+<h3>Example: basicrobot with Spring-web frontend</h3>
+
+ <center><table style="width:95%">
+<tr>
+ 	<td style="width:40%"><h4>Basic robot</h4>
+<a href="../../it.unibo.qak20.basicrobot/Dockerfile" target="code">Dockerfile</a> for  basicrobot (project <tt>it.unibo.qak20.basicrobot</tt>):
+<pre>FROM openjdk:12.0.2
+EXPOSE 8020
+ADD ./build/distributions/*.tar /
+WORKDIR /it.unibo.qak20.basicrobot-1.0/bin
+COPY ./*.pl ./
+COPY ./*.json ./
+CMD ["bash", "it.unibo.qak20.basicrobot"]
+</pre>
+
+<pre>docker build --rm -t basicrobotqak20 .
+docker run  --name br  -p8020:8020/tcp  -p8020:8020/udp 
+                                        basicrobotqak20</pre>
+
+	</td>
+ 	<td><h4>Front end</h4> <a href="../../robotWeb2020/Dockerfile" target="code">Dockerfile</a> for  <tt>frontend</tt> (project <tt>robotWeb2020</tt>):
+<pre>FROM openjdk:12.0.2
+EXPOSE 8080
+ADD ./build/distributions/robotWeb2020-1.0.tar / 
+ADD ./build/distributions/robotWeb2020-boot-1.0.tar / 
+WORKDIR /robotWeb2020-boot-1.0/bin
+COPY ./*.json /.
+CMD ["bash","robotWeb2020"]</pre>
+
+<pre>docker build -t frontendqak20basicrobot .
+docker run  --name brfe  -p8080:8080  
+   -e "SPRING_PROFILES_ACTIVE=docker" frontendqak20basicrobot </pre>
+	</td>
+</tr>
+
+<tr>
+  	<td ><h4>Application</h4>
+	<a href="../../robotWeb2020/docker-compose.yml" target="code">docker-compose.yml</a>   for <tt basicrobot</tt with <tt>frontend</tt> (project <tt>robotWeb2020</tt>):
+<pre>## ------------------------------------------------------- 
+## docker-compose.yml for  basicrobot with front-end 
+## -------------------------------------------------------
+version: "3.8"
+services:
+  frontend:
+    build: ../robotweb2020       
+    depends_on:
+     - basicrobot
+    ports:             #HOST:CONTAINER
+     - "8080:8080"
+    environment:
+       - "SPRING_PROFILES_ACTIVE=docker"    
+  basicrobot:
+    build: ../it.unibo.qak20.basicrobot
+    ports:             #HOST:CONTAINER
+     - "8020:8020/udp"                             
+ </pre></td>
+	<td><h4>Application-related commands</h4>
+<pre>docker-compose up --build -d
+docker-compose logs
+docker-compose ps
+--------------------------------
+docker-compose stop
+docker-compose start
+--------------------------------
+docker-compose down
+</pre>	</td>
+</tr>
+</table>
+</center> 
+
+<h2>Monitoring containers</h2>
+ <center><table style="width:98%">
+<tr>
+ 	<td style="width:40%"> </td>
+ 	<td ><pre>docker inspect  ituniboqak20deploy_basicrobot_1
+docker inspect -f '{{ .NetworkSettings.IPAddress }}' ituniboqak20deploy_basicrobot_1	
+	</pre></td>
+</tr>
+
+<tr>
+ 	<td> </td>
+ 	<td ><pre> </pre></td>
+</tr>
+
+
+</table>
+</center> 
+
+<pre>
+ON Raspberry:
+since Ubuntu 16.04 with its systemd docker daemon the /etc/default/docker is no longer effective.
+-------------------------------
+/etc/systemd/system/docker.service.d/remote-api.conf
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd -H tcp://192.168.1.5:2375 -H unix:///var/run/docker.sock
+------------------------------
+sudo systemctl daemon-reload // reloading daemon definitions
+sudo systemctl restart docker
+
+ON RASP docker -H tcp://192.168.1.5:2375 images/json		OK
+ON PC    (pg.121)
+	curl -s http://192.168.1.5:2375/images/json		    OK
+	curl -s http://192.168.1.5:2375/containers/json
+	
+
+curl -s http://192.168.1.5:2375/images/json | python -m json.tool		OK
+</pre>
+
+<pre>export DOCKER_HOST=tcp://192.168.59.103:2375
+service docker stop
+service docker start
+docker -H tcp://127.0.0.1:2375 images
+
+curl http://192.168.1.5:2376/images
+
+on PC: curl -s http://192.168.1.5:2375/images/json | python -m json.tool
+
+
+https://docs.docker.com/engine/reference/commandline/dockerd/
+https://www.portainer.io/2018/03/enable-remote-access-docker-windows-10/
+netsh advfirewall firewall add rule name="docker_daemon" dir=in action=allow protocol=TCP localport=2375
+docker run -d -p 8000:8000 -p 9000:9000 -v portainer_data:C:\data --restart=always --name=portainer portainer/portainer
+
+
+
+</pre>
+
+<h2>Play with dccker</h2>
+
+<a href="https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/docker-library/docs/9efeec18b6b2ed232cf0fbd3914b6211e16e242c/postgres/stack.yml" target="testserver">
+labs.play-with-docker.com</a> 
+
+<br/><br/>
+ <center><table style="width:95%">
+<tr>
+ 	<td style="width:40%"> </td>
+ 	<td > </td>
+</tr>
+
+<tr>
+ 	<td><a href="https://learntutorials.net/it/docker/topic/690/gestire-le-immagini">image tutorial</a> </td>
+ 	<td >docker inspect mfilo/carparking | jq -r '.[0].Author' </td>
+</tr>
+
+
+</table>
+</center> 
+
+<br/><br/>
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN - DISI - Unibo
+</div> 
+
+</body>
+</html>
+
+
+ 

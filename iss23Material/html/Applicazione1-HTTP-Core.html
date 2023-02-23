@@ -1,0 +1,819 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Applicazione1-HTTP-Core &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Applicazione1-HTTP-Core</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="applicazione1-http-core">
+<h1>Applicazione1-HTTP-Core<a class="headerlink" href="#applicazione1-http-core" title="Permalink to this headline">¶</a></h1>
+<p>Il nostro <a class="reference internal" href="Applicazione1.html#appl1-piano-di-lavoro"><span class="std std-ref">Appl1: Piano di lavoro</span></a> prevede che il primo prodotto da realizzare sia
+il componente <code class="docutils literal notranslate"><span class="pre">Appl1</span></code> dell’<a class="reference internal" href="Applicazione1.html#appl1-architettura-logica"><span class="std std-ref">Appl1: Architettura logica</span></a>, il quale ha la responsabilità
+del <em>core-business</em>, come concordato dopo l’<a class="reference internal" href="Applicazione1.html#appl1-analisi-dei-requisiti"><span class="std std-ref">Appl1: Analisi dei requisiti</span></a>.</p>
+<p>Al termine dello sviluppo dovremo realizzare ed eseguire le <a class="reference internal" href="Applicazione1.html#appl1-azioni-di-testing-pianificate"><span class="std std-ref">Appl1: Azioni di testing pianificate</span></a>.</p>
+<section id="un-approccio-da-evitare">
+<h2>Un approccio da evitare<a class="headerlink" href="#un-approccio-da-evitare" title="Permalink to this headline">¶</a></h2>
+<p>In prima battuta, il progetto sembra consistere essenzialmente nell’utilizzare una qualche libreria Java per
+inviare comandi via HTTP o via WS al <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a>.</p>
+<p>Proviamo a seguire subito questo impulso immediato alla codifica, con l’intento di esaminarne criticamente
+il risultato, riservandoci poi, se fosse il caso, di migliorarne la struttura, con opportuna
+opera di <em>code-refactoring</em>.</p>
+<p>Il titolo della sezione indica però che questo approccio sarebbe da evitare, a favore di una più
+approfondita (e ‘formalizzata’) fase di analisi e progettazione.</p>
+<section id="unibo-http-fatapplication1nostop">
+<h3>unibo.http.FatApplication1NoStop<a class="headerlink" href="#unibo-http-fatapplication1nostop" title="Permalink to this headline">¶</a></h3>
+<p>Partendo dal più semplice modo di <a class="reference internal" href="VirtualRobot23.html#interazione-sincrona"><span class="std std-ref">Interazione sincrona</span></a> basato su HTTP, risolviamo il problema inviando al robot
+un comando di movimento in avanti per un tempo abbastanza lungo a garantire una collisione con la parete di fronte.
+Dopo la collisione inviamo un comando di rotazione a sinistra e ripetiamo il tutto 4 volte.</p>
+<p><span class="remark">Al momento igoriamo il problema della gestione dei comandi di stop/resume.</span></p>
+<p>Per evitare la scrittura di lunghe stringhe di codice,
+introduciano una classe di comodo che definisce alcuni comandi-base
+per il robot:</p>
+<section id="unibo-common-vrobotmsgs">
+<h4>unibo.common.VrobotMsgs<a class="headerlink" href="#unibo-common-vrobotmsgs" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">VrobotMsgs</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">turnrightcmd</span> <span class="o">=</span>
+      <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;turnRight\&quot;    , \&quot;time\&quot;: \&quot;300\&quot;}&quot;</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">turnleftcmd</span>  <span class="o">=</span>
+      <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;turnLeft\&quot;     , \&quot;time\&quot;: \&quot;400\&quot;}&quot;</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">haltcmd</span>      <span class="o">=</span>
+      <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;alarm\&quot; ,        \&quot;time\&quot;: \&quot;10\&quot;}&quot;</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">stepcmd</span>      <span class="o">=</span>
+      <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveForward\&quot;  , \&quot;time\&quot;: \&quot;350\&quot;}&quot;</span><span class="p">;</span>
+
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">forwardcmd</span>   <span class="o">=</span>
+      <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveForward\&quot;  , \&quot;time\&quot;: TIME}&quot;</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">backwardcmd</span>  <span class="o">=</span>
+      <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveBackward\&quot; , \&quot;time\&quot;: TIME}&quot;</span><span class="p">;</span>
+
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">forwardlongcmd</span>   <span class="o">=</span>
+      <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveForward\&quot;  , \&quot;time\&quot;: \&quot;2300\&quot;}&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Lo schema risolutivo può essere espresso  <strong>decomponendo</strong> le azioni in procedure con precise, singole responsabilità
+(stiamo applicando alle procedure il <span class="blue">single responsibility principle</span> dei principi  <a class="reference external" href="https://en.wikipedia.org/wiki/SOLID">SOLID</a>)
+per gli oggetti).</p>
+</section>
+<section id="walkatboundary">
+<h4>walkAtBoundary<a class="headerlink" href="#walkatboundary" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span> <span class="kd">private</span>  <span class="kd">final</span> <span class="n">String</span> <span class="n">URL</span> <span class="o">=</span> <span class="s">&quot;http://&quot;</span><span class="o">+</span><span class="n">localHostName</span><span class="o">+</span><span class="s">&quot;:&quot;</span><span class="o">+</span><span class="n">port</span><span class="o">+</span><span class="s">&quot;/api/move&quot;</span><span class="p">;</span>
+
+<span class="c1">//Procedura responsabile della business logic</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">walkAtBoundary</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="mi">4</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">walkAheadUntilCollision</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="n">requestSynch</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">turnleftcmd</span><span class="p">);</span> <span class="c1">//discard result</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">//Procedura responsabile del movimento in avanti, con collisione</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">walkAheadUntilCollision</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">cmd</span> <span class="o">=</span> <span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">forwardlongcmd</span><span class="p">;</span>
+    <span class="n">JSONObject</span> <span class="n">result</span> <span class="o">=</span> <span class="n">requestSynch</span><span class="p">(</span>  <span class="n">URL</span><span class="p">,</span> <span class="n">cmd</span>  <span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="o">!</span> <span class="n">result</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;collision&quot;</span><span class="p">)</span>  <span class="p">)</span> <span class="p">{</span>
+        <span class="n">CommUtils</span><span class="p">.</span><span class="na">outred</span><span class="p">(</span><span class="s">&quot;fatal error: no collision&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La procedura <a class="reference internal" href="#requestsynch"><span class="std std-ref">requestSynch</span></a> ha la responsabilità di interagire con il robot con <a class="reference internal" href="VirtualRobot23.html#interazione-sincrona"><span class="std std-ref">Interazione sincrona</span></a> via HTTP,
+restituendo l’esito del movimento.</p>
+</section>
+<section id="requestsynch">
+<h4>requestSynch<a class="headerlink" href="#requestsynch" title="Permalink to this headline">¶</a></h4>
+<p>La procedura  <em>requestSynch</em> nasce dall’intento di liberare il codice della business logic dai dettagli della interazione
+via HTTP.  Per rendere la procedura più generale, viene fornito in ingresso l’URL del destinatario.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="n">httpclient</span> <span class="o">=</span> <span class="n">org</span><span class="p">.</span><span class="na">apache</span><span class="p">.</span><span class="na">http</span><span class="p">.</span><span class="na">impl</span><span class="p">.</span><span class="na">client</span><span class="p">.</span><span class="na">HttpClients</span><span class="p">.</span><span class="na">createDefault</span><span class="p">();</span>
+<span class="n">JSONParser</span> <span class="n">simpleparser</span>        <span class="o">=</span> <span class="k">new</span> <span class="n">JSONParser</span><span class="p">();</span>
+
+<span class="kd">protected</span> <span class="n">JSONObject</span> <span class="nf">requestSynch</span><span class="p">(</span> <span class="n">String</span> <span class="n">URL</span><span class="p">,</span> <span class="n">String</span> <span class="n">crilCmd</span> <span class="p">)</span>  <span class="p">{</span>
+    <span class="n">JSONObject</span> <span class="n">jsonEndmove</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">StringEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringEntity</span><span class="p">(</span><span class="n">crilCmd</span><span class="p">);</span>
+        <span class="n">HttpUriRequest</span> <span class="n">httppost</span> <span class="o">=</span> <span class="n">RequestBuilder</span><span class="p">.</span><span class="na">post</span><span class="p">()</span>
+                <span class="p">.</span><span class="na">setUri</span><span class="p">(</span><span class="k">new</span> <span class="n">URI</span><span class="p">(</span><span class="n">URL</span><span class="p">))</span>
+                <span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;Content-Type&quot;</span><span class="p">,</span> <span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+                <span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;Accept&quot;</span><span class="p">,</span> <span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+                <span class="p">.</span><span class="na">setEntity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+                <span class="p">.</span><span class="na">build</span><span class="p">();</span>
+        <span class="n">CloseableHttpResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">httpclient</span><span class="p">.</span><span class="na">execute</span><span class="p">(</span><span class="n">httppost</span><span class="p">);</span>
+        <span class="n">String</span> <span class="n">jsonStr</span> <span class="o">=</span> <span class="n">EntityUtils</span><span class="p">.</span><span class="na">toString</span><span class="p">(</span> <span class="n">response</span><span class="p">.</span><span class="na">getEntity</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">jsonEndmove</span> <span class="o">=</span> <span class="p">(</span><span class="n">JSONObject</span><span class="p">)</span> <span class="n">simpleparser</span><span class="p">.</span><span class="na">parse</span><span class="p">(</span><span class="n">jsonStr</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">){</span> <span class="p">...</span>  <span class="p">}</span>
+    <span class="k">return</span> <span class="n">jsonEndmove</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="una-prima-osservazione-critica">
+<h3>Una prima osservazione critica<a class="headerlink" href="#una-prima-osservazione-critica" title="Permalink to this headline">¶</a></h3>
+<p>La procedura <a class="reference internal" href="#requestsynch"><span class="std std-ref">requestSynch</span></a> non ha nulla a che fare con la logica del problema da risolvere; essa
+rappresenta una funzionalità tipica di un’infrastruttura di supporto alle comunicazioni, che dovrebbe
+essere progettata, sviluppata, testata e resa disponibile (<em>deployed</em>), liberando l’applicazion-designer
+da compiti di questo tipo.</p>
+<p>Procediamo dunque a un primo <strong>refactoring</strong> del codice, cercando di incapsulare questa procedura entro un
+oggetto che possa essere riusato anche in altre applicazioni.</p>
+</section>
+</section>
+<section id="progetto-unibo-basicomm23-anticipazione">
+<h2>Progetto unibo.basicomm23: anticipazione<a class="headerlink" href="#progetto-unibo-basicomm23-anticipazione" title="Permalink to this headline">¶</a></h2>
+<p>Una volta intrapresa la direzione di creare supporti riusabili per le comunicazioni,
+conviene accumulare questi sforzi progettuali e realizzativi in un progetto ad hoc.</p>
+<p>A questo scopo dedicheremo il progetto <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a> in cui inseriremo supporti di tipo
+generale per i protocolli definiti dal <a class="reference internal" href="#unibo-basicomm23-msg-protocoltype"><span class="std std-ref">ProtocolType</span></a> che segue:</p>
+<section id="unibo-basicomm23-msg-protocoltype">
+<h3>unibo.basicomm23.msg.ProtocolType<a class="headerlink" href="#unibo-basicomm23-msg-protocoltype" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">enum</span> <span class="n">ProtocolType</span> <span class="p">{</span>
+    <span class="n">http</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">tcp</span><span class="p">,</span> <span class="n">udp</span><span class="p">,</span> <span class="n">coap</span><span class="p">,</span> <span class="n">mqtt</span><span class="p">,</span> <span class="n">bluetooth</span><span class="p">,</span> <span class="n">serial</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il progetto è organizzato in un insieme di packages come quello mostrato nell figura che segue:</p>
+<a class="reference internal image-reference" href="_images/basicComm23.png"><img alt="_images/basicComm23.png" class="align-center" src="_images/basicComm23.png" style="width: 25%;" /></a>
+<p>Nel package <code class="docutils literal notranslate"><span class="pre">utils</span></code> viene definita la classe <span class="blue">CommUtils</span> in cui inseriremo vari metodi <em>static</em> di uso
+comune, tra cui:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">delay</span></code>: per sospendere l’esecuzione del Thred corrente</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">outxxx</span></code>, con <code class="docutils literal notranslate"><span class="pre">xxx=blue,red,grenn,yellow,</span> <span class="pre">...</span></code> per visualizzare messaggi colorati su <code class="docutils literal notranslate"><span class="pre">System.out</span></code>,
+una feature che risultà utile per differenzare le informazioni emesse dai diversi componenti delle nostre applicazioni</p></li>
+</ul>
+</section>
+<section id="unibo-basicomm23-http-httpcommapache">
+<h3>unibo.basicomm23.http.HTTPCommApache<a class="headerlink" href="#unibo-basicomm23-http-httpcommapache" title="Permalink to this headline">¶</a></h3>
+<p>La classe <code class="docutils literal notranslate"><span class="pre">HTTPCommApache</span></code> rappresenta un primo passo verso la creazione di una infrastruttura di
+supporto alle comunicazioni.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HTTPCommApache</span> <span class="p">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">CloseableHttpClient</span> <span class="n">httpclient</span> <span class="o">=</span> <span class="n">HttpClients</span><span class="p">.</span><span class="na">createDefault</span><span class="p">();</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">JSONParser</span> <span class="n">simpleparser</span>        <span class="o">=</span> <span class="k">new</span> <span class="n">JSONParser</span><span class="p">();</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">URL</span><span class="p">;</span>
+
+    <span class="kd">public</span> <span class="nf">HTTPCommApache</span><span class="p">(</span><span class="n">String</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">URL</span> <span class="o">=</span> <span class="s">&quot;http://&quot;</span> <span class="o">+</span><span class="n">url</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="n">JSONObject</span> <span class="nf">requestSynch</span><span class="p">(</span> <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span>  <span class="p">{</span>
+        <span class="n">JSONObject</span> <span class="n">jsonEndmove</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="p">....</span>
+        <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">){...}</span>
+        <span class="k">return</span> <span class="n">jsonEndmove</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Nel nome della classe compare il termine <em>Apache</em> per enfatizzare il fatto che essa fa uso della libreria
+<em>org.apache.http</em>, mentre in futuri progetti (come <code class="docutils literal notranslate"><span class="pre">unibo.comm23</span></code>) faremo uso di altre librerie,
+come <em>com.squareup.okhttp3</em>.</p>
+</section>
+</section>
+<section id="comunicazioni-di-alto-livello-col-robot">
+<h2>Comunicazioni di alto livello col robot<a class="headerlink" href="#comunicazioni-di-alto-livello-col-robot" title="Permalink to this headline">¶</a></h2>
+<p>La classe <a class="reference internal" href="#unibo-basicomm23-http-httpcommapache"><span class="std std-ref">unibo.basicomm23.http.HTTPCommApache</span></a> si occupa di interazioni low-level HTTP di tipo generale.</p>
+<p>Tuttavia, da punto di vosta logico, la nostra attenzione è rivolta alla comunicazione con il robot, che
+conviene sia caratterizzata da concetti di più alto livello.</p>
+<p>A questo fine, introduciamo anche una classe
+<a class="reference internal" href="#unibo-supports-vrobothlmoveshttpapache"><span class="std std-ref">unibo.supports.VrobotHLMovesHTTPApache</span></a> di supporto alle comunicazioni  con il  <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a>,
+definite nell’interfaccia <a class="reference internal" href="#unibo-common-ivrobotmoves"><span class="std std-ref">unibo.common.IVrobotMoves</span></a>.</p>
+<p>Questo ulteriore livello <strong>non</strong> sarà ovviamente incluso nel progetto  <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a> in quanto specifio
+per la nostra applicazione corrente.</p>
+<section id="unibo-common-ivrobotmoves">
+<h3>unibo.common.IVrobotMoves<a class="headerlink" href="#unibo-common-ivrobotmoves" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IVrobotMoves</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">step</span><span class="p">(</span><span class="kt">int</span> <span class="n">time</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnLeft</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnRight</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span> <span class="kt">int</span> <span class="n">time</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">backward</span><span class="p">(</span> <span class="kt">int</span> <span class="n">time</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">halt</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="step">
+<h3>step<a class="headerlink" href="#step" title="Permalink to this headline">¶</a></h3>
+<p>Notiamo che, rispetto ai <a class="reference internal" href="VirtualRobot23.html#comandi-base-per-il-robot-in-cril"><span class="std std-ref">Comandi-base per il robot in cril</span></a>, compare una nuova operazione, <span class="blue">step</span>,
+che muove in avanti il robot per un tempo dato (come <code class="docutils literal notranslate"><span class="pre">forward</span></code>) restituendo il valore boolean <code class="docutils literal notranslate"><span class="pre">true</span></code>
+se il movimento termina con successo e <code class="docutils literal notranslate"><span class="pre">false</span></code> nel caso
+il movimento non possa essere completato, per via di una collisione.</p>
+</section>
+<section id="unibo-supports-vrobothlmoveshttpapache">
+<h3>unibo.supports.VrobotHLMovesHTTPApache<a class="headerlink" href="#unibo-supports-vrobothlmoveshttpapache" title="Permalink to this headline">¶</a></h3>
+<p>La classe di supporto alle comunicazioni di alto livello con il robot si avvale, al momento, di una istanza di
+<a class="reference internal" href="#unibo-basicomm23-http-httpcommapache"><span class="std std-ref">unibo.basicomm23.http.HTTPCommApache</span></a> per inviare comandi via <cite>HTTP</cite>.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span>  <span class="nc">VrobotHLMovesHTTPApache</span> <span class="kd">implements</span> <span class="n">IVrobotMoves</span><span class="p">{</span>
+  <span class="kd">private</span> <span class="n">HTTPCommApache</span> <span class="n">httpSupport</span>  <span class="p">;</span>
+
+  <span class="kd">public</span> <span class="nf">VrobotHLMovesHTTPApache</span><span class="p">(</span><span class="n">HTTPCommApache</span> <span class="n">httpSupport</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="na">httpSupport</span> <span class="o">=</span> <span class="n">httpSupport</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="c1">//Implementazione delle operazioni di  IVrobotMoves</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La realizzazione delle operazioni-base è semplice, grazie anche a <a class="reference internal" href="#unibo-common-vrobotmsgs"><span class="std std-ref">unibo.common.VrobotMsgs</span></a>. Ad esempio:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnLeft</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
+    <span class="n">httpSupport</span><span class="p">.</span><span class="na">requestSynch</span><span class="p">(</span>  <span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">turnleftcmd</span>  <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span><span class="kt">int</span> <span class="n">time</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
+    <span class="n">JSONObject</span> <span class="n">result</span> <span class="o">=</span> <span class="n">httpSupport</span><span class="p">.</span><span class="na">requestSynch</span><span class="p">(</span>
+                <span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">forwardcmd</span><span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;TIME&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">time</span><span class="p">)</span>  <span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">result</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;collision&quot;</span><span class="p">)</span>  <span class="p">){</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">CollisionException</span><span class="p">(</span>  <span class="p">)</span> <span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Si noti che è stata definita anche una nuova eccezione, che può essere sollevata dalle operazioni <em>forward</em> e <em>backward</em>:</p>
+</section>
+<section id="unibo-common-collisionexception">
+<h3>unibo.common.CollisionException<a class="headerlink" href="#unibo-common-collisionexception" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CollisionException</span> <span class="kd">extends</span> <span class="n">Exception</span><span class="p">{</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getMessage</span><span class="p">(){</span> <span class="k">return</span> <span class="s">&quot;collision&quot;</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="step-implementazione">
+<h3>step: implementazione<a class="headerlink" href="#step-implementazione" title="Permalink to this headline">¶</a></h3>
+<p>Anche la implementazione della operazione <a class="reference internal" href="#step"><span class="std std-ref">step</span></a> non risulta complicata, in quanto stiamo agendo con
+<a class="reference internal" href="VirtualRobot23.html#interazione-sincrona"><span class="std std-ref">Interazione sincrona</span></a>. Nel caso di collisione però dobbiamo evitare la possibilità di invocare una
+nuova mossa  prima del completamento (con fallimento) della operazione <code class="docutils literal notranslate"><span class="pre">forwardcmd</span></code>.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">step</span><span class="p">(</span><span class="kt">int</span> <span class="n">time</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
+    <span class="n">String</span> <span class="n">cmd</span> <span class="o">=</span> <span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">forwardcmd</span><span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;TIME&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">time</span><span class="p">);</span>
+    <span class="n">JSONObject</span> <span class="n">result</span> <span class="o">=</span> <span class="n">httpSupport</span><span class="p">.</span><span class="na">requestSynch</span><span class="p">(</span>   <span class="n">cmd</span>  <span class="p">);</span>
+    <span class="kt">boolean</span> <span class="n">interrupted</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;collision&quot;</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">interrupted</span> <span class="p">){</span>
+        <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="n">time</span> <span class="o">+</span> <span class="n">time</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span> <span class="c1">//to avoid notallowed</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">!</span> <span class="n">interrupted</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Ora, avvalendoci di questi suppporti, possiamo impostare una soluzione al nostro core-problem che elimina dal codice molti
+dei dettagli precedenti, evidenziando solo la logica della soluzione stessa:</p>
+</section>
+<section id="unibo-http-application1nostop">
+<h3>unibo.http.Application1NoStop<a class="headerlink" href="#unibo-http-application1nostop" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Application1NoStop</span> <span class="p">{</span>
+  <span class="kd">private</span> <span class="n">IVrobotMoves</span> <span class="n">vr</span>  <span class="p">;</span>
+
+  <span class="kd">public</span> <span class="nf">Application1NoStop</span><span class="p">(){</span>
+      <span class="n">String</span> <span class="n">URL</span> <span class="o">=</span> <span class="s">&quot;localhost:8090/api/move&quot;</span><span class="p">;</span>
+      <span class="n">HTTPCommApache</span> <span class="n">httpSupport</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HTTPCommApache</span><span class="p">(</span><span class="n">URL</span><span class="p">);</span>
+      <span class="n">vr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">VrobotSupportNaive</span><span class="p">(</span> <span class="n">httpSupport</span> <span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">walkAtBoundary</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+      <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="mi">4</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+          <span class="n">walkAheadUntilCollision</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+          <span class="c1">//walkByStepping();</span>
+          <span class="n">vr</span><span class="p">.</span><span class="na">turnLeft</span><span class="p">();</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">walkAheadUntilCollision</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span>  <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
+      <span class="k">try</span><span class="p">{</span>
+          <span class="n">vr</span><span class="p">.</span><span class="na">forward</span><span class="p">(</span><span class="mi">2300</span> <span class="p">);</span>
+      <span class="p">}</span><span class="k">catch</span><span class="p">(</span> <span class="n">CollisionException</span> <span class="n">e</span><span class="p">){</span>  <span class="k">return</span><span class="p">;</span>  <span class="p">}</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="s">&quot;no collision&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Osserviamo che <code class="docutils literal notranslate"><span class="pre">walkAtBoundary</span></code> potrebbe adottare anche una strategia di movimento basata su <a class="reference internal" href="#step"><span class="std std-ref">step</span></a>:</p>
+</section>
+<section id="walkbystepping">
+<h3>walkByStepping<a class="headerlink" href="#walkbystepping" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">walkByStepping</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="kt">boolean</span> <span class="n">goon</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span> <span class="n">goon</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="n">goon</span> <span class="o">=</span>  <span class="n">vr</span><span class="p">.</span><span class="na">step</span><span class="p">(</span><span class="mi">350</span><span class="p">);</span>
+        <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span> <span class="c1">//to show the steps better</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>E’ ora venuto il momento di
+<span class="remark">Affrontare il problema della gestione dei comandi di stop/resume.</span></p>
+<p>Osserviamo che, realizzare il movimento del robot usando <a class="reference internal" href="#step"><span class="std std-ref">step</span></a> permette di impostare agevolmente
+una soluzione al problema <code class="docutils literal notranslate"><span class="pre">stop/resume</span></code>,
+inserendo un test di controllo tra uno <em>step</em> e l’altro. Lo <a class="reference internal" href="#step"><span class="std std-ref">step</span></a> diventa la mossa elementare di movimento non
+interrompibile.</p>
+</section>
+</section>
+<section id="unibo-appl1-http-application1httpcore">
+<h2>unibo.appl1.http.Application1HTTPCore<a class="headerlink" href="#unibo-appl1-http-application1httpcore" title="Permalink to this headline">¶</a></h2>
+<p>La classe <code class="docutils literal notranslate"><span class="pre">Application1HTTpCore</span></code> ha il compito di gestire anche i comandi <code class="docutils literal notranslate"><span class="pre">stop/resume</span></code>, modificando il metodo
+<code class="docutils literal notranslate"><span class="pre">walkByStepping</span></code> in modo da rederlo ‘reattivo’ a un comando di <code class="docutils literal notranslate"><span class="pre">stop</span></code>.</p>
+<section id="walkbysteppingwithstop">
+<h3>walkBySteppingWithStop<a class="headerlink" href="#walkbysteppingwithstop" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">boolean</span> <span class="n">stopped</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">walkBySteppingWithStop</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="kt">boolean</span> <span class="n">stepOk</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span> <span class="n">stepOk</span>  <span class="p">)</span> <span class="p">{</span>
+        <span class="n">stepOk</span> <span class="o">=</span>  <span class="n">vr</span><span class="p">.</span><span class="na">step</span><span class="p">(</span><span class="mi">350</span><span class="p">);</span>
+        <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span> <span class="c1">//to show the steps better</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">stopped</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">waitResume</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">waitResume</span><span class="p">(){</span>
+    <span class="k">while</span><span class="p">(</span> <span class="n">stopped</span> <span class="p">){</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="n">wait</span><span class="p">();</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="p">)</span> <span class="p">{...</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La variabile <code class="docutils literal notranslate"><span class="pre">stopped</span></code> viene posta <code class="docutils literal notranslate"><span class="pre">true</span></code> alla ricezione di una comando di <code class="docutils literal notranslate"><span class="pre">stop</span></code> e dovrà essere resettata a <code class="docutils literal notranslate"><span class="pre">false</span></code>
+alla ricezione di una comando di <code class="docutils literal notranslate"><span class="pre">resume</span></code>.</p>
+</section>
+<section id="unibo-console-cmdconsolesimulator">
+<h3>unibo.console.CmdConsoleSimulator<a class="headerlink" href="#unibo-console-cmdconsolesimulator" title="Permalink to this headline">¶</a></h3>
+<p>Per testare la correttezza della logica applicativa in un <span class="blue">ambiente locale</span>, senza le complicazioni della distribuzione,
+introduciamo un simulatore della <em>CmdConsole</em>, che interagisce direttamente con l’applicazione vista come un
+<a class="reference external" href="https://it.wikipedia.org/wiki/Plain_Old_Java_Object">POJO</a>, invocandone
+<a class="reference internal" href="#metodi-start-stop-resume"><span class="std std-ref">metodi stop/resume</span></a>.</p>
+<a class="reference internal image-reference" href="_images/Application1HTTPCoreWithConsoleSimul.png"><img alt="_images/Application1HTTPCoreWithConsoleSimul.png" class="align-center" src="_images/Application1HTTPCoreWithConsoleSimul.png" style="width: 70%;" /></a>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CmdConsoleSimulator</span> <span class="p">{</span>
+<span class="kd">private</span>  <span class="n">Application1Http</span> <span class="n">appl</span><span class="p">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">activate</span><span class="p">(</span> <span class="n">Application1HTTPCore</span> <span class="n">appl</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="na">appl</span> <span class="o">=</span> <span class="n">appl</span><span class="p">;</span>
+        <span class="n">Thread</span> <span class="n">cmdConsoleSimul</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="p">(</span><span class="s">&quot;cmdConsole&quot;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+                    <span class="n">CommUtils</span><span class="p">.</span><span class="na">outmagenta</span><span class="p">(</span><span class="s">&quot;cmdConsoleSimul send STOP &quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">);</span>
+                    <span class="n">appl</span><span class="p">.</span><span class="na">stop</span><span class="p">();</span>
+                    <span class="c1">//CommUtils.delay(1000);</span>
+                    <span class="c1">//appl.stop(); //send another STOP</span>
+                    <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">1500</span><span class="p">);</span>
+                    <span class="n">appl</span><span class="p">.</span><span class="na">resume</span><span class="p">();</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+        <span class="n">cmdConsoleSimul</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In alternativa si veda la GUI: <code class="docutils literal notranslate"><span class="pre">Application1HttpCoreConsole</span></code>.</p>
+<p>Nella classe <a class="reference internal" href="#unibo-appl1-http-application1httpcore"><span class="std std-ref">unibo.appl1.http.Application1HTTPCore</span></a> definiamo i metodi <code class="docutils literal notranslate"><span class="pre">start/stop/resume</span></code> come segue:</p>
+</section>
+<section id="metodi-start-stop-resume">
+<h3>metodi start/stop/resume<a class="headerlink" href="#metodi-start-stop-resume" title="Permalink to this headline">¶</a></h3>
+<p>Trattando l’applicazione com un POJO, possiamo introdurre metodi per modificare le variabili di stato.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">boolean</span> <span class="n">started</span>    <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="kd">protected</span> <span class="kt">boolean</span> <span class="n">stopped</span>    <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="p">(</span>   <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+   <span class="k">if</span><span class="p">(</span> <span class="o">!</span> <span class="n">started</span> <span class="p">){</span>
+    <span class="n">started</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="n">walkAtBoundary</span><span class="p">();</span>
+   <span class="p">}</span><span class="k">else</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">outred</span><span class="p">(</span><span class="s">&quot;Application already started&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">public</span>  <span class="kt">void</span> <span class="nf">stop</span><span class="p">(</span>  <span class="p">){</span>
+    <span class="n">stopped</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">resume</span><span class="p">(</span>  <span class="p">){</span>
+    <span class="n">stopped</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="n">notifyAll</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="codice-di-unibo-appl1-http-application1httpcore">
+<h3>codice di unibo.appl1.http.Application1HTTPCore<a class="headerlink" href="#codice-di-unibo-appl1-http-application1httpcore" title="Permalink to this headline">¶</a></h3>
+<p>Possiamo delienare ora la classe completa che realizza la logica di business.</p>
+<p>Il main si occupa anche di attivare in locale
+<a class="reference internal" href="#unibo-console-cmdconsolesimulator"><span class="std std-ref">unibo.console.CmdConsoleSimulator</span></a>  :</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Application1HTTPCore</span> <span class="p">{</span>
+<span class="kd">protected</span> <span class="kt">boolean</span> <span class="n">started</span>    <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="kd">protected</span> <span class="kt">boolean</span> <span class="n">stopped</span>    <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="kd">protected</span> <span class="n">IVrobotMoves</span> <span class="n">vr</span> <span class="p">;</span>
+
+    <span class="kd">public</span> <span class="nf">Application1HTTPCore</span><span class="p">(){</span>
+        <span class="n">String</span> <span class="n">URL</span> <span class="o">=</span> <span class="s">&quot;localhost:8090/api/move&quot;</span><span class="p">;</span>
+        <span class="n">HTTPCommApache</span> <span class="n">httpSupport</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HTTPCommApache</span><span class="p">(</span><span class="n">URL</span><span class="p">);</span>
+        <span class="n">vr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">VrobotHLMovesHTTPApache</span><span class="p">(</span><span class="n">httpSupport</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">walkAtBoundary</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">walkBySteppingWithStop</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">waitResume</span><span class="p">(){</span> <span class="p">...</span> <span class="p">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="p">(){</span> <span class="p">...</span> <span class="p">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">stop</span><span class="p">(){</span> <span class="p">...</span> <span class="p">}</span>
+    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">resume</span><span class="p">(</span>  <span class="p">){</span> <span class="p">...</span> <span class="p">}</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span> <span class="n">String</span><span class="o">[]</span> <span class="n">args</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="n">CommUtils</span><span class="p">.</span><span class="na">aboutThreads</span><span class="p">(</span><span class="s">&quot;Before start - &quot;</span><span class="p">);</span>
+    <span class="n">Application1HTTPCore</span> <span class="n">appl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Application1HTTPCore</span><span class="p">();</span>
+    <span class="k">new</span> <span class="n">CmdConsoleSimulator</span><span class="p">().</span><span class="na">activate</span><span class="p">(</span> <span class="n">appl</span> <span class="p">);</span>
+    <span class="n">appl</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
+    <span class="n">CommUtils</span><span class="p">.</span><span class="na">aboutThreads</span><span class="p">(</span><span class="s">&quot;At end - &quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="appl1-http-testing">
+<h2>Appl1 HTTP: testing<a class="headerlink" href="#appl1-http-testing" title="Permalink to this headline">¶</a></h2>
+<p>Per realizzare quanto introdotto nei <a class="reference internal" href="Applicazione1.html#appl1-piani-di-testing-funzionale"><span class="std std-ref">Appl1: Piani di testing funzionale</span></a>, è necessario che
+un programma di testing sia in grado di accedere a informazioni che derivano dal risultato
+delle attività della applicazione.</p>
+<section id="application1httpcore-observable">
+<h3>Application1HTTPCore observable<a class="headerlink" href="#application1httpcore-observable" title="Permalink to this headline">¶</a></h3>
+<p>Un modo per raggiungere lo scopo senza perturbare troppo il codice applicativo realizato fino ad ora, è
+farci ispirare dal <strong>pattern observer</strong> e
+<span class="blue">rendere l’applicazione osservabile</span>.
+A tal fine, introduciamo le seguenti modifiche:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Application1HTTPCore</span> <span class="kd">extends</span> <span class="n">java</span><span class="p">.</span><span class="na">util</span><span class="p">.</span><span class="na">Observable</span><span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>La classe <a class="reference external" href="https://www.tutorialspoint.com/java/util/java_util_observable.htm">java.util.Observable</a>
+permette di aggiungere/rimuovere oggetti che implementano la classe
+<a class="reference external" href="https://docs.oracle.com/javase/7/docs/api/java/util/Observer.html">java.util.Observer</a>, la quale
+definisce il metodo  void <code class="docutils literal notranslate"><span class="pre">update(Observable</span> <span class="pre">o,</span> <span class="pre">Object</span> <span class="pre">news)</span></code> che viene invocato dal metodo
+<code class="docutils literal notranslate"><span class="pre">notifyObservers(String</span> <span class="pre">news)</span></code> definito in <code class="docutils literal notranslate"><span class="pre">Observable</span></code>.</p>
+</section>
+<section id="updateobservers">
+<h3>updateObservers<a class="headerlink" href="#updateobservers" title="Permalink to this headline">¶</a></h3>
+<p>Poichè <code class="docutils literal notranslate"><span class="pre">notifyObservers</span></code> invoca udpdate degli Observer solo se è stato eseguito il metodo <code class="docutils literal notranslate"><span class="pre">setChanged</span></code>,
+introduciamo il metodo <em>updateObservers</em> per non dimenticarci di questo particolare:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span> <span class="kt">void</span> <span class="nf">updateObservers</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">){</span>
+    <span class="n">setChanged</span><span class="p">();</span>
+    <span class="n">notifyObservers</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In questo modo possiamo rendere visibili informazioni all’esterno dell’applicazione. Ad esempio,
+per segnalare che il robot è nello stato iniziale e nello stato finale, possiamo introdurre
+opportune notifiche nel metodo <code class="docutils literal notranslate"><span class="pre">walkAtBoundary</span></code>:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span> <span class="kt">void</span> <span class="nf">walkAtBoundary</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="n">uodateObservers</span><span class="p">(</span><span class="s">&quot;robot-athomebegin&quot;</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="mi">4</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">walkBySteppingWithStop</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="n">vr</span><span class="p">.</span><span class="na">turnLeft</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="n">uodateObservers</span><span class="p">(</span><span class="s">&quot;robot-athomeend&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Altre notifiche permettono di sapere se il robot è fermo (<em>robot-stable</em>) o
+in movimento(<em>robot-moving</em>):</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">walkBySteppingWithStop</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="kt">boolean</span> <span class="n">stepOk</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span> <span class="n">stepOk</span>  <span class="p">)</span> <span class="p">{</span>
+        <span class="n">uodateObservers</span><span class="p">(</span><span class="s">&quot;robot-moving&quot;</span><span class="p">);</span>
+        <span class="n">stepOk</span> <span class="o">=</span>  <span class="n">vr</span><span class="p">.</span><span class="na">step</span><span class="p">(</span><span class="mi">350</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span> <span class="o">!</span> <span class="n">stepOk</span> <span class="p">)</span> <span class="n">notifyObservers</span><span class="p">(</span><span class="s">&quot;robot-collision&quot;</span><span class="p">);</span>
+        <span class="k">else</span> <span class="n">uodateObservers</span><span class="p">(</span><span class="s">&quot;robot-stable&quot;</span><span class="p">);</span>
+        <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span> <span class="c1">//to show the steps better</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">stopped</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">uodateObservers</span><span class="p">(</span><span class="s">&quot;robot-stopped&quot;</span><span class="p">);</span>
+            <span class="n">waitResume</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Notiamo che l’osservabilità implica concettualemente <span class="blue">la introduzione di un nuovo linguaggio</span>,
+definito dall’insieme delle stringhe informative che l’applicazione può emettere. Noi
+useremo le seguenti, con ovvia semantica:</p>
+<ul class="simple">
+<li><p>robot-athomebegin</p></li>
+<li><p>robot-moving</p></li>
+<li><p>robot-stable</p></li>
+<li><p>robot-collision</p></li>
+<li><p>robot-stopped</p></li>
+<li><p>robot-resume</p></li>
+<li><p>robot-athomeend</p></li>
+</ul>
+</section>
+<section id="unibo-appl1-common-appl1observer">
+<h3>unibo.appl1.common.Appl1Observer<a class="headerlink" href="#unibo-appl1-common-appl1observer" title="Permalink to this headline">¶</a></h3>
+<p>La classe astratta <a class="reference internal" href="unibo.basicomm23.html#applabstractobserver"><span class="std std-ref">ApplAbstractObserver</span></a> del progetto  <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a> ci fornisce
+lo sceheletro di un observer che lascia non specificato il metodo <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">void</span> <span class="pre">update(String</span> <span class="pre">msg)</span></code>.</p>
+<p>Specializziamo dunque questa classe per definire un ossservatore di
+<a class="reference internal" href="#application1httpcore-observable"><span class="std std-ref">Application1HTTPCore</span></a>
+che tenga traccia della sequenza di stringhe informative emesse dall’applicazione, fornendo anche un metodo che
+blocca un chiamante fino a che l’applicazione è giunta al termine.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Appl1HttpObserver</span> <span class="kd">extends</span> <span class="n">unibo</span><span class="p">.</span><span class="na">basicomm23</span><span class="p">.</span><span class="na">utils</span><span class="p">.</span><span class="na">ApplAbstractObserver</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">history</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="kd">private</span> <span class="kt">boolean</span> <span class="n">applTerminatedOk</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">history</span><span class="p">.</span><span class="na">add</span><span class="p">(</span> <span class="n">msg</span> <span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;robot-athomeend&quot;</span><span class="p">))</span> <span class="n">setTerminated</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="c1">//permette di riusare un observer in fase di testing</span>
+     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="p">(){</span>
+        <span class="n">history</span>          <span class="o">=</span> <span class="k">new</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
+        <span class="n">applIsTerminated</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">public</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getHistory</span><span class="p">(){</span>
+        <span class="k">return</span> <span class="n">history</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">private</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">setTerminated</span><span class="p">(){</span>
+        <span class="n">applIsTerminated</span> <span class="o">=</span><span class="kc">true</span><span class="p">;</span>
+        <span class="n">notifyAll</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">waitApplTerminated</span><span class="p">(){</span>
+        <span class="k">while</span><span class="p">(</span> <span class="o">!</span> <span class="n">applIsTerminated</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">try</span> <span class="p">{</span>
+                <span class="n">wait</span><span class="p">();</span>
+            <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span>  <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>A questo punto possiamo definire un programma, basato su <strong>JUnit</strong>, che effettua i test introdotti in
+<a class="reference internal" href="Applicazione1.html#appl1-piani-di-testing-funzionale"><span class="std std-ref">Appl1: Piani di testing funzionale</span></a>.</p>
+<p>Iniziamo definendo  una classe-base che definisce alcuni metodi di utilità.</p>
+</section>
+<section id="unibo-appl1-http-testcommonappl1httplocal">
+<h3>unibo.appl1.http.TestCommonAppl1HTTPLocal<a class="headerlink" href="#unibo-appl1-http-testcommonappl1httplocal" title="Permalink to this headline">¶</a></h3>
+<p>Nella fase iniziale che precede ogni metodo di testing, attiviamo l’applicazione, facendo <span class="blue">l’assunzione</span> che sia rispettata
+la condizione sullo <a class="reference internal" href="VirtualRobot23.html#stato-iniziale-del-virtualrobot"><span class="std std-ref">Stato iniziale del virtualrobot</span></a>, cioè che il robot sia in <code class="docutils literal notranslate"><span class="pre">HOME</span></code>.</p>
+<p>Dopo avere creato l’applicazione, si aggiunge ad essa <a class="reference internal" href="#unibo-appl1-common-appl1observer"><span class="std std-ref">unibo.appl1.common.Appl1Observer</span></a>.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@FixMethodOrder</span><span class="p">(</span><span class="n">MethodSorters</span><span class="p">.</span><span class="na">NAME_ASCENDING</span><span class="p">)</span> <span class="c1">//esegue i test in ordine crecente di nome</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestCommonAppl1HTTPLocal</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="n">Application1HTTPCore</span> <span class="n">appl</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">Appl1HttpObserver</span> <span class="n">obs</span><span class="p">;</span>
+
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">initSystem</span><span class="p">(){</span>
+    <span class="c1">//Il robot deve essere in HOME !</span>
+    <span class="n">appl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Application1HTTPCore</span><span class="p">();</span>
+    <span class="n">obs</span><span class="p">.</span><span class="na">init</span><span class="p">();</span>
+    <span class="n">appl</span><span class="p">.</span><span class="na">addObserver</span><span class="p">(</span> <span class="n">obs</span> <span class="p">);</span>
+    <span class="n">CommUtils</span><span class="p">.</span><span class="na">outmagenta</span><span class="p">(</span><span class="s">&quot;initSystem done &quot;</span>  <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Il metodo <code class="docutils literal notranslate"><span class="pre">initSystem</span></code> inizializza il sistema da testare</p></li>
+</ul>
+<p>Altri metodi saranno utili per rendere più snello i codice delle procedure di testing.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span> <span class="kt">void</span> <span class="nf">startTheApplication</span><span class="p">(){</span>
+    <span class="k">new</span> <span class="n">Thread</span><span class="p">(){</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="p">(){</span>
+        <span class="k">try</span><span class="p">{</span>
+            <span class="n">appl</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
+        <span class="p">}</span><span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="n">fail</span><span class="p">(</span><span class="s">&quot;startTheApplication &quot;</span> <span class="o">+</span> <span class="n">e</span><span class="p">.</span><span class="na">getMessage</span><span class="p">());}</span>
+    <span class="p">}</span>
+    <span class="p">}.</span><span class="na">start</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Il metodo <code class="docutils literal notranslate"><span class="pre">appl.start</span></code>, che attiva <a class="reference internal" href="#walkatboundary"><span class="std std-ref">walkAtBoundary</span></a>, viene invocato in un Thread, per evitare di bloccare il
+Thread di testing, entrando l’applicazione in una fase proattiva.</p></li>
+</ul>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">checkTerminated</span><span class="p">(){</span>
+    <span class="n">obs</span><span class="p">.</span><span class="na">waitApplTerminated</span><span class="p">();</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Il metodo <code class="docutils literal notranslate"><span class="pre">checkTerminated</span></code> viene introdotto come utility per aspettare che l’applicazione sia terminata, prima
+di effetuare controlli sulla sequenza di informazioni emesse dell’observer.</p></li>
+</ul>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span> <span class="kt">void</span> <span class="nf">checkHistoryAfterStop</span><span class="p">(){</span>
+    <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">1500</span><span class="p">);</span> <span class="c1">//Per elaborare ultime stringhe negli observers (Non bello)</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">h</span> <span class="o">=</span> <span class="n">obs</span><span class="p">.</span><span class="na">getHistory</span><span class="p">();</span>
+    <span class="k">assert</span><span class="p">(</span> <span class="n">h</span><span class="p">.</span><span class="na">elementAt</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;robot-athomebegin&quot;</span><span class="p">));</span>
+    <span class="k">assert</span><span class="p">(</span> <span class="n">h</span><span class="p">.</span><span class="na">elementAt</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;robot-moving&quot;</span><span class="p">));</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">h</span><span class="p">.</span><span class="na">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="p">)</span> <span class="k">assert</span><span class="p">(</span> <span class="n">h</span><span class="p">.</span><span class="na">elementAt</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;robot-stable&quot;</span><span class="p">));</span>
+    <span class="c1">//Dopo il secondo item ci possono essere altre coppie robot-moving/robot-stable</span>
+    <span class="k">assert</span><span class="p">(</span> <span class="n">h</span><span class="p">.</span><span class="na">elementAt</span><span class="p">(</span><span class="n">h</span><span class="p">.</span><span class="na">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">).</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;robot-stopped&quot;</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Il metodo <code class="docutils literal notranslate"><span class="pre">checkHistoryAfterStop</span></code> controlla che la sequenza di stringhe emesse dall’applicazione abbia la forma
+<code class="docutils literal notranslate"><span class="pre">robot-athomebegin</span> <span class="pre">(robot-moving</span> <span class="pre">robot-stable)+</span>&#160;&#160; <span class="pre">robot-stopped</span></code>.</p></li>
+</ul>
+</section>
+<section id="teststartnostop">
+<h3>testStartNoStop<a class="headerlink" href="#teststartnostop" title="Permalink to this headline">¶</a></h3>
+<p>Questa procedura di testing si realizza ora come segue:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestStartNoStopHTTPLocal</span> <span class="kd">extends</span> <span class="n">TestCommonAppl1HTTPLocal</span><span class="p">{</span>
+    <span class="nd">@Before</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="p">(){</span>
+        <span class="n">initSystem</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testStartNoStop</span><span class="p">(){</span>
+        <span class="n">startTheApplication</span><span class="p">();</span>
+        <span class="k">assert</span><span class="p">(</span> <span class="n">checkTerminated</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="teststop">
+<h3>testStop<a class="headerlink" href="#teststop" title="Permalink to this headline">¶</a></h3>
+<p>La procedura di testing <code class="docutils literal notranslate"><span class="pre">testStop</span></code> può essere definita in una nuova classe o anche entro la classe
+predente.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testStop</span><span class="p">(){</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">startTheApplication</span><span class="p">();</span>
+        <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span> <span class="c1">//Attendo un pò ...</span>
+        <span class="n">appl</span><span class="p">.</span><span class="na">stop</span><span class="p">();</span>
+        <span class="n">checkHistoryAfterStop</span><span class="p">();</span>
+        <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">1000</span> <span class="p">);</span><span class="c1">//Attendo un pò ...</span>
+        <span class="n">continueToHome</span><span class="p">();</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fail</span><span class="p">(</span><span class="s">&quot;TestAppl1HTTPLocal | testStart &quot;</span> <span class="o">+</span> <span class="n">e</span><span class="p">.</span><span class="na">getMessage</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">continueToHome</span><span class="p">(){</span>
+    <span class="n">appl</span><span class="p">.</span><span class="na">resume</span><span class="p">();</span>
+    <span class="k">assert</span><span class="p">(</span> <span class="n">checkTerminated</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Notiamo che il metodo <code class="docutils literal notranslate"><span class="pre">continueToHome</span></code> riporta il robot nella situazione iniziale,
+permettendo la coesistenza nella stessa classe di altre operazioni di testing, in quanto
+viene ripristinata <span class="blue">l’assunzione</span> che il robot sia inizialmente in <code class="docutils literal notranslate"><span class="pre">HOME</span></code>.</p>
+<p>Di fatto, questo metodo copre anche  <span class="brown">testResume</span>, introdotta nelle  <a class="reference internal" href="Applicazione1.html#appl1-azioni-di-testing-pianificate"><span class="std std-ref">Appl1: Azioni di testing pianificate</span></a>.</p>
+</section>
+</section>
+<section id="applicazione1-http-core-passi-successivi">
+<h2>Applicazione1-HTTP-Core: passi successivi<a class="headerlink" href="#applicazione1-http-core-passi-successivi" title="Permalink to this headline">¶</a></h2>
+<p>Adesso abbiamo un sistema testato che soddisfa i requisiti del core-businness.</p>
+<p>Dobbiamo ora:</p>
+<ol class="arabic simple">
+<li><p>Affrontare il progetto e la realizzazione della <em>CmdConsole</em>.</p></li>
+<li><p>Affrontare il progetto e la realizzazione di un sistema distribuito.</p></li>
+</ol>
+<p>Questi nuovi progetti richiedono il <span class="remark">passaggio logico da sistemi ad oggetti</span> locali che interagiscono
+mediante <em>procedure-call</em> a sistemi <span class="remark">a componenti distribuiti attivi che interagiscono a messaggi</span>
+attraverso l’uso di vari protocolli, come quelli introdotti in  <a class="reference internal" href="#unibo-basicomm23-msg-protocoltype"><span class="std std-ref">unibo.basicomm23.msg.ProtocolType</span></a>.</p>
+<p>Per evitare che l’<em>application designer</em> debba occuparsi
+di dettagli implementativi legati alle interazioni,
+possiamo intreprendere una strada che trae ispirazione dal
+<span class="blue">Principio di inversione delle dipendenze</span> (un altro dei principi <a class="reference external" href="https://en.wikipedia.org/wiki/SOLID">SOLID</a>), secondo il quale:</p>
+<p><span class="remark">I componenti di alto livello non devono dipendere da componenti di livello più basso.</span></p>
+<p>Questa nuova via parte dall’idea che sia il livello applicativo a dire di quali
+elementi astratti (interfacce) o concreti ha bisogno per realizzare comunicazioni di rete e che opportuni
+supporti realizzino quanto dichiarato.</p>
+<p>Procederemo in due passi:</p>
+<ul class="simple">
+<li><p>nella sezione <a class="reference internal" href="Interaction2021.html#interaction2021"><span class="std std-ref">Interaction2021</span></a> defininiremo l’insieme degli elementi (astratti e non) che il livello applicativo
+assume di avere a disposizione;</p></li>
+<li><p>nella sezione <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a> svilupperemo un progetto che fornisce i supporti richiesti, basati su diversi
+<a class="reference internal" href="#unibo-basicomm23-msg-protocoltype"><span class="std std-ref">protocolli</span></a>.</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Applicazione1-HTTP-Core</a><ul>
+<li><a class="reference internal" href="#un-approccio-da-evitare">Un approccio da evitare</a><ul>
+<li><a class="reference internal" href="#unibo-http-fatapplication1nostop">unibo.http.FatApplication1NoStop</a><ul>
+<li><a class="reference internal" href="#unibo-common-vrobotmsgs">unibo.common.VrobotMsgs</a></li>
+<li><a class="reference internal" href="#walkatboundary">walkAtBoundary</a></li>
+<li><a class="reference internal" href="#requestsynch">requestSynch</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#una-prima-osservazione-critica">Una prima osservazione critica</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#progetto-unibo-basicomm23-anticipazione">Progetto unibo.basicomm23: anticipazione</a><ul>
+<li><a class="reference internal" href="#unibo-basicomm23-msg-protocoltype">unibo.basicomm23.msg.ProtocolType</a></li>
+<li><a class="reference internal" href="#unibo-basicomm23-http-httpcommapache">unibo.basicomm23.http.HTTPCommApache</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#comunicazioni-di-alto-livello-col-robot">Comunicazioni di alto livello col robot</a><ul>
+<li><a class="reference internal" href="#unibo-common-ivrobotmoves">unibo.common.IVrobotMoves</a></li>
+<li><a class="reference internal" href="#step">step</a></li>
+<li><a class="reference internal" href="#unibo-supports-vrobothlmoveshttpapache">unibo.supports.VrobotHLMovesHTTPApache</a></li>
+<li><a class="reference internal" href="#unibo-common-collisionexception">unibo.common.CollisionException</a></li>
+<li><a class="reference internal" href="#step-implementazione">step: implementazione</a></li>
+<li><a class="reference internal" href="#unibo-http-application1nostop">unibo.http.Application1NoStop</a></li>
+<li><a class="reference internal" href="#walkbystepping">walkByStepping</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unibo-appl1-http-application1httpcore">unibo.appl1.http.Application1HTTPCore</a><ul>
+<li><a class="reference internal" href="#walkbysteppingwithstop">walkBySteppingWithStop</a></li>
+<li><a class="reference internal" href="#unibo-console-cmdconsolesimulator">unibo.console.CmdConsoleSimulator</a></li>
+<li><a class="reference internal" href="#metodi-start-stop-resume">metodi start/stop/resume</a></li>
+<li><a class="reference internal" href="#codice-di-unibo-appl1-http-application1httpcore">codice di unibo.appl1.http.Application1HTTPCore</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#appl1-http-testing">Appl1 HTTP: testing</a><ul>
+<li><a class="reference internal" href="#application1httpcore-observable">Application1HTTPCore observable</a></li>
+<li><a class="reference internal" href="#updateobservers">updateObservers</a></li>
+<li><a class="reference internal" href="#unibo-appl1-common-appl1observer">unibo.appl1.common.Appl1Observer</a></li>
+<li><a class="reference internal" href="#unibo-appl1-http-testcommonappl1httplocal">unibo.appl1.http.TestCommonAppl1HTTPLocal</a></li>
+<li><a class="reference internal" href="#teststartnostop">testStartNoStop</a></li>
+<li><a class="reference internal" href="#teststop">testStop</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#applicazione1-http-core-passi-successivi">Applicazione1-HTTP-Core: passi successivi</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Applicazione1-HTTP-Core.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Applicazione1-HTTP-Core</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

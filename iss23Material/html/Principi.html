@@ -53,7 +53,7 @@
 o sottosistemi (organi, componenti o elementi ecc.) <strong>interagenti</strong> (o in relazione funzionale) tra loro
 (e con altri sistemi), che formano un tutt’uno in cui ogni parte dà il proprio contributo
 per una finalità comune.</p>
-<p>A livello di sistema, si possono presentare <span class="blue">nuove proprietà</span>, che non possono essere dedotte dai suoi sottosistemi,
+<p>A livello di sistema, si possono presentare <span class="slide1">nuove proprietà</span>, che non possono essere dedotte dai suoi sottosistemi,
 ma che <span class="slide1">derivano dall’interazione delle parti</span>.</p>
 <p>Rispetto alla semplice denominazione di <em>software</em>, l’uso del termine <span class="blue">sistema software</span> enfatizza
 in genere prodotti software complessi, e che sono costruiti o studiati in termini di macro-componenti,
@@ -110,6 +110,7 @@ a una dimensione  di tipo sistemistico che vede come componenti entità quali:</
 </tr>
 </tbody>
 </table>
+<p>Per le figure è stato usato <a class="reference external" href="https://excalidraw.com/">https://excalidraw.com/</a></p>
 <section id="problematiche-relative-ai-componenti">
 <h3>Problematiche relative ai componenti<a class="headerlink" href="#problematiche-relative-ai-componenti" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
@@ -132,6 +133,7 @@ a una dimensione  di tipo sistemistico che vede come componenti entità quali:</
 <p>Le interazioni tra <strong>componenti attivi</strong> possono avvenire trameite <span class="blue">oggetti condivisi</span>, allocati su memoria comune,
 oppure tramite <span class="blue">messaggi</span> che riguardano <em>informazioni</em> o <em>stream di dati</em> e che possono essere scambiati
 in forma sincrona, asincrona o isocrona.</p>
+<p><span class="slide">Sincrono/Asincrono</span></p>
 <ul class="simple">
 <li><p>In una interazione <strong>asincrona</strong>, la comunicazione è “bufferizzata” senza alcuna
 limitazione sulle dimensioni del buffer.
@@ -154,7 +156,8 @@ di ricevere la risposta. Il sender usa il poll object per verificare ed acquisir
 <li><p><strong>Result callback</strong>: il sender invia una request specificando un oggetto (<em>callback object</em>) che implementa
 un metodo che verrà invocato dal supporto non appena il receiver invierà la risposta.</p></li>
 </ul>
-<p>Questi punti costituiscono il cuore del passaggio da OOP a message-passing.</p>
+<p>Questi punti costituiscono il cuore del passaggio da <code class="docutils literal notranslate"><span class="pre">OOP</span></code> a message-passing.</p>
+<p><span class="slide">Termini in uso nel corso</span></p>
 <section id="terminologia-di-riferimento">
 <h3>Terminologia di riferimento<a class="headerlink" href="#terminologia-di-riferimento" title="Permalink to this headline">¶</a></h3>
 <p>Faremo riferimento alla seguente terminologia:</p>
@@ -191,11 +194,12 @@ all’emittente, al ricevente e/o al sistema nel suo complesso.</p></li>
 <li><p>logico-dichiarativo</p></li>
 </ul>
 <p>Il funzionamento di un componente comporta spesso l’individuazione
-di un insieme di <span class="blue">operazioni primitive</span>, sulla base delle quali costruire ogni altra operazione
+di un insieme di <span class="slide1">operazioni primitive</span>, sulla base delle quali costruire ogni altra operazione
 di manipolazione/gestione del componente.</p>
 <p>Si pensi per esempio al caso di un <em>oggetto lista</em>, le cui primitive
 sono il costruttore <code class="docutils literal notranslate"><span class="pre">cons</span></code>, i selettori <code class="docutils literal notranslate"><span class="pre">head,</span> <span class="pre">tail</span></code> e il predicato <code class="docutils literal notranslate"><span class="pre">empty</span></code>. Un volta data la lista vuota (l’oggetto <code class="docutils literal notranslate"><span class="pre">emptyList</span></code>)
 ogni lista può essere costruita e manipolata attraverso l’uso di queste primitive.</p>
+<p><span class="slide">Macchine astratte</span></p>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
 <col style="width: 50%" />
@@ -205,7 +209,7 @@ ogni lista può essere costruita e manipolata attraverso l’uso di queste primi
 <tr class="row-odd"><td><p>Spesso si qualifica il comportamento di un componente facendo riferimento a tipi diversi di
 <span class="blue">macchine astratte</span>, iniziando dalla
 <a class="reference external" href="https://plato.stanford.edu/entries/turing-machine/">Turing Machine</a> (<strong>TM</strong>), che individua, in stile imperativo, le mosse-base (<em>primitive</em>)
-di un automa che permette di realizzare qualunque calcolo.</p></td>
+di un automa che permette di <span class="remark">realizzare qualunque calcolo</span> (!).</p></td>
 <td><a class="reference internal image-reference" href="_images/TuringMachine.PNG"><img alt="_images/TuringMachine.PNG" class="align-center" src="_images/TuringMachine.PNG" style="width: 100%;" /></a>
 <p>Si veda <a class="reference external" href="https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/turing-machine/one.html">Raspberry Pi TM</a></p>
 </td>
@@ -228,6 +232,7 @@ di un automa che permette di realizzare qualunque calcolo.</p></td>
 <p>Un tipo meno potente di macchina astratta rispetto alla <strong>TM</strong> è il <a class="reference external" href="https://it.wikipedia.org/wiki/Automa_a_pila">pushdown automaton</a> (<strong>PDA</strong>) che però è l’automa
 di riferimento per il riconoscimento delle frasi di un inguaggio con <em>sintassi context-free</em>, di tipo 2 nella
 <a class="reference external" href="https://it.wikiversity.org/wiki/Classificazione_delle_grammatiche">gerarchia di Chomsky</a> .</p>
+<p><span class="slide">FSM di Moore e Mealy</span></p>
 <section id="automi-a-stati-finiti">
 <h3>Automi a stati finiti<a class="headerlink" href="#automi-a-stati-finiti" title="Permalink to this headline">¶</a></h3>
 <p>Un ulteriore tipo di automa meno potente della TM, ma su cui si fonda sia la TM sia il PDA
@@ -274,6 +279,7 @@ ulteriore messaggio di input.</p></li>
 alcuni principi, metodologie, schemi di riferimento etc. che aiutano nella progettazione e sviluppo
 di sistemi software.</p>
 <p>Qui ne ricordiamo alcuni, che useremo nel seguito.</p>
+<p><span class="slide">Design patterns</span></p>
 <section id="design-patterns">
 <h3>Design patterns<a class="headerlink" href="#design-patterns" title="Permalink to this headline">¶</a></h3>
 <table class="colwidths-given docutils align-default" style="width: 100%">
@@ -305,6 +311,7 @@ e i convegni <code class="docutils literal notranslate"><span class="pre">PLoP</
 </tr>
 </tbody>
 </table>
+<p><span class="slide">Principi SOLID</span></p>
 </section>
 <section id="id1">
 <h3>SOLID<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
@@ -338,6 +345,7 @@ che può essere modificato senza influenzare le regole aziendali (componente di 
 </tr>
 </tbody>
 </table>
+<p><span class="slide">Architettura Port/Adapter</span></p>
 </section>
 <section id="architettura-esagonale">
 <h3>Architettura esagonale<a class="headerlink" href="#architettura-esagonale" title="Permalink to this headline">¶</a></h3>
@@ -363,12 +371,13 @@ di sistemi software oggi in uso, quella cui noi faremo particolare attenzione.</
 </tr>
 </tbody>
 </table>
+<p><span class="slide">Principi per WebApp</span></p>
 </section>
 <section id="factor-app">
 <h3>12 Factor App<a class="headerlink" href="#factor-app" title="Permalink to this headline">¶</a></h3>
 <p>Una delle soluzioni oggi adottate per affrontare i problemi di operare su scala Web,
 è la metodologia <span class="blue">Twelve-Factor App</span>, pubblicato nel <code class="docutils literal notranslate"><span class="pre">2011</span></code> da Adam Wiggins.</p>
-<p>La <span class="blue">12 Factor App</span> è un insieme di principi per la creazione di applicazioni <em>software-as-a-service</em>,
+<p>La <span class="blue">12 Factor App</span> è un insieme di principi per la creazione di applicazioni <span class="remark">software-as-a-service</span>,
 che descrivono un modo di creare software che consente alle aziende di
 creare codice che può essere rilasciato in modo affidabile, ridimensionato rapidamente e mantenuto
 in modo coerente e prevedibile.</p>
@@ -388,6 +397,7 @@ in modo coerente e prevedibile.</p>
 del codice sorgente e incluse nel pacchetto dell’applicazione.</p></li>
 </ol>
 <p>Si veda  anche: <a class="reference external" href="https://www.redhat.com/architect/12-factor-app">12FactorAppIllustrated</a></p>
+<p><span class="slide">Linguaggi</span></p>
 </section>
 <section id="id2">
 <h3>Linguaggi di programmazione<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
@@ -415,43 +425,33 @@ in ciascuna delle <a class="reference internal" href="#dimensioni"><span class="
 </tr>
 </tbody>
 </table>
+<p><span class="slide1">Sintassi astratta</span></p>
 <section id="sintassi-astratta">
 <h4>Sintassi astratta<a class="headerlink" href="#sintassi-astratta" title="Permalink to this headline">¶</a></h4>
 <p>Il motivo principale di una relativa (e solo apparente)
 stagnazione nello sviluppo di nuovi linguaggi, può essere ricondotto all’idea che un linguaggio
 non deve essere necessariamente accompagnato da una sintassi concreta ma può essere suffciente
-definire una <strong>sintassi astratta</strong> utilizzando un <span class="blue">meta-linguaggio</span> come ad esempio <code class="docutils literal notranslate"><span class="pre">MOF</span></code>
-(si veda <a class="reference external" href="https://it.wikipedia.org/wiki/Meta-Object_Facility">Meta Object Facility</a>) unitamente alla semantica del linguaggio e a un framework di supporto.</p>
-<table class="colwidths-given docutils align-default" style="width: 100%">
-<colgroup>
-<col style="width: 60%" />
-<col style="width: 40%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/mofUml.PNG"><img alt="_images/mofUml.PNG" class="align-center" src="_images/mofUml.PNG" style="width: 100%;" /></a>
-</td>
-<td><p>La <a class="reference external" href="https://it.wikipedia.org/wiki/Meta-Object_Facility">Meta Object Facility</a> di UML2 nella versione incorporata in Eclipse
-(denominata <a class="reference external" href="https://wiki.eclipse.org/Ecore">Ecore</a>) può essere usata per definire un linguaggio che permette di esprimere sistemi software come
-oggetti attivi (<strong>attori</strong>) che interagiscono tra loro a scambio di messaggi si comportano come <a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">MooreMachines</a>.</p>
-<p>Questa idea ha come riferimento i <a class="reference external" href="https://www.jetbrains.com/mps/concepts/domain-specific-languages/">Domain Specific Languages</a>.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Il codice in MPS non è testo, ma è invece una proiezione della sintassi astratta (AST)</p>
+definire una <strong>sintassi astratta</strong> utilizzando un <span class="blue">meta-linguaggio</span></p>
+<p>Il <a class="reference external" href="https://www.jetbrains.com/mps/">Meta Programming System</a> (<strong>MPS</strong>) di IntelliJ  offre un editor (si veda  <a class="reference external" href="http://dsl-course.org/projectional-editing/">Projectional editing</a>)
+che costituisce una <em>proiezione della sintassi astratta</em> (<strong>AST</strong>) di un meta-linguaggio per la definizione di
+<a class="reference internal" href="#domain-specific-languages"><span class="std std-ref">Domain Specific Languages</span></a> (<strong>DSL</strong>).</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Language-oriented_programming">Language-oriented programming</a> è un paradigma di sviluppo del software  che
+incoraggia esplicitamente gli sviluppatori
+a creare i propri DSL o ad estendere i linguaggi esistenti con concetti specifici del dominio.</p>
+<p><span class="slide1">Domain Specific Languages</span></p>
 </section>
 </section>
 </section>
-<section id="id3">
-<h2>Domain Specific Languages<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<p>Un <cite>Domain Specific Languages</cite> (DSL) è un linguaggio che aumenta il livello di astrazione oltre la programmazione,
-utilizzanso direttamente concetti e regole da uno specifico dominio del problema</p>
+<section id="domain-specific-languages">
+<h2>Domain Specific Languages<a class="headerlink" href="#domain-specific-languages" title="Permalink to this headline">¶</a></h2>
+<p>Un <a class="reference external" href="https://www.jetbrains.com/mps/concepts/domain-specific-languages/">Domain Specific Language</a> (<strong>DSL</strong>) è un linguaggio che aumenta il livello di astrazione oltre la programmazione,
+utilizzando direttamente concetti e regole da uno specifico dominio del problema</p>
 <p>Tra i vantaggi dell’uso di un DSL:</p>
 <ul class="simple">
 <li><p>usando un DSL e un <em>motore di trasformazione</em>, il  lavoro nel particolare aspetto dello sviluppo
 del software coperto dal DSL diventa molto più efficiente, perché il lavoro di colmare l’abstraction gap
 vine svolto dal motore di trasformazione;</p></li>
-<li><p>l’uso usare delle <em>astrazioni specifiche del dominio</em> può avvenire senza sovraccarico runtime,
+<li><p>l’uso di <em>astrazioni specifiche del dominio</em> può avvenire senza sovraccarico runtime,
 perché il motore di trasformazione, proprio come un compilatore, può rimuovere le astrazioni
 e generare codice efficiente;</p></li>
 <li><p>il <em>modo di pensare</em> del progettista software diventa più chiaro perché il codice non è ingombrato
@@ -459,9 +459,7 @@ dai dettagli dell’implementazione;</p></li>
 <li><p>la <em>logica dell’applicazione</em> espressa nel codice DSL è indipendente dalla piattaforma di destinazione;</p></li>
 <li><p>si promuove un’ottima <em>integrazione</em> tra gli svluppatori software e gli esperti del dominio.</p></li>
 </ul>
-<p><span class="slide1">Programmazione orientata al linguaggio</span></p>
-<p>La <em>programmazione orientata al linguaggio</em> incoraggia esplicitamente gli sviluppatori
-a creare i propri DSL o ad estendere i linguaggi esistenti con concetti specifici del dominio.</p>
+<p><span class="slide">I modelli</span></p>
 <section id="modelli">
 <h3>Modelli<a class="headerlink" href="#modelli" title="Permalink to this headline">¶</a></h3>
 <p>Nel linguaggio comune, il termine <span class="blue">modello</span> è spesso usato per denotare un’astrazione
@@ -498,17 +496,34 @@ forma di comunicazione comprensibile ad attori diversi.
 Per garantire coesione e interoperabilità, si cerca di individuare regole di corrispondenza
 e di trasformazione automatica tra modelli.</p>
 </section>
-<section id="linguaggi-di-modellazione">
-<h3>Linguaggi di modellazione<a class="headerlink" href="#linguaggi-di-modellazione" title="Permalink to this headline">¶</a></h3>
+<section id="linguaggi-di-meta-modellazione">
+<h3>Linguaggi di (meta)modellazione<a class="headerlink" href="#linguaggi-di-meta-modellazione" title="Permalink to this headline">¶</a></h3>
 <p>Un <a class="reference external" href="https://it.wikipedia.org/wiki/Linguaggio_di_modellazione">Linguaggio di modellazione</a> è un <a class="reference external" href="https://it.wikipedia.org/wiki/Linguaggio_formale">Linguaggio formale</a>
 che può essere utilizzato per descrivere (modellare) un sistema di qualche natura.</p>
 <p>UML (<em>Unified Modeling Language</em>) è un linguaggio di modellazione e di specifica
-di sistemi software basato sul paradigma orientato agli oggetti.</p>
-<p>Nel contesto dell’ingegneria del software, UML viene usato soprattutto per descrivere il dominio applicativo
+di sistemi software basato sul paradigma orientato agli oggetti. Il linguaggio è definito in termini
+di un linguaggio di meta-modellazione denominato <code class="docutils literal notranslate"><span class="pre">MOF</span></code>
+(si veda <a class="reference external" href="https://it.wikipedia.org/wiki/Meta-Object_Facility">Meta Object Facility</a>) .</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/mofUml.PNG"><img alt="_images/mofUml.PNG" class="align-center" src="_images/mofUml.PNG" style="width: 100%;" /></a>
+</td>
+<td><p>La <a class="reference external" href="https://it.wikipedia.org/wiki/Meta-Object_Facility">Meta Object Facility</a> di UML2 nella versione incorporata in Eclipse
+(denominata <a class="reference external" href="https://wiki.eclipse.org/Ecore">Ecore</a>) può essere usata per definire un linguaggio che permette di esprimere sistemi software come
+oggetti attivi (<strong>attori</strong>) che interagiscono tra loro a scambio di messaggi si comportano come <a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">MooreMachines</a>.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Nel contesto dell’ingegneria del software, <code class="docutils literal notranslate"><span class="pre">UML</span></code> viene usato soprattutto per descrivere il dominio applicativo
 di un sistema software e/o il comportamento e la struttura del sistema stesso.</p>
-<p>Il modello è strutturato secondo un insieme di viste che rappresentano diversi aspetti della cosa modellata
+<p>Il modello è strutturato secondo un <strong>insieme di viste</strong> che rappresentano diversi aspetti della cosa modellata
 (funzionamento, struttura, comportamento e così via), a scopo sia di analisi sia di progetto,
 mantenendo la tracciabilità dei concetti impiegati nelle diverse viste.</p>
+<p><span class="slide">Il testing</span></p>
 </section>
 <section id="testing">
 <h3>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h3>
@@ -614,9 +629,9 @@ per definire i test in modo che possano individuare in modo automatico le falle 
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id3">Domain Specific Languages</a><ul>
+<li><a class="reference internal" href="#domain-specific-languages">Domain Specific Languages</a><ul>
 <li><a class="reference internal" href="#modelli">Modelli</a></li>
-<li><a class="reference internal" href="#linguaggi-di-modellazione">Linguaggi di modellazione</a></li>
+<li><a class="reference internal" href="#linguaggi-di-meta-modellazione">Linguaggi di (meta)modellazione</a></li>
 <li><a class="reference internal" href="#testing">Testing</a></li>
 <li><a class="reference internal" href="#dal-testing-a-devops">Dal testing a DevOps</a></li>
 </ul>

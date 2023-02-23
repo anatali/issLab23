@@ -1,0 +1,196 @@
+.. role:: red 
+.. role:: blue 
+.. role:: remark
+
+.. _WebSocket: https://it.wikipedia.org/wiki/WebSocket
+.. _GradleIntro: ../../../../GradleIntro/userdocs/Gradle.intro.html
+.. _Introduction to Docker and DockerCompose: ./_static/IntroDocker23.html
+.. _jQuery: https://www.w3schools.com/jquery/default.asp
+
+
+
+===================================================
+Appunti su tecnologie
+===================================================
+
+- :ref:`Annotazioni Java`
+- :ref:`Docker`
+- :ref:`Gradle`
+- :ref:`JQuery`
+- :ref:`MPS`
+- :ref:`WebSocket`
+  
+----------------------------------------------
+Annotazioni Java
+----------------------------------------------
+Le annotazioni sono una forma di metadati che forniscono informazioni su un programma senza 
+influenzarne direttamente la semantica.
+
+Si veda: :ref:`Annotazioni`
+
+Usato in:
+
+- :ref:`Application1WsAnnot` di :ref:`Applicazione1-WS`
+
+----------------------------------------------
+Docker
+----------------------------------------------
+Docker è un software che offre una serie di prodotti platform-as-a-service per lo sviluppo e la distribuzione di 
+applicazioni impacchettando il software in container. 
+
+Il contenitore diventa l'unità per la distribuzione e il test delle applicazioni. 
+Sono ottimi per flussi di lavoro ad integrazione consegna continua (**CI/CD**) .
+
+Si veda: `Introduction to Docker and DockerCompose`_ 
+
+----------------------------------------------
+Gradle
+----------------------------------------------
+Gradle è uno strumento open source per automatizzare la costruzione (build) del software.
+
+Gradle è ormai uno standard di fatto in questo settore ed è interessante non solo in quanto strumento, 
+ma anche perchè applica i principi del Domain Driven Design (DDD) per modellare il suo proprio domain-building software.
+
+Si veda: `GradleIntro`_
+
+Usato in:
+
+- :ref:`Creazione progetto con Gradle`  in :ref:`Primi passi operativi`
+
+
+
+----------------------------------------------
+MPS
+----------------------------------------------
+
+Il `Meta Programming System`_ (**MPS**) di IntelliJ  offre un editor (si veda  `Projectional editing`_) 
+che costituisce una *proiezione della sintassi astratta* (**AST**) di un meta-linguaggio per la definizione di 
+:ref:`Domain Specific Languages` (**DSL**).
+
+Si veda: 
+
+- :ref:`Sintassi astratta` in :ref:`Principi`
+
+
+-----------------------------------
+jQuery
+-----------------------------------
+
+- jQuery permette la manipolazione di qualsiasi elemento HTML all’interno della pagina web stessa.
+- jQuery serve a gestire qualsiasi evento all’interno della pagina web.
+- jQuery dà la possibilità di gestire animazioni e invocazioni ad API in poche semplici righe.
+
+Quanto segue è una chiamata di funzione jQuery:
+
+.. code::
+
+    $(...);
+
+Che è la "funzione jQuery". Dunque ``$`` è una funzione e ``$(...)`` è una chiamata a quella funzione.
+
+.. code::
+
+    $(function() { ... });
+
+è uno short-hand per 
+
+.. code::
+
+    $(document).ready(function() { ... });
+
++++++++++++++++++++++++
+Esempi jQuery
++++++++++++++++++++++++
+
+``$(selettore).funzione();``
+
+
+- ``$(“p”).html(“ciao”)``. Agisce sul tag HTML “p” scrivendo al suo interno la parola “ciao”.
+- ``$(“#bottone”).html(“ciao”);``. Scrive  “ciao” all’interno dell’elemento HTML che ha come ID “bottone”.
+- ``$(“.azzurro”).html(“ciao”);``. Agisce sul tag HTML che ha come classe CSS “azzurro”.
+
+
+.. code::
+
+    .rosso{
+        background-color: red;
+    }
+    .azzurro{
+        background-color: lightblue;
+    }
+
+.. code::
+
+    <div class=”rosso”> Ciao </div>
+    $(“div”).removeClass(“rosso”);
+    $(“div”).addClass(“azzurro”);
+
+Vogliamo eseguire una chiamata ad un’API il cui indirizzo è “https://www.informatico.it”, 
+voglia un parametro nominato “parametro1” e quando otteniamo una risposta, 
+questa venga messo dentro un tag “p” che ha come id “paragrafo”.
+
+.. code::
+
+    $.ajax({
+        url: "https://www.informatico.it",
+        data: {
+            parametro1: “valoreParametro”;
+        },
+        success: function( result ) {
+            $( "#paragrafo" ).html( result );
+        }
+    });
+
+
+``<button id=”bottone”>Cliccami</button>``
+
+Per modificare il contenuto del bottone e sostituire la parola “Cliccami” con “Clicca qui”, in JavaScript 
+avremmo dovuto scrivere:
+
+``document.getElementById(“bottone”).innerHTML=”Clicca qui”``
+
+Con jQuery invece:
+
+``$(“#bottone”).html(“Clicca qui”)``
+
+
+-------------------------------
+WebSocket 
+-------------------------------
+
+WebSocket_ è un protocollo che consente a due o più computer di comunicare tra loro  
+in modo full-duplex su una singola connessione TCP.
+È uno strato molto sottile su TCP che trasforma un flusso di byte in un flusso di messaggi 
+(testo o binario).
+
+A differenza di HTTP, che è un protocollo a livello di applicazione, nel protocollo WebSocket 
+non ci sono abbastanza informazioni in un messaggio in arrivo affinché 
+un framework o un container sappia come instradarlo o elaborarlo.
+
+Per questo motivo il WebSocket RFC definisce l'uso di sottoprotocolli. 
+Durante l'handshake, il client e il server possono utilizzare l'intestazione 
+*Sec-WebSocket-Protocol* per :blue:`concordare un sottoprotocollo`, ovvero un protocollo 
+a livello di applicazione superiore da utilizzare. 
+L'uso di un sottoprotocollo non è richiesto, ma anche se non utilizzato, le applicazioni 
+dovranno comunque scegliere un formato di messaggio che sia il client che il server 
+possano comprendere. 
+
+Nella sua forma più semplice, 
+
+:remark:`un WebSocket è solo un canale di comunicazione tra due applicazioni` 
+
+e non deve essere necessariamente coinvolto un browser.
+
+
+Tuttavia l'uso più comune di WebSocket è facilitare la comunicazione tra un un'applicazione
+server e un'applicazione basata su browser.
+Infatti, rispetto a HTTP RESTful, ha il vantaggio di realizzare comunicazioni  a 
+bidirezionali e in tempo reale. Ciò consente al server di inviare informazione al client 
+in qualsiasi momento, anziché costringere il client al polling.
+
+I WebSocket utilizzano le Socket nella loro implementazione basata su un protocollo standard
+che definisce un *handshake* di connessione e un *frame* di messaggio.
+
+Usate in:
+
+- :ref:`TestMovesUsingWs` di :ref:`VirtualRobot23`

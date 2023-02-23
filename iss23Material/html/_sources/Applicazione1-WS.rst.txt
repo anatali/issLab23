@@ -488,7 +488,7 @@ Application1WsAnnot
 ++++++++++++++++++++++++++++++++++++++
 
 Nella nuova versione dell'applicazione (``unibo.appl1.ws.Application1WsAnnot``) definiamo i metodi annotati 
-che corrsispondo alla esecuzione  di uno step con successo e con fallimento.
+che corrispondono alla esecuzione  di uno step con successo e con fallimento.
 
 .. code:: java
 

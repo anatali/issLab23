@@ -1,0 +1,436 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Annotazioni &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Books" href="Books.html" />
+    <link rel="prev" title="Appunti su tecnologie" href="AppuntiTecnologie.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Books.html" title="Books"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Annotazioni</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="annotazioni">
+<h1>Annotazioni<a class="headerlink" href="#annotazioni" title="Permalink to this headline">¶</a></h1>
+<p><span class="remark">Le annotazioni sono una forma di metadati</span></p>
+<p>in quanto forniscono informazioni su un programma.</p>
+<p><span class="remark">Le annotazioni non influiscono direttamente sulla semantica del programma</span></p>
+<p>ma influiscono sul modo in cui i programmi vengono
+trattati da <strong>strumenti</strong> e <strong>librerie</strong>, che a loro volta possono influenzare la semantica del programma in esecuzione.</p>
+<p>Le <a class="reference external" href="https://en.wikipedia.org/wiki/Java_annotation">Java annotation</a> sono state introdotte nella  release 5 (Tiger).
+A partire dalla versione Java SE 8, le annotazioni possono essere applicate non solo alle dichiarazioni
+(come accadeva prima) ma in ogni situazione in cui sia un tipo
+(si veda <a class="reference external" href="https://docs.oracle.com/javase/tutorial/java/annotations/type_annotations.html">Java Type Annotations</a>)
+allo scopo di realizzare uno più forte controllo di tipo (si pensi ad esempio a <span class="blue">&#64;NonNull</span> ).</p>
+<p>Oggi le annotazioni si trovano quasi ovunque nei programmi e sono introdotte per diversi scopi:</p>
+<ul class="simple">
+<li><p>per dare semantica aggiuntiva a vari elementi di una classe, che
+possono aiutare a meglio comprenderne l’intento;</p></li>
+<li><p>per permettere ulteriori controlli in fase di compilazione che garantiscono il rispetto di vari vincoli;</p></li>
+<li><p>per dare supporto ad analisi aggiuntiva del codice  tramite strumenti sensibili alle annotazioni.</p></li>
+</ul>
+<p>Le annotazioni possono essere elaborate  in fase di compilazione e/o in fase di esecuzione,
+sfruttando in questo caso le API di <a class="reference external" href="https://www.oracle.com/technical-resources/articles/java/javareflection.html">Java Reflection</a>, con possibile impatto sulle prestazioni, se non usate con attenzione.</p>
+<p>Forse il più grande vantaggio delle annotazioni è
+dare supporto a un <strong>paradigma di progettazione basato su configurazione esplicita</strong>, il che
+permette di semplificare diversi aspetti della configurazione, con
+grande impatto sul processo di sviluppo.</p>
+<p>Framework molto diffusi che sfruttano questo aspetto sono <a class="reference external" href="https://www.baeldung.com/spring-vs-spring-boot">Spring and Spring Boot</a> che useremo più avanti, quando vorremo dotare
+le nostre applicazioni di una WebGUI.</p>
+<p>Per il momento ci limitiamo a illustrare i meccanismi Java che permettono di sfruttare le annotazioni nelle nostre applicazioni.</p>
+<section id="meta-annotation-in-java">
+<h2>Meta-Annotation in Java<a class="headerlink" href="#meta-annotation-in-java" title="Permalink to this headline">¶</a></h2>
+<p>Per specificare il comportamento delle Annotation, Java introduce altre Annotation, che
+vengono definite <strong>Meta-Annotation</strong>.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>&#64;Target</p></td>
+<td><p>permette di definire a quale parte del codice può essere collegata l’Annotation.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 77%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>ElementType.PACKAGE</p></td>
+<td><p>Si applica alla definizione del package</p></td>
+</tr>
+<tr class="row-even"><td><p>ElementType.TYPE</p></td>
+<td><p>Si applica alla definizione di classi, interfacce ed enumeration</p></td>
+</tr>
+<tr class="row-odd"><td><p>ElementType.FIELD</p></td>
+<td><p>Si applica agli attributi</p></td>
+</tr>
+<tr class="row-even"><td><p>ElementType.METHOD</p></td>
+<td><p>Si applica ai metodi</p></td>
+</tr>
+<tr class="row-odd"><td><p>ElementType.PARAMETER</p></td>
+<td><p>Si applica ai parametri dei metodi</p></td>
+</tr>
+<tr class="row-even"><td><p>ElementType.CONSTRUCTOR</p></td>
+<td><p>Si applica al costruttore</p></td>
+</tr>
+<tr class="row-odd"><td><p>ElementType.LOCAL_VARIABLE</p></td>
+<td><p>Si applica ad una variabile locale</p></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr class="row-even"><td><p>&#64;Retention</p></td>
+<td><p>specifica come saranno visibili le informazioni collegate all’Annotation.</p></td>
+</tr>
+<tr class="row-odd"><td><p>&#64;Documented</p></td>
+<td><p>serve per includere l’Annotation nel javadoc, visto che per default sono escluse.</p></td>
+</tr>
+<tr class="row-even"><td><p>&#64;Inherited</p></td>
+<td><p>una classe che utilizza l’Annotation, la fa ereditare anche alle classi figlie.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="annotazioni-esempio">
+<h2>Annotazioni: esempio<a class="headerlink" href="#annotazioni-esempio" title="Permalink to this headline">¶</a></h2>
+<section id="annotation-definizione">
+<h3>Annotation: definizione<a class="headerlink" href="#annotation-definizione" title="Permalink to this headline">¶</a></h3>
+<p>Come esempio, definiamo una annotazione per descrivere il modo di accedere ad una applicazione
+(il codice si trova in <code class="docutils literal notranslate"><span class="pre">test/annotations</span></code> del progetto <code class="docutils literal notranslate"><span class="pre">unibo.actor22</span></code>):</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Retention</span><span class="p">(</span><span class="n">RetentionPolicy</span><span class="p">.</span><span class="na">RUNTIME</span><span class="p">)</span>
+<span class="nd">@Inherited</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">AccessSpec</span> <span class="p">{</span>
+    <span class="kd">enum</span> <span class="n">issProtocol</span> <span class="p">{</span><span class="n">UDP</span><span class="p">,</span><span class="n">TCP</span><span class="p">,</span><span class="n">HTTP</span><span class="p">,</span><span class="n">MQTT</span><span class="p">,</span><span class="n">COAP</span><span class="p">,</span><span class="n">WS</span><span class="p">}</span> <span class="p">;</span>
+    <span class="n">issProtocol</span> <span class="nf">protocol</span><span class="p">()</span> <span class="k">default</span> <span class="n">issProtocol</span><span class="p">.</span><span class="na">TCP</span><span class="p">;</span>
+    <span class="n">String</span> <span class="nf">url</span><span class="p">()</span> <span class="k">default</span> <span class="s">&quot;unknown&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La meta-annotation <code class="docutils literal notranslate"><span class="pre">&#64;Retention</span></code> dice che l’annotazione <code class="docutils literal notranslate"><span class="pre">&#64;AccessSpec</span></code> è visibile a runtime.</p>
+<p>L’annotazione permette di specificare due attributi:</p>
+<ul class="simple">
+<li><p>il tipo di protocollo ( metodo <code class="docutils literal notranslate"><span class="pre">protocol()</span></code> ), con default TCP</p></li>
+<li><p>un URL, come ad esempio <code class="docutils literal notranslate"><span class="pre">&quot;http://localHost:8090/api/move&quot;</span></code></p></li>
+</ul>
+</section>
+<section id="annotation-uso">
+<h3>Annotation: uso<a class="headerlink" href="#annotation-uso" title="Permalink to this headline">¶</a></h3>
+<p>Introduciamo una classe che introduce l’annotazione <code class="docutils literal notranslate"><span class="pre">&#64;AccessSpec</span></code> e accede dinamicamente ad essa, per visualizzarla.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@AccessSpec</span><span class="p">(</span>
+    <span class="n">protocol</span> <span class="o">=</span> <span class="n">AccessSpec</span><span class="p">.</span><span class="na">issProtocol</span><span class="p">.</span><span class="na">HTTP</span><span class="p">,</span>
+    <span class="n">url</span>      <span class="o">=</span> <span class="s">&quot;http://localHost:8090/api/move&quot;</span>
+<span class="p">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AnnotationUsageDemo</span> <span class="p">{</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">readProtocolAnnotation</span><span class="p">(</span><span class="n">Object</span> <span class="n">element</span><span class="p">)</span> <span class="p">{</span> <span class="p">...}</span>
+
+    <span class="kd">public</span> <span class="nf">AnnotationUsageDemo</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">readProtocolAnnotation</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span> <span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">new</span> <span class="n">AnnotationUsageDemo</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Definiamo ora il metodo <code class="docutils literal notranslate"><span class="pre">readProtocolAnnotation</span></code> in modo da
+recuperare (usando le API di <a class="reference external" href="https://www.oracle.com/technical-resources/articles/java/javareflection.html">Java Reflection</a>) le informazioni che abbiamo inserito tramite
+l’annotazione:
+.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">readProtocolAnnotation</span><span class="p">(</span><span class="n">Object</span> <span class="n">element</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">try</span> <span class="p">{</span>
+  <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">clazz</span>            <span class="o">=</span> <span class="n">element</span><span class="p">.</span><span class="na">getClass</span><span class="p">();</span>
+  <span class="n">Annotation</span><span class="o">[]</span> <span class="n">annotations</span>  <span class="o">=</span> <span class="n">clazz</span><span class="p">.</span><span class="na">getAnnotations</span><span class="p">();</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">Annotation</span> <span class="n">annot</span> <span class="p">:</span> <span class="n">annotations</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">annot</span> <span class="k">instanceof</span> <span class="n">AccessSpec</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">AccessSpec</span> <span class="n">p</span>  <span class="o">=</span> <span class="p">(</span><span class="n">AccessSpec</span><span class="p">)</span> <span class="n">annot</span><span class="p">;</span>
+      <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outappl</span><span class="p">(</span><span class="s">&quot;Tipo del protocollo: &quot;</span>
+            <span class="o">+</span> <span class="n">p</span><span class="p">.</span><span class="na">protocol</span><span class="p">(),</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">CYAN</span><span class="p">);</span>
+      <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outappl</span><span class="p">(</span><span class="s">&quot;Url del protocollo:  &quot;</span>
+            <span class="o">+</span> <span class="n">p</span><span class="p">.</span><span class="na">url</span><span class="p">(),</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">CYAN</span><span class="p">);</span>
+      <span class="n">String</span> <span class="n">v</span> <span class="o">=</span> <span class="n">getHostAddr</span><span class="p">(</span>
+            <span class="s">&quot;(\\w*)://([a-zA-Z]*):(\\d*)/(\\w*)/(\\w*)&quot;</span><span class="p">,</span>
+            <span class="n">p</span><span class="p">.</span><span class="na">url</span><span class="p">());</span>
+      <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outappl</span><span class="p">(</span><span class="s">&quot;v: &quot;</span> <span class="o">+</span> <span class="n">v</span><span class="p">,</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">CYAN</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{...</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo  <code class="docutils literal notranslate"><span class="pre">getHostAddr</span></code>  estrae la parte <em>host:port</em> dall’URL, usando <a class="reference external" href="https://www.w3schools.com/java/java_regex.asp">Pattern matching</a> su espressioni regolari:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">getHostAddr</span><span class="p">(</span><span class="n">String</span> <span class="n">functor</span><span class="p">,</span> <span class="n">String</span> <span class="n">line</span><span class="p">){</span>
+    <span class="n">Pattern</span> <span class="n">pattern</span> <span class="o">=</span> <span class="n">Pattern</span><span class="p">.</span><span class="na">compile</span><span class="p">(</span><span class="n">functor</span><span class="p">);</span>
+    <span class="n">Matcher</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">pattern</span><span class="p">.</span><span class="na">matcher</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
+    <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outappl</span><span class="p">(</span><span class="s">&quot;line: &quot;</span> <span class="o">+</span> <span class="n">line</span><span class="p">,</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">CYAN</span><span class="p">);</span>
+    <span class="n">String</span> <span class="n">content</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">matcher</span><span class="p">.</span><span class="na">find</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outappl</span><span class="p">(</span><span class="s">&quot;goup &quot;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span>
+                  <span class="n">matcher</span><span class="p">.</span><span class="na">group</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>   <span class="n">ColorsOut</span><span class="p">.</span><span class="na">CYAN</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">matcher</span><span class="p">.</span><span class="na">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;:&quot;</span><span class="o">+</span><span class="n">matcher</span><span class="p">.</span><span class="na">group</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+     <span class="p">}</span>
+    <span class="k">return</span> <span class="n">content</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>L’output del programma è il seguente:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Tipo</span> <span class="k">del</span> <span class="n">protocollo</span><span class="p">:</span> <span class="n">HTTP</span>
+<span class="n">Url</span> <span class="k">del</span> <span class="n">protocollo</span><span class="p">:</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localHost</span><span class="p">:</span><span class="mi">8090</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">move</span>
+<span class="n">line</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localHost</span><span class="p">:</span><span class="mi">8090</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">move</span>
+<span class="n">goup</span> <span class="mi">1</span><span class="p">:</span><span class="n">http</span>
+<span class="n">goup</span> <span class="mi">2</span><span class="p">:</span><span class="n">localHost</span>
+<span class="n">goup</span> <span class="mi">3</span><span class="p">:</span><span class="mi">8090</span>
+<span class="n">goup</span> <span class="mi">4</span><span class="p">:</span><span class="n">api</span>
+<span class="n">goup</span> <span class="mi">5</span><span class="p">:</span><span class="n">move</span>
+<span class="n">v</span><span class="p">:</span> <span class="n">localHost</span><span class="p">:</span><span class="mi">8090</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configurare-con-annotation">
+<h2>Configurare con Annotation<a class="headerlink" href="#configurare-con-annotation" title="Permalink to this headline">¶</a></h2>
+<p>Nel package <code class="docutils literal notranslate"><span class="pre">unibo.actor22.annotations</span></code> del progetto <code class="docutils literal notranslate"><span class="pre">unibo.actor22</span></code>,
+definiamo due annotazioni, una per dichiarare attori locali e una per dichiarare attori remoti.</p>
+<section id="actorlocal-e-actorremote">
+<h3>&#64;ActorLocal e &#64;ActorRemote<a class="headerlink" href="#actorlocal-e-actorremote" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>&#64;ActorLocal</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Retention</span><span class="p">(</span><span class="n">RetentionPolicy</span><span class="p">.</span><span class="na">RUNTIME</span><span class="p">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">ActorLocal</span> <span class="p">{</span>
+  <span class="n">String</span><span class="o">[]</span> <span class="nf">name</span><span class="p">();</span>
+   <span class="n">Class</span><span class="o">[]</span>  <span class="nf">implement</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</td>
+<td><p>La dichiarazione consiste nella specifica di un array di nomi di attori e di un corrispondente
+array di classi di implentazione</p></td>
+</tr>
+<tr class="row-even"><td><p>&#64;ActorRemote</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Retention</span><span class="p">(</span><span class="n">RetentionPolicy</span><span class="p">.</span><span class="na">RUNTIME</span><span class="p">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">ActorRemote</span> <span class="p">{</span>
+      <span class="n">String</span><span class="o">[]</span> <span class="nf">name</span><span class="p">();</span>
+      <span class="n">String</span><span class="o">[]</span> <span class="nf">host</span><span class="p">();</span>
+      <span class="n">String</span><span class="o">[]</span> <span class="nf">port</span><span class="p">();</span>
+      <span class="n">String</span><span class="o">[]</span> <span class="nf">protocol</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</td>
+<td><p>La dichiarazione consiste nella specifica di un array di nomi di attori e di  corrispondenti
+array per specificare l’idirizzo (host) la porta (port) e il protocollo (protocol) relativi
+al contesto (si veda <span class="xref std std-ref">Qak22Context</span>) in cui sono dichiarati come attori locali.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="esempio">
+<h4>Esempio<a class="headerlink" href="#esempio" title="Permalink to this headline">¶</a></h4>
+<p>Nel package <code class="docutils literal notranslate"><span class="pre">unibo.actor22.distrib.annot</span></code> della directory <code class="docutils literal notranslate"><span class="pre">test</span></code> del progetto <code class="docutils literal notranslate"><span class="pre">unibo.actor22</span></code>,
+definiamo il main della parte di sistema ad attori allocata sul PC che contiene un <code class="docutils literal notranslate"><span class="pre">ControllerActor</span></code>
+che utilizza attori remoti relativi a dispositivi Led e Sonar allocati su uno stesso RaspberryPi
+di indirizzo definito in <code class="docutils literal notranslate"><span class="pre">ApplData.raspAddr</span></code>:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@ActorLocal</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span>     <span class="p">{</span><span class="s">&quot;controller&quot;</span> <span class="p">},</span>
+        <span class="n">implement</span> <span class="o">=</span> <span class="p">{</span><span class="n">unibo</span><span class="p">.</span><span class="na">actor22</span><span class="p">.</span><span class="na">common</span><span class="p">.</span><span class="na">ControllerActor</span><span class="p">.</span><span class="na">class</span> <span class="p">})</span>
+<span class="nd">@ActorRemote</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span>   <span class="p">{</span><span class="s">&quot;led&quot;</span><span class="p">,</span><span class="s">&quot;sonar&quot;</span><span class="p">},</span>
+            <span class="n">host</span><span class="o">=</span>    <span class="p">{</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">raspAddr</span><span class="p">,</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">raspAddr</span><span class="p">},</span>
+            <span class="n">port</span><span class="o">=</span>    <span class="p">{</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">ApplData</span><span class="p">.</span><span class="na">ctxPort</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">ApplData</span><span class="p">.</span><span class="na">ctxPort</span><span class="p">},</span>
+            <span class="n">protocol</span><span class="o">=</span><span class="p">{</span> <span class="s">&quot;TCP&quot;</span> <span class="p">,</span> <span class="s">&quot;TCP&quot;</span> <span class="p">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UsingActorsWithAnnotOnPc</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">Qak22Context</span><span class="p">.</span><span class="na">handleLocalActorDecl</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+        <span class="n">Qak22Context</span><span class="p">.</span><span class="na">handleRemoteActorDecl</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La fase di configurazione consiste ora nella invocazione di operazioni del contesto capaci di
+analizzare le dichiarazioni ed agire di conseguenza.</p>
+</section>
+</section>
+<section id="qak22context-handlelocalactordecl">
+<h3>Qak22Context.handleLocalActorDecl<a class="headerlink" href="#qak22context-handlelocalactordecl" title="Permalink to this headline">¶</a></h3>
+<p>La gestione della dichiarazione degli attori locali consiste nel creare una istanza di ciascuna classe,
+trasferendo al costruttore il nome corrispondente.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">handleLocalActorDecl</span><span class="p">(</span><span class="n">Object</span> <span class="n">element</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">new</span> <span class="n">EventMsgHandler</span><span class="p">(</span>   <span class="p">);</span>   <span class="c1">//attore di sistema</span>
+<span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">clazz</span>            <span class="o">=</span> <span class="n">element</span><span class="p">.</span><span class="na">getClass</span><span class="p">();</span>
+<span class="n">Annotation</span><span class="o">[]</span> <span class="n">annotations</span>  <span class="o">=</span> <span class="n">clazz</span><span class="p">.</span><span class="na">getAnnotations</span><span class="p">();</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">Annotation</span> <span class="n">annot</span> <span class="p">:</span> <span class="n">annotations</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">annot</span> <span class="k">instanceof</span> <span class="n">ActorLocal</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">ActorLocal</span> <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">ActorLocal</span><span class="p">)</span> <span class="n">annot</span><span class="p">;</span>
+      <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">a</span><span class="p">.</span><span class="na">name</span><span class="p">().</span><span class="na">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">String</span> <span class="n">name</span>     <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="na">name</span><span class="p">()</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
+        <span class="n">Class</span>  <span class="n">impl</span>     <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="na">implement</span><span class="p">()</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
+        <span class="k">try</span> <span class="p">{</span>
+          <span class="n">impl</span><span class="p">.</span><span class="na">getConstructor</span><span class="p">(</span> <span class="n">String</span><span class="p">.</span><span class="na">class</span> <span class="p">).</span><span class="na">newInstance</span><span class="p">(</span> <span class="n">name</span> <span class="p">);</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span> <span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="qak22context-handleremoteactordecl">
+<h3>Qak22Context.handleRemoteActorDecl<a class="headerlink" href="#qak22context-handleremoteactordecl" title="Permalink to this headline">¶</a></h3>
+<p>La gestione della dichiarazione degli attori remoti si traduce in una automatizzazione della
+invocazione alla operazione  <span class="xref std std-ref">setActorAsRemote</span> con i parametri specificati nella annotazione
+per ciascun attore.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">handleRemoteActorDecl</span><span class="p">(</span><span class="n">Object</span> <span class="n">element</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">clazz</span>            <span class="o">=</span> <span class="n">element</span><span class="p">.</span><span class="na">getClass</span><span class="p">();</span>
+    <span class="n">Annotation</span><span class="o">[]</span> <span class="n">annotations</span>  <span class="o">=</span> <span class="n">clazz</span><span class="p">.</span><span class="na">getAnnotations</span><span class="p">();</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">Annotation</span> <span class="n">annot</span> <span class="p">:</span> <span class="n">annotations</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">annot</span> <span class="k">instanceof</span> <span class="n">ActorRemote</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ActorRemote</span> <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">ActorRemote</span><span class="p">)</span> <span class="n">annot</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">a</span><span class="p">.</span><span class="na">name</span><span class="p">().</span><span class="na">length</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">String</span> <span class="n">name</span>     <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="na">name</span><span class="p">()</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
+            <span class="n">String</span> <span class="n">host</span>     <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="na">host</span><span class="p">()</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
+            <span class="n">String</span> <span class="n">port</span>     <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="na">port</span><span class="p">()</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
+            <span class="n">String</span> <span class="n">protocol</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="na">protocol</span><span class="p">()</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
+            <span class="n">Qak22Context</span><span class="p">.</span><span class="na">setActorAsRemote</span><span class="p">(</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">ProtocolInfo</span><span class="p">.</span><span class="na">getProtocol</span><span class="p">(</span><span class="n">protocol</span><span class="p">));</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="altre-annotazioni-di-configurazione">
+<h3>Altre annotazioni di configurazione<a class="headerlink" href="#altre-annotazioni-di-configurazione" title="Permalink to this headline">¶</a></h3>
+<p><span class="worktodo">WORKTODO: proporre altre forme di dichiarazione del sistema mediante annotazioni</span></p>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Annotazioni</a><ul>
+<li><a class="reference internal" href="#meta-annotation-in-java">Meta-Annotation in Java</a></li>
+<li><a class="reference internal" href="#annotazioni-esempio">Annotazioni: esempio</a><ul>
+<li><a class="reference internal" href="#annotation-definizione">Annotation: definizione</a></li>
+<li><a class="reference internal" href="#annotation-uso">Annotation: uso</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configurare-con-annotation">Configurare con Annotation</a><ul>
+<li><a class="reference internal" href="#actorlocal-e-actorremote">&#64;ActorLocal e &#64;ActorRemote</a><ul>
+<li><a class="reference internal" href="#esempio">Esempio</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qak22context-handlelocalactordecl">Qak22Context.handleLocalActorDecl</a></li>
+<li><a class="reference internal" href="#qak22context-handleremoteactordecl">Qak22Context.handleRemoteActorDecl</a></li>
+<li><a class="reference internal" href="#altre-annotazioni-di-configurazione">Altre annotazioni di configurazione</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="AppuntiTecnologie.html"
+                          title="previous chapter">Appunti su tecnologie</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="Books.html"
+                          title="next chapter">Books</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Annotazioni.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Books.html" title="Books"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Annotazioni</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

@@ -75,6 +75,8 @@ Appl1: Analisi del problema
 - Per  :blue:`console remota`  si intende il fatto che la console di comando potrebbe essere collocata su un 
   computer diverso da quello in cui gira l'applicazione.
 
+:slide1:`Architettura logica`
+
 +++++++++++++++++++++++++++++++
 Appl1: Architettura logica
 +++++++++++++++++++++++++++++++
@@ -108,7 +110,7 @@ Appl1: Natura dei componenti
   ad *Appl1*.
 
 
-Siamo di fronte a un sistema distribuito, che può operrare su 3 nodi computazionali, che si riducono a 2 se la *CmdConsole*   
+Siamo di fronte a un sistema distribuito, che può operare su 3 nodi computazionali, che si riducono a 2 se la *CmdConsole*   
 risiede sullo stesso nodo in cui risiede l'applicazione *Appl1* e a 1 se anche *WEnv* viene attivato 
 sullo stesso nodo in cui risiede l'applicazione.
 

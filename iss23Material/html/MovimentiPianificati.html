@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Movimenti pianificati &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Movimenti pianificati</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="movimenti-pianificati">
+<h1>Movimenti pianificati<a class="headerlink" href="#movimenti-pianificati" title="Permalink to this headline">¶</a></h1>
+<section id="supporti-hl-robot-con-planner">
+<h2>Supporti HL-robot con planner<a class="headerlink" href="#supporti-hl-robot-con-planner" title="Permalink to this headline">¶</a></h2>
+<p>Il robot (virtuale o reale) viene considerato un oggetto inscirvibile in un cerchio di raggio <code class="docutils literal notranslate"><span class="pre">R</span></code>.</p>
+<p>Muovere il robot con mossa <code class="docutils literal notranslate"><span class="pre">step(T)</span></code> con tempo <code class="docutils literal notranslate"><span class="pre">T</span></code> tale da spostare il robot (con velocità prefissata)
+di uno spazio <code class="docutils literal notranslate"><span class="pre">R</span></code>, permette di costruire una mappa della stanza formata da celle quadrate <code class="docutils literal notranslate"><span class="pre">RxR</span></code>.
+Ad esempio:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">3</span>  <span class="mi">4</span>  <span class="mi">5</span>  <span class="mi">6</span>  <span class="mi">7</span> <span class="o">....</span> <span class="n">x</span>
+  <span class="mi">0</span> <span class="o">|</span><span class="n">r</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
+  <span class="mi">1</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
+  <span class="mi">2</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
+  <span class="mi">3</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
+  <span class="mi">4</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
+  <span class="mi">5</span> <span class="o">|</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
+  <span class="o">.</span>
+  <span class="n">y</span>
+
+<span class="n">RobotPos</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="n">direction</span><span class="o">=</span><span class="n">downDir</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>0</strong> denoita una cella mai percorsa</p></li>
+<li><p><strong>1</strong> denota una cella libreria</p></li>
+<li><p><strong>X</strong> denota una cella occupata da un ostacolo</p></li>
+<li><p><strong>r</strong> denota la posizione corrente del robot</p></li>
+</ul>
+<p>L’uso di un <em>planner</em> come quello fornito in <code class="docutils literal notranslate"><span class="pre">unibo.planner23-1.0.jar</span></code> permette di
+calcolare una sequenza delle mosse con cui il robot può muoversi dalla posizione corrente <strong>r</strong>
+a un’altra posizione sulla mappa.</p>
+<section id="unibo-appl1-map-vrobothlmoveswsplanned">
+<h3>unibo.appl1.map.VrobotHLMovesWSPlanned<a class="headerlink" href="#unibo-appl1-map-vrobothlmoveswsplanned" title="Permalink to this headline">¶</a></h3>
+<p>La classe <em>VrobotHLMovesWSPlanned</em> estende <a class="reference internal" href="Applicazione1-WS.html#unibo-supports-vrobothlmovesws"><span class="std std-ref">VrobotHLMovesWS</span></a>
+in modo che ogni mossa del robot effettuata con successo produce una modifica della sua posizione
+(<strong>r</strong>) e definisce i seguenti metodi di utilità per le applicazioni:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">VrobotHLMovesWSPlanned</span> <span class="kd">extends</span> <span class="n">VrobotHLMovesWS</span> <span class="p">{</span>
+
+   <span class="kd">public</span> <span class="nf">VrobotHLMovesWSPlanned</span><span class="p">(</span><span class="n">WsConnection</span> <span class="n">conn</span><span class="p">,</span>
+      <span class="n">Planner23Util</span> <span class="n">planner</span><span class="p">,</span> <span class="n">IObserver</span> <span class="n">obs</span><span class="p">,</span> <span class="kt">boolean</span> <span class="n">isfast</span><span class="p">){...}</span>
+   <span class="nd">@Override</span>
+   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span><span class="kt">int</span> <span class="n">time</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+         <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&quot; | forward not allowed as planned move&quot;</span><span class="p">);</span>
+   <span class="p">}</span>
+   <span class="nd">@Override</span>
+   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnLeft</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+      <span class="kd">super</span><span class="p">.</span><span class="na">turnLeft</span><span class="p">();</span>
+      <span class="n">planner</span><span class="p">.</span><span class="na">doMove</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">);</span>
+   <span class="p">}</span>
+
+   <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">attemptStep</span><span class="p">(</span><span class="kt">int</span> <span class="n">time</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{...}</span>
+   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">completeTheMap</span><span class="p">(</span><span class="kt">int</span> <span class="n">stepTime</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{...}</span>
+   <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doObstacleTuning</span><span class="p">(</span><span class="kt">int</span> <span class="n">backTime</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{...}</span>
+   <span class="kd">protected</span> <span class="kt">boolean</span> <span class="nf">executePlan</span><span class="p">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Action</span><span class="o">&gt;</span> <span class="n">actions</span><span class="p">,</span>
+      <span class="kt">int</span> <span class="n">stepTime</span><span class="p">,</span> <span class="n">IObserver</span> <span class="n">obs</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{...}</span>
+   <span class="kd">protected</span> <span class="kt">boolean</span> <span class="nf">reachPos</span><span class="p">(</span><span class="kt">int</span> <span class="n">stepT</span><span class="p">,</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{...}</span>
+   <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">backToHome</span><span class="p">(</span><span class="kt">int</span> <span class="n">stepTime</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{...}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="attemptstep">
+<h4>attemptStep<a class="headerlink" href="#attemptstep" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">boolean</span> <span class="pre">attemptStep(int</span> <span class="pre">time)</span> <span class="pre">throws</span> <span class="pre">Exception</span></code> esegue uno <code class="docutils literal notranslate"><span class="pre">step(time)</span></code> di
+<a class="reference internal" href="Applicazione1-WS.html#unibo-supports-vrobothlmovesws"><span class="std std-ref">VrobotHLMovesWS</span></a>  e poi:</p>
+<ul class="simple">
+<li><p>posiziona il robot nella cella successiva (lungo la direzione corrente) se la mossa ha successo</p></li>
+<li><p>riposiziona il robot nella cella di partenza (usando <a class="reference internal" href="#doobstacletuning"><span class="std std-ref">doObstacleTuning</span></a>) se la mossa fallisce</p></li>
+</ul>
+</section>
+<section id="doobstacletuning">
+<h4>doObstacleTuning<a class="headerlink" href="#doobstacletuning" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">doObstacleTuning(int</span> <span class="pre">backTime)</span> <span class="pre">throws</span> <span class="pre">Exception</span></code> usa l’operazione <code class="docutils literal notranslate"><span class="pre">backward</span></code> di
+<a class="reference internal" href="Applicazione1-WS.html#unibo-supports-vrobothlmovesws"><span class="std std-ref">VrobotHLMovesWS</span></a>
+per spostare  il robot all’indietro, lungo la direzione corrente, per il tempo dato <code class="docutils literal notranslate"><span class="pre">backTime</span></code>.</p>
+</section>
+<section id="executeplan">
+<h4>executePlan<a class="headerlink" href="#executeplan" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>Il metodo <code class="docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">executePlan(List&lt;Action&gt;</span> <span class="pre">actions)</span> <span class="pre">throws</span> <span class="pre">Exception</span></code> esegue le mosse date in <code class="docutils literal notranslate"><span class="pre">actions</span></code> usando</dt><dd><p><a class="reference internal" href="#attemptstep"><span class="std std-ref">attemptStep</span></a>; restituisce <code class="docutils literal notranslate"><span class="pre">true</span></code> in caso di successo e <code class="docutils literal notranslate"><span class="pre">false</span></code> al primo fallimento.</p>
+</dd>
+</dl>
+</section>
+<section id="reachpos">
+<h4>reachPos<a class="headerlink" href="#reachpos" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">reachPos(int</span> <span class="pre">stepT,</span> <span class="pre">int</span> <span class="pre">x,</span> <span class="pre">int</span> <span class="pre">y)</span> <span class="pre">throws</span> <span class="pre">Exception</span></code> usa il planner per definire la sequenza di mosse
+necessarie a raggiunere la cella <code class="docutils literal notranslate"><span class="pre">(x,y)</span></code> dalla cella corrente e invoca <a class="reference internal" href="#executeplan"><span class="std std-ref">executePlan</span></a> per eseguire la sequenza.</p>
+</section>
+<section id="backtohome">
+<h4>backToHome<a class="headerlink" href="#backtohome" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">backToHome()</span> <span class="pre">throws</span> <span class="pre">Exception</span></code>  usa <a class="reference internal" href="#reachpos"><span class="std std-ref">reachPos</span></a> per cercare di tornare in HOME dalla cella corrente;</p>
+</section>
+<section id="completethemap">
+<h4>completeTheMap<a class="headerlink" href="#completethemap" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">void</span> <span class="pre">completeTheMap()</span> <span class="pre">throws</span> <span class="pre">Exception</span></code> usa il planner ed <a class="reference internal" href="#executeplan"><span class="std std-ref">executePlan</span></a> per muovere il robot
+alle celle non ancora percorse (di valore <strong>0</strong>) per fissarne il vaore a <strong>1</strong> (cella libera)
+o <strong>X</strong> (cella con ostacolo fisso).</p>
+</section>
+</section>
+</section>
+<section id="estensione-a-vrobothlsupportfactory">
+<h2>Estensione a VrobotHLSupportFactory<a class="headerlink" href="#estensione-a-vrobothlsupportfactory" title="Permalink to this headline">¶</a></h2>
+<p>Estendiamo  <a class="reference internal" href="Applicazione1-HTTP-Distribuita.html#unibo-supports-vrobothlsupportfactory"><span class="std std-ref">VrobotHLSupportFactory</span></a> in modo da tenere contro del nuovo supporto</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">VrobotHLSupportFactory</span> <span class="p">{</span>
+ <span class="kd">public</span> <span class="kd">static</span> <span class="n">IVrobotMoves</span> <span class="nf">create</span><span class="p">(</span><span class="n">String</span> <span class="n">hostIp</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+     <span class="k">if</span><span class="p">(</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">http</span> <span class="p">)</span> <span class="k">return</span> <span class="n">supportForHTTP</span><span class="p">(</span><span class="n">hostIp</span><span class="p">);</span>
+     <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">ws</span> <span class="p">)</span> <span class="k">return</span> <span class="n">supportForWS</span><span class="p">(</span><span class="n">hostIp</span><span class="p">);</span>
+     <span class="k">else</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="s">&quot;VrobotHLSupportFactory protocol not allowed&quot;</span><span class="p">);</span>
+ <span class="p">}</span>
+<span class="p">...</span>
+ <span class="kd">public</span> <span class="kd">static</span> <span class="n">IVrobotMoves</span> <span class="nf">supportForWSPlanned</span><span class="p">(</span><span class="n">String</span> <span class="n">hostIp</span><span class="p">,</span> <span class="n">IObserver</span> <span class="n">obs</span><span class="p">,</span> <span class="kt">boolean</span> <span class="n">fastPc</span><span class="p">){</span>
+     <span class="n">Interaction2021</span> <span class="n">connToWEnv</span> <span class="o">=</span> <span class="n">WsConnection</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">hostIp</span><span class="o">+</span><span class="s">&quot;:8091&quot;</span><span class="p">);</span>
+     <span class="n">Planner23Util</span> <span class="n">planner</span>          <span class="o">=</span> <span class="k">new</span> <span class="n">Planner23Util</span><span class="p">();</span>
+     <span class="k">return</span> <span class="k">new</span> <span class="n">VrobotHLMovesWSPlanned</span><span class="p">((</span><span class="n">WsConnection</span><span class="p">)</span> <span class="n">connToWEnv</span><span class="p">,</span> <span class="n">planner</span><span class="p">,</span> <span class="n">obs</span><span class="p">,</span> <span class="n">fastPc</span> <span class="p">);</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unibo-console-gui-vrobothlcmdguilocal">
+<h2>unibo.console.gui.VrobotHLCmdGuiLocal<a class="headerlink" href="#unibo-console-gui-vrobothlcmdguilocal" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/VrobotHLCmdGuiLocalArch.png"><img alt="_images/VrobotHLCmdGuiLocalArch.png" class="align-center" src="_images/VrobotHLCmdGuiLocalArch.png" style="width: 70%;" /></a>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span> <span class="kd">public</span> <span class="kd">class</span> <span class="nc">VrobotHLCmdGuiLocal</span> <span class="kd">implements</span>  <span class="n">Observer</span><span class="p">{</span>
+ <span class="kd">private</span> <span class="n">String</span><span class="o">[]</span> <span class="n">buttonLabels</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">[]</span> <span class="p">{</span><span class="s">&quot;p&quot;</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="s">&quot;s&quot;</span><span class="p">,</span> <span class="s">&quot;l&quot;</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">,</span> <span class="s">&quot;h&quot;</span> <span class="p">};</span>
+    <span class="kd">private</span>   <span class="n">IVrobotMoves</span> <span class="n">vrsupport</span> <span class="p">;</span>
+
+    <span class="kd">public</span> <span class="nf">VrobotHLCmdGuiLocal</span><span class="p">()</span> <span class="p">{</span>
+       <span class="n">ButtonAsGui</span> <span class="n">concreteButton</span> <span class="o">=</span> <span class="n">ButtonAsGui</span><span class="p">.</span><span class="na">createButtons</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">buttonLabels</span> <span class="p">);</span>
+       <span class="n">concreteButton</span><span class="p">.</span><span class="na">addObserver</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+       <span class="k">try</span> <span class="p">{</span>
+          <span class="n">vrsupport</span> <span class="o">=</span> <span class="n">VrobotHLSupportFactory</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">ws</span><span class="p">);</span>
+       <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{...}</span>
+    <span class="p">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span> <span class="n">Observable</span> <span class="n">o</span> <span class="p">,</span> <span class="n">Object</span> <span class="n">arg</span> <span class="p">)</span> <span class="p">{</span>
+       <span class="k">try</span> <span class="p">{</span>
+          <span class="n">String</span> <span class="n">move</span> <span class="o">=</span> <span class="n">arg</span><span class="p">.</span><span class="na">toString</span><span class="p">();</span>
+          <span class="n">CommUtils</span><span class="p">.</span><span class="na">outgreen</span><span class="p">(</span><span class="s">&quot;GUI input move=&quot;</span> <span class="o">+</span> <span class="n">move</span><span class="p">);</span>
+          <span class="k">if</span><span class="p">(</span> <span class="n">move</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;exit&quot;</span><span class="p">))</span> <span class="n">System</span><span class="p">.</span><span class="na">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+          <span class="k">switch</span><span class="p">(</span> <span class="n">move</span> <span class="p">){</span>
+             <span class="k">case</span> <span class="s">&quot;w&quot;</span> <span class="p">:</span>  <span class="p">{</span><span class="n">vrsupport</span><span class="p">.</span><span class="na">forward</span><span class="p">(</span><span class="mi">1500</span><span class="p">);</span><span class="k">break</span><span class="p">;}</span>
+             <span class="k">case</span> <span class="s">&quot;s&quot;</span>  <span class="p">:</span> <span class="p">{</span><span class="n">vrsupport</span><span class="p">.</span><span class="na">backward</span><span class="p">(</span><span class="mi">1500</span><span class="p">);</span><span class="k">break</span><span class="p">;}</span>
+             <span class="k">case</span> <span class="s">&quot;l&quot;</span>  <span class="p">:</span> <span class="p">{</span><span class="n">vrsupport</span><span class="p">.</span><span class="na">turnLeft</span><span class="p">();</span><span class="k">break</span><span class="p">;}</span>
+             <span class="k">case</span> <span class="s">&quot;r&quot;</span>  <span class="p">:</span> <span class="p">{</span><span class="n">vrsupport</span><span class="p">.</span><span class="na">turnRight</span><span class="p">();</span><span class="k">break</span><span class="p">;}</span>
+             <span class="k">case</span> <span class="s">&quot;h&quot;</span>  <span class="p">:</span> <span class="p">{</span><span class="n">vrsupport</span><span class="p">.</span><span class="na">halt</span><span class="p">();</span><span class="k">break</span><span class="p">;}</span>
+             <span class="k">case</span> <span class="s">&quot;p&quot;</span>  <span class="p">:</span> <span class="p">{</span><span class="n">vrsupport</span><span class="p">.</span><span class="na">step</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span><span class="k">break</span><span class="p">;}</span>
+          <span class="p">}</span>
+       <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{...}</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span> <span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+       <span class="k">new</span> <span class="n">VrobotHLCmdGuiLocal</span><span class="p">(</span>   <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unibo-console-gui-vrobothlcmdguiremote">
+<h2>unibo.console.gui.VrobotHLCmdGuiRemote<a class="headerlink" href="#unibo-console-gui-vrobothlcmdguiremote" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/VrobotHLCmdGuiRemoteArch.png"><img alt="_images/VrobotHLCmdGuiRemoteArch.png" class="align-center" src="_images/VrobotHLCmdGuiRemoteArch.png" style="width: 80%;" /></a>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">MsgToObj</span></code>: componente attivo, per ora non meglio precisato, che accetta un
+<a class="reference internal" href="Interaction2021.html#natura-e-struttura-dei-messaggi-applicativi"><span class="std std-ref">messaggio</span></a> inviato con uno dei
+<a class="reference internal" href="unibo.basicomm23.html#tipi-di-protocollo"><span class="std std-ref">Tipi di protocollo</span></a> citati  e trasla questo comando in una chiamata al corrispondente metodo di
+<a class="reference internal" href="Applicazione1-HTTP-Core.html#unibo-common-ivrobotmoves"><span class="std std-ref">unibo.common.IVrobotMoves</span></a>, inviando poi una risposta (se è il caso) al mittente remoto del messaggio.</p></li>
+<li><p>il messaggio-comando con payload <code class="docutils literal notranslate"><span class="pre">step</span></code> si aspetta la risposta <code class="docutils literal notranslate"><span class="pre">stepOk</span></code> o <code class="docutils literal notranslate"><span class="pre">stapFail</span></code></p></li>
+<li><p>il chiamante si attende di poter ricevere anche informazioni sullo <a class="reference internal" href="Verso-sistemi-distribuiti.html#stato-del-robot"><span class="std std-ref">Stato del robot</span></a>  o
+sullo <a class="reference internal" href="Verso-sistemi-distribuiti.html#stato-di-elaborazione"><span class="std std-ref">Stato di elaborazione</span></a> dell’applicazione.</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Movimenti pianificati</a><ul>
+<li><a class="reference internal" href="#supporti-hl-robot-con-planner">Supporti HL-robot con planner</a><ul>
+<li><a class="reference internal" href="#unibo-appl1-map-vrobothlmoveswsplanned">unibo.appl1.map.VrobotHLMovesWSPlanned</a><ul>
+<li><a class="reference internal" href="#attemptstep">attemptStep</a></li>
+<li><a class="reference internal" href="#doobstacletuning">doObstacleTuning</a></li>
+<li><a class="reference internal" href="#executeplan">executePlan</a></li>
+<li><a class="reference internal" href="#reachpos">reachPos</a></li>
+<li><a class="reference internal" href="#backtohome">backToHome</a></li>
+<li><a class="reference internal" href="#completethemap">completeTheMap</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#estensione-a-vrobothlsupportfactory">Estensione a VrobotHLSupportFactory</a></li>
+<li><a class="reference internal" href="#unibo-console-gui-vrobothlcmdguilocal">unibo.console.gui.VrobotHLCmdGuiLocal</a></li>
+<li><a class="reference internal" href="#unibo-console-gui-vrobothlcmdguiremote">unibo.console.gui.VrobotHLCmdGuiRemote</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/MovimentiPianificati.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Movimenti pianificati</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

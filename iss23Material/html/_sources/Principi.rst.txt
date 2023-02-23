@@ -22,7 +22,7 @@
 .. _Ecore : https://wiki.eclipse.org/Ecore
 .. _Linguaggio di modellazione : https://it.wikipedia.org/wiki/Linguaggio_di_modellazione
 .. _Linguaggio formale : https://it.wikipedia.org/wiki/Linguaggio_formale
-.. _Domain Specific Languages: https://www.jetbrains.com/mps/concepts/domain-specific-languages/
+.. _Domain Specific Language: https://www.jetbrains.com/mps/concepts/domain-specific-languages/
 .. _Linguaggi di programmazione: https://it.wikipedia.org/wiki/Linguaggio_di_programmazione
 .. _Linguaggio assembly : https://it.wikipedia.org/wiki/Linguaggio_assembly
 .. _Minsky Machine : https://en.wikipedia.org/wiki/Counter_machine
@@ -40,6 +40,9 @@
 .. _Junit FAQ : http://sqa.fyicenter.com/FAQ/JUnit/What_Is_JUnit_.html
 .. _DevOps : https://it.wikipedia.org/wiki/DevOps
 
+.. _Meta Programming System : https://www.jetbrains.com/mps/
+.. _Projectional editing : http://dsl-course.org/projectional-editing/
+.. _Language-oriented programming : https://en.wikipedia.org/wiki/Language-oriented_programming
 
 =====================================
 Principi
@@ -54,7 +57,7 @@ o sottosistemi (organi, componenti o elementi ecc.) **interagenti** (o in relazi
 (e con altri sistemi), che formano un tutt'uno in cui ogni parte dà il proprio contributo 
 per una finalità comune.
 
-A livello di sistema, si possono presentare :blue:`nuove proprietà`, che non possono essere dedotte dai suoi sottosistemi, 
+A livello di sistema, si possono presentare :slide1:`nuove proprietà`, che non possono essere dedotte dai suoi sottosistemi, 
 ma che :slide1:`derivano dall'interazione delle parti`.
 
 Rispetto alla semplice denominazione di *software*, l'uso del termine :blue:`sistema software` enfatizza 
@@ -117,6 +120,8 @@ a una dimensione  di tipo sistemistico che vede come componenti entità quali:
          :width: 44%    
          :align: center 
 
+Per le figure è stato usato https://excalidraw.com/  
+
 +++++++++++++++++++++++++++++++++++++++++++
 Problematiche relative ai componenti
 +++++++++++++++++++++++++++++++++++++++++++
@@ -142,6 +147,8 @@ Le interazioni tra **componenti attivi** possono avvenire trameite :blue:`oggett
 oppure tramite :blue:`messaggi` che riguardano *informazioni* o *stream di dati* e che possono essere scambiati
 in forma sincrona, asincrona o isocrona.
 
+:slide:`Sincrono/Asincrono`
+
 - In una interazione **asincrona**, la comunicazione è "bufferizzata" senza alcuna 
   limitazione sulle dimensioni del buffer. 
   L'emittente non deve attendere alcuna informazione di ritorno anche quando invia informazione 
@@ -165,8 +172,10 @@ Le interazioni a messaggi vengono anche spesso suddivise secondo quattro pattern
 - **Result callback**: il sender invia una request specificando un oggetto (*callback object*) che implementa 
   un metodo che verrà invocato dal supporto non appena il receiver invierà la risposta.
 
-Questi punti costituiscono il cuore del passaggio da OOP a message-passing.
+Questi punti costituiscono il cuore del passaggio da ``OOP`` a message-passing.
 
+
+:slide:`Termini in uso nel corso`
 
 ++++++++++++++++++++++++++++++++++++++
 Terminologia di riferimento
@@ -207,13 +216,14 @@ Per esprimere il comportamento di un componente software, si distinguono classic
 - logico-dichiarativo
 
 Il funzionamento di un componente comporta spesso l'individuazione 
-di un insieme di :blue:`operazioni primitive`, sulla base delle quali costruire ogni altra operazione 
+di un insieme di :slide1:`operazioni primitive`, sulla base delle quali costruire ogni altra operazione 
 di manipolazione/gestione del componente.  
 
 Si pensi per esempio al caso di un *oggetto lista*, le cui primitive 
 sono il costruttore ``cons``, i selettori ``head, tail`` e il predicato ``empty``. Un volta data la lista vuota (l'oggetto ``emptyList``)
 ogni lista può essere costruita e manipolata attraverso l'uso di queste primitive.
 
+:slide:`Macchine astratte`
 
 .. list-table::
   :widths: 50,50
@@ -222,7 +232,7 @@ ogni lista può essere costruita e manipolata attraverso l'uso di queste primiti
   * - Spesso si qualifica il comportamento di un componente facendo riferimento a tipi diversi di 
       :blue:`macchine astratte`, iniziando dalla 
       `Turing Machine`_ (**TM**), che individua, in stile imperativo, le mosse-base (*primitive*) 
-      di un automa che permette di realizzare qualunque calcolo.
+      di un automa che permette di :remark:`realizzare qualunque calcolo` (!).
     - .. image:: ./_static/img//Intro/TuringMachine.PNG
         :width: 100%
         :align: center
@@ -246,6 +256,7 @@ di riferimento per il riconoscimento delle frasi di un inguaggio con *sintassi c
 `gerarchia di Chomsky`_ . 
 
 
+:slide:`FSM di Moore e Mealy`
 
 ++++++++++++++++++++++++++++++++++++++
 Automi a stati finiti
@@ -296,6 +307,8 @@ di sistemi software.
 
 Qui ne ricordiamo alcuni, che useremo nel seguito.
 
+:slide:`Design patterns`
+
 ++++++++++++++++++++++++++++
 Design patterns
 ++++++++++++++++++++++++++++
@@ -327,7 +340,8 @@ Design patterns
          :align: center
 
 
- 
+:slide:`Principi SOLID`
+
 ++++++++++++++++++++++++++++
 SOLID
 ++++++++++++++++++++++++++++
@@ -366,6 +380,7 @@ Questo è il principio di inversione della dipendenza. Vediamo un esempio, preso
 
 
 
+:slide:`Architettura Port/Adapter`
 
 ++++++++++++++++++++++++++++
 Architettura esagonale
@@ -390,7 +405,8 @@ di sistemi software oggi in uso, quella cui noi faremo particolare attenzione.
        - :blue:`Frameworks and drivers`: framework web, database, la vista di MVC
 
 
- 
+:slide:`Principi per WebApp`
+
 ++++++++++++++++++++++++++++
 12 Factor App
 ++++++++++++++++++++++++++++
@@ -398,7 +414,7 @@ di sistemi software oggi in uso, quella cui noi faremo particolare attenzione.
 Una delle soluzioni oggi adottate per affrontare i problemi di operare su scala Web,
 è la metodologia :blue:`Twelve-Factor App`, pubblicato nel ``2011`` da Adam Wiggins. 
 
-La :blue:`12 Factor App` è un insieme di principi per la creazione di applicazioni *software-as-a-service*,
+La :blue:`12 Factor App` è un insieme di principi per la creazione di applicazioni :remark:`software-as-a-service`,
 che descrivono un modo di creare software che consente alle aziende di 
 creare codice che può essere rilasciato in modo affidabile, ridimensionato rapidamente e mantenuto 
 in modo coerente e prevedibile.
@@ -423,6 +439,10 @@ in modo coerente e prevedibile.
 Si veda  anche: `12FactorAppIllustrated`_
 
 .. https://en.wikipedia.org/wiki/Twelve-Factor_App_methodology
+
+
+:slide:`Linguaggi`
+
 
 ++++++++++++++++++++++++++++
 Linguaggi di programmazione
@@ -452,7 +472,7 @@ nuovi concetti sia sul piano computazionale sia sul sul piano della organizzazio
       in ciascuna delle :ref:`Dimensioni` citate.
  
 
-
+:slide1:`Sintassi astratta`
  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -462,27 +482,35 @@ Sintassi astratta
 Il motivo principale di una relativa (e solo apparente) 
 stagnazione nello sviluppo di nuovi linguaggi, può essere ricondotto all'idea che un linguaggio 
 non deve essere necessariamente accompagnato da una sintassi concreta ma può essere suffciente 
-definire una **sintassi astratta** utilizzando un :blue:`meta-linguaggio` come ad esempio ``MOF``
-(si veda `Meta Object Facility`_) unitamente alla semantica del linguaggio e a un framework di supporto.
+definire una **sintassi astratta** utilizzando un :blue:`meta-linguaggio` 
 
-.. list-table::
-  :widths: 60,40
-  :width: 100%
-  
-  * - .. image:: ./_static/img/Intro/mofUml.PNG
-         :width: 100%
-         :align: center
-    - La `Meta Object Facility`_ di UML2 nella versione incorporata in Eclipse
-      (denominata `Ecore`_) può essere usata per definire un linguaggio che permette di esprimere sistemi software come
-      oggetti attivi (**attori**) che interagiscono tra loro a scambio di messaggi si comportano come `MooreMachines`_.
+Il `Meta Programming System`_ (**MPS**) di IntelliJ  offre un editor (si veda  `Projectional editing`_) 
+che costituisce una *proiezione della sintassi astratta* (**AST**) di un meta-linguaggio per la definizione di 
+:ref:`Domain Specific Languages` (**DSL**).
 
-      Questa idea ha come riferimento i `Domain Specific Languages`_.
+.. slide1:`Programmazione orientata al linguaggio`
+
+`Language-oriented programming`_ è un paradigma di sviluppo del software  che 
+incoraggia esplicitamente gli sviluppatori 
+a creare i propri DSL o ad estendere i linguaggi esistenti con concetti specifici del dominio.
+
+.. https://en.wikipedia.org/wiki/Language-oriented_programming
+
+.. Il Meta-Programming System (MPS) di JetBrains
+
+
+
+.. Questa idea ha come riferimento i `Domain Specific Languages`_.
  
 .. https://www.jetbrains.com/help/mps/fast-track-to-mps.html#step5-projectionaleditingtipsandtricks
 
-Il codice in MPS non è testo, ma è invece una proiezione della sintassi astratta (AST)
+
 
 .. https://medium.com/@mikhail.barash.mikbar/a-tale-about-domain-specific-languages-bde2ace22f6c
+
+
+:slide1:`Domain Specific Languages`
+
 
 ----------------------------------------
 Domain Specific Languages
@@ -509,8 +537,8 @@ Domain Specific Languages
 .. https://www.jetbrains.com/help/mps/mps-calculator-language-tutorial.html CALCULATOR
 
  
-Un `Domain Specific Languages` (DSL) è un linguaggio che aumenta il livello di astrazione oltre la programmazione,
-utilizzanso direttamente concetti e regole da uno specifico dominio del problema
+Un `Domain Specific Language`_ (**DSL**) è un linguaggio che aumenta il livello di astrazione oltre la programmazione,
+utilizzando direttamente concetti e regole da uno specifico dominio del problema
  
 
 Tra i vantaggi dell'uso di un DSL:
@@ -518,7 +546,7 @@ Tra i vantaggi dell'uso di un DSL:
 - usando un DSL e un *motore di trasformazione*, il  lavoro nel particolare aspetto dello sviluppo 
   del software coperto dal DSL diventa molto più efficiente, perché il lavoro di colmare l'abstraction gap 
   vine svolto dal motore di trasformazione;
-- l'uso usare delle *astrazioni specifiche del dominio* può avvenire senza sovraccarico runtime, 
+- l'uso di *astrazioni specifiche del dominio* può avvenire senza sovraccarico runtime, 
   perché il motore di trasformazione, proprio come un compilatore, può rimuovere le astrazioni 
   e generare codice efficiente;
 - il *modo di pensare* del progettista software diventa più chiaro perché il codice non è ingombrato 
@@ -526,14 +554,12 @@ Tra i vantaggi dell'uso di un DSL:
 - la *logica dell'applicazione* espressa nel codice DSL è indipendente dalla piattaforma di destinazione;  
 - si promuove un'ottima *integrazione* tra gli svluppatori software e gli esperti del dominio.
 
-:slide1:`Programmazione orientata al linguaggio`
 
-La *programmazione orientata al linguaggio* incoraggia esplicitamente gli sviluppatori 
-a creare i propri DSL o ad estendere i linguaggi esistenti con concetti specifici del dominio.
 
-.. https://en.wikipedia.org/wiki/Language-oriented_programming
 
-.. Il Meta-Programming System (MPS) di JetBrains
+
+
+:slide:`I modelli`
 
 ++++++++++++++++++++++++++++
 Modelli
@@ -588,24 +614,38 @@ Per garantire coesione e interoperabilità, si cerca di individuare regole di co
 e di trasformazione automatica tra modelli.
 
 
-++++++++++++++++++++++++++++
-Linguaggi di modellazione
-++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++
+Linguaggi di (meta)modellazione
+++++++++++++++++++++++++++++++++++++++
 
 Un `Linguaggio di modellazione`_ è un `Linguaggio formale`_ 
 che può essere utilizzato per descrivere (modellare) un sistema di qualche natura.
 
 UML (*Unified Modeling Language*) è un linguaggio di modellazione e di specifica 
-di sistemi software basato sul paradigma orientato agli oggetti. 
+di sistemi software basato sul paradigma orientato agli oggetti. Il linguaggio è definito in termini
+di un linguaggio di meta-modellazione denominato ``MOF``
+(si veda `Meta Object Facility`_) .
 
-Nel contesto dell'ingegneria del software, UML viene usato soprattutto per descrivere il dominio applicativo 
+.. list-table::
+  :widths: 60,40
+  :width: 100%
+  
+  * - .. image:: ./_static/img/Intro/mofUml.PNG
+         :width: 100%
+         :align: center
+    - La `Meta Object Facility`_ di UML2 nella versione incorporata in Eclipse
+      (denominata `Ecore`_) può essere usata per definire un linguaggio che permette di esprimere sistemi software come
+      oggetti attivi (**attori**) che interagiscono tra loro a scambio di messaggi si comportano come `MooreMachines`_.
+
+
+Nel contesto dell'ingegneria del software, ``UML`` viene usato soprattutto per descrivere il dominio applicativo 
 di un sistema software e/o il comportamento e la struttura del sistema stesso. 
 
-Il modello è strutturato secondo un insieme di viste che rappresentano diversi aspetti della cosa modellata 
+Il modello è strutturato secondo un **insieme di viste** che rappresentano diversi aspetti della cosa modellata 
 (funzionamento, struttura, comportamento e così via), a scopo sia di analisi sia di progetto, 
 mantenendo la tracciabilità dei concetti impiegati nelle diverse viste.
 
-
+:slide:`Il testing`
 
 ++++++++++++++++++++++++++++
 Testing

@@ -1,0 +1,981 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>QakFacade &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">QakFacade</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="qakfacade">
+<h1>QakFacade<a class="headerlink" href="#qakfacade" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><span class="slide">OVERVIEW</span></p></li>
+<li><p><span class="slide">KEYPOINT1aa</span></p></li>
+<li><p><span class="slide">KEYPOINT2a</span></p></li>
+</ul>
+<p><span class="blue">Obiettivo</span>: costruire una facade REST per un sistema Qak.</p>
+<p>Un sistema Qak costituisce una applicazione distribuita basata su componenti detti <em>attori</em>
+attivabili su uno o più nodi computazionali,
+che interagisocno a scambio di messaggi (sono privi di  memoria comune)
+supportati da una apposita infrastruttura a run time.</p>
+<p>La parte di codice necessaria all’uso del Qak-runtime viene generata in modo automatico
+a partire da un <span class="remark">modello</span> che descrive ad alto livello gli aspetti della architettura applicativa,
+in temini di <span class="remark">struttura, interazione e comportamento</span> logico degli attori.</p>
+<p>La generazione automatica di codice permette agli application designer di concentrare l’attenzione
+sulla logica applicativa, senza doversi occupare dei dettagli legati alla realizzazione
+delle comunicazioni via rete.</p>
+<p>Un sistema Qak possiede molte caratteristiche tipiche dei microservizi, focalizzando l’attenzione
+sull’autonomia dei componenti (gli attori) e sulla interazione a scambio di messaggi,
+partendo dalle otto assunzioni di Peter Deutsh:</p>
+<ul class="simple">
+<li><p>La rete è affidabile</p></li>
+<li><p>La latenza è nulla</p></li>
+<li><p>L’ampiezza di banda è infinita</p></li>
+<li><p>La rete è sicura</p></li>
+<li><p>La topologia non cambia</p></li>
+<li><p>Esiste un amministratore del sistema</p></li>
+<li><p>Il costo del trasporto è nullo</p></li>
+<li><p>La rete è omogenea</p></li>
+</ul>
+<p>Lo scopo è quello di abituarsi all’uso di un nuovo modello computazionale, anche nel caso
+in cui il sistema sia allocato su unica JVM, caso in cui molte delle assunzioni precedenti
+possono essere considerate vere.</p>
+<p>Aspetti critici che sorgono quando qualcuna delle assunzioni precedenti viene meno
+e necessita quali scalabilità, resilienza, etc. sono ricondotte all’uso di infrastrutture
+più evolute e meglio supportate, come SpringBoot.</p>
+<p>Qui, il nostro intento è utilizzare  SprinBoot per costruire una Facade di acesso al sistems Qak,
+utilizzabile da utenti umani e da  programmi.</p>
+<section id="qakfacade-cosa-fa">
+<h2>QakFacade: cosa fa<a class="headerlink" href="#qakfacade-cosa-fa" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p>Le funzionalità della Facade sono:</p>
+<ul class="simple">
+<li><p>attivare utilizzando applicazione Qak</p></li>
+<li><p>fornire la lista dei nomi degli attori che compaiono nell’applicazione Qak</p></li>
+<li><p>fornire la lista dei messaggi che gli attori gestiscono nelle diverse transizioni di stato</p></li>
+<li><p>creare/eliminare observer sugli attori (in relazione alle informazioni emesse via Coap)</p></li>
+<li><p>inviare messaggi ad attori</p></li>
+</ul>
+<p>Per un esempio di uso si veda <a class="reference internal" href="#qakfacade-esempio-di-uso"><span class="std std-ref">QakFacade: esempio di uso</span></a>.</p>
+</li>
+</ol>
+<section id="qakfacadeapi">
+<h3>QakFacadeApi<a class="headerlink" href="#qakfacadeapi" title="Permalink to this headline">¶</a></h3>
+<p>Le funzionalità che costituiscono la <em>core application</em> sono definite dalla interfaccia <em>QakFacadeApi</em>:</p>
+<blockquote>
+<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">QakFacadeApi</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">startTheQakSystem</span><span class="p">(</span><span class="n">String</span> <span class="n">sysDescr</span><span class="p">);</span>
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getActorNames</span><span class="p">();</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getActor</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">);</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getActorsApi</span><span class="p">();</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">sendMessage</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">);</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">manageObserver</span><span class="p">(</span> <span class="n">String</span> <span class="n">observed</span><span class="p">,</span> <span class="kt">boolean</span> <span class="n">create</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Tutti i metodi firniscono informazione in uscita che potrà essere visualizzata in una area di output
+della <a class="reference internal" href="#qakfacade-gui"><span class="std std-ref">QakFacade: GUI</span></a>.</p>
+<section id="qaksystemfacade">
+<h4>QakSystemFacade<a class="headerlink" href="#qaksystemfacade" title="Permalink to this headline">¶</a></h4>
+<p>Le funzionalità che costituiscono la <em>core application</em>  della Facade e sono realizzate dal POJO
+<em>QakSystemFacade</em> che implementa la interfaccia <a class="reference internal" href="#qakfacadeapi"><span class="std std-ref">QakFacadeApi</span></a>. Ad esempio:</p>
+<blockquote>
+<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">it.unibo.kactor.sysUtil</span><span class="p">;</span> <span class="c1">//In unibo.qakactor23-3.5</span>
+<span class="kn">import</span> <span class="nn">it.unibo.kactor.MsgUtil</span><span class="p">;</span> <span class="c1">//In unibo.qakactor23-3.5</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">QakSystemFacade</span> <span class="kd">implements</span> <span class="n">QakFacadeApi</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">warning</span> <span class="o">=</span> <span class="s">&quot;WARNING: System not started&quot;</span><span class="p">;</span>
+    <span class="p">...</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span>  <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getActorNames</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">blctxName</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="k">return</span> <span class="n">createEmptyAnswer</span><span class="p">();</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">actors</span> <span class="o">=</span> <span class="n">sysUtil</span><span class="p">.</span><span class="na">getAllActorNames</span><span class="p">();</span>
+        <span class="k">return</span> <span class="n">actors</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">sendMessage</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">blctxName</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="k">return</span> <span class="n">warning</span> <span class="p">;</span>
+        <span class="n">IApplMessage</span> <span class="n">m</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">m</span><span class="p">.</span><span class="na">isEvent</span><span class="p">()</span> <span class="p">){</span>
+            <span class="n">ActorBasic</span> <span class="n">emitter</span> <span class="o">=</span> <span class="n">sysUtil</span><span class="p">.</span><span class="na">getActor</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="na">msgSender</span><span class="p">());</span>
+            <span class="k">if</span><span class="p">(</span> <span class="n">emitter</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span>
+               <span class="k">return</span> <span class="s">&quot;WARNING: event emitter unknown&quot;</span><span class="p">;</span>
+            <span class="n">MsgUtil</span><span class="p">.</span><span class="na">emitEvent</span><span class="p">(</span> <span class="n">m</span><span class="p">,</span> <span class="kc">null</span> <span class="p">);</span>
+            <span class="k">return</span> <span class="s">&quot;emitted:$msg&quot;</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">String</span> <span class="n">dest</span>   <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="na">msgReceiver</span><span class="p">();</span>
+            <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">sendMsgToActor</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">dest</span><span class="p">);</span>
+            <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="qaksystemfacade-invio-di-messaggi">
+<h4>QakSystemFacade - Invio di messaggi<a class="headerlink" href="#qaksystemfacade-invio-di-messaggi" title="Permalink to this headline">¶</a></h4>
+<p>Se l’attore destinatario è locale, inserisce il messaggio nella sua coda.
+Altrimenti, invia il messaggio sulla connsesione TCP al contesto dell’attore.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="n">String</span> <span class="nf">sendMsgToActor</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">m</span><span class="p">,</span> <span class="n">String</span> <span class="n">actorName</span><span class="p">){</span>
+    <span class="n">ActorBasic</span> <span class="n">a</span> <span class="o">=</span> <span class="n">sysUtil</span><span class="p">.</span><span class="na">getActor</span><span class="p">(</span><span class="n">actorName</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">a</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">){</span>
+        <span class="n">a</span><span class="p">.</span><span class="na">sendMsgToMyself</span><span class="p">(</span><span class="n">m</span><span class="p">);</span>
+        <span class="k">return</span> <span class="s">&quot;sent&quot;</span> <span class="o">+</span> <span class="n">m</span><span class="p">;</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span> <span class="c1">//Actor non local =&gt; using TCP</span>
+        <span class="n">QakContext</span> <span class="n">recCtx</span> <span class="o">=</span> <span class="n">sysUtil</span><span class="p">.</span><span class="na">getActorContext</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="na">msgReceiver</span><span class="p">());</span>
+        <span class="n">String</span> <span class="n">receiverCtx</span><span class="o">=</span><span class="n">recCtx</span><span class="p">.</span><span class="na">getName</span><span class="p">();</span>
+        <span class="kt">int</span> <span class="n">receiverPort</span>    <span class="o">=</span> <span class="n">recCtx</span><span class="p">.</span><span class="na">getPortNum</span><span class="p">();</span>
+        <span class="n">String</span> <span class="n">receiverHost</span> <span class="o">=</span> <span class="n">recCtx</span><span class="p">.</span><span class="na">getHostAddr</span><span class="p">();</span>
+        <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">sendMessageUsingTcp</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">receiverHost</span><span class="p">,</span><span class="n">receiverPort</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">public</span>  <span class="n">String</span> <span class="nf">sendMessageUsingTcp</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">m</span><span class="p">,</span> <span class="n">String</span> <span class="n">addr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span> <span class="p">)</span> <span class="p">{</span>
+     <span class="k">try</span> <span class="p">{</span>
+         <span class="n">Interaction2021</span> <span class="n">conn</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TcpConnection</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">port</span><span class="p">);</span>
+         <span class="n">conn</span><span class="p">.</span><span class="na">request</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">m</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="na">request</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span> <span class="c1">//sincrono</span>
+            <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="n">conn</span><span class="p">.</span><span class="na">forward</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+            <span class="k">return</span> <span class="s">&quot;sendMessageUsingTcp done&quot;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span><span class="k">catch</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">){...}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="qakfacade-gui">
+<h3>QakFacade: GUI<a class="headerlink" href="#qakfacade-gui" title="Permalink to this headline">¶</a></h3>
+<p>L’accesso per gli utenti umani è realizzato da <a class="reference internal" href="#qakfacade-hicontroller"><span class="std std-ref">QakFacade HIController</span></a> che fornisce una pagina web
+che ha sezioni di input (per l’invio di comandi) e di output.</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/QakFacade.png"><img alt="_images/QakFacade.png" class="align-center" src="_images/QakFacade.png" style="width: 100%;" /></a>
+</div></blockquote>
+<p>Le <span class="blue">sezioni di output</span> includono aree:</p>
+<ul class="simple">
+<li><p>per la visualizzazione delle risposte ai comandi (ad esempio aree <em>WELCOME, Transitions</em>).
+Per il loro aggiornamento si veda <a class="reference internal" href="#hicontroller-updateviewmodel"><span class="std std-ref">HIController updateViewmodel</span></a>;</p></li>
+<li><p>per la visualizzazione delle informazioni dinamicamente emesse dagli observer attivati sugli attori
+(area <em>Actor update area</em>). Per il loro aggiornamento si veda  <a class="reference internal" href="SpringBootIntro.html#lo-script-wsminimal-js"><span class="std std-ref">Lo script wsminimal.js</span></a>.</p></li>
+</ul>
+<p>I pulsanti presenti nelle <span class="blue">sezioni di input</span> della pagina inviano richieste:</p>
+<ul class="simple">
+<li><p>HTTP-GET ( <em>getActorNames, getActorsApi, getActor</em> )</p></li>
+<li><p>HTTP-POST ( <em>START</em>, <em>sendMessage</em> )</p></li>
+</ul>
+<p>Si ricorda che lo standard HTML prevede che le form utilizzino il metodo POST.
+L’uso del metodo PUT viene trasformato in GET.</p>
+<section id="qaksystemgui-html">
+<h4>qakSystemGui.html<a class="headerlink" href="#qaksystemgui-html" title="Permalink to this headline">¶</a></h4>
+<p>La pagina <em>qakSystemGui.html</em> organizza il suo layout utilizzando  bootstrap.
+Essa include sezioni aggiornabili mediante l’uso dei meccanismi di Theamleaf.
+Ad esempio:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>Notification area<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;INFO&quot;</span> <span class="na">th:text</span><span class="o">=</span><span class="s">&quot;${info}&quot;</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;color:#2d862d;font-size:22px;&quot;</span><span class="p">&gt;</span>
+    todo
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>La pagina include anche <span class="blue">form</span> relative alle sezioni di input. Ad esempio:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;sendMessage&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
+ <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">size</span><span class="o">=</span><span class="s">40</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;sendMessagespec&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;name&quot;</span> <span class="na">fon</span>
+        <span class="na">value</span><span class="o">=</span><span class="s">&quot;msg(cmd,dispatch,gui,basicrobot,cmd( r ),1)&quot;</span><span class="p">&gt;</span>
+    <span class="c">&lt;!-- value=&quot;msg(MSGID,MSGTYPE,SENDER,DEST,CONTENT,N)&quot;&gt; --&gt;</span>
+ <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;cmd&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="websockets">
+<h4>websockets<a class="headerlink" href="#websockets" title="Permalink to this headline">¶</a></h4>
+<p>La pagina include anche <a class="reference internal" href="SpringBootIntro.html#lo-script-wsminimal-js"><span class="std std-ref">Lo script wsminimal.js</span></a> per gestire dinamicamente informazioni via websoket.</p>
+</section>
+</section>
+<section id="qakfacade-esempio-di-uso">
+<h3>QakFacade: esempio di uso<a class="headerlink" href="#qakfacade-esempio-di-uso" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p>Attivare <code class="docutils literal notranslate"><span class="pre">unibo.QakRestFacade.QakRestApplication</span></code>.</p></li>
+<li><p>Selezionare l’applicazione Qak (pulsante <code class="docutils literal notranslate"><span class="pre">SELECT</span></code>).</p></li>
+<li><p>Selezionare ed attivare un contesto (pulsante <code class="docutils literal notranslate"><span class="pre">START</span></code>). L’elenco degli attori disponibili viene
+mostrato nell’area <code class="docutils literal notranslate"><span class="pre">Locals</span></code>.</p></li>
+<li><p>Selezionare un attore da osservare e premere il pulsante <code class="docutils literal notranslate"><span class="pre">CREATE</span></code> per creare un observer Coap</p></li>
+<li><p>Impostare un messaggio (<em>dispatch</em>, <em>request</em> o <em>event</em>)  a uno degli attori e premere il pulsante <code class="docutils literal notranslate"><span class="pre">sendMessage</span></code>.
+Osservare le informazioni emeese in  <code class="docutils literal notranslate"><span class="pre">Actor</span> <span class="pre">update</span> <span class="pre">area</span></code>.</p></li>
+<li><p>Attivare un programma (Java, Python, etc.) che invia un messaggio a un attore via TCP e
+osservare la modifica nell’area <strong>Observing</strong>. Ad esempio:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CallerQakSystem</span> <span class="p">{</span>
+<span class="kd">final</span> <span class="kd">protected</span> <span class="n">String</span> <span class="n">HOST</span> <span class="o">=</span> <span class="s">&quot;localhost&quot;</span><span class="p">;</span>
+<span class="kd">final</span> <span class="kd">protected</span> <span class="kt">int</span> <span class="n">port</span>    <span class="o">=</span>  <span class="mi">8160</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">connect</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">TcpClientSupport</span><span class="p">.</span><span class="na">connect</span><span class="p">(</span><span class="n">HOST</span><span class="p">,</span> <span class="n">port</span> <span class="p">,</span><span class="mi">10</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sendMessageToBasicrobot</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+        <span class="c1">//invio all&#39;attore senza passare per la REST Facade</span>
+        <span class="n">String</span> <span class="n">msgTurnRight</span><span class="o">=</span><span class="s">&quot;msg(cmd,dispatch,callertcp,basicrobot,cmd(r),1)&quot;</span><span class="p">;</span>
+        <span class="n">String</span> <span class="n">msgTurnLeft</span> <span class="o">=</span><span class="s">&quot;msg(cmd,dispatch,callertcp,basicrobot,cmd(l),1)&quot;</span><span class="p">;</span>
+        <span class="n">conn</span><span class="p">.</span><span class="na">forward</span><span class="p">(</span> <span class="n">msgTurnRight</span>   <span class="p">);</span>
+        <span class="n">conn</span><span class="p">.</span><span class="na">forward</span><span class="p">(</span> <span class="n">msgTurnLeft</span>   <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+        <span class="n">CallerQakSystem</span> <span class="n">appl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CallerQakSystem</span><span class="p">();</span>
+        <span class="n">appl</span><span class="p">.</span><span class="na">connect</span><span class="p">();</span>
+        <span class="n">appl</span><span class="p">.</span><span class="na">sendMessageToBasicrobot</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="qakfacade-hicontroller">
+<h3>QakFacade HIController<a class="headerlink" href="#qakfacade-hicontroller" title="Permalink to this headline">¶</a></h3>
+<p>HIController è un <em>Controller</em> Spring :</p>
+<blockquote>
+<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HIController</span> <span class="kd">implements</span> <span class="n">QakHIService</span> <span class="p">{</span>
+    <span class="kd">private</span> <span class="n">QakSystemFacade</span> <span class="n">qakSys</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">QakSystemFacade</span><span class="p">();</span>
+    <span class="p">...</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Questo controller implementa <a class="reference internal" href="#l-interfaccia-qakhiservice"><span class="std std-ref">L’interfaccia QakHIService</span></a> utilizzando <a class="reference internal" href="#qaksystemfacade"><span class="std std-ref">QakSystemFacade</span></a>.</p>
+<section id="l-interfaccia-qakhiservice">
+<h4>L’interfaccia QakHIService<a class="headerlink" href="#l-interfaccia-qakhiservice" title="Permalink to this headline">¶</a></h4>
+<p>Questa interfaccia definisce</p>
+<blockquote>
+<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">QakHIService</span> <span class="p">{</span>
+
+ <span class="nd">@GetMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
+ <span class="n">String</span> <span class="nf">entry</span><span class="p">(</span> <span class="n">Model</span> <span class="n">viewmodel</span> <span class="p">);</span>
+
+ <span class="nd">@PostMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/selectTheQakSystem&quot;</span><span class="p">)</span>
+ <span class="n">String</span> <span class="nf">selectTheQakSystem</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span>
+     <span class="nd">@RequestParam</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;sys&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span> <span class="n">String</span> <span class="n">sys</span><span class="p">);</span>
+
+ <span class="nd">@PostMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/changeIp&quot;</span><span class="p">)</span>
+ <span class="n">String</span> <span class="nf">changeip</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span>
+     <span class="nd">@RequestParam</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;ctxip&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span> <span class="n">String</span> <span class="n">ctxip</span><span class="p">);</span>
+
+ <span class="nd">@PostMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/startTheQakSystem&quot;</span><span class="p">)</span>
+ <span class="n">String</span> <span class="nf">startTheQakSystem</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span>
+     <span class="nd">@RequestParam</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;sysDescr&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span> <span class="n">String</span> <span class="n">sysDescr</span><span class="p">);</span>
+
+ <span class="nd">@GetMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/getActorNames&quot;</span><span class="p">)</span>
+ <span class="n">String</span> <span class="nf">getActorNames</span><span class="p">(</span> <span class="n">Model</span> <span class="n">viewmodel</span> <span class="p">);</span> <span class="c1">//output in the page</span>
+
+ <span class="nd">@GetMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/getActorsApi&quot;</span><span class="p">)</span>
+ <span class="n">String</span> <span class="nf">getActorsApi</span><span class="p">(</span> <span class="n">Model</span> <span class="n">viewmodel</span> <span class="p">);</span>
+
+ <span class="nd">@GetMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/getActor&quot;</span><span class="p">)</span>
+ <span class="n">String</span> <span class="nf">getActor</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span> <span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">name</span><span class="p">);</span>
+
+ <span class="nd">@PostMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/sendMessage&quot;</span><span class="p">)</span>   <span class="c1">//Put ???</span>
+ <span class="n">String</span> <span class="nf">sendMessage</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span>
+     <span class="nd">@RequestParam</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span> <span class="n">String</span> <span class="n">msg</span> <span class="p">);</span>
+
+ <span class="nd">@PostMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/createObserver&quot;</span><span class="p">)</span>
+ <span class="kd">public</span> <span class="n">String</span> <span class="nf">createObserver</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span>
+     <span class="nd">@RequestParam</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;observed&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span> <span class="n">String</span> <span class="n">observed</span><span class="p">);</span>
+ <span class="nd">@PostMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/removeObserver&quot;</span><span class="p">)</span>
+ <span class="kd">public</span> <span class="n">String</span> <span class="nf">removeObserver</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span>
+     <span class="nd">@RequestParam</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;observed&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span> <span class="n">String</span> <span class="n">observed</span><span class="p">);</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+<section id="hicontroller-realizzazione">
+<h3>HIController - realizzazione<a class="headerlink" href="#hicontroller-realizzazione" title="Permalink to this headline">¶</a></h3>
+<p><em>HIController</em> realizza i comandi inviando opportuni metodi dell’istanza <em>qaSys</em> di
+<a class="reference internal" href="#qaksystemfacade"><span class="std std-ref">QakSystemFacade</span></a>, restituendo sempre una pagina HTML (<a class="reference internal" href="#qaksystemgui-html"><span class="std std-ref">qakSystemGui.html</span></a>) con
+opportuni aggiornamenti del viemodel.</p>
+<blockquote>
+<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HIController</span> <span class="kd">implements</span> <span class="n">QakHIService</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getActorNames</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span> <span class="o">!</span> <span class="n">isStarted</span><span class="p">(</span><span class="n">viewmodel</span><span class="p">)</span> <span class="p">)</span> <span class="k">return</span> <span class="s">&quot;qakSystemGui&quot;</span><span class="p">;</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">actorNames</span> <span class="o">=</span> <span class="n">qakSys</span><span class="p">.</span><span class="na">getActorNames</span><span class="p">();</span>
+        <span class="n">updateViewmodel</span><span class="p">(</span><span class="n">viewmodel</span><span class="p">,</span>
+            <span class="s">&quot;ActorNames:&quot;</span><span class="o">+</span> <span class="n">actorNames</span><span class="p">.</span><span class="na">toString</span><span class="p">(),</span> <span class="n">qakSys</span><span class="p">.</span><span class="na">getCtxname</span><span class="p">());</span>
+        <span class="k">return</span> <span class="s">&quot;qakSystemGui&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isStarted</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">qakSys</span><span class="p">.</span><span class="na">getCtxname</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;unknown&quot;</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">updateViewmodel</span><span class="p">(</span><span class="n">viewmodel</span><span class="p">,</span> <span class="n">warning</span><span class="p">,</span> <span class="s">&quot;Application not started&quot;</span><span class="p">);</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<section id="hicontroller-updateviewmodel">
+<h4>HIController updateViewmodel<a class="headerlink" href="#hicontroller-updateviewmodel" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <em>updateViewmodel</em> rappresenta lo standard per la enmissioni di informazioni
+relativa ai comandi:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span> <span class="kt">void</span> <span class="nf">updateViewmodel</span><span class="p">(</span><span class="n">Model</span> <span class="n">model</span><span class="p">,</span><span class="n">String</span> <span class="n">info</span> <span class="p">){</span>
+    <span class="n">model</span><span class="p">.</span><span class="na">addAttribute</span><span class="p">(</span><span class="s">&quot;info&quot;</span><span class="p">,</span> <span class="n">info</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Ad esempio:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">sendMessage</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span> <span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="o">!</span> <span class="n">isStarted</span><span class="p">(</span><span class="n">viewmodel</span><span class="p">)</span> <span class="p">)</span> <span class="k">return</span> <span class="s">&quot;qakSystemGui&quot;</span><span class="p">;</span>
+    <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">qakSys</span><span class="p">.</span><span class="na">sendMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+    <span class="n">updateViewmodel</span><span class="p">(</span><span class="n">viewmodel</span><span class="p">,</span> <span class="n">answer</span><span class="p">,</span> <span class="n">qakSys</span><span class="p">.</span><span class="na">getCtxname</span><span class="p">());</span>
+    <span class="k">return</span> <span class="s">&quot;qakSystemGui&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Altre informazioni possono essere emesse ad hoc nelle sezioni di output della pagina
+da parte di specifici comandi. Ad esempio, l’endpoint <code class="docutils literal notranslate"><span class="pre">getActorsApi</span></code> aggiorna
+il campo <em>Transitions</em>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">getActorsApi</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="o">!</span> <span class="n">isStarted</span><span class="p">(</span><span class="n">viewmodel</span><span class="p">)</span> <span class="p">)</span> <span class="k">return</span> <span class="s">&quot;qakSystemGui&quot;</span><span class="p">;</span>
+    <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">qakSys</span><span class="p">.</span><span class="na">getActorsTransitions</span><span class="p">()</span> <span class="p">;</span>
+    <span class="n">updateViewmodel</span><span class="p">(</span><span class="n">viewmodel</span><span class="p">,</span>
+        <span class="s">&quot;trans&quot;</span><span class="p">,</span> <span class="n">qakSys</span><span class="p">.</span><span class="na">getCtxname</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot; port=&quot;</span> <span class="o">+</span> <span class="n">qakSys</span><span class="p">.</span><span class="na">getPort</span><span class="p">());</span>
+    <span class="n">viewmodel</span><span class="p">.</span><span class="na">addAttribute</span><span class="p">(</span><span class="s">&quot;transitions&quot;</span><span class="p">,</span> <span class="n">answer</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="s">&quot;qakSystemGui&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="qakfacade-m2mcontroller">
+<h2>QakFacade M2MController<a class="headerlink" href="#qakfacade-m2mcontroller" title="Permalink to this headline">¶</a></h2>
+<p>La facade offre anche accesso per programmi, realizzato da un <span class="blue">RestController</span> (<em>M2MController</em>) che fornisce accessi sincroni
+e accessi asincroni implementando due diversi insiemi di API:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#interfaccia-qakm2mservicesynch"><span class="std std-ref">QakM2MServiceSynch</span></a></p></li>
+<li><p><a class="reference internal" href="#interfaccia-qakm2mserviceasynch"><span class="std std-ref">QakM2MServiceAsynch</span></a></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">M2MController</span>  <span class="n">implements</span> <span class="n">QakM2MServiceSynch</span><span class="p">,</span> <span class="n">QakM2MServiceAsynch</span> <span class="p">{</span>
+<span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="interfaccia-qakm2mservicesynch">
+<h3>Interfaccia QakM2MServiceSynch<a class="headerlink" href="#interfaccia-qakm2mservicesynch" title="Permalink to this headline">¶</a></h3>
+<p>L’interfaccia <em>QakM2MServiceSynch</em> definisce gli endpoints sincroni che costituiscono un secondo modo di accesso
+alle funzionalità di <a class="reference internal" href="#qaksystemfacade"><span class="std std-ref">QakSystemFacade</span></a>.</p>
+<blockquote>
+<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">QakM2MServiceSynch</span> <span class="p">{</span>
+    <span class="nd">@GetMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/qak/getActorNames&quot;</span><span class="p">,</span> <span class="n">produces</span> <span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getActorNames</span><span class="p">(</span> <span class="p">);</span>
+    <span class="nd">@GetMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/qak/getActorsApi&quot;</span><span class="p">,</span> <span class="n">produces</span> <span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+    <span class="n">String</span>  <span class="nf">getActorsApi</span><span class="p">(</span> <span class="p">);</span>
+    <span class="nd">@GetMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/qak/getActor&quot;</span><span class="p">,</span> <span class="n">produces</span> <span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getActor</span><span class="p">(</span><span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">name</span><span class="p">);</span>
+    <span class="nd">@PostMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/qak/startTheQakSystem&quot;</span><span class="p">,</span> <span class="n">produces</span> <span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+    <span class="n">String</span> <span class="nf">startTheQakSystem</span><span class="p">(</span><span class="nd">@RequestBody</span> <span class="n">String</span> <span class="n">sysDescr</span> <span class="p">);</span>
+    <span class="nd">@PostMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/qak/sendMessage&quot;</span><span class="p">,</span> <span class="n">produces</span> <span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+    <span class="kt">void</span> <span class="nf">sendMessage</span><span class="p">(</span><span class="nd">@RequestBody</span> <span class="n">String</span> <span class="n">msg</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="m2mcontroller-realizzazione-parte-sincrona">
+<h3>M2MController - realizzazione parte sincrona<a class="headerlink" href="#m2mcontroller-realizzazione-parte-sincrona" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>public class M2MController  implements QakM2MServiceSynch, QakM2MServiceAsynch{
+
+    //Selezione della applicazione qak
+    @Override
+    public String selectTheQakSystem ( String qaksysdesrc ) {
+        QakSystemFacade.qakSystemDescrFilename = qaksysdesrc;
+        String ctxNames = qakSys
+            .getCtxNamesFromDescription(
+                QakSystemFacade.qakSystemDescrFilename).toString().trim()
+                .replace(&quot;[&quot;,&quot;&quot;).replace(&quot;]&quot;,&quot;&quot;);
+        qakSys.setExternalActorCtxs();
+        Iterator&lt;String&gt; externals = qakSys.qakExternals.iterator() ;
+        return &quot;selectTheQakSystem done &quot; + ctxNames;
+    }
+
+    //Attivazione della applicazione qak
+    @Override
+    public String startTheQakSystem( String ctx ) {
+        if( qakSys.getCtxname().equals(ctx) ) {
+            String msg = &quot;Already started for ctx=&quot; + ctx;
+            return msg;
+        }
+        String answer = qakSys.startTheQakSystem( ctx);
+        return answer;
+    }
+
+
+    @Override //PUT
+    public String sendMessage(String msg) {
+        if( ! isStarted( ) ) return warning;
+        return qakSys.sendMessage(msg);
+    }
+
+    //Creazione di un observer
+    @Override //POST
+    public String createObserver(@RequestBody String name ){
+        if( ! isStarted( ) ) return warning;
+        return qakSys.manageObserver(name, true);
+    }
+
+    //Rimozione di un observer
+    @Override
+    public String removeObserver(@RequestBody String name ){
+        if( ! isStarted( ) ) return warning;
+        return qakSys.manageObserver(name, false);
+    }
+
+    //Accesso a informazioni
+    @Override
+    public List&lt;String&gt; getActorNames() {
+        if( ! isStarted( ) ) return createEmptyAnswer();
+        return qakSys.getActorNames(qakSys.blctxName);
+    }
+    ...
+</pre></div>
+</div>
+<section id="uso-di-openapi-ex-swagger">
+<h4>Uso di OpenApi (ex Swagger)<a class="headerlink" href="#uso-di-openapi-ex-swagger" title="Permalink to this headline">¶</a></h4>
+<p>Aggiungiamo una dipendenza in <code class="docutils literal notranslate"><span class="pre">build.gradle</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">implementation</span> <span class="s1">&#39;org.springdoc:springdoc-openapi-ui:1.6.11&#39;</span>
+</pre></div>
+</div>
+<p>Aggiungiamo in <code class="docutils literal notranslate"><span class="pre">application.properties</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spring</span><span class="o">.</span><span class="n">mvc</span><span class="o">.</span><span class="n">pathmatch</span><span class="o">.</span><span class="n">matching</span><span class="o">-</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">ANT_PATH_MATCHER</span>
+</pre></div>
+</div>
+<p>Invochiamo</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8095</span><span class="o">/</span><span class="n">swagger</span><span class="o">-</span><span class="n">ui</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span>
+</pre></div>
+</div>
+</td>
+<td><img alt="_images/QakFacdeOpenApiSynch.png" src="_images/QakFacdeOpenApiSynch.png" />
+</td>
+</tr>
+</tbody>
+</table>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Apriamo <em>selectTheQakSystem</em></p></td>
+<td><img alt="_images/QakFacdeOpenApiSynchSelect0.png" src="_images/QakFacdeOpenApiSynchSelect0.png" />
+</td>
+</tr>
+</tbody>
+</table>
+<p>Try it out: <em>selectTheQakSystem</em></p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 75%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="_images/QakFacdeOpenApiSynchSelectTry.png" src="_images/QakFacdeOpenApiSynchSelectTry.png" />
+</td>
+<td><p>Suggerimenti in uscita</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="s1">&#39;POST&#39;</span> \
+    <span class="s1">&#39;http://localhost:8095/qak/selectTheQakSystem&#39;</span> \
+    <span class="o">-</span><span class="n">H</span> <span class="s1">&#39;accept: application/json&#39;</span> \
+    <span class="o">-</span><span class="n">H</span> <span class="s1">&#39;Content-Type: application/json&#39;</span> \
+    <span class="o">-</span><span class="n">d</span> <span class="s1">&#39;basicrobot23.pl&#39;</span>
+
+<span class="n">Request</span> <span class="n">URL</span><span class="p">:</span>
+   <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8095</span><span class="o">/</span><span class="n">qak</span><span class="o">/</span><span class="n">selectTheQakSystem</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="esempi-di-uso-con-curl">
+<h4>Esempi di uso con curl<a class="headerlink" href="#esempi-di-uso-con-curl" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">//Selezione della applicazione qak</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">d</span> <span class="s">&quot;basicrobot23.pl&quot;</span> <span class="o">-</span><span class="n">H</span> <span class="s">&quot;Content-Type: application/json&quot;</span>
+     <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="c1">//localhost:8095/qak/selectTheQakSystem</span>
+
+<span class="c1">//Attivazione della applicazione qak</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">d</span> <span class="s">&quot;ctxbasicrobot&quot;</span> <span class="o">-</span><span class="n">H</span> <span class="s">&quot;Content-Type: application/json&quot;</span>
+     <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="c1">//localhost:8095/qak/startTheQakSystem</span>
+
+<span class="c1">//Accesso a informazioni</span>
+<span class="n">curl</span> <span class="n">http</span><span class="p">:</span><span class="c1">//localhost:8095/qak/getActorNames</span>
+<span class="n">curl</span> <span class="n">http</span><span class="p">:</span><span class="c1">//localhost:8095/qak/getActor?name=&quot;basicrobot&quot;</span>
+
+<span class="c1">//Invio di messaggio</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">d</span> <span class="s">&quot;msg(cmd,dispatch,gui,basicrobot,cmd(l),1)&quot;</span>  <span class="o">-</span><span class="n">H</span> <span class="s">&quot;Content-Type: application/json&quot;</span>
+     <span class="o">-</span><span class="n">X</span> <span class="n">PUT</span> <span class="n">http</span><span class="p">:</span><span class="c1">//localhost:8095/qak/sendMessage</span>
+
+<span class="c1">//Creazione di un observer</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">d</span>  <span class="s">&quot;basicrobot&quot;</span> <span class="o">-</span><span class="n">H</span> <span class="s">&quot;Content-Type: application/json&quot;</span>
+     <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="c1">//localhost:8095/qak/createObserver</span>
+
+<span class="c1">//Eliminazione di un observer</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">d</span>  <span class="s">&quot;basicrobot&quot;</span> <span class="o">-</span><span class="n">H</span> <span class="s">&quot;Content-Type: application/json&quot;</span>
+     <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="c1">//localhost:8095/qak/removeObserver</span>
+</pre></div>
+</div>
+<p>L’invio di un messaggio  dopo avere creato un observer, provoca un aggiornamento della
+<em>Actor update area</em> sulla <a class="reference internal" href="#qakfacade-gui"><span class="std std-ref">QakFacade: GUI</span></a> da parte di <a class="reference internal" href="#qaksystemfacade"><span class="std std-ref">QakSystemFacade</span></a>.</p>
+</section>
+<section id="uso-di-hal">
+<h4>Uso di HAL<a class="headerlink" href="#uso-di-hal" title="Permalink to this headline">¶</a></h4>
+<p>Aggiungiamo una dipendenza in <code class="docutils literal notranslate"><span class="pre">build.gradle</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">implementation</span> <span class="s1">&#39;org.springframework.data:spring-data-rest-hal-explorer&#39;</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="qakfacade-interazioni-asincrone">
+<h2>QakFacade Interazioni asincrone<a class="headerlink" href="#qakfacade-interazioni-asincrone" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p><span class="blue">Problematica</span>: le interazioni basate su RESTful JSON APi via HTTP sono sincrone.
+Quindi un programma chiamante rimane bloccato in attesa della risposta.</p></li>
+<li><p><span class="blue">Analisi</span>: l’uso di chiamate bloccanti può causare inconvenienti cha vanno da possibili lunghi tempi di risposta
+(che tengono impegnato il chiamante) a possibili crash del server.
+Occorre consentire meccanismi di chiamata non-bloccante.</p></li>
+<li><p><span class="blue">Soluzioni</span>:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><span class="brown">non-blocking synchronous API</span>: usare un framework reattivo basato su non-blocking I/O,
+in cui l’attesa della risposta non implica l’allocazione di un thread.</p></li>
+<li><p><span class="brown">massage-based systems</span>: adottare un modello di programmazione asincrono, basato su invio di messaggi.</p></li>
+</ol>
+</div></blockquote>
+</li>
+</ul>
+<section id="webclient">
+<h3>WebClient<a class="headerlink" href="#webclient" title="Permalink to this headline">¶</a></h3>
+<p>WebClient è un’interfaccia che rappresenta il punto di ingresso principale per l’esecuzione di richieste web.</p>
+<p>È stato creato come parte del modulo Spring Web Reactive per sostituire RestTemplate in questi scenari.
+Il nuovo client è una soluzione reattiva e non bloccante che funziona tramite il protocollo HTTP/1.1.
+L’interfaccia ha come unica implementazione la classe <em>DefaultWebClient</em>.</p>
+<p>Il client offre supporto anche per operazioni sincrone bloccando l’operazione per ottenere il risultato.
+Naturalmente, questa pratica non è consigliata se stiamo lavorando su uno stack reattivo.</p>
+<p>Dipendenze: ‘org.springframework.boot:spring-boot-starter-webflux’</p>
+</section>
+<section id="interfaccia-qakm2mserviceasynch">
+<h3>Interfaccia QakM2MServiceAsynch<a class="headerlink" href="#interfaccia-qakm2mserviceasynch" title="Permalink to this headline">¶</a></h3>
+<p>L’interfaccia <em>QakM2MServiceAsynch</em> definisce gli endpoints asincroni:</p>
+<blockquote>
+<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">QakM2MServiceAsynch</span> <span class="p">{</span>
+    <span class="nd">@GetMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/qak/getmono&quot;</span><span class="p">,</span> <span class="n">produces</span> <span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+    <span class="n">ResponseEntity</span><span class="o">&lt;</span><span class="n">Mono</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span> <span class="nf">getmono</span><span class="p">(</span> <span class="p">);</span>
+    <span class="nd">@GetMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/qak/getfluxcold&quot;</span><span class="p">,</span> <span class="n">produces</span> <span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+    <span class="kd">public</span> <span class="n">Flux</span><span class="o">&lt;</span> <span class="n">Integer</span> <span class="o">&gt;</span> <span class="n">getfluxcold</span><span class="p">(</span> <span class="p">);</span>
+    <span class="nd">@GetMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/qak/startfluxhot&quot;</span><span class="p">,</span> <span class="n">produces</span> <span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+    <span class="kd">public</span> <span class="n">Flux</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">startfluxhot</span><span class="p">();</span>
+    <span class="nd">@PostMapping</span><span class="p">(</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;/qak/subscribehot&quot;</span><span class="p">,</span> <span class="n">produces</span> <span class="o">=</span><span class="s">&quot;application/json&quot;</span> <span class="p">)</span>
+    <span class="kd">public</span> <span class="n">Flux</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span>  <span class="nf">subscribehot</span><span class="p">(</span>  <span class="nd">@RequestBody</span> <span class="n">String</span> <span class="n">cmd</span> <span class="p">);</span>
+    <span class="nd">@PostMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/qak/noblockcommand&quot;</span><span class="p">,</span> <span class="n">produces</span> <span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+    <span class="kd">public</span>  <span class="n">Flux</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">noblockcommand</span><span class="p">(</span> <span class="nd">@RequestBody</span> <span class="n">String</span> <span class="n">cmd</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="stream-vs-flux">
+<h3>Stream vs Flux<a class="headerlink" href="#stream-vs-flux" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Stream is single use, vs. you can subscribe multiple times to Flux</p></li>
+<li><p>Stream is pull based (consuming one element calls for the next one) vs.
+Flux has an hybrid push/pull model where the publisher can push elements but still
+has to respect backpressure signaled by the consumer</p></li>
+<li><p>Stream are synchronous sequences vs. Flux can represent asynchronous sequences</p></li>
+</ul>
+</section>
+<section id="m2mcontroller-realizzazione-parte-asincrona">
+<h3>M2MController - realizzazione parte asincrona<a class="headerlink" href="#m2mcontroller-realizzazione-parte-asincrona" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="dettagli-di-costruzione">
+<h2>Dettagli di costruzione<a class="headerlink" href="#dettagli-di-costruzione" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/QakFacadeWorkdir.png"><img alt="_images/QakFacadeWorkdir.png" class="align-center" src="_images/QakFacadeWorkdir.png" style="width: 50%;" /></a>
+<section id="qakfacade-start">
+<h3>QakFacade - start<a class="headerlink" href="#qakfacade-start" title="Permalink to this headline">¶</a></h3>
+<p>Usiamo <a class="reference external" href="https://start.spring.io/">https://start.spring.io/</a></p>
+<a class="reference internal image-reference" href="_images/QakRestInit.png"><img alt="_images/QakRestInit.png" class="align-center" src="_images/QakRestInit.png" style="width: 80%;" /></a>
+<p>Costruisco una Spring REST app che crea l’applicazione e fornisce anche un HIControl</p>
+</section>
+<section id="qakfacade-build-gradle">
+<h3>QakFacade - build.gradle<a class="headerlink" href="#qakfacade-build-gradle" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">repositories</span> <span class="p">{</span>
+    <span class="n">mavenCentral</span><span class="p">()</span>
+    <span class="n">flatDir</span> <span class="p">{</span>
+    <span class="n">dirs</span> <span class="s1">&#39;C:/Didattica2021/privato/userxyz-/QakRest/unibolibs&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">dependencies</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="o">//</span><span class="n">CUSTOM</span>
+    <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;uniboInterfaces&#39;</span>
+    <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;2p301&#39;</span>
+    <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;unibo.qakactor22-3.2&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="qakfacade-application-properties">
+<h3>QakFacade - application.properties<a class="headerlink" href="#qakfacade-application-properties" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">server</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="mi">8085</span>
+<span class="n">spring</span><span class="o">.</span><span class="n">mvc</span><span class="o">.</span><span class="n">pathmatch</span><span class="o">.</span><span class="n">matching</span><span class="o">-</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">ANT_PATH_MATCHER</span>
+<span class="n">management</span><span class="o">.</span><span class="n">endpoints</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">exposure</span><span class="o">.</span><span class="n">include</span><span class="o">=*</span>
+</pre></div>
+</div>
+</section>
+<section id="qakfacade-project">
+<h3>QakFacade - project<a class="headerlink" href="#qakfacade-project" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">)</span> <span class="n">interface</span>  <span class="n">QakApi</span>
+<span class="mi">2</span><span class="p">)</span> <span class="n">QakSystem</span> <span class="n">implements</span> <span class="n">QakApi</span>  <span class="p">(</span><span class="n">busimess</span> <span class="n">logic</span> <span class="n">of</span> <span class="n">the</span> <span class="n">Facade</span><span class="p">)</span>
+<span class="mi">3</span><span class="p">)</span> <span class="n">interface</span> <span class="n">QakService</span> <span class="n">e</span>  <span class="n">QakHIService</span>
+<span class="mi">4</span><span class="p">)</span> <span class="n">M2MController</span> <span class="n">implements</span> <span class="n">QakService</span>
+<span class="mi">5</span><span class="p">)</span> <span class="n">HIController</span> <span class="n">implements</span> <span class="n">QakHIService</span>
+</pre></div>
+</div>
+</section>
+<section id="qakfacade-usage">
+<h3>QakFacade - usage<a class="headerlink" href="#qakfacade-usage" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8085</span><span class="o">/</span><span class="n">swagger</span><span class="o">-</span><span class="n">ui</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">netty</span><span class="o">.</span><span class="n">DEBUG</span><span class="o">=</span><span class="n">OFF</span>
+
+<span class="n">log4j</span><span class="o">.</span><span class="n">rootLogger</span><span class="o">=</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">OFF</span>    <span class="n">log4j</span><span class="o">.</span><span class="n">properties</span>
+</pre></div>
+</div>
+</section>
+<section id="logback-xml">
+<h3>Logback.xml<a class="headerlink" href="#logback-xml" title="Permalink to this headline">¶</a></h3>
+<p>Si veda: <a class="reference external" href="https://www.baeldung.com/logback">https://www.baeldung.com/logback</a>.</p>
+<p>SLF4J fornisce un’API standardizzata che in un modo o nell’altro è implementata dalla maggior parte di questi framework.
+Ciò  consente di modificare il framework di registrazione senza modificare il codice.
+Hai solo bisogno di cambiare la dipendenza in un framework diverso che implementa le interfacce SLF4J.</p>
+<p>Apache Log4j è un framework di logging  molto vecchio ed è stato il più popolare per diversi anni.
+Ha introdotto concetti di base, come i livelli di log gerarchici e i logger,
+che sono ancora utilizzati dai moderni framework di registrazione.</p>
+<p>Il team di sviluppo ha annunciato la fine del ciclo di vita di Log4j nel 2015.
+Sebbene molti progetti legacy lo utilizzino ancora, si deve preferire un framework più recente,
+come Logback.</p>
+<p>Logback è stato scritto dallo stesso sviluppatore che ha implementato Log4j con l’obiettivo di diventarne il successore.
+Segue gli stessi concetti di Log4j ma è stato riscritto per migliorare le prestazioni,
+supportare SLF4J in modo nativo e per implementare molti altri miglioramenti come opzioni
+di filtro avanzate e ricaricamento automatico delle configurazioni di registrazione.</p>
+<p>Ogni starter, come il spring-boot-starter-web, dipende da spring-boot-starter-logging,
+che già richiama spring-jcl.</p>
+<p>Quando un file nel percorso di classe ha uno dei seguenti nomi, Spring Boot lo caricherà automaticamente
+sulla configurazione predefinita (Spring consiglia di utilizzare la variante -spring):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logback</span><span class="o">-</span><span class="n">spring</span><span class="o">.</span><span class="n">xml</span>
+<span class="n">logback</span><span class="o">.</span><span class="n">xml</span>
+<span class="n">logback</span><span class="o">-</span><span class="n">spring</span><span class="o">.</span><span class="n">groovy</span>
+<span class="n">logback</span><span class="o">.</span><span class="n">groovy</span>
+</pre></div>
+</div>
+<p>&lt;/configuration&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">msg</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">dispatch</span><span class="p">,</span><span class="n">gui</span><span class="p">,</span><span class="n">alarm</span><span class="p">,</span><span class="n">on</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">msg</span><span class="p">(</span><span class="n">activate</span><span class="p">,</span><span class="n">dispatch</span><span class="p">,</span><span class="n">gui</span><span class="p">,</span><span class="n">sonarsimul</span><span class="p">,</span><span class="n">on</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">msg</span><span class="p">(</span><span class="n">ledstate</span><span class="p">,</span><span class="n">request</span><span class="p">,</span><span class="n">gui</span><span class="p">,</span><span class="n">led</span><span class="p">,</span><span class="n">ledstate</span><span class="p">(</span><span class="n">ok</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">msg</span><span class="p">(</span><span class="n">sonardata</span><span class="p">,</span><span class="n">event</span><span class="p">,</span><span class="n">gui</span><span class="p">,</span><span class="n">none</span><span class="p">,</span><span class="n">sonardata</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="n">C</span><span class="p">:</span>\<span class="n">Didattica2021</span>\<span class="n">privato</span>\<span class="n">userxyz</span><span class="o">-</span>\<span class="n">QakRestAppl</span>\<span class="n">build</span>\<span class="n">libs</span>\<span class="n">unibo</span><span class="o">.</span><span class="n">qakrestapplsonar</span><span class="o">-</span><span class="mf">1.0</span><span class="o">.</span><span class="n">jar</span> <span class="o">&amp;</span>
+<span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="n">C</span><span class="p">:</span>\<span class="n">Didattica2021</span>\<span class="n">privato</span>\<span class="n">userxyz</span><span class="o">-</span>\<span class="n">QakRestAppl</span>\<span class="n">build</span>\<span class="n">libs</span>\<span class="n">unibo</span><span class="o">.</span><span class="n">qakrestapplledalarm</span><span class="o">-</span><span class="mf">1.0</span><span class="o">.</span><span class="n">jar</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="about-docker">
+<h2>About Docker<a class="headerlink" href="#about-docker" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>gradlew distTar</p></li>
+<li><p>docker build -t qakfacade .</p></li>
+<li><p>docker run -it –rm –name qakRestFacade -p8195:8095  –privileged qakfacade  /bin/bash</p></li>
+<li><p>docker cp basicrobotConfig.json xxxcontainerxxx:/QakRestFacade-1.0/bin/basicrobotConfig.json (localhost)</p></li>
+</ol>
+</section>
+<section id="docker-compose">
+<h2>Docker compose<a class="headerlink" href="#docker-compose" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>docker-compose -f facadebasicrobot.yaml  up</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONTAINER</span> <span class="n">ID</span>   <span class="n">IMAGE</span>             <span class="o">..............</span>
+
+<span class="n">xyz</span>            <span class="n">qakfacade</span>                           <span class="o">.......</span>
+<span class="n">uvw</span>            <span class="n">natbodocker</span><span class="o">/</span><span class="n">virtualrobotdisi</span><span class="p">:</span><span class="mf">2.0</span>    <span class="o">.........</span>
+
+
+<span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">xyz</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">fefb15044905</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">sh</span>
+
+<span class="n">cat</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">hosts</span>
+    <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>       <span class="n">localhost</span>
+    <span class="p">::</span><span class="mi">1</span>     <span class="n">localhost</span> <span class="n">ip6</span><span class="o">-</span><span class="n">localhost</span> <span class="n">ip6</span><span class="o">-</span><span class="n">loopback</span>
+    <span class="n">fe00</span><span class="p">::</span><span class="mi">0</span> <span class="n">ip6</span><span class="o">-</span><span class="n">localnet</span>
+    <span class="n">ff00</span><span class="p">::</span><span class="mi">0</span> <span class="n">ip6</span><span class="o">-</span><span class="n">mcastprefix</span>
+    <span class="n">ff02</span><span class="p">::</span><span class="mi">1</span> <span class="n">ip6</span><span class="o">-</span><span class="n">allnodes</span>
+    <span class="n">ff02</span><span class="p">::</span><span class="mi">2</span> <span class="n">ip6</span><span class="o">-</span><span class="n">allrouters</span>
+    <span class="mf">192.168</span><span class="o">.</span><span class="mf">48.3</span>    <span class="n">fefb15044905</span>
+
+<span class="n">docker</span> <span class="n">stats</span>
+<span class="n">CONTAINER</span> <span class="n">ID</span>   <span class="n">NAME</span>                      <span class="n">CPU</span> <span class="o">%</span>     <span class="n">MEM</span> <span class="n">USAGE</span> <span class="o">/</span> <span class="n">LIMIT</span>     <span class="n">MEM</span> <span class="o">%</span>     <span class="n">NET</span> <span class="n">I</span><span class="o">/</span><span class="n">O</span>           <span class="n">BLOCK</span> <span class="n">I</span><span class="o">/</span><span class="n">O</span>   <span class="n">PIDS</span>
+<span class="n">xyz</span>            <span class="n">qakrestfacade_facade1_1</span>   <span class="mf">0.17</span><span class="o">%</span>     <span class="mf">258.3</span><span class="n">MiB</span> <span class="o">/</span> <span class="mf">24.86</span><span class="n">GiB</span>   <span class="mf">1.01</span><span class="o">%</span>     <span class="mf">19.3</span><span class="n">kB</span> <span class="o">/</span> <span class="mf">75.4</span><span class="n">kB</span>   <span class="mi">0</span><span class="n">B</span> <span class="o">/</span> <span class="mi">0</span><span class="n">B</span>     <span class="mi">69</span>
+<span class="n">uvw</span>            <span class="n">qakrestfacade_wenv_1</span>      <span class="mf">0.00</span><span class="o">%</span>     <span class="mf">16.17</span><span class="n">MiB</span> <span class="o">/</span> <span class="mf">24.86</span><span class="n">GiB</span>   <span class="mf">0.06</span><span class="o">%</span>     <span class="mf">10.2</span><span class="n">kB</span> <span class="o">/</span> <span class="mf">5.26</span><span class="n">kB</span>   <span class="mi">0</span><span class="n">B</span> <span class="o">/</span> <span class="mi">0</span><span class="n">B</span>     <span class="mi">11</span>
+
+<span class="n">docker</span> <span class="n">system</span> <span class="n">df</span>
+<span class="n">TYPE</span>            <span class="n">TOTAL</span>     <span class="n">ACTIVE</span>    <span class="n">SIZE</span>      <span class="n">RECLAIMABLE</span>
+<span class="n">Images</span>          <span class="mi">32</span>        <span class="mi">2</span>         <span class="mf">4.54</span><span class="n">GB</span>    <span class="mf">4.252</span><span class="n">GB</span> <span class="p">(</span><span class="mi">93</span><span class="o">%</span><span class="p">)</span>
+<span class="n">Containers</span>      <span class="mi">2</span>         <span class="mi">2</span>         <span class="mf">34.15</span><span class="n">kB</span>   <span class="mi">0</span><span class="n">B</span> <span class="p">(</span><span class="mi">0</span><span class="o">%</span><span class="p">)</span><span class="n">km</span>
+<span class="n">Local</span> <span class="n">Volumes</span>   <span class="mi">16</span>        <span class="mi">0</span>         <span class="mf">67.11</span><span class="n">MB</span>   <span class="mf">67.11</span><span class="n">MB</span> <span class="p">(</span><span class="mi">100</span><span class="o">%</span><span class="p">)</span>
+<span class="n">Build</span> <span class="n">Cache</span>     <span class="mi">201</span>       <span class="mi">0</span>         <span class="mf">1.363</span><span class="n">GB</span>   <span class="mf">1.363</span><span class="n">GB</span>
+
+<span class="n">docker</span> <span class="n">system</span> <span class="n">prune</span> <span class="o">-</span><span class="n">af</span>
+
+<span class="n">TYPE</span>            <span class="n">TOTAL</span>     <span class="n">ACTIVE</span>    <span class="n">SIZE</span>      <span class="n">RECLAIMABLE</span>
+<span class="n">Images</span>          <span class="mi">2</span>         <span class="mi">2</span>         <span class="mi">759</span><span class="n">MB</span>     <span class="mi">0</span><span class="n">B</span> <span class="p">(</span><span class="mi">0</span><span class="o">%</span><span class="p">)</span>
+<span class="n">Containers</span>      <span class="mi">2</span>         <span class="mi">2</span>         <span class="mf">34.17</span><span class="n">kB</span>   <span class="mi">0</span><span class="n">B</span> <span class="p">(</span><span class="mi">0</span><span class="o">%</span><span class="p">)</span>
+<span class="n">Local</span> <span class="n">Volumes</span>   <span class="mi">16</span>        <span class="mi">0</span>         <span class="mf">67.11</span><span class="n">MB</span>   <span class="mf">67.11</span><span class="n">MB</span> <span class="p">(</span><span class="mi">100</span><span class="o">%</span><span class="p">)</span>
+<span class="n">Build</span> <span class="n">Cache</span>     <span class="mi">0</span>         <span class="mi">0</span>         <span class="mi">0</span><span class="n">B</span>        <span class="mi">0</span><span class="n">B</span>
+
+
+<span class="n">docker</span> <span class="n">cp</span> <span class="n">basicrobotConfig</span><span class="o">.</span><span class="n">json</span> <span class="n">xyz</span><span class="p">:</span><span class="o">/</span><span class="n">QakRestFacade</span><span class="o">-</span><span class="mf">1.0</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">basicrobotConfig</span><span class="o">.</span><span class="n">json</span>
+<span class="n">docker</span> <span class="n">cp</span> <span class="n">xyz</span><span class="p">:</span><span class="o">/</span><span class="n">QakRestFacade</span><span class="o">-</span><span class="mf">1.0</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">basicrobotConfig</span><span class="o">.</span><span class="n">json</span> <span class="o">&lt;</span><span class="n">target</span> <span class="n">on</span> <span class="n">host</span><span class="o">&gt;</span>
+
+
+<span class="n">docker</span> <span class="n">inspect</span> <span class="o">--</span><span class="nb">format</span> <span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span>  <span class="n">xyz</span>  <span class="p">(</span><span class="n">niente</span><span class="p">)</span>
+<span class="n">docker</span> <span class="n">inspect</span> <span class="o">-</span><span class="n">f</span> <span class="s2">&quot;{{.HostConfig.Links}}&quot;</span>  <span class="n">xyz</span>                 <span class="p">([])</span>
+<span class="n">docker</span> <span class="n">inspect</span> <span class="o">-</span><span class="n">f</span> <span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span>  <span class="n">xyz</span>        <span class="p">(</span><span class="n">niente</span><span class="p">)</span><span class="n">l</span>
+
+<span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">ti</span>  <span class="n">xyz</span> <span class="n">ip</span> <span class="n">add</span> <span class="o">|</span> <span class="n">grep</span> <span class="k">global</span>
+
+<span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">system</span> <span class="n">core</span><span class="o">.</span><span class="n">longpaths</span> <span class="n">true</span>
+
+<span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">PacktPublishing</span><span class="o">/</span><span class="n">Hands</span><span class="o">-</span><span class="n">On</span><span class="o">-</span><span class="n">Microservices</span><span class="o">-</span><span class="k">with</span><span class="o">-</span><span class="n">Spring</span><span class="o">-</span><span class="n">Boot</span><span class="o">-</span><span class="ow">and</span><span class="o">-</span><span class="n">Spring</span><span class="o">-</span><span class="n">Cloud</span>
+
+
+<span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">static</span><span class="o">.</span><span class="n">packt</span><span class="o">-</span><span class="n">cdn</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">downloads</span><span class="o">/</span><span class="mi">9781789613476</span><span class="n">_ColorImages</span><span class="o">.</span><span class="n">pdf</span>
+</pre></div>
+</div>
+<p>From <a class="reference external" href="https://medium.com/&#64;gayanper/sdkman-on-windows-661976238042">https://medium.com/&#64;gayanper/sdkman-on-windows-661976238042</a>
+Uso Git shell</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Java 17 (major version 61), Java 11 (55), Java 8 (52).
+
+git bash (come amministratore)
+ln -s /c/Program\ Files/7-Zip/7z.exe /c/Program\ Files/Git/mingw64/bin/zip.exe
+export SDKMAN_DIR=&quot;/c/DidatticaTools/sdkman&quot; &amp;&amp; curl -s &quot;https://get.sdkman.io&quot; | bash
+restart the Git Bash shell
+sdk version   (SDKMAN 5.16.0)
+sdk list java
+
+echo $JAVA_HOME
+C:\Program Files\Java\jdk-17.0.5
+---------------------------
+sdk install springboot
+spring --version  (Spring CLI v3.0.0)
+</pre></div>
+</div>
+<p><a class="reference external" href="https://docs.spring.io/spring-boot/docs/current/reference/html/cli.html">https://docs.spring.io/spring-boot/docs/current/reference/html/cli.html</a></p>
+<p>Il comando init consente di creare un nuovo progetto utilizzando start.spring.io senza uscire dalla shell.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spring</span> <span class="n">init</span> <span class="o">--</span><span class="nb">list</span>
+
+<span class="n">Parameters</span>
+<span class="o">+-------------+------------------------------------------+------------------------------+</span>
+<span class="o">|</span> <span class="n">Id</span>          <span class="o">|</span> <span class="n">Description</span>                              <span class="o">|</span> <span class="n">Default</span> <span class="n">value</span>                <span class="o">|</span>
+<span class="o">+-------------+------------------------------------------+------------------------------+</span>
+<span class="o">|</span> <span class="n">artifactId</span>  <span class="o">|</span> <span class="n">project</span> <span class="n">coordinates</span> <span class="p">(</span><span class="n">infer</span> <span class="n">archive</span> <span class="n">name</span><span class="p">)</span> <span class="o">|</span> <span class="n">demo</span>                         <span class="o">|</span>
+<span class="o">|</span> <span class="n">bootVersion</span> <span class="o">|</span> <span class="n">spring</span> <span class="n">boot</span> <span class="n">version</span>                      <span class="o">|</span> <span class="mf">3.0</span><span class="o">.</span><span class="mi">0</span>                        <span class="o">|</span>
+<span class="o">|</span> <span class="n">description</span> <span class="o">|</span> <span class="n">project</span> <span class="n">description</span>                      <span class="o">|</span> <span class="n">Demo</span> <span class="n">project</span> <span class="k">for</span> <span class="n">Spring</span> <span class="n">Boot</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">groupId</span>     <span class="o">|</span> <span class="n">project</span> <span class="n">coordinates</span>                      <span class="o">|</span> <span class="n">com</span><span class="o">.</span><span class="n">example</span>                  <span class="o">|</span>
+<span class="o">|</span> <span class="n">javaVersion</span> <span class="o">|</span> <span class="n">language</span> <span class="n">level</span>                           <span class="o">|</span> <span class="mi">17</span>                           <span class="o">|</span>
+<span class="o">|</span> <span class="n">language</span>    <span class="o">|</span> <span class="n">programming</span> <span class="n">language</span>                     <span class="o">|</span> <span class="n">java</span>                         <span class="o">|</span>
+<span class="o">|</span> <span class="n">name</span>        <span class="o">|</span> <span class="n">project</span> <span class="n">name</span> <span class="p">(</span><span class="n">infer</span> <span class="n">application</span> <span class="n">name</span><span class="p">)</span>    <span class="o">|</span> <span class="n">demo</span>                         <span class="o">|</span>
+<span class="o">|</span> <span class="n">packageName</span> <span class="o">|</span> <span class="n">root</span> <span class="n">package</span>                             <span class="o">|</span> <span class="n">com</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">demo</span>             <span class="o">|</span>
+<span class="o">|</span> <span class="n">packaging</span>   <span class="o">|</span> <span class="n">project</span> <span class="n">packaging</span>                        <span class="o">|</span> <span class="n">jar</span>                          <span class="o">|</span>
+<span class="o">|</span> <span class="nb">type</span>        <span class="o">|</span> <span class="n">project</span> <span class="nb">type</span>                             <span class="o">|</span> <span class="n">gradle</span><span class="o">-</span><span class="n">project</span>               <span class="o">|</span>
+<span class="o">|</span> <span class="n">version</span>     <span class="o">|</span> <span class="n">project</span> <span class="n">version</span>                          <span class="o">|</span> <span class="mf">0.0</span><span class="o">.</span><span class="mi">1</span><span class="o">-</span><span class="n">SNAPSHOT</span>               <span class="o">|</span>
+<span class="o">+-------------+------------------------------------------+------------------------------+</span>
+
+
+<span class="n">mkdir</span> <span class="n">qakvrobotsys</span>
+<span class="n">cd</span> <span class="n">qakvrobotsys</span>
+
+
+<span class="n">spring</span> <span class="n">init</span> \
+<span class="o">--</span><span class="n">boot</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">2.7</span><span class="o">.</span><span class="mf">5.</span><span class="n">RELEASE</span> \
+<span class="o">--</span><span class="nb">type</span><span class="o">=</span><span class="n">gradle</span><span class="o">-</span><span class="n">project</span> \
+<span class="o">--</span><span class="n">javaVersion</span><span class="o">=</span><span class="mf">1.8</span> \
+<span class="o">--</span><span class="n">packaging</span><span class="o">=</span><span class="n">jar</span> \
+<span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">qakvrobot</span><span class="o">-</span><span class="n">composite</span><span class="o">-</span><span class="n">service</span> \
+<span class="o">--</span><span class="n">package</span><span class="o">-</span><span class="n">name</span><span class="o">=</span><span class="n">unibo</span><span class="o">.</span><span class="n">qakvrobot</span><span class="o">-</span><span class="n">composite</span> \
+<span class="o">--</span><span class="n">groupId</span><span class="o">=</span><span class="n">unibo</span> \
+<span class="o">--</span><span class="n">dependencies</span><span class="o">=</span><span class="n">actuator</span><span class="p">,</span><span class="n">webflux</span> \
+<span class="o">--</span><span class="n">version</span><span class="o">=</span><span class="mf">1.0</span> \
+<span class="n">qakvrobot</span><span class="o">-</span><span class="n">composite</span><span class="o">-</span><span class="n">service</span>
+</pre></div>
+</div>
+</section>
+<section id="spring-profiles">
+<h2>SPRING profiles<a class="headerlink" href="#spring-profiles" title="Permalink to this headline">¶</a></h2>
+<p>From: <a class="reference external" href="https://www.baeldung.com/spring-profiles">https://www.baeldung.com/spring-profiles</a></p>
+<p>Possiamo attivare diversi profili SPRING in diversi ambienti (dev , test e prod)
+per eseguire il bootstrap solo dei bean di cui abbiamo bisogno.</p>
+<p>Con l’annotazione &#64;Profile — stiamo mappando un bean a un particolare profilo,
+ad esempio un bean che dovrebbe essere attivo solo durante lo sviluppo ma non distribuito in produzione.</p>
+<p>Qualsiasi bean che non specifica un profilo appartiene al profilo predefinito  .</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">QakFacade</a><ul>
+<li><a class="reference internal" href="#qakfacade-cosa-fa">QakFacade: cosa fa</a><ul>
+<li><a class="reference internal" href="#qakfacadeapi">QakFacadeApi</a><ul>
+<li><a class="reference internal" href="#qaksystemfacade">QakSystemFacade</a></li>
+<li><a class="reference internal" href="#qaksystemfacade-invio-di-messaggi">QakSystemFacade - Invio di messaggi</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qakfacade-gui">QakFacade: GUI</a><ul>
+<li><a class="reference internal" href="#qaksystemgui-html">qakSystemGui.html</a></li>
+<li><a class="reference internal" href="#websockets">websockets</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qakfacade-esempio-di-uso">QakFacade: esempio di uso</a></li>
+<li><a class="reference internal" href="#qakfacade-hicontroller">QakFacade HIController</a><ul>
+<li><a class="reference internal" href="#l-interfaccia-qakhiservice">L’interfaccia QakHIService</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#hicontroller-realizzazione">HIController - realizzazione</a><ul>
+<li><a class="reference internal" href="#hicontroller-updateviewmodel">HIController updateViewmodel</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qakfacade-m2mcontroller">QakFacade M2MController</a><ul>
+<li><a class="reference internal" href="#interfaccia-qakm2mservicesynch">Interfaccia QakM2MServiceSynch</a></li>
+<li><a class="reference internal" href="#m2mcontroller-realizzazione-parte-sincrona">M2MController - realizzazione parte sincrona</a><ul>
+<li><a class="reference internal" href="#uso-di-openapi-ex-swagger">Uso di OpenApi (ex Swagger)</a></li>
+<li><a class="reference internal" href="#esempi-di-uso-con-curl">Esempi di uso con curl</a></li>
+<li><a class="reference internal" href="#uso-di-hal">Uso di HAL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qakfacade-interazioni-asincrone">QakFacade Interazioni asincrone</a><ul>
+<li><a class="reference internal" href="#webclient">WebClient</a></li>
+<li><a class="reference internal" href="#interfaccia-qakm2mserviceasynch">Interfaccia QakM2MServiceAsynch</a></li>
+<li><a class="reference internal" href="#stream-vs-flux">Stream vs Flux</a></li>
+<li><a class="reference internal" href="#m2mcontroller-realizzazione-parte-asincrona">M2MController - realizzazione parte asincrona</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dettagli-di-costruzione">Dettagli di costruzione</a><ul>
+<li><a class="reference internal" href="#qakfacade-start">QakFacade - start</a></li>
+<li><a class="reference internal" href="#qakfacade-build-gradle">QakFacade - build.gradle</a></li>
+<li><a class="reference internal" href="#qakfacade-application-properties">QakFacade - application.properties</a></li>
+<li><a class="reference internal" href="#qakfacade-project">QakFacade - project</a></li>
+<li><a class="reference internal" href="#qakfacade-usage">QakFacade - usage</a></li>
+<li><a class="reference internal" href="#logback-xml">Logback.xml</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#about-docker">About Docker</a></li>
+<li><a class="reference internal" href="#docker-compose">Docker compose</a></li>
+<li><a class="reference internal" href="#spring-profiles">SPRING profiles</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/QakFacade.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">QakFacade</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

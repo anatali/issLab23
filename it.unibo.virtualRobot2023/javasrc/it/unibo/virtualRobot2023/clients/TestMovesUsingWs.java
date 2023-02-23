@@ -114,7 +114,7 @@ BUSINESS LOGIC
 */
     public void doForward() {
 		String forwardcmd   = "{\"robotmove\":\"moveForward\",\"time\": \"1000\"}";
-		CommUtils.waitTheUser("PUT ROBOT in HOME  and hit (forward 1000)");
+		CommUtils.waitTheUser("doForward (WS): PUT ROBOT in HOME  and hit (forward 1000)");
 		startTime = System.currentTimeMillis();
 		callWS(  forwardcmd  );
 		CommUtils.waitTheUser("Hit to terminate doForward");
@@ -122,7 +122,7 @@ BUSINESS LOGIC
 	}
     
     public void  doCollision() {
-    	CommUtils.waitTheUser("PUT ROBOT near a wall and hit (forward 3000)");
+    	CommUtils.waitTheUser("doCollision (WS): PUT ROBOT near a wall and hit (forward 3000)");
         //halt(); //To remove pending notallowed
         String forwardcmd   = "{\"robotmove\":\"moveForward\"  , \"time\": \"3000\"}";
         startTime = System.currentTimeMillis();
@@ -131,14 +131,26 @@ BUSINESS LOGIC
         //Per vedere il msg di stato collision e endmove
     }
 
+    public void doNotAllowed() {
+        CommUtils.waitTheUser("doNotAllowed (WS): PUT ROBOT in HOME and hit (forward 1200 and turnLeft after 400)");
+        String forwardcmd   = "{\"robotmove\":\"moveForward\", \"time\":\"1200\"}";
+        startTime = System.currentTimeMillis();
+        callWS(  forwardcmd  );
+        CommUtils.outblue("doNotAllowed (WS): moveForward msg sent"  );
+        CommUtils.delay(400);
+        CommUtils.outblue("doNotAllowed (WS): Now call turnLeft"  );
+        callWS(  turnleftcmd  );
+        CommUtils.waitTheUser("doHalt (WS): Hit to terminate doNotAllowed");
+    }
+
     public void doHalt() {
-        CommUtils.waitTheUser("PUT ROBOT in HOME and hit (forward 3000 and alarm after 1000)"); 
+        CommUtils.waitTheUser("doHalt (WS): PUT ROBOT in HOME and hit (forward 3000 and alarm after 1000)");
         String forwardcmd   = "{\"robotmove\":\"moveForward\", \"time\":\"3000\"}";
         callWS(  forwardcmd  );
-        CommUtils.outblue("moveForward msg sent"  );
+        CommUtils.outblue("doHalt (WS): moveForward msg sent"  );
         CommUtils.delay(1000);
         callWS(  haltcmd  );
-        CommUtils.waitTheUser("Hit to terminate doHalt");
+        CommUtils.waitTheUser("doHalt (WS): Hit to terminate doHalt");
     }
 
     public void doBasicMoves() {
@@ -173,9 +185,10 @@ MAIN
         try{
     		CommUtils.aboutThreads("Before start - ");
             TestMovesUsingWs appl = new TestMovesUsingWs("localhost:8091");
-            //appl.doForward();
+            appl.doForward();
             appl.doCollision();
-            //appl.doHalt();
+            appl.doNotAllowed();
+            appl.doHalt();
        		CommUtils.aboutThreads("At end - ");
         } catch( Exception ex ) {
             CommUtils.outred("TestMovesUsingWs | main ERROR: " + ex.getMessage());

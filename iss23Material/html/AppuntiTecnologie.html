@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Appunti su tecnologie &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Annotazioni" href="Annotazioni.html" />
+    <link rel="prev" title="Applicazione1" href="Applicazione1.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Annotazioni.html" title="Annotazioni"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Applicazione1.html" title="Applicazione1"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appunti su tecnologie</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="appunti-su-tecnologie">
+<h1>Appunti su tecnologie<a class="headerlink" href="#appunti-su-tecnologie" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#annotazioni-java"><span class="std std-ref">Annotazioni Java</span></a></p></li>
+<li><p><a class="reference internal" href="#docker"><span class="std std-ref">Docker</span></a></p></li>
+<li><p><a class="reference internal" href="#gradle"><span class="std std-ref">Gradle</span></a></p></li>
+<li><p><a class="reference internal" href="#id1"><span class="std std-ref">jQuery</span></a></p></li>
+<li><p><a class="reference internal" href="#mps"><span class="std std-ref">MPS</span></a></p></li>
+<li><p><a class="reference internal" href="#id2"><span class="std std-ref">WebSocket</span></a></p></li>
+</ul>
+<section id="annotazioni-java">
+<h2>Annotazioni Java<a class="headerlink" href="#annotazioni-java" title="Permalink to this headline">¶</a></h2>
+<p>Le annotazioni sono una forma di metadati che forniscono informazioni su un programma senza
+influenzarne direttamente la semantica.</p>
+<p>Si veda: <a class="reference internal" href="Annotazioni.html#annotazioni"><span class="std std-ref">Annotazioni</span></a></p>
+<p>Usato in:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="Applicazione1-WS.html#application1wsannot"><span class="std std-ref">Application1WsAnnot</span></a> di <a class="reference internal" href="Applicazione1-WS.html#applicazione1-ws"><span class="std std-ref">Applicazione1-WS</span></a></p></li>
+</ul>
+</section>
+<section id="docker">
+<h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
+<p>Docker è un software che offre una serie di prodotti platform-as-a-service per lo sviluppo e la distribuzione di
+applicazioni impacchettando il software in container.</p>
+<p>Il contenitore diventa l’unità per la distribuzione e il test delle applicazioni.
+Sono ottimi per flussi di lavoro ad integrazione consegna continua (<strong>CI/CD</strong>) .</p>
+<p>Si veda: <a class="reference external" href="./_static/IntroDocker23.html">Introduction to Docker and DockerCompose</a></p>
+</section>
+<section id="gradle">
+<h2>Gradle<a class="headerlink" href="#gradle" title="Permalink to this headline">¶</a></h2>
+<p>Gradle è uno strumento open source per automatizzare la costruzione (build) del software.</p>
+<p>Gradle è ormai uno standard di fatto in questo settore ed è interessante non solo in quanto strumento,
+ma anche perchè applica i principi del Domain Driven Design (DDD) per modellare il suo proprio domain-building software.</p>
+<p>Si veda: <a class="reference external" href="../../../../GradleIntro/userdocs/Gradle.intro.html">GradleIntro</a></p>
+<p>Usato in:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="Primipassioperativi.html#creazione-progetto-con-gradle"><span class="std std-ref">Creazione progetto con Gradle</span></a>  in <a class="reference internal" href="Primipassioperativi.html#primi-passi-operativi"><span class="std std-ref">Primi passi operativi</span></a></p></li>
+</ul>
+</section>
+<section id="mps">
+<h2>MPS<a class="headerlink" href="#mps" title="Permalink to this headline">¶</a></h2>
+<p>Il <a href="#id3"><span class="problematic" id="id4">`Meta Programming System`_</span></a> (<strong>MPS</strong>) di IntelliJ  offre un editor (si veda  <a href="#id5"><span class="problematic" id="id6">`Projectional editing`_</span></a>)
+che costituisce una <em>proiezione della sintassi astratta</em> (<strong>AST</strong>) di un meta-linguaggio per la definizione di
+<a class="reference internal" href="Principi.html#domain-specific-languages"><span class="std std-ref">Domain Specific Languages</span></a> (<strong>DSL</strong>).</p>
+<p>Si veda:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="Principi.html#sintassi-astratta"><span class="std std-ref">Sintassi astratta</span></a> in <a class="reference internal" href="Principi.html#principi"><span class="std std-ref">Principi</span></a></p></li>
+</ul>
+</section>
+<section id="id1">
+<h2>jQuery<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>jQuery permette la manipolazione di qualsiasi elemento HTML all’interno della pagina web stessa.</p></li>
+<li><p>jQuery serve a gestire qualsiasi evento all’interno della pagina web.</p></li>
+<li><p>jQuery dà la possibilità di gestire animazioni e invocazioni ad API in poche semplici righe.</p></li>
+</ul>
+<p>Quanto segue è una chiamata di funzione jQuery:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(...);
+</pre></div>
+</div>
+<p>Che è la “funzione jQuery”. Dunque <code class="docutils literal notranslate"><span class="pre">$</span></code> è una funzione e <code class="docutils literal notranslate"><span class="pre">$(...)</span></code> è una chiamata a quella funzione.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(function() { ... });
+</pre></div>
+</div>
+<p>è uno short-hand per</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(document).ready(function() { ... });
+</pre></div>
+</div>
+<section id="esempi-jquery">
+<h3>Esempi jQuery<a class="headerlink" href="#esempi-jquery" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">$(selettore).funzione();</span></code></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">$(“p”).html(“ciao”)</span></code>. Agisce sul tag HTML “p” scrivendo al suo interno la parola “ciao”.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">$(“#bottone”).html(“ciao”);</span></code>. Scrive  “ciao” all’interno dell’elemento HTML che ha come ID “bottone”.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">$(“.azzurro”).html(“ciao”);</span></code>. Agisce sul tag HTML che ha come classe CSS “azzurro”.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">rosso</span><span class="p">{</span>
+    <span class="n">background</span><span class="o">-</span><span class="n">color</span><span class="p">:</span> <span class="n">red</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">.</span><span class="n">azzurro</span><span class="p">{</span>
+    <span class="n">background</span><span class="o">-</span><span class="n">color</span><span class="p">:</span> <span class="n">lightblue</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;div class=”rosso”&gt; Ciao &lt;/div&gt;
+$(“div”).removeClass(“rosso”);
+$(“div”).addClass(“azzurro”);
+</pre></div>
+</div>
+<p>Vogliamo eseguire una chiamata ad un’API il cui indirizzo è “<a class="reference external" href="https://www.informatico.it">https://www.informatico.it</a>”,
+voglia un parametro nominato “parametro1” e quando otteniamo una risposta,
+questa venga messo dentro un tag “p” che ha come id “paragrafo”.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$.ajax({
+    url: &quot;https://www.informatico.it&quot;,
+    data: {
+        parametro1: “valoreParametro”;
+    },
+    success: function( result ) {
+        $( &quot;#paragrafo&quot; ).html( result );
+    }
+});
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;button</span> <span class="pre">id=”bottone”&gt;Cliccami&lt;/button&gt;</span></code></p>
+<p>Per modificare il contenuto del bottone e sostituire la parola “Cliccami” con “Clicca qui”, in JavaScript
+avremmo dovuto scrivere:</p>
+<p><code class="docutils literal notranslate"><span class="pre">document.getElementById(“bottone”).innerHTML=”Clicca</span> <span class="pre">qui”</span></code></p>
+<p>Con jQuery invece:</p>
+<p><code class="docutils literal notranslate"><span class="pre">$(“#bottone”).html(“Clicca</span> <span class="pre">qui”)</span></code></p>
+</section>
+</section>
+<section id="id2">
+<h2>WebSocket<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://it.wikipedia.org/wiki/WebSocket">WebSocket</a> è un protocollo che consente a due o più computer di comunicare tra loro
+in modo full-duplex su una singola connessione TCP.
+È uno strato molto sottile su TCP che trasforma un flusso di byte in un flusso di messaggi
+(testo o binario).</p>
+<p>A differenza di HTTP, che è un protocollo a livello di applicazione, nel protocollo WebSocket
+non ci sono abbastanza informazioni in un messaggio in arrivo affinché
+un framework o un container sappia come instradarlo o elaborarlo.</p>
+<p>Per questo motivo il WebSocket RFC definisce l’uso di sottoprotocolli.
+Durante l’handshake, il client e il server possono utilizzare l’intestazione
+<em>Sec-WebSocket-Protocol</em> per <span class="blue">concordare un sottoprotocollo</span>, ovvero un protocollo
+a livello di applicazione superiore da utilizzare.
+L’uso di un sottoprotocollo non è richiesto, ma anche se non utilizzato, le applicazioni
+dovranno comunque scegliere un formato di messaggio che sia il client che il server
+possano comprendere.</p>
+<p>Nella sua forma più semplice,</p>
+<p><span class="remark">un WebSocket è solo un canale di comunicazione tra due applicazioni</span></p>
+<p>e non deve essere necessariamente coinvolto un browser.</p>
+<p>Tuttavia l’uso più comune di WebSocket è facilitare la comunicazione tra un un’applicazione
+server e un’applicazione basata su browser.
+Infatti, rispetto a HTTP RESTful, ha il vantaggio di realizzare comunicazioni  a
+bidirezionali e in tempo reale. Ciò consente al server di inviare informazione al client
+in qualsiasi momento, anziché costringere il client al polling.</p>
+<p>I WebSocket utilizzano le Socket nella loro implementazione basata su un protocollo standard
+che definisce un <em>handshake</em> di connessione e un <em>frame</em> di messaggio.</p>
+<p>Usate in:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="VirtualRobot23.html#testmovesusingws"><span class="std std-ref">TestMovesUsingWs</span></a> di <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Appunti su tecnologie</a><ul>
+<li><a class="reference internal" href="#annotazioni-java">Annotazioni Java</a></li>
+<li><a class="reference internal" href="#docker">Docker</a></li>
+<li><a class="reference internal" href="#gradle">Gradle</a></li>
+<li><a class="reference internal" href="#mps">MPS</a></li>
+<li><a class="reference internal" href="#id1">jQuery</a><ul>
+<li><a class="reference internal" href="#esempi-jquery">Esempi jQuery</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id2">WebSocket</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Applicazione1.html"
+                          title="previous chapter">Applicazione1</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="Annotazioni.html"
+                          title="next chapter">Annotazioni</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/AppuntiTecnologie.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Annotazioni.html" title="Annotazioni"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Applicazione1.html" title="Applicazione1"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appunti su tecnologie</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

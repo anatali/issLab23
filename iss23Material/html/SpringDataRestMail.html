@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>SpringDataRest mail &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SpringDataRest mail</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="springdatarest-mail">
+<h1>SpringDataRest mail<a class="headerlink" href="#springdatarest-mail" title="Permalink to this headline">¶</a></h1>
+<section id="requisito-springdatarest-mail">
+<h2>Requisito SpringDataRest mail<a class="headerlink" href="#requisito-springdatarest-mail" title="Permalink to this headline">¶</a></h2>
+<p>Inviare una mail a un destinatario precisato dal committente, quando un elemento viene aggiunto ai dati.</p>
+<section id="springdatarest-mail-user-story">
+<h3>SpringDataRest-Mail: user story<a class="headerlink" href="#springdatarest-mail-user-story" title="Permalink to this headline">¶</a></h3>
+<p>Come utente del servizio, mi aspetto che una mail venga inviata al destinatario specificato
+in un file di configurazione dell’applicazione:</p>
+<ul class="simple">
+<li><p>se effettuo un <cite>SpringDataRest: accesso a HI con curl</cite> - Creare dati (POST)</p></li>
+<li><p>se eseguio un programma che invoca (con successo) l’operazione <em>createPerson</em> di
+<span class="xref std std-ref">SpringDataRest - M2MController</span></p></li>
+</ul>
+</section>
+</section>
+<section id="springdatarest-mail-analisi">
+<h2>SpringDataRest-Mail: analisi<a class="headerlink" href="#springdatarest-mail-analisi" title="Permalink to this headline">¶</a></h2>
+<p>Dal punto di vista tecnologico, il problema implica l’utilizzo di un mail server e di una libreria Java
+di supporto al mailing; ad esempio:</p>
+<ul class="simple">
+<li><p>mail server: <span class="blue">gmail</span> (<em>smtp.gmail.com</em>) oppure il testing tool <span class="blue">mailtrap</span> (<em>smtp.mailtrap.io</em>)</p></li>
+<li><p>libreria Java: <em>javax.mail</em></p></li>
+</ul>
+<p>Dal punto di vista logico, si pone il seguente problema:</p>
+<p><span class="remark">Quale compoenente del sistema ha la responsabilità di iniviare la mail?</span></p>
+<ol class="arabic simple">
+<li><p>I controller <span class="xref std std-ref">SpringDataRest - M2MController</span> e <span class="xref std std-ref">SpringDataRest - HIController</span>.</p></li>
+<li><p>Il <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a>.</p></li>
+<li><p>Un nuovo componente che fa ‘polling’ su <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a>, invocandone il metodo <em>getLast</em>
+e invia una mail quando trova questa info cmodificata.</p></li>
+<li><p>Un nuovo componente, che capisce quando il <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a> ha terminato l’operazione <em>addPerson</em>.</p></li>
+</ol>
+<p>Notiamo subito che:</p>
+<ul class="simple">
+<li><p>Affidare il compito ai controller significa non includere questa parte nel ‘core’ della business logic.</p></li>
+<li><p>Introdurre un ente attivo che fa polling significa sprecare risorse e non avere sicurezza che
+venga inviata una mail ad ogni inserzione (si pensi al caso di una inserzione seguita da eliminazione
+e una frequenza di polling cui sfugge il cambiamento).</p></li>
+</ul>
+<p>Il punto essenziale è che la business logic venga riorganizzata in modo che una mail vemga inviata
+ogni volta che il <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a> ha terminato l’operazione <em>addPerson</em>.
+Questo comportamento  costituisce una estensione delle funzionalità del gestore logico dei dati,
+che può essere tecnicamente ottenuta in diversi modi:</p>
+<ol class="arabic simple">
+<li><p>definire una classe specializzazione di <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a>. Qui però va ricordato il principio di Occam.</p></li>
+<li><p>modificare il codice <em>addPerson</em> di <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a> in modo che realizzi l’invio della mail,
+avvaledosi di una utility di supporto</p></li>
+<li><p>impostare il <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a> come un <strong>oggetto osservabile</strong>, che aggiorna gli observer al termine
+dell’operazione  <em>addPerson</em>. Un observer che viene registrato presso il <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a>
+rappresenta il nuovo componente, che ‘capisce’ quando è il momento di inviare la mail.</p></li>
+</ol>
+<p>Il terzo tipo di riorganizzazione architetturale sembra più complesso ma è sicuramente più flssibile che
+non cablare nuovi possibili comportamenti ‘marginali’ nel codice del gestore.
+Si pensi ad esempio all’aggiunta di nuovi requisiti come:</p>
+<ul class="simple">
+<li><p>registare in un file di log il completamento con successo di ogni operazione;</p></li>
+<li><p>emettere un suono di allarme quando un elemento viene eliminato;</p></li>
+<li><p>accendere un led quando il <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a> è in esecuzione;</p></li>
+<li><p>utilizzare un protocollo <em>publish-subscribe</em> per inviare informazioni al mondo esterno
+o per aprire nuovi canali di richiesta;</p></li>
+<li><p>…</p></li>
+</ul>
+<p>Inoltre, in accordo al <span class="blue">principio di singola resposabilità</span>,
+l’invio della  mail è incapsulato nel codice dell’observer, liberando il <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a>
+da questo ulteriore compito.</p>
+<p>Per realizzare la nuova funzionalità conviene impostare un nuovo SPRINT.</p>
+</section>
+<section id="springdatarest-mail-sprint-1">
+<h2>SpringDataRest mail sprint 1<a class="headerlink" href="#springdatarest-mail-sprint-1" title="Permalink to this headline">¶</a></h2>
+<p>Aggiungiamo dunque in <em>build.gradle</em> la dipendenza a <em>javax.mail</em>:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">implementation</span> <span class="s1">&#39;com.sun.mail:javax.mail:1.5.5&#39;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>La logica per creare la sessione differisce in base al tipo di server SMTP;
+ad esempio, se il server SMTP non richiede alcuna autenticazione, possiamo
+creare l’oggetto Session con alcune semplici proprietà mentre se richiede
+l’autenticazione TLS o SSL, la logica da creare sarà diversa .</p>
+<p>Il protocollo <span class="blue">SSL</span> ed il suo successore <span class="blue">TLS</span> permettono una comunicazione sicura dal sorgente
+al destinatario (end-to-end) su reti TCP/IP offrendo autenticazione, integrità dei dati
+e cifratura operando al di sopra del livello di trasporto.</p>
+<section id="springdatarest-mail-progetto">
+<h3>SpringDataRest-Mail: progetto<a class="headerlink" href="#springdatarest-mail-progetto" title="Permalink to this headline">¶</a></h3>
+<p>Introduciamo la classe <em>EmailService</em> come utility per l’invio dei messaggi di mail
+capace di usare due diversi mail servers:</p>
+<ul class="simple">
+<li><p><span class="blue">gmail</span> (<em>smtp.gmail.com</em>) per inviare messaggi in modo reale</p></li>
+<li><p><span class="blue">mailtrap</span> (<em>smtp.mailtrap.io</em>) per scopi di testing</p></li>
+</ul>
+<p>Il programma Java per inviare e-mail contiene i seguenti passaggi:</p>
+<ul class="simple">
+<li><p>Creazione di un oggetto <em>javax.mail.Session</em></p></li>
+<li><p>Creando un oggetto <em>javax.mail.internet.MimeMessage</em>, dobbiamo impostare diverse proprietà in questo oggetto
+come l’indirizzo e-mail del destinatario, l’oggetto dell’e-mail, l’e-mail di risposta,
+il corpo dell’e-mail, gli allegati ecc.</p></li>
+<li><p>Utilizzo di <em>javax.mail.Transport</em> per inviare il messaggio di posta elettronica.</p></li>
+</ul>
+<p>Il <span class="blue">principio di singola resposabilità</span>, induce a delegare l’invio della mail a un componente
+specializzato, come ad esempio:</p>
+<section id="emailservice">
+<h4>EmailService<a class="headerlink" href="#emailservice" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Mailer</span><span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sendMail</span><span class="p">(</span>
+        <span class="n">String</span> <span class="n">msg</span><span class="p">,</span> <span class="n">String</span> <span class="n">destination</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">EmailService</span> <span class="kd">implements</span> <span class="n">Mailer</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="n">userName</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="n">userPswd</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">;</span>
+<span class="kd">private</span> <span class="kt">boolean</span> <span class="n">useTrueMail</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+  <span class="kd">public</span> <span class="nf">EmailService</span><span class="p">()</span> <span class="p">{</span>
+      <span class="n">readUserData</span><span class="p">(</span>  <span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">readUserData</span><span class="p">(</span>  <span class="p">)</span>   <span class="p">{</span>
+  <span class="c1">//legge da file i valori userName e userPswd</span>
+  <span class="p">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sendMail</span><span class="p">(</span> <span class="n">String</span> <span class="n">msg</span><span class="p">,</span> <span class="n">String</span> <span class="n">destination</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="n">sendMailUsingGoogle</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="n">destination</span><span class="p">);</span>
+      <span class="n">sendMailUsingMailTrap</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="n">destination</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">catch</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">){...</span> <span class="p">}</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p>Le operazioni <em>sendMailUsingGoogle</em></p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span> <span class="kt">void</span> <span class="nf">sendMailUsingGoogle</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">,</span> <span class="n">String</span> <span class="n">destination</span><span class="p">){</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="n">prop</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="p">();</span>
+   <span class="c1">//prop.setProperty(&quot;mail.debug&quot;, &quot;true&quot;);</span>
+    <span class="n">prop</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;mail.smtp.host&quot;</span><span class="p">,</span> <span class="s">&quot;smtp.gmail.com&quot;</span><span class="p">);</span>
+    <span class="n">prop</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;mail.smtp.port&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">);</span>  <span class="c1">//587 porta TLS</span>
+    <span class="n">prop</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;mail.smtp.auth&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    <span class="n">prop</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;mail.smtp.starttls.enable&quot;</span><span class="p">,</span> <span class="s">&quot;true&quot;</span><span class="p">);</span><span class="c1">//richiesto dal server gmail</span>
+    <span class="n">prop</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;mail.smtp.ssl.trust&quot;</span><span class="p">,</span> <span class="s">&quot;*&quot;</span><span class="p">);</span><span class="c1">//evita &#39;Could not convert socket to TLS&#39;</span>
+    <span class="n">Session</span> <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="k">new</span> <span class="n">Authenticator</span><span class="p">()</span> <span class="p">{</span>
+       <span class="nd">@Override</span>
+      <span class="kd">protected</span> <span class="n">PasswordAuthentication</span> <span class="nf">getPasswordAuthentication</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">//Password set su Google Mail:  Password per le app</span>
+          <span class="k">return</span> <span class="k">new</span> <span class="n">PasswordAuthentication</span><span class="p">(</span><span class="s">&quot;...&quot;</span><span class="p">,</span> <span class="s">&quot;...&quot;</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="n">sendMail</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">destination</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{...}</span>
+<span class="p">}</span>
+
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">sendMail</span><span class="p">(</span><span class="n">Session</span> <span class="n">session</span><span class="p">,</span> <span class="n">String</span> <span class="n">msg</span><span class="p">,</span> <span class="n">String</span> <span class="n">destination</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
+    <span class="n">Message</span> <span class="n">message</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MimeMessage</span><span class="p">(</span><span class="n">session</span><span class="p">);</span>
+    <span class="c1">//message.setFrom(new InternetAddress(&quot;fittizio@gmail.com&quot;));</span>
+    <span class="n">message</span><span class="p">.</span><span class="na">addRecipients</span><span class="p">(</span><span class="n">Message</span><span class="p">.</span><span class="na">RecipientType</span><span class="p">.</span><span class="na">TO</span><span class="p">,</span>
+      <span class="n">InternetAddress</span><span class="p">.</span><span class="na">parse</span><span class="p">(</span><span class="n">destination</span><span class="p">));</span> <span class="c1">//&quot;agoognat@gmail.com&quot;</span>
+    <span class="n">message</span><span class="p">.</span><span class="na">setSubject</span><span class="p">(</span><span class="s">&quot;System informazioni&quot;</span><span class="p">);</span>
+    <span class="n">message</span><span class="p">.</span><span class="na">setText</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+    <span class="n">Transport</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>  <span class="c1">//javax.mail.Service</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Questo componente può essere invocato direttamente da <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a>
+oppure essere incapsulato in un observer.</p>
+<p>Esso funge da <em>adapter</em> per la comunicazione dell’applicazione verso il mondo
+esterno, in accordo con gli schemi della cleanArchitecture.</p>
+<a class="reference internal image-reference" href="_images/cleanArch.jpg"><img alt="_images/cleanArch.jpg" class="align-center" src="_images/cleanArch.jpg" style="width: 60%;" /></a>
+</section>
+</section>
+</section>
+<section id="springdatarest-refactoring-a-messaggi">
+<h2>SpringDataRest: refactoring a messaggi<a class="headerlink" href="#springdatarest-refactoring-a-messaggi" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>La business logic può essere scorporata e resa disponibile in rete senza l’uso di Spring</p></li>
+<li><p>La business logic può essere vista come una risorsa, in ottica HATEOAS</p></li>
+</ul>
+</section>
+<section id="springboot-cli">
+<h2>SpringBoot cli<a class="headerlink" href="#springboot-cli" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>set PATH=
+   C:\DidatticaTools\Spring\spring-2.7.5\bin;%PATH%
+
+/spring-boot-cli-2.7.5-bin.zip
+bin/spring --help
+set JAVA_HOME=C:\Program Files\Java\jdk-11.0.8
+bin/spring.bat
+
+spring init --force ^
+--boot-version=2.7.5 ^
+--build=gradle ^
+--java-version=1.8 ^
+--packaging=jar ^
+--name=product-service ^
+--package-name=it.unibo.core.core.product ^
+--groupId=it.unibo ^
+--dependencies=actuator,webflux ^
+--version=1.0.0 ^
+product-service
+
+//ESECUZIONE
+gradlew build
+cd build/libs
+java -jar product-service-1.0.0.jar
+curl http://localhost:7001/product/3
+{&quot;productId&quot;:3,&quot;name&quot;:&quot;name-3&quot;,&quot;weight&quot;:123,
+&quot;serviceAddress&quot;:&quot;natDell/192.168.1.132:7001&quot;}
+
+curl http://localhost:8080/RestApi/person/1
+curl http://localhost:8080/RestApi/person/1?arg=abc   OK
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">SpringDataRest mail</a><ul>
+<li><a class="reference internal" href="#requisito-springdatarest-mail">Requisito SpringDataRest mail</a><ul>
+<li><a class="reference internal" href="#springdatarest-mail-user-story">SpringDataRest-Mail: user story</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#springdatarest-mail-analisi">SpringDataRest-Mail: analisi</a></li>
+<li><a class="reference internal" href="#springdatarest-mail-sprint-1">SpringDataRest mail sprint 1</a><ul>
+<li><a class="reference internal" href="#springdatarest-mail-progetto">SpringDataRest-Mail: progetto</a><ul>
+<li><a class="reference internal" href="#emailservice">EmailService</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#springdatarest-refactoring-a-messaggi">SpringDataRest: refactoring a messaggi</a></li>
+<li><a class="reference internal" href="#springboot-cli">SpringBoot cli</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/SpringDataRestMail.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SpringDataRest mail</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

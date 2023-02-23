@@ -46,19 +46,20 @@ Il template
 
 Anticipiamo qui alcuni aspetti che svilupperemo in modo più approfondito lungo tutto il corso.
 
+:slide:`I requisiti`
+
 ---------------------------------
 Requisiti
 ---------------------------------
 
-Riporyiamo qui il link al   
-`TemaFinale22.html`_
-redatto dal committente :brown:`SENZA ALCUNA MODIFCA`
+Riportiamo qui (il link a) il documento dei reqisiti redatto dal committente (ad esempio) `TemaFinale22.html`_)
+:brown:`SENZA ALCUNA MODIFCA`.
+
+:slide:`L'analisi dei requisiti`
 
 ---------------------------------
 L'analisi dei requisiti
 ---------------------------------
-
-:slide:`L'analisi dei requisiti`
 
 L'analisi dei requisiti mira a:
 

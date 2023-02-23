@@ -5,7 +5,7 @@
 .. role:: worktodo
 .. role:: slide
 .. role:: slide1
-
+.. role:: slide2
 
 
 .. _curl: https://curl.se/
@@ -19,14 +19,17 @@
 .. _devsDdr: ./_static/devsDdr.html
 .. _videoWEnv: https://unibo.cloud.panopto.eu/Panopto/Pages/Sessions/List.aspx#folderID=%227673bfec-c7b6-4a96-8ff8-aca7011ae972%22
 
+.. _template2023 : _static/templateToFill.html
+
 .. http://faculty.salina.k-state.edu/tim/robotics_sg/Control/kinematics/unicycle.html
 .. https://www.epfl.ch/labs/la/wp-content/uploads/2018/08/Kappeler.Rapport.pdf.pdf
 .. https://www.youtube.com/watch?v=ZekupxukiOM  Simulatore python  install pygame  https://www.youtube.com/watch?v=zHboXMY45YU
 
-.. _Introduction to Docker and DockerCompose: ./_static/IntroDocker22.html
+.. _Introduction to Docker and DockerCompose: ./_static/IntroDocker23.html 
 .. _Introduzione a JSON-Java: https://www.baeldung.com/java-org-json
 .. _I WebSocket Comunicazione Asincrona Full-Duplex Per Il Web: http://losviluppatore.it/i-websocket-comunicazione-asincrona-full-duplex-per-il-web/
 .. _org.json: https://www.baeldung.com/java-org-json
+.. _json-simple : https://code.google.com/archive/p/json-simple/
 .. _ws: https://www.npmjs.com/package/ws
 .. _socket.io: https://socket.io/docs/v4/
 .. _einaros: https://github.com/einaros/ws
@@ -54,7 +57,8 @@ indipendenti l’una dall’altra.
 
 Queste mosse sono realizzate inviando opportuni comandi al robot simulato.   
         
-Il robot virtuale (e in futuro anche quelli reali) viene considerato un oggetto inscirvibile in un cerchio di raggio ``R``.
+Il robot virtuale (e in futuro anche quelli reali) viene considerato 
+:slide1:`un oggetto inscrivibile in un cerchio di raggio R`.
 
 
 :slide:`Usare WEnv`
@@ -87,8 +91,11 @@ WEnv viene anche distribuito come immagine Docker, attivabile direttamente o con
 
 .. code::
 
-   docker run -ti -p 8090:8090 -p 8091:8091 --rm  docker.io/natbodocker/virtualrobotdisi:4.0
-   docker-compose -f virtualRobotOnly4.0.yaml  up
+   docker run -ti -p 8090:8090 -p 8091:8091 --rm  docker.io/natbodocker/virtualrobotdisi23:1.0
+   docker-compose -f virtualRobot23.yaml  up
+   //Per terminare: docker-compose -f virtualRobot23.yaml  down 
+
+Per un overview su Docker e DockerCompose si veda: `Introduction to Docker and DockerCompose`_.
 
 ----------------------------------------
 Come interagire con WEnv
@@ -104,9 +111,9 @@ Stringhe che esprimono comandi di movimento al robot possono essere  inviate a W
 .. image::  ./_static/img/VirtualRobot/logicInteraction.PNG
     :align: center 
     :width: 80%
+ 
 
-
-:remark:`WEnv non acetta altre connessioni hhtp://8090  oltre la prima`
+:remark:`WEnv non acetta altre connessioni hhtp://HOSTADDR:8090  oltre la prima`
 
 .. 0001058695 0000999689 0001058685 cd C:/Didattica/STUDENTI/BO2022/Temafinale2022/GianelliAndrucciMarconi/ISS-WasteService/sprint3/distribution/distributed
 
@@ -121,6 +128,16 @@ il progetto definisce una pagina HTML (file ``node/clients/NaiveGui.html``)  che
 - inviare comandi :ref:`cril<Comandi-base per il robot in cril>` al VirtualRobot in modo sincrono (via HTTP)
   e in modo asicrono (via WebSocket) 
 - visualizzare nella ``DisplayArea`` le informazioni emesse da WEnv (:ref:`Messaggio di stato`).
+
+Ponendo il mouse sulla scena, si possono inviare al robot comandi tramite tastiera:
+
+- tasto :blue:`w`: avanti
+- tasto :blue:`s`: indietro
+- tasto :blue:`a`: ruota a sinistra di `90°`
+- tasto :blue:`d`: ruota a destra di `90°`
+
+Sulla scena compare un meno :blue:`Open controls` che presenta conandi con cui modificare la scena,
+inserendo/eliminando oggetti. Le modifiche vengono perse al reload della pagina.
 
 La pagina si presenta come segue:
 
@@ -194,7 +211,7 @@ in relazione alle situazioni che si possono avere.
 
     {"endmove":"RESULT", "move":"MINFO" }          
     RESULT  ::= true | false  | notallowed 
-    MINFO   ::= MOVEID | MOVEID-collision | MOVEID_interrupted  
+    MINFO   ::= MOVEID | MOVEID-collision | MOVEID-interrupted  
     MOVEID  ::= moveForward | moveBackward | turnLeft | turnRight
 
 Un comando attivato con ``HTTP POST`` con durata ``T``, potrebbe terminare prima del tempo  ``T`` in quanto:
@@ -229,7 +246,7 @@ il comando ha comunque durata ``T``.
   * - .. image:: ./_static/img/VirtualRobot/MoveForwardCollision.png 
     - mossa sincrona che provoca collisione
 
-Tuttavia, i client-WS ricevono ANCHE l'informazione (:ref:`Messaggio di stato`) *collision* , che assume la forma che segue:
+Tuttavia, i client-WS ricevono ANCHE l'informazione (:ref:`Messaggio di stato`) *collision*, che assume la forma che segue:
 
   ``{"collision":"moveForward","target":"OBSTACLEID"}`` 
 
@@ -238,6 +255,8 @@ non è possibile nel mondo reale, ma al momento può essere utile per comprender
 delle applicazioni.
 
 Riportiamo nel seguito  alcuni casi rilevanti, dopo avere collocato il robot nello stao iniziale convenzionale :brown:`HOME`.
+
+:slide1:`HOME`
 
 +++++++++++++++++++++++++++++++++
 Stato iniziale del virtualrobot
@@ -315,12 +334,12 @@ informazioni sull'esito del comando  (*Messaggio di stato*), con la seguente sin
 
     {"endmove":"RESULT", "move":"MINFO"}          
     RESULT  ::= true | false   
-    MINFO   ::= MOVEID |  MOVEID_notallowed (asynch) | MOVEID_interrupted
+    MINFO   ::= MOVEID |  MOVEID_notallowed (asynch) | MOVEID-interrupted
     MOVEID  ::= moveForward | moveBackward | turnLeft | turnRight
 
 Il significato dei valori di ``MINFO`` è il seguente:
 
-- **MOVEID_interrupted**: mossa ``MOVEID`` interrotta perchè il robot ha ricevuto un comando  ``alarm``
+- **MOVEID-interrupted**: mossa ``MOVEID`` interrotta perchè il robot ha ricevuto un comando  ``alarm``
 - **MOVEID_notallowed (asynch)**: mossa ``MOVEID`` rifiutata (non eseguita) in quanto la mossa relativa al comando precedente 
   non è ancora terminata.
 
@@ -361,414 +380,6 @@ Se nell'ambiente è presente un sonar e il robot vi passa davanti, WEnv genera:
 .. Messaggi di stato relativi a sonar presenti nella scena possono essere emessi indipendentemente dalla esecuzione
 .. di mosse del robot, ad esempio in relazione alla rilevazione di ostacoli mobili. 
 
-:slide:`Controllo del robot da programmi`
-
-
------------------------------------------
-Esempi di uso naive di WEnv 
------------------------------------------
-
-L'ambiente WEnv verrà utilizzato nello sviluppo di applicazioni proattive/reattive basate su 
-componenti che interagiscono a scambio di messaggi con interazioni sincrone e/o asincrone.
-
-Durante lo sviluppo di queste applicazioni, a complessità via via crescente, avremo modo di costruire
-infrastrutture di supporto e astrazioni di comunicazione capaci di agevolare il compito dell'application-designer.
-
-Prima di procedere in questa direzione, introduciamo acluni esempi di controllo del robot attraverso programmi
-Java scritti in modo 'naive', avvalendoci nel modo più semplice e diretto 
-delle librerie disponibili come supporto alle comunicazioni vie rete.
-
-
-+++++++++++++++++++++++++++++++++
-TestMovesUsingHttp
-+++++++++++++++++++++++++++++++++
-
-.. list-table:: 
-  :widths: 60,40
-  :width: 100%
-
-  * - *it.unibo.virtualRobot2023.clients.TestMovesUsingHttp.java*
-
-      Esegue  mosse di base del robot inviando vie ``HTTP``  comandi espressi in in :ref:`cril<Comandi-base per il robot in cril>`
-
-    - :blue:`Key point`: Richiesta :blue:`sincrona`. 
-
-      Richiede 1 thread.
-
-Dal punto di vista 'sistemistico' osserviamo che:
-
-- Il codice di comunicazione è scritto completamente dal progettista dell'applicazione che usa la libreria *org.apache.http*.
-- La gestione delle risposte JSON viene eseguita utilizzando la libreria  `org.json`_ 
-  (vedi anche `Introduzione a JSON-Java`_ ).
-
-Dal punto di vista 'applicativo', osserviamo che:
-
-- Il chiamante esegue comandi nella forma *request-response*.
-- Un eventuale :ref:`Messaggio di stato` inviato da WEnv non viene percepito.
-- E' possibile :blue:`interrompere` la esecuzione di una mossa inviando il comando :ref:`alarm`.
-- Una mossa che termina prima del tempo indicato nel comando (per interruzione o :ref:`Collision`, 
-  restituisce la risposta ``{"endmove":"false", "move":"MINFO" }`` introdotta in :ref:`Interazione sincrona`.  
-
-L'interazione mediante ``HTTP`` viene realizzata da una client ``org.apache.http.client`` invocato entro
-una procedura di utilità definita come segue: 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-callHTTP
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-.. code:: java
-
-  	protected JSONObject callHTTP( String crilCmd )  {
-  		JSONObject jsonEndmove = null;
-		try {
- 			StringEntity entity = new StringEntity(crilCmd);
-			HttpUriRequest httppost = RequestBuilder.post()
-					.setUri(new URI(URL))
-					.setHeader("Content-Type", "application/json")
-					.setHeader("Accept", "application/json")
-					.setEntity(entity)
-					.build();
-			CloseableHttpResponse response = httpclient.execute(httppost);
-			String jsonStr = EntityUtils.toString( response.getEntity() );
-			jsonEndmove    = (JSONObject) simpleparser.parse(jsonStr);
-		} catch(Exception e){...}
-		return jsonEndmove;
-	}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-TestMovesUsingHttp tests
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-.. list-table::
-  :widths: 40,60
-  :width: 100%
-  
-  * - .. image:: ./_static/img/VirtualRobot/testHttpForwardOk.png
-    - *Forward ok*
-     
-      .. code:: java
-
-        public void doForward() {
-          String forwardcmd="{\"robotmove\":\"moveForward\",\"time\":\"1000\"}";
-          CommUtils.waitTheUser("PUT ROBOT in HOME  and hit");
-          JSONObject result = callHTTP(  forwardcmd  );
-          CommUtils.outblue("moveForward endmove=" + result);
-        }
-  * - .. image:: ./_static/img/VirtualRobot/testHttpForwardCollision.png
-    - *Forward con collision*
-    
-      .. code:: java
-
-        public void doCollision() {
-          String forwardcmd="{\"robotmove\":\"moveForward\",\"time\":\"3000\"}";
-          JSONObject result = callHTTP(  forwardcmd  );
-          CommUtils.outblue("moveForward endmove=" + result);
-        }
-
-  * - .. image:: ./_static/img/VirtualRobot/testHttpForwardHalted.png
-    - *Forward halted*
-     
-      .. code:: java
-
-        public void doHalt() {
-          String forwardcmd="{\"robotmove\":\"moveForward\",\"time\":\"3000\"}";
-          sendAlarmAfter(1000);
-          JSONObject result = callHTTP(  forwardcmd );
-          CommUtils.outblue("moveForward endmove=" + result);
-        }
-
-&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-Invio di alarm
-&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-
-Per inviare al robot un comando *halt* (messaggio :ref:`alarm`) si possono usare diveri modi:
-
-- Usare :ref:`NaiveGui.html`.
-- Lanciare una nuova applicazione Java.
-- Attivare (come fatto in ``doHalt``) un Thread interno a :ref:`TestMovesUsingHttp`, ma **senza riusare** 
-  lo stesso metodo :ref:`callHTTP`:
-  
-  .. code:: java
-
-    protected void sendAlarmAfter( int time ){
-      new Thread(){
-        protected JSONObject mycallHTTP( String crilCmd )  {
-         ... 
-        }
-        public void run(){
-          CommUtils.delay(time);
-          JSONObject result = mycallHTTP(  haltcmd  );
-          CommUtils.outgreen("sendAlarmAfter result=" + result);
-        }
-      }.start();
-    } 
-
-
-
-
-
-
-
-+++++++++++++++++++++++++++++++++
-TestMovesUsingWs
-+++++++++++++++++++++++++++++++++
-
-.. list-table:: 
-  :widths: 60,40
-  :width: 100%
-
-  * - *it.unibo.virtualRobot2023.clients.TestMovesUsingWs.java*
-
-      Esegue  mosse di base del robot inviando via ``WebSocket``  comandi espressi in :ref:`cril<Comandi-base per il robot in cril>`
-
-    - :blue:`Key point`: Richiesta :blue:`asincrona`
-
-      Richiede 4 thread, a causa della libreria ``javax.websocket``.
-
-Dal punto di vista 'sistemistico', osserviamo che:
-
-- Il codice di comunicazione è scritto completamente dal progettista dell'applicazione, che utilizza 
-  la libreria ``javax.websocket``  (vedi anche `I WebSocket Comunicazione Asincrona Full-Duplex Per Il Web`_ )
-- Gli eventi del ciclo di vita dell'endpoint WebSocket sono gestiti mediante :blue:`Annotazioni`
-  secondo lo schema che segue:
-
-  .. code:: 
-   
-     @ClientEndpoint  //La classe viene trattata come un client WebSocket   
-     public class ... {    
-        @OnOpen //chiamato quando si avvia una nuova connessione WebSocket
-        public void onOpen(Session userSession){ ... }
-            
-        @OnMessage //chiamato quando  arriva un  messaggio di stato
-        public void onMessage(String message){ ... }
-
-        @OnError //chiamato quando si verifica un problema con la comunicazione
-        public void onError (sessione di sessione, errore lanciabile){...}
-            
-        @Chiudi //chiamato alla chiusura della connessione WebSocket
-        public void onClose(Session userSession,CloseReason reason){...}
-      }
-
-Dal punto di vista 'applicativo', osserviamo che:
-
-- Il chiamante esegue concettualmente una *fire-and-forget*.
-- Un eventuale :ref:`Messaggio di stato` viene 'iniettato' nell'applicazione tramite una chiamata al metodo annotato 
-  con ``@OnMessage``.
-- E' possibile :blue:`interrompere` la esecuzione di una mossa inviando il comando :ref:`alarm`.
-
-L'interazione mediante ``WebSocket`` viene realizzata dalla libreria ``javax.websocket`` invocato entro
-una procedura di utilità definita come segue: 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-callWS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-.. code:: java
-
-    //Fase iniziale di connessione
-    private Session userSession  = null;
-    WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-    container.connectToServer(this, new URI("ws://"+addr));
-
-    @OnOpen
-    public void onOpen(Session userSession) {
-         this.userSession = userSession;
-    }
-
-    protected void callWS(String msg )   {
-        this.userSession.getAsyncRemote().sendText(msg);
-        // try {
-        //   this.userSession.getBasicRemote().sendText(msg);
-        //   //synch version: blocks until the message has been transmitted
-        // }catch(Exception e) {}       
-    }
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-TestMovesUsingWs onMesage
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-.. code:: java
-
-    @OnMessage
-    public void onMessage(String message)  {
-        long duration = System.currentTimeMillis() - startTime;
-        try {
-            //{"collision":"true ","move":"..."} or {"sonarName":"sonar2","distance":19,"axis":"x"}
-        	CommUtils.outmagenta("TestMovesUsingWs | onMessage:" + message + " duration="+duration);
-          JSONObject jsonObj = (JSONObject) simpleparser.parse(message);
-          if (jsonObj.get("endmove") != null ) {
-                boolean endmove = jsonObj.get("endmove").toString().equals("true");
-                String  move    = (String) jsonObj.get("move") ;
-                CommUtils.outgreen("TestMovesUsingWs | endmove:" + endmove + " move="+move);
-                if( count++ == 0 ) { //test
-                    callWS(  turnleftcmd  );CommUtils.delay(350);
-                    callWS(  turnrightcmd  );
-                }
-          }else if (jsonObj.get("collision") != null ) {
-                String move   = (String) jsonObj.get("collision");
-                String target = (String) jsonObj.get("target");
-                //halt();
-                //senza halt il msg {"endmove":"false","move":"moveForward-collision"} arriva dopo T
-          }else if (jsonObj.get("sonarName") != null ) { //JUST TO SHOW ...
-                String sonarName = (String) jsonObj.get("sonarName") ;
-                String distance  = jsonObj.get("distance").toString();
-          }
-        } catch (Exception e) {
-        	CommUtils.outred("onMessage " + message + " " +e.getMessage());
-        }
-    }
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-TestMovesUsingWs tests
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-.. list-table::
-  :widths: 40,60
-  :width: 100%
-  
-  * - .. image:: ./_static/img/VirtualRobot/testHttpForwardOk.png
-    - *Forward ok*
-     
-      .. code:: java
-
-        public void doForward() {
-          String forwardcmd="{\"robotmove\":\"moveForward\",\"time\":\"1000\"}";
-          CommUtils.waitTheUser("PUT ROBOT in HOME  and hit");
-          startTime = System.currentTimeMillis();
-          callWS(  forwardcmd  );
-          CommUtils.waitTheUser("Hit to terminate doForward");
-        }
-
-  * - .. image:: ./_static/img/VirtualRobot/testWsForwardCollision.png
-
-      .. image:: ./_static/img/VirtualRobot/testWsForwardCollisionWithHalt.png
-  
-    - *Forward con collision*
-     
-      .. code:: java
-
-        public void doCollision() {
-          String forwardcmd   = "{\"robotmove\":\"moveForward\", \"time\":\"3000\"}";
-          startTime = System.currentTimeMillis();
-          callWS(  forwardcmd  );
-        }
-
-        //SENZA halt in onMessage relativo a collision
-        onMessage:{"collision":"moveForward","target":"wallDown"} duration=841
-        onMessage:{"endmove":"false","move":"moveForward-collision"} duration=3019
-
-        //CON halt in onMessage relativo a collision
-        onMessage:{"collision":"moveForward","target":"wallDown"} duration=1256
-        onMessage:{"endmove":"false","move":"moveForward-collision"} duration=1310
-
-  * - .. image:: ./_static/img/VirtualRobot/testHttpForwardHalted.png
-    - *Forward halted*
-      
-      .. code:: java
-
-        public void doHalt() {
-          String forwardcmd="{\"robotmove\":\"moveForward\",\"time\":\"3000\"}";
-          callWS(  forwardcmd  );          
-          CommUtils.delay(1000);
-          callWS(  haltcmd  );
-        }
-
-        onMessage:{"endmove":"false","move":"moveForward-interrupted"} duration=1028
-
-:slide:`BoundaryWalk`
-
---------------------------------------
-BoundaryWalkNaive
---------------------------------------
-
-Interagire con WEnv in modo sincrono (usando librerie per ``HTTP``) o in modo asincrono (usando 
-librerie per ``WebSocket``) porta a strutture di codice diverse.
-
-Proviamo ad esempio a definire codice che induce il robot 
-a percorrere (una volta) il bordo perimetrale della stanza rappresentata ne :ref:`La scena di WEnv`.
-
-+++++++++++++++++++++++++++++++
-BoundaryWalkNaiveUsingHttp
-+++++++++++++++++++++++++++++++
-
-*Strategia*: invia un comando ``forward`` con tempo ``TF`` tale da garatire una collisione 
-con la parete di fronte.
-Dopo la collisione ruota a sinistra e ripete altre ``3`` volte.
-
-L'interazione mediante ``HTTP`` viene realizzata introducendo il metodo :ref:`callHTTP`
-visto in precedenza.
-
-La soluzione potrebbe essere strutturata come segue:
-
-.. code:: java
-
-   public void walkAtBoundary() {
-		for( int i=1; i<=4;i++) {
-      answer = walkAheadUntilCollision();
-      if( !answer ) break;
-		}
- 	 }
-	 public boolean walkAheadUntilCollision() {
-    JSONObject result = callHTTP(  forwardcmd  );
-		if( result.toString().contains("collision")) {
-			callHTTP(  turnleftcmd  );
-			return true;
-		}else{ CommUtils.outred("fatal error: no collision");
-		       return fale ;}
-	 }
-
-La durata del processo è dell'ordine di ``4TF + 4TL`` con ``TL=`` tempo di rotazione.
-
-+++++++++++++++++++++++++++++++
-BoundaryWalkNaiveUsingWs
-+++++++++++++++++++++++++++++++
-
-*Strategia*: invia un comando ``forward`` con tempo ``TF`` tale da garatire una collisione 
-con la parete di fronte.
-Dopo la collisione ruota a sinistra e ripete altre ``3`` volte.
-
-L'interazione mediante ``WebSocket`` viene realizzata introducendo il metodo :ref:`callWS`
-visto in precedenza.
-
-Diversamente da :ref:`BoundaryWalkNaiveUsingHttp`, un client che usa la connessione su Websocket viene indotto ad impostare la
-logica applicativa all'interno del metodo ``onMessage`` che riceve il :ref:`Messaggio di stato` conseguente 
-a un comando asincrono. Nel dettaglio:
-
-#. Il client invia un comando di movimento in avanti del robot (che parte in HOME) con una durata 
-   che garantisce una collisione con la parete ``wallDown``:
-
-   .. code::
-
-      callWS(  forwardlongcmd  );
-
-
-
-#. Il client  definisce il metodo onmessage in modo da realizzare la business logic:
-
-   .. code::
-
-    @OnMessage //richiamato quando  arriva un  messaggio di stato
-    public void onMessage(String message)  {
-        try {
-            long duration = System.currentTimeMillis() - startTime;
-            totalDuration += duration;
-            JSONObject jsonObj = (JSONObject) simpleparser.parse(message);
-            if (jsonObj.get("endmove") != null ) {
-                boolean endmove = jsonObj.get("endmove").toString().contains("true");
-                String  move    = (String) jsonObj.get("move") ;
-                if( ! endmove ){ //forward failed since collisiom
-                    count++;
-                    callWS(  turnleftcmd  );//CommUtils.delay(350);
-                }else //turnLeft completed
-                if( count <= 4   ) callWS(  forwardlongcmd  );
-            } else if (jsonObj.get("collision") != null ) {
-                String move   = (String) jsonObj.get("collision");
-                String target = (String) jsonObj.get("target");
-                halt(); //Forza l'emissione di {"endmove":"false","move":"moveForward-collision"}
-            }
-        } catch (Exception e) {... }
-    }
 
 
 :slide:`Come è fatto WEnv`
@@ -776,7 +387,6 @@ a un comando asincrono. Nel dettaglio:
 --------------------------------------
 WEnv - note di implementazione
 --------------------------------------
-
 
 L'implementazione di WEnv si basa su due componenti principali: 
 
@@ -821,4 +431,374 @@ oltre lo **sceneSocket**.
 
 Questo evento è gestito da un apposito handler (vedi ``sceneSocketInfoHandler`` in ``WebpageServer.js``), 
 che reindirizza le informazioni a tutti i client connessi sulla  ``8091``.
+
+:slide:`Programmi naive di uso di WEnv`
+
+-----------------------------------------
+Programmi naive 
+-----------------------------------------
+
+L'ambiente WEnv verrà utilizzato nello sviluppo di applicazioni proattive/reattive basate su 
+componenti che interagiscono a scambio di messaggi con interazioni sincrone e/o asincrone.
+
+Durante lo sviluppo di queste applicazioni, a complessità via via crescente, avremo modo di costruire
+infrastrutture di supporto e astrazioni di comunicazione capaci di agevolare il compito dell'application-designer.
+
+Prima di procedere in questa direzione, introduciamo alcuni esempi di controllo del robot attraverso programmi
+Java scritti in modo 'naive', :remark:`avvalendoci nel modo più semplice e diretto 
+delle librerie` disponibili come supporto alle comunicazioni vie rete.
+
+ 
+
+:slide1:`Uso di HTTP library`
+
++++++++++++++++++++++++++++++++++
+TestMovesUsingHttp
++++++++++++++++++++++++++++++++++
+
+In ``javasrc/it/unibo/virtualRobot2023/clients``  
+
+.. list-table:: 
+  :widths: 60,40
+  :width: 100%
+
+  * - :remark:`TestMovesUsingHttp.java`
+    
+      Esegue  mosse di base del robot inviando vie ``HTTP``  
+      comandi espressi in in :ref:`cril<Comandi-base per il robot in cril>`
+
+    - :blue:`Key point`: Richiesta :blue:`sincrona`. 
+
+      Richiede 1 thread.
+
+Dal punto di vista 'sistemistico' osserviamo che:
+
+- Il codice di comunicazione è scritto completamente dal progettista dell'applicazione che usa la libreria *org.apache.http*.
+- La gestione delle risposte JSON viene eseguita utilizzando la libreria  `json-simple`_.
+
+Dal punto di vista 'applicativo', osserviamo che:
+
+- Il chiamante esegue comandi nella forma *request-response*.
+- Un eventuale :ref:`Messaggio di stato` inviato da WEnv non viene percepito.
+- E' possibile :blue:`interrompere` la esecuzione di una mossa inviando il comando :ref:`alarm`.
+- Una mossa che termina prima del tempo indicato nel comando (per interruzione o :ref:`Collision`, 
+  restituisce la risposta ``{"endmove":"false", "move":"MINFO" }`` introdotta in :ref:`Interazione sincrona`.  
+
+L'interazione mediante ``HTTP`` viene realizzata da un client ``org.apache.http.client`` invocato entro
+una procedura di utilità definita come segue: 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+callHTTP
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+.. code:: java
+
+  private  JSONParser simpleparser = new JSONParser();
+
+  protected JSONObject callHTTP( String crilCmd )  {
+  JSONObject jsonEndmove = null;
+   try {
+     StringEntity entity = new StringEntity(crilCmd);
+     HttpUriRequest httppost = RequestBuilder.post()
+        .setUri(new URI(URL))
+        .setHeader("Content-Type", "application/json")
+        .setHeader("Accept", "application/json")
+        .setEntity(entity)
+        .build();
+     CloseableHttpResponse response = httpclient.execute(httppost);
+     String jsonStr = EntityUtils.toString( response.getEntity() );
+     jsonEndmove    = (JSONObject) simpleparser.parse(jsonStr);
+   } catch(Exception e){...}
+   return jsonEndmove;
+  }
+
+:slide1:`Operazioni di test`
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+TestMovesUsingHttp tests
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+.. list-table::
+  :widths: 40,60
+  :width: 100%
+  
+  * - .. image:: ./_static/img/VirtualRobot/testHttpForwardOk.png
+    - :slide2:`Muovi in avanti senza collisioni`
+     
+      .. code:: java
+
+        public void doForward() {
+          String forwardcmd="{\"robotmove\":\"moveForward\",\"time\":\"1000\"}";
+          CommUtils.waitTheUser("PUT ROBOT in HOME  and hit");
+          JSONObject result = callHTTP(  forwardcmd  );
+          CommUtils.outblue("moveForward endmove=" + result);
+        }
+  * - .. image:: ./_static/img/VirtualRobot/testHttpForwardCollision.png
+    - :slide2:`Muovi in avanti con collisione`
+    
+      .. code:: java
+
+        public void doCollision() {
+          String forwardcmd="{\"robotmove\":\"moveForward\",\"time\":\"3000\"}";
+          JSONObject result = callHTTP(  forwardcmd  );
+          CommUtils.outblue("moveForward endmove=" + result);
+        }
+
+  * - .. image:: ./_static/img/VirtualRobot/testHttpForwardHalted.png
+    - :slide2:`Muovi in avanti e ferma prima della fine`
+     
+      .. code:: java
+
+        public void doHalt() {
+          String forwardcmd="{\"robotmove\":\"moveForward\",\"time\":\"3000\"}";
+          sendAlarmAfter(1000);
+          JSONObject result = callHTTP(  forwardcmd );
+          CommUtils.outblue("moveForward endmove=" + result);
+        }
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+Invio di alarm
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Per inviare al robot un comando *halt* (messaggio :ref:`alarm`) si possono usare diversi modi:
+
+- Usare :ref:`NaiveGui.html`.
+- Lanciare una nuova applicazione Java.
+- Attivare (come fatto in ``doHalt``) un Thread interno a :ref:`TestMovesUsingHttp`, ma **senza riusare** 
+  lo stesso metodo :ref:`callHTTP`:
+  
+  .. code:: java
+
+    protected void sendAlarmAfter( int time ){
+      new Thread(){
+        protected JSONObject mycallHTTP( String crilCmd )  {
+         ... 
+        }
+        public void run(){
+          CommUtils.delay(time);
+          JSONObject result = mycallHTTP(  haltcmd  );
+          CommUtils.outgreen("sendAlarmAfter result=" + result);
+        }
+      }.start();
+    } 
+
+:slide1:`Uso di javax.websocket library`
+
++++++++++++++++++++++++++++++++++
+TestMovesUsingWs
++++++++++++++++++++++++++++++++++
+
+In ``javasrc/it/unibo/virtualRobot2023/clients``  
+
+.. list-table:: 
+  :widths: 60,40
+  :width: 100%
+
+  * - :remark:`TestMovesUsingWs.java`
+
+      Esegue  mosse di base del robot inviando via ``WebSocket``  comandi espressi in :ref:`cril<Comandi-base per il robot in cril>`
+
+    - :blue:`Key point`: Richiesta :blue:`asincrona`
+
+      Richiede 4 thread, a causa della libreria ``javax.websocket``.
+
+Dal punto di vista 'sistemistico', osserviamo che:
+
+- Il codice di comunicazione è scritto completamente dal progettista dell'applicazione, che utilizza 
+  la libreria ``javax.websocket``  (vedi anche `I WebSocket Comunicazione Asincrona Full-Duplex Per Il Web`_)
+
+  :slide1:`Annotazioni`
+  
+  Gli eventi del ciclo di vita dell'endpoint WebSocket sono gestiti mediante :blue:`Annotazioni`
+  secondo lo schema che segue:
+
+  .. code:: 
+   
+     @ClientEndpoint  //La classe viene trattata come un client WebSocket   
+     public class ... {    
+        @OnOpen //chiamato quando si avvia una nuova connessione WebSocket
+        public void onOpen(Session userSession){ ... }
+            
+        @OnMessage //chiamato quando  arriva un  messaggio di stato
+        public void onMessage(String message){ ... }
+
+        @OnError //chiamato quando si verifica un problema con la comunicazione
+        public void onError (sessione di sessione, errore lanciabile){...}
+            
+        @Chiudi //chiamato alla chiusura della connessione WebSocket
+        public void onClose(Session userSession,CloseReason reason){...}
+      }
+
+Dal punto di vista 'applicativo', osserviamo che:
+
+- Il chiamante esegue concettualmente una *fire-and-forget*.
+- Un eventuale :ref:`Messaggio di stato` viene 'iniettato' nell'applicazione tramite una chiamata al metodo annotato 
+  con ``@OnMessage``.
+- E' possibile :blue:`interrompere` la esecuzione di una mossa inviando il comando :ref:`alarm`.
+- Per una mossa che termina prima del tempo indicato nel comando (per interruzione o :ref:`Collision`, 
+  vengono percepiti due :ref:`Messaggio di stato`: ``{"collision":MOVEID, "target":"..." }`` 
+  e ``{"endmove":"false", "move":"MINFO" }``
+   
+
+L'interazione mediante ``WebSocket`` viene realizzata dalla libreria ``javax.websocket`` invocato entro
+una procedura di utilità definita come segue: 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+callWS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+.. code:: java
+
+    //Fase iniziale di connessione
+    private Session userSession  = null;
+    WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+    container.connectToServer(this, new URI("ws://"+addr));
+
+    @OnOpen
+    public void onOpen(Session userSession) {
+         this.userSession = userSession;
+    }
+
+    protected void callWS(String msg )   {
+        this.userSession.getAsyncRemote().sendText(msg);
+        // try {
+        //   this.userSession.getBasicRemote().sendText(msg);
+        //   //synch version: blocks until the message has been transmitted
+        // }catch(Exception e) {}       
+    }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+TestMovesUsingWs onMesage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+.. code:: java
+
+    @OnMessage
+    public void onMessage(String message)  {
+        long duration = System.currentTimeMillis() - startTime;
+        try {
+          //{"collision":"true ","move":"..."} or 
+          //{"sonarName":"sonar2","distance":19,"axis":"x"}
+          JSONObject jsonObj = (JSONObject) simpleparser.parse(message);
+          if (jsonObj.get("endmove") != null ) {
+                boolean endmove = jsonObj.get("endmove").toString().equals("true");
+                String  move    = (String) jsonObj.get("move") ;
+                CommUtils.outgreen("TestMovesUsingWs | endmove:" + endmove + " move="+move);
+                if( count++ == 0 ) { //test
+                    callWS(  turnleftcmd  );CommUtils.delay(350);
+                    callWS(  turnrightcmd  );
+                }
+          }else if (jsonObj.get("collision") != null ) {
+                String move   = (String) jsonObj.get("collision");
+                String target = (String) jsonObj.get("target");
+                //halt();
+                //senza halt il msg {"endmove":"false","move":"moveForward-collision"} arriva dopo T
+          }else if (jsonObj.get("sonarName") != null ) { //JUST TO SHOW ...
+                String sonarName = (String) jsonObj.get("sonarName") ;
+                String distance  = jsonObj.get("distance").toString();
+          }
+        } catch (Exception e) {
+        	CommUtils.outred("onMessage " + message + " " +e.getMessage());
+        }
+    }
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+TestMovesUsingWs tests
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+.. list-table::
+  :widths: 40,60
+  :width: 100%
+  
+  * - .. image:: ./_static/img/VirtualRobot/testHttpForwardOk.png
+    - :slide2:`Muovi in avanti senza collisioni`
+     
+      .. code:: java
+
+        public void doForward() {
+          String forwardcmd="{\"robotmove\":\"moveForward\",\"time\":\"1000\"}";
+          CommUtils.waitTheUser("PUT ROBOT in HOME  and hit");
+          startTime = System.currentTimeMillis();
+          callWS(  forwardcmd  );
+          CommUtils.waitTheUser("Hit to terminate doForward");
+        }
+
+        //MESSAGGI DI STATO
+        onMessage:{"endmove":"true","move":"moveForward"} duration=1055
+
+  * - .. image:: ./_static/img/VirtualRobot/testWsForwardCollision.png
+
+      .. image:: ./_static/img/VirtualRobot/testWsForwardCollisionWithHalt.png
+  
+    - :slide2:`Muovi in avanti con collisione`
+     
+      .. code:: java
+
+        public void doCollision() {
+          String forwardcmd   = "{\"robotmove\":\"moveForward\", \"time\":\"3000\"}";
+          startTime = System.currentTimeMillis();
+          callWS(  forwardcmd  );
+        }
+
+        //MESSAGGI DI STATO
+        //SENZA halt in onMessage relativo a collision
+        onMessage:{"collision":"moveForward","target":"wallDown"} duration=841
+        onMessage:{"endmove":"false","move":"moveForward-collision"} duration=3019
+
+        //CON halt in onMessage relativo a collision
+        onMessage:{"collision":"moveForward","target":"wallDown"} duration=1256
+        onMessage:{"endmove":"false","move":"moveForward-collision"} duration=1310
+
+  * - .. image:: ./_static/img/VirtualRobot/testWsNotallowed.png
+    - :slide2:`Muovi in avanti e ruota a sinistra prima della fine`
+      
+      .. code:: java
+
+        public void doNotAllowed() {
+          String forwardcmd="{\"robotmove\":\"moveForward\",\"time\":\"1200\"}";
+          callWS(  forwardcmd  );          
+          CommUtils.delay(400);
+          callWS(  turnleftcmd  );
+        }
+
+        //MESSAGGI DI STATO
+        onMessage:{"endmove":"false","move":"turnLeft_notallowed (asynch)"}
+        onMessage:{"endmove":"true","move":"moveForward"}
+
+  * - .. image:: ./_static/img/VirtualRobot/testHttpForwardHalted.png
+    - :slide2:`Muovi in avanti e ferma prima della fine`
+      
+      .. code:: java
+
+        public void doHalt() {
+          String forwardcmd="{\"robotmove\":\"moveForward\",\"time\":\"3000\"}";
+          callWS(  forwardcmd  );          
+          CommUtils.delay(1000);
+          callWS(  haltcmd  );
+        }
+
+        //MESSAGGI DI STATO
+        onMessage:{"endmove":"false","move":"moveForward-interrupted"} duration=1028
+
+
+:worktodo:`TODO: Deliverable BoundaryWalk` 
+
+--------------------------------
+Deliverable BoundaryWalk
+--------------------------------
+
+#. Compilare la sezione ``Problem analysis`` del `template2023`_   ponendo in luce i key-points 
+   del problema della interazione con il VirtualRobot23.
+#. Ridenominare il file :remark:`BoundaryWalkCognomeNome` e inserirlo nella directory ``Deliverables``  
+   del proprio GIT repo privato.
+#. Compilare la sezione ``Project`` descrivendo una strategia di comandi (sincroni e/o asincroni) 
+   che induce il robot:
+
+   - :blue:`Req1` : a percorrere (una volta) il bordo perimetrale della stanza rappresentata ne :ref:`La scena di WEnv`
+   
+   In futuro il robot dovrà anche:
+   
+   - :blue:`Req2` : fermarsi di 5 sec quando rilevato dal sonar
+#. Compilare la sezione ``Testing`` descrivendo una strategia di collaudo.
 

@@ -1,6 +1,7 @@
 .. role:: red
 .. role:: blue  
 .. role:: brown    
+.. role:: worktodo
 .. role:: remark   
 .. role:: slide
 .. role:: slide1
@@ -33,6 +34,7 @@
 .. _Leggi di Lehman: https://en.wikipedia.org/wiki/Lehman%27s_laws_of_software_evolution
 .. _SOLID: https://clevercoder.net/2018/09/08/clean-architecture-summary-review/
 
+ 
 ======================================
 Introduzione
 ======================================
@@ -393,7 +395,7 @@ le tecnologie disponibili più opportune, che non sono più un assunto a-priori.
   * - .. image:: ./_static/img/Intro/TopDownBottomUp1.PNG
     - .. image:: ./_static/img/Intro/topDown.png
 
-slide1:`I QActor`
+:slide1:`I QActor`
 
 In questa fase:
 
@@ -405,7 +407,7 @@ In questa fase:
 ++++++++++++++++++++++++++++++++
 FASE3
 ++++++++++++++++++++++++++++++++
-Applicazione di quanto sviluppato per lo sviluppo di una :slide1:`applicazione finale IOT` che 
+Applicazione di quanto sviluppato per la costruzione di una :slide1:`applicazione finale IOT` che 
 prevede anche l'utilizzo di `robot reali`_, costruiti estendendo il sistema della FASE1. 
 
 
@@ -461,12 +463,19 @@ Dal `Sito Web del corso`_  leggiamo:
 
 Maggiori dettagli si trovano in :ref:`Criteri di valutazione`.
 
+
+:worktodo:`TODO: GIT repo e template2023`  
+
 ---------------------------------
 DA FARE
 ---------------------------------
+#. Attivare un proprio repository GIT privato, dando possibilità di accesso al docente 
+   
+   Nel repository inserire una prima directory denominata ``Deliverables`` 
 
-#. Si veda :ref:`Installazioni su PC`
-#. Eseguire quanto riportato in :ref:`Come attivare WEnv`
+#. Compilare il `template2023`_ inserendo una propria foto (recente) e ridenominaare il file :remark:`CognomeNomeTemplate.html`
+#. Eseguire quanto riportato in:  :ref:`Installazioni su PC`
+#. Eseguire quanto riportato in: :ref:`Come attivare WEnv`
 
 
 

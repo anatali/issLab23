@@ -45,7 +45,7 @@ dependencies {
 
 //CUSTOM unibo
     //implementation name: '2p301'
-    implementation name: 'uniboInterfaces'
+    //implementation name: 'uniboInterfaces'
     implementation name: 'unibo.basicomm23-1.0'
 
 }

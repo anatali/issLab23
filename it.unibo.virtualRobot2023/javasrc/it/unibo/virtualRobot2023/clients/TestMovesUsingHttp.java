@@ -1,5 +1,4 @@
 /*
-ClientUsingPost.java
 ===============================================================
 Technology-dependent application
 TODO. eliminate the communication details from this level
@@ -65,34 +64,34 @@ public class TestMovesUsingHttp {
 */
 	public void doBasicMoves() {
 		JSONObject result;
-		CommUtils.waitTheUser("PUT ROBOT in HOME and hit");
+		CommUtils.waitTheUser("PUT ROBOT in HOME and hit 1CR");
 		CommUtils.outblue("STARTING doBasicMoves ... ");
 			result = callHTTP(  turnleftcmd ) ;
 			CommUtils.outblue("turnLeft endmove=" + result);
 			result = callHTTP(  turnrightcmd ) ;
 			CommUtils.outblue("turnRight endmove=" + result);
-		CommUtils.waitTheUser("hit to forward (time 1500)");
+		CommUtils.waitTheUser("hit 1CR to forward (time 1500)");
 			result = callHTTP(  forwardcmd  );
 			CommUtils.outblue("moveForward endmove=" + result);
-		CommUtils.waitTheUser("hit to backward (time 2300)");
+		CommUtils.waitTheUser("hit 1CR to backward (time 2300)");
 		    result = callHTTP(  backwardcmd );
 			CommUtils.outblue("moveBackward endmove=" + result);
 	}
 	public void doForward() {
 		String forwardcmd   = "{\"robotmove\":\"moveForward\"  , \"time\": \"1000\"}";
-		CommUtils.waitTheUser("PUT ROBOT in HOME  and hit");
+		CommUtils.waitTheUser("PUT ROBOT in HOME  and hit 1CR");
 		JSONObject result = callHTTP(  forwardcmd  );
 		CommUtils.outblue("moveForward endmove=" + result);
 	}
 	public void doCollision() {
 		String forwardcmd   = "{\"robotmove\":\"moveForward\"  , \"time\": \"3000\"}";
-		CommUtils.waitTheUser("PUT ROBOT near a wall and hit");
+		CommUtils.waitTheUser("PUT ROBOT near a wall and hit 1CR");
 		JSONObject result = callHTTP(  forwardcmd  );
 		CommUtils.outblue("moveForward endmove=" + result);
 	}
 	public void doHalt() {
 		String forwardcmd   = "{\"robotmove\":\"moveForward\"  , \"time\": \"3000\"}";
-		CommUtils.waitTheUser("PUT ROBOT in HOME and hit (forward 3000 and alarm after 1000)");
+		CommUtils.waitTheUser("PUT ROBOT in HOME and hit 1CR (forward 3000 and alarm after 1000)");
 		sendAlarmAfter(1000);
 		JSONObject result = callHTTP(  forwardcmd  );
 		CommUtils.outblue("moveForward endmove=" + result);
@@ -138,8 +137,9 @@ MAIN
 	public static void main(String[] args)   {
 		CommUtils.aboutThreads("Before start - ");
 		TestMovesUsingHttp appl = new TestMovesUsingHttp();
-		//appl.doForward();
-		//appl.doCollision();
+		appl.doForward();
+		appl.doCollision();
+		CommUtils.waitTheUser("hit 1CR  ");
 		appl.doHalt();
 		CommUtils.aboutThreads("At end - ");
 	}

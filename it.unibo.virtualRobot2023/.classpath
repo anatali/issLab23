@@ -38,6 +38,11 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Didattica2023/issLab23/unibolibs/uniboInterfaces.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="C:/Didattica2023/issLab23/unibolibs/unibo.basicomm23-1.0.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>

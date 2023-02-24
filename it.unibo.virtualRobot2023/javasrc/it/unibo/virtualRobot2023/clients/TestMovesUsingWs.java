@@ -9,11 +9,11 @@
 package it.unibo.virtualRobot2023.clients;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import unibo.basicomm23.utils.CommUtils;
 import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import unibo.basicomm23.utils.CommUtils;
 
 //See https://www.baeldung.com/java-websockets
 
@@ -114,7 +114,7 @@ BUSINESS LOGIC
 */
     public void doForward() {
 		String forwardcmd   = "{\"robotmove\":\"moveForward\",\"time\": \"1000\"}";
-		CommUtils.waitTheUser("doForward (WS): PUT ROBOT in HOME  and hit (forward 1000)");
+		CommUtils.waitTheUser("doForward (WS): PUT ROBOT in HOME  and hit 1-CR (forward 1000)");
 		startTime = System.currentTimeMillis();
 		callWS(  forwardcmd  );
 		CommUtils.waitTheUser("Hit to terminate doForward");
@@ -122,7 +122,7 @@ BUSINESS LOGIC
 	}
     
     public void  doCollision() {
-    	CommUtils.waitTheUser("doCollision (WS): PUT ROBOT near a wall and hit (forward 3000)");
+    	CommUtils.waitTheUser("doCollision (WS): PUT ROBOT near a wall and hit 1-CR (forward 3000)");
         //halt(); //To remove pending notallowed
         String forwardcmd   = "{\"robotmove\":\"moveForward\"  , \"time\": \"3000\"}";
         startTime = System.currentTimeMillis();
@@ -132,7 +132,7 @@ BUSINESS LOGIC
     }
 
     public void doNotAllowed() {
-        CommUtils.waitTheUser("doNotAllowed (WS): PUT ROBOT in HOME and hit (forward 1200 and turnLeft after 400)");
+        CommUtils.waitTheUser("doNotAllowed (WS): PUT ROBOT in HOME and hit 1-CR (forward 1200 and turnLeft after 400)");
         String forwardcmd   = "{\"robotmove\":\"moveForward\", \"time\":\"1200\"}";
         startTime = System.currentTimeMillis();
         callWS(  forwardcmd  );
@@ -144,7 +144,7 @@ BUSINESS LOGIC
     }
 
     public void doHalt() {
-        CommUtils.waitTheUser("doHalt (WS): PUT ROBOT in HOME and hit (forward 3000 and alarm after 1000)");
+        CommUtils.waitTheUser("doHalt (WS): PUT ROBOT in HOME and hit 1-CR (forward 3000 and alarm after 1000)");
         String forwardcmd   = "{\"robotmove\":\"moveForward\", \"time\":\"3000\"}";
         callWS(  forwardcmd  );
         CommUtils.outblue("doHalt (WS): moveForward msg sent"  );
@@ -156,7 +156,7 @@ BUSINESS LOGIC
     public void doBasicMoves() {
         callWS(  haltcmd ) ; //halt asynch non manda enmove
         CommUtils.delay(20);
-     CommUtils.waitTheUser("hit to turn");
+     CommUtils.waitTheUser("hit 1-CR to turn");
  	
 		callWS(  turnleftcmd ) ;
 		CommUtils.outblue("turnLeft msg sent"  );		
@@ -166,12 +166,12 @@ BUSINESS LOGIC
 		CommUtils.outblue("turnRight msg sent"  );
 		CommUtils.delay(500);
 
-	CommUtils.waitTheUser("hit to forward");
+	CommUtils.waitTheUser("hit 1-CR to forward");
 //		//Now the value of endmove depends on the position of the robot
 		callWS(  forwardcmd  );
 		CommUtils.outblue("moveForward msg sent"  );
 		CommUtils.delay(1300);
-    CommUtils.waitTheUser("hit to backwardcmd");
+    CommUtils.waitTheUser("hit 1-CR to backwardcmd");
 		callWS(  backwardcmd );
 		CommUtils.outblue("moveBackward msg sent"  );
 		CommUtils.delay(1300);

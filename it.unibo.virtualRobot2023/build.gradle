@@ -8,7 +8,7 @@ plugins {
 }
 repositories {
     jcenter()
-    flatDir { dirs '../unibolibs' }
+    flatDir { dirs 'C:\\Didattica2023\\issLab23\\unibolibs' }
 
 }
 
@@ -45,14 +45,9 @@ dependencies {
 
 //CUSTOM unibo
     //implementation name: '2p301'
-    //implementation name: 'uniboInterfaces'
-    //implementation name: 'unibonoawtsupports'
-    //implementation name: 'unibo.qakactor22-3.4'
-    //implementation name: 'unibo.comm23-1.0-plain'
+    implementation name: 'uniboInterfaces'
     implementation name: 'unibo.basicomm23-1.0'
-	//implementation name: 'unibo.actor22-1.1'
 
-   
 }
 
 sourceSets {
@@ -69,21 +64,10 @@ eclipse {
     }
 }
 
-mainClassName = 'it.unibo.virtualRobot2023.clients.EsperimentiHTTP'
-/*
-jar {
-    from sourceSets.main.allSource
-    manifest { attributes 'Main-Class': "$mainClassName" }
-}
+mainClassName = 'it.unibo.virtualRobot2023.clients.TestMovesUsingHTTP'
 
- 
-distributions {
-    main {
-        contents {
-            from './RadarSystemConfig.json'
-        }
-    }
-}
-*/
 //git rm --cached .project
 //git rm --cached .classpath
+/*
+MARK directory javasrc as Source root
+ */

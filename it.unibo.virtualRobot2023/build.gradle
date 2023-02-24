@@ -8,8 +8,8 @@ plugins {
 }
 repositories {
     jcenter()
-    //flatDir { dirs '../unibolibs' }
-    flatDir { dirs './libs' }
+    flatDir { dirs '../unibolibs' }
+
 }
 
 version '1.0'

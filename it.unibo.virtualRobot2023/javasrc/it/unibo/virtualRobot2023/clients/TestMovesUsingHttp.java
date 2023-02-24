@@ -17,7 +17,6 @@ import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import unibo.basicomm23.utils.CommUtils;
-
 import java.net.URI;
 
 public class TestMovesUsingHttp {

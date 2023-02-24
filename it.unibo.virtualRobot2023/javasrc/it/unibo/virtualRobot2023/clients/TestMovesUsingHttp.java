@@ -34,7 +34,6 @@ public class TestMovesUsingHttp {
 		httpclient = HttpClients.createDefault();
 	}
 
-
   	protected JSONObject callHTTP(String crilCmd )  {
   		JSONObject jsonEndmove = null;
 		try {

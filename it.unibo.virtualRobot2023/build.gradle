@@ -6,9 +6,11 @@ plugins {
     id 'application'
 	//id 'jacoco'
 }
+
 repositories {
-    jcenter()
-    flatDir { dirs 'C:\\Didattica2023\\issLab23\\unibolibs' }
+    //jcenter()
+    mavenCentral()
+    flatDir { dirs '../unibolibs' }
 
 }
 
@@ -54,7 +56,7 @@ sourceSets {
 
     main.java.srcDirs += 'javasrc'
     //main.java.srcDirs += 'resources'
-    //test.java.srcDirs += 'test'
+    test.java.srcDirs += 'test'
 }
 
 //Avoid duplication of src in Eclipse
@@ -69,5 +71,9 @@ mainClassName = 'it.unibo.virtualRobot2023.clients.TestMovesUsingHTTP'
 //git rm --cached .project
 //git rm --cached .classpath
 /*
+SE NON FUNZIONA LA COMPILAZIONE, provare a
+Controllare SDK del progetto (deve essere 11)
 MARK directory javasrc as Source root
+delete .idea directory and .iml files, then reimport the project as Gradle
+try File | Invalidate Caches | Invalidate and Restart.
  */

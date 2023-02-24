@@ -133,12 +133,11 @@ public class TestMovesUsingHttp {
 /*
 MAIN
  */
-	public static void main(String[] args)   {
+		public static void main(String[] args)   {
 		CommUtils.aboutThreads("Before start - ");
 		TestMovesUsingHttp appl = new TestMovesUsingHttp();
 		appl.doForward();
 		appl.doCollision();
-		CommUtils.waitTheUser("hit 1CR  ");
 		appl.doHalt();
 		CommUtils.aboutThreads("At end - ");
 	}

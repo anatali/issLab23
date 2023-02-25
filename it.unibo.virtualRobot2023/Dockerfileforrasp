@@ -1,0 +1,39 @@
+## ----------------------------------------------------------
+## https://dev.to/docker/how-to-run-nodejs-application-inside-docker-container-on-raspberry-pi-25gc
+## Dockerfileforrasp for virtualRobot23
+## This file should be copied on Rasp together with the
+## required resources and executed there
+## ----------------------------------------------------------
+
+FROM node:12
+EXPOSE 8090
+EXPOSE 8091
+
+COPY ./WEnv/server /home/node/WEnv/server
+COPY ./WEnv/WebGLScene /home/node/WEnv/WebGLScene
+
+WORKDIR /home/node/WEnv/WebGLScene
+RUN npm install
+
+WORKDIR /home/node/WEnv/server
+RUN npm install
+
+WORKDIR /home/node/WEnv/server/src
+CMD ["node", "WebpageServer"]
+
+#### sudo docker build -f Dockerfileforrasp -t virtualrobotdisi23rasp:1.0 .
+#### docker build --no-cache --rm=false .
+#### docker run -p 8090:8090 -p 8091:8091 --rm virtualrobotdisi23rasp:1.0
+
+## Tag the image
+## type docker_password.txt | docker login --username natbodocker --password-stdin
+## docker tag virtualrobotdisi23rasp:1.0 natbodocker/virtualrobotdisi23rasp:1.0
+## Register the image on DockerHub
+## docker push natbodocker/virtualrobotdisi23rasp:1.0
+
+
+
+## $ sudo systemctl daemon-reload #THIS IS RESCUE COMMAND…
+## $ sudo systemctl restart docker
+## $ sudo systemctl status docker
+## $ docker pull hello-world

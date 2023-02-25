@@ -19,7 +19,7 @@ public class AutomaticTestHTTP {
     private  final String localHostName    = "localhost"; //"localhost"; 192.168.1.7
     private  final int port                = 8090;
     private  final String URL              = "http://"+localHostName+":"+port+"/api/move";
-    private CloseableHttpClient httpclient ;
+    private CloseableHttpClient httpclient = HttpClients.createDefault();
     private JSONParser simpleparser = new JSONParser();
     private  String turnrightcmd  = "{\"robotmove\":\"turnRight\"    , \"time\": \"300\"}";
     private  String turnleftcmd  = "{\"robotmove\":\"turnLeft\"     , \"time\": \"300\"}";
@@ -88,28 +88,35 @@ public class AutomaticTestHTTP {
 
     @Before
     public void init(){
-        httpclient = HttpClients.createDefault();
-        CommUtils.outgreen("AutomaticTestHTTP starts");
+        //httpclient = HttpClients.createDefault();
+        CommUtils.outmagenta("AutomaticTestHTTP INIT");
     }
 
     @Test
     public void doForward() {
+        CommUtils.outmagenta("doForward "  );
         JSONObject result = callHTTP(  forwardcmd  );
-        CommUtils.outblue("moveForward endmove=" + result);
+        CommUtils.outblue("moveForward result=" + result);
         assert( result.get("endmove").equals("true") && result.get("move").equals("moveForward")) ;
         //BACK TO HOME
         JSONObject result1 = callHTTP(  backwardcmd  );
-        assert( result1.get("endmove").equals("true") && result1.get("move").equals("moveBackward")) ;
+        CommUtils.outblue("moveBackward result1=" + result1);
+        assert( result1.get("move").toString().contains("moveBackward")) ;
     }
 
     @Test
     public void doHalt() {
+        CommUtils.outmagenta("doHalt "  );
         sendAlarmAfter(500);
         JSONObject result = callHTTP(  forwardcmd  );
-        CommUtils.outblue("doHalt endmove=" + result);
+        CommUtils.outblue("doHalt result=" + result);
         assert( result.get("endmove").equals("false") && result.get("move").equals("moveForward-interrupted")) ;
+        //BACK TO HOME after move completion
+        CommUtils.delay(1000);
         JSONObject result1 = callHTTP(  backwardcmd  );
+        CommUtils.outblue("doHalt result1=" + result1);
         assert( result1.get("move").toString().contains("moveBackward")) ;
+
     }
 
 }

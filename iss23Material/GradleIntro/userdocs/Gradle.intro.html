@@ -1,0 +1,2175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 700px;
+    font-size: 15px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #C0F0E0;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+
+<style>
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 260px;
+  background-color: #F3F781;
+  color: black;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+</style>
+
+<script>
+// When the user clicks on <div>, open the popup
+function myFunction() {
+  var popup = document.getElementById("myPopup");
+  popup.classList.toggle("show");
+}
+</script>
+    
+<head>
+   
+<title>GradleIntro</title></head>
+    
+<body>
+<div id="top">
+<h1>LabIss2021 |  Introduction to Gradle<font size="5"></font> </h1>
+</div>  
+
+<h2>Index</h2>
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:33%" >
+<h3><a href="#intro">Introduction</a></h3>
+	<ul>
+	<li><a href="#basic">Basic concepts</a>  </li>
+	<li><a href="#wrapper">Gradle wrapper</a></li>
+	<li><a href="#execution">Gradle execution</a> &nbsp;&nbsp;	|  <a href="#deamon">Gradle deamon</a> </li>
+	<li><a href="#plugins">Gradle plugins</a>  &nbsp;&nbsp;	|  <a href="#javaplugin">The Java plugin</a> </li>
+	<li><a href="#config">Gradle Configurations</a></li>
+	<li><a href="#extends">Extending Gradle</a></li>
+
+	</ul>
+ 
+</td>
+<td style="width:33%" >
+<h3><a href="#handson">Hands on Gradle</a> </h3>
+	<ul>
+	<li><a href="#starting">Starting</a></li>
+	<li><a href="#buildrun">Build and run</a></li>
+	<li><a href="#properties">Properties</a></li>
+	<li><a href="#implconfig">Implementation configuration</a></li>
+	<li><a href="#confighierach">Configuration hierarchies</a></li>
+	<li><a href="#">About build, project, Tasks</a></li>
+		<ul>
+		<li><a href="#">Tasks as operations</a></li>
+		<li><a href="#">Task configuration vs. task execution</a></li>
+		<li><a href="#">Gradle’s tasks embeds code</a></li>
+		<li><a href="#">Task dependencies</a></li>
+		<li><a href="#">The clean task</a></li>
+		<li><a href="#">Dynamic Tasks</a></li>
+
+		</ul>
+	</ul>
+</td>
+<td style="width:33%" >
+<h3><a href="#handson">Advanced</a> </h3>
+	<ul>
+ 	<li><a href="#">Multi projects</a></li>
+	<li><a href="#">Custom task types</a></li>
+	<li><a href="#">Gradle buildSrc</a></li>
+	<li><a href="#">Custom plugins</a></li>
+	<li><a href="#">Continuos delivery</a></li>
+
+	</ul>
+</td>
+</tr>
+ </tbody>
+</table>
+
+
+ 
+<div class="body"> 
+<h2 id="intro">Introduction</h2>
+
+ For an introduction, from the <a href="https://docs.gradle.org/current/userguide/userguide.html" target="web">Gradle User Manual</a>,
+ 
+ read <a href="https://docs.gradle.org/current/userguide/what_is_gradle.html" target="web">What is Gradle?</a>
+and 
+<a href="https://docs.gradle.org/current/userguide/build_lifecycle.html#build_lifecycle" target="web">Build Lifecycle</a>.
+<br/><br/>
+	Gradle is an enterprise-ready build system, powered by declarative and expressive DSL (Groovy and Kotlin).
+	<br/>
+ 
+	<div class ="remark">
+Gradle applies the principles of 
+
+<a href="https://en.wikipedia.org/wiki/Domain-driven_design" target="web"><em>domain-driven design</em></a>
+ (<k>DDD</k>) to model its own domain-building software. <br/>
+As a consequence, projects and tasks have a direct class representation in Gradle’s API.
+	</div>
+	<center><img src="./img/gradleDSLAPI.png" alt="gradleDSLAPI.png" width="100%" height="100%"></center>
+	
+	
+<ul>
+	<li>Created in 2008 by Gradleware, <a href="https://docs.gradle.org/current/userguide/userguide.html" target="web">Gradle</a> 
+	is mostly implemented in Java 5, with an outer layer in Groovy or Kotlin.
+<div class="remark">
+Gradle establishes a vocabulary for its model by exposing a 
+<a href="https://en.wikipedia.org/wiki/Domain-specific_language" target="web"><em>Domain-specific language</em></a> (<k>DSL</k>) 
+implemented in	Groovy/Kotlin.<br/>
+In our work, we will write <i>Gradle configuration scripts</i> in <k>Kotlin DSL</k> as described in 
+<a href="https://docs.gradle.org/current/dsl/index.html" target="web">Gradle Build Language Reference</a>
+</div>	
+
+	<h3 id="basic">Gradle | Basic concepts</h3>
+
+ 
+<center><img src="./img/gradle-project-tasks.png" alt="gradle-project-tasks.png" width="80%" height="80%"></center>
+ 
+
+	</li>
+	<li><k>Gradle project</k>: the semantics is up to us (e.g. build a library JAR, a web application ...).
+	A project does not necessarily represent a <i>thing to be built</i>. It might represent a  <k>thing to be done</k>, 
+		such as deploying your application to staging or production environments. 
+		Each project is made up of one or more <ks>tasks</ks>.</li>
+	<li><k>Gradle <a href="https://docs.gradle.org/current/dsl/org.gradle.api.Task.html" target="web">Task</a></k>: 
+	atomic piece of work (e.g. compiling some classes, creating a JAR,...) which a build performs. </li>
+	<li><k>Gradle build script</k>:  Gradle executes  as a set of 'declarative' sentences written as a Groovy (<ks>build.gradle</ks>) or Kotlin 
+	(<ks>build.gradle.kts</ks>) script. 
+	These languages promote the creation of 
+	<a href="https://en.wikipedia.org/wiki/Domain-specific_language" target="web"><em>Domain-specific language</em></a> (<k>DSL</k>).
+	
+</li>
+	<li><k>Gradle plugin</k>: Gradle at its core intentionally provides very little for real world
+automation. All of the useful features, are added by plugins, that provide concepts, configuration blocks, and tasks  reusable across projects.
+	</li>
+	<li><k>Gradle Java plugin</k>: introduces the concept of source set, with an associated compile classpath
+and runtime classpath, with defaults that copy the Maven conventions:
+		<ul>
+		<li>main containing <ks>src/main/java</ks>  and <ks>src/main/resources</ks> </li>
+		<li>test containing <ks>src/test/java</ks>  and <ks>src/test/resources</ks> </li>
+		</ul>
+	</li>
+	
+	
+<h3 id="wrapper">Gradle wrapper </h3>
+ 
+	<li>		
+The <a href="https://docs.gradle.org/current/userguide/gradle_wrapper.html" target="web">Gradle wrapper</a>  is a core feature that 
+enables a machine to run a Gradle build script without having to install the runtime. 
+It also ensures that the build script is run with a specific version of Gradle. <br/><br/>
+It does so by automatically downloading the Gradle
+runtime from a central location, unpacking it to your local file system, and using itfor the build. 
+<br/><br/>
+Its ultimate goal is to create reliable and reproducible builds independent
+of the operating system, system setup, or installed Gradle version.
+<br/><br/>	
+		<ul>
+ 		<li>The file <a href="../gradle/wrapper/gradle-wrapper.properties" target="web">gradle/wrapper/gradle-wrapper.properties</a>
+stores the information about the Gradle distribution.</li>
+		<li><pre>gradle wrapper --gradle-version xx.yy  <kc>//downloads a specific version</pre> </li>
+		</ul>
+ 		<div class="remark">
+		The Gradle wrapper is the correct way to use gradle.
+		<pre>gradlew &lt;task></ks> <kc>//runs <tt>&lt;task></tt> with that exact version.</kc></pre>
+		</div>
+</li>
+ 
+
+<h3 id="execution">Gradle execution</h3>
+<li>
+Gradle uses two main directories to perform and manage its work: the Gradle <ks>user home</ks> directory 
+and the <ks>Project root</ks> directory.
+See <a href="https://docs.gradle.org/current/userguide/directory_layout.html" target="web">The Directories and Files Gradle Uses</a>
+<l/i>
+
+<li>
+Each time you initiate a build, the JVM has to be started, Gradle’s dependencies have to be loaded into the class
+loader, and the project object model has to be constructed. This procedure usually
+takes a couple of seconds. 
+
+<h4 id="deamon">Gradle deamon</h4>
+The Gradle daemon runs Gradle as a background process. Once started, the gradle command
+will reuse the forked daemon process for subsequent builds, avoiding the
+startup costs altogether.
+<br>The daemon process will automatically expire after some (three-hour) idle time.
+<br><br>
+</li>
+
+<li>
+Gradle evaluates and executes build scripts in three phases (that form Gradle’s Build Lifecycle): 
+<k>Initialization, Configuration, Execution</k>.
+<div class="remark">
+Gradle scripts are <k>configuration scripts</k>. As the script executes, it configures an object of a particular type. <br/>
+For example, as a <tt>build script</tt> executes, it configures an object of type 
+<a href="https://docs.gradle.org/current/javadoc/org/gradle/api/Project.html" target="web">Project</a> ,
+(while Init script delegates to Gradle and Settings script delegates to Settings). 
+This object is called the delegate object of the script.
+</div>
+
+<center><img src="./img/06fig04.jpg" alt="06fig04.jpg" width="80%" height="80%"></center>
+
+<li>
+When Gradle executes a Kotlin build script (<ks>.gradle.kts</ks>), it compiles the script into a subclass of 
+<a href="https://gradle.github.io/kotlin-dsl-docs/api/org.gradle.kotlin.dsl/-kotlin-build-script/index.html" target="web">KotlinBuildScript</a>.
+This means that all of the visible properties and functions declared by the KotlinBuildScript type are available in your script.
+<br/>
+Each build script is associated with an object of type 
+<a href="https://docs.gradle.org/current/javadoc/org/gradle/api/Project.html" target="web">Project</a> 
+ and as the build script executes, it configures this 
+ <a href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html" target="web">Gradle Project</a>.
+</li>
+
+<li>
+A build essentially configures a set of tasks and wires them together — based on their dependencies — to create a Directed acyclic graph (DAG) of thasks. 
+
+ <center><img src="./img/gradleBuild.png" alt="gradleBuild.png" width="80%" height="80%"></center>
+
+Once the task graph has been created, Gradle determines which tasks need to be run in which order and then proceeds to execute them.
+</li>
+
+<li>
+Delaying the actual execution allows for a more fine grained configuration. This will be especially useful when modifying existing behavior 
+<div class="remark">
+<ul>
+<li>The base mechanism is hiding imperativity under a clean, <k>declarative API</k>.
+Usability, understandability, and, ultimately, maintability, get increased when <i>'Imperativity gets hidden under the hood'</i>.
+</li>
+
+<li>Well-designed build scripts describe <k>what</k> steps are needed to build the software, 
+not <k>how</k> those steps should do the work. That’s a job for custom task types and plugins.</li>
+</ul>
+</div>
+</li> 
+
+<li>
+<h3 id="plugins">Gradle plugins</h3>
+<div class="remark"> 
+All of the useful features of Gradle, like the ability to compile Java code, are added by <k>plugins</k>. 
+</div>
+From <a href="https://docs.gradle.org/current/userguide/plugins.html#sec:using_plugins" target="web"><ks>Using plugins</ks></a>,
+we read that, to use the build logic encapsulated in a plugin, Gradle first  needs to <k>resolve</k> the plugin, and then it needs to 
+<k>apply</k> the plugin to the target, usually a Project.
+<br/><br/>
+
+Plugins add new tasks (e.g. JavaCompile), domain objects (e.g. SourceSet), conventions 
+(e.g. Java source is located at src/main/java) as well as extending core objects and objects from other plugins.
+<br/><br/>
+Gradle distinguishes two types of plugins: <i>script plugins</i> and <i>binary plugins</i>.
+<ul>
+<li>A <k>script plugin</k> is a regular Gradle build script <ks>that can be imported</ks> into other build scripts.
+ <!-- To use an external library directly in a build script, you’ll need to declare it in its classpath.
+For that purpose, Gradle’s API interface 
+<a href="https://docs.gradle.org/current/javadoc/org/gradle/api/Project.html" target="web"><ks>org.gradle.api.Project</ks></a>
+ exposes the method <ks>buildscript</ks>.--> 
+The Gradle’s API class <a href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html" target="web">Project</a>
+ exposes the method <k>buildscript</k>, that works as a 
+ <a href="https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.Configuration.html" target="web"> Configuration</a>
+ section that states  how gradle is able to perform the build. 
+ <pre>
+ buildscript{
+	repositories{ ... }
+	dependencies{ classpath '... xxx' }	<kc>//To use an external library </kc>
+	task{ ... }
+ }
+ apply plugin: 'xxx'
+</pre>
+</li>
+<li>A <k>binary plugins</k> must implement the interface  
+<a href="https://docs.gradle.org/current/javadoc/org/gradle/api/Plugin.html" target="web"><ks>org.gradle.api.Plugin</ks></a>. When
+defined by the user, uts source code usually lives in the <ks>buildSrc</ks> directory and is distributed as a <tt>JAR</tt> file.
+
+<pre>
+ plugins{
+	java
+	application
+ }
+</pre>
+ 
+</li>
+</ul>
+See <a href="https://docs.gradle.org/current/userguide/writing_build_scripts.html" target="web">Writing Build Scripts</a> 
+
+<h4 id="javaplugin">The Java plugin</h4> 
+ The Java plugin is a <i>small <k>opinionated</k> framework</i> that assumes sensible default values for many aspects of a Java project.
+ <br/>
+In  <a href="https://docs.gradle.org/current/userguide/application_plugin.html" target="web">The Java Application Plugin</a> we can see
+the following diagram for the 
+<a href="https://docs.gradle.org/current/userguide/java_plugin.html#lifecycle_tasks" target="web">Java Plugin Lifecycle Tasks</a>:
+
+<center><img src="./img/javaPluginTasks.png" alt="javaPluginTasks.png" width="100%" height="100%"></center>
+
+The command line
+<pre>
+gradlew properties
+</pre> 
+gives us a list of configurable standard and plugin properties, plus their default values.
+
+</li>
+
+<li><h3 id="config">Gradle Configurations</h3>
+
+In Gradle, dependencies are grouped by configurations.
+A <a href="https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.Configuration.html" target="web"><ks>Configuration</ks></a>
+represents a <b class="popup" onclick="myFunction()"><em>resolvable</em> 
+  <span class="popuptext" id="myPopup">'resolvable' means that it can be mappable to actual resources)</span>
+</b> set of dependencies, and is identified by a unique name.
+<br/><br/>
+<!-- Plugins introduce configurations to define the scope for a dependency. -->
+Every dependency declared for a Gradle project applies to a specific <k>scope</k> by means of a
+<a href="https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.Configuration.html" target="web"> <ks>Configuration</ks></a>.
+ For example some dependencies should be used for compiling source code whereas others only need to be available at runtime.
+
+<br/><br/>
+Many Gradle plugins add pre-defined configurations to your project. 
+The <a href="https://docs.gradle.org/current/userguide/java_plugin.html" target="web">J<ks>ava plugin</ks></a>, for example, 
+adds configurations to represent the various classpaths it needs for source code compilation, 
+executing tests and the like.  
+More specifically, dependencies required for compiling Java production source code are added
+with the <k>implementation</k> configuration.
+<div class="remark">
+Gradle version 6 supports both the <k>implementation</k> and <i>compile</i> dependency configurations.
+<br/>
+However, <i>compile</i>, compile is now deprecated.
+</div>
+
+
+<center><img src="./img/dependency-management-configurations.png" alt="dependency-management-configurations.png" width="65%" height="65%"></center>
+<br/>
+The <a href="https://docs.gradle.org/current/userguide/java_library_plugin.html" target="web"><ks>Java Library Plugin</ks></a>
+adds an additional api configuration, on top of the <k>implementation</k> configuration.
+
+<br/><br/>
+Configurations can be directly added and accessed at the root level of a project; you
+can decide to use one of the configurations provided by a plugin or declare your own.
+For example:
+<pre>
+dependencies {
+   testImplementation 'junit:junit:4.13'
+   implementation 'com.google.guava:guava:29.0.1-jre'
+}
+</pre>
+shows  two dependencies: the Junit library which targets the <k>testImplementation</k> dependency target 
+and the guava library which targets the <k>implementation</k> dependency target.
+<br/> <br/> 
+Every project owns a 
+<a href="https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.ConfigurationContainer.html" target="web">ConfigurationContainer</a>
+that manages the corresponding configurations.
+
+</li>
+
+<li><h3 id="extends">Extending Gradle </h3>
+Gradle provides several mechanisms that allow you to extend it: 
+<ul>
+<li><a href="https://docs.gradle.org/current/userguide/custom_tasks.html" target="web">Custom task types</a>
+(It’s typically best to put the source file for a custom task type in the 
+<a href="https://docs.gradle.org/current/userguide/organizing_gradle_projects.html#sec:build_sources" target="web"><k>buildSrc</k></a> directory)</li>
+<li>Custom task actions</li>
+<li>Extra properties</li>
+</ul>
+
+
+</li>
+
+
+
+
+
+
+</ol>
+
+<h1 id="handson">Hands on Gradle</h1>
+
+<ul>
+<li>
+<h3 id="starting">Starting</h3>
+From <a href="https://docs.gradle.org/current/samples/sample_building_java_applications.html" target="web">
+Building Java Applications Sample</a>.<br/><br/>
+
+Start with some automatic code generation:
+<pre>
+<k>gradle init</k> (select 2, 3, 1, 2, 1, demo, demo)
+
+├── gradle 
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew 	<kc>//Generable with the built-in command</kc> <k>gradle wrapper --gradle-version=&lt;VERSION></k>
+├── gradlew.bat 
+├── settings.gradle.kts 	<kc>//lists the subprojects</kc>
+└── app
+    ├── build.gradle.kts 	<kc>//the build configuration script</kc>
+    └── src
+        ├── main
+        │   └── java 
+        │       └── demo
+        │           └── App.java
+        └── test
+            └── java 
+                └── demo
+                    └── AppTest.java
+</pre>
+
+</li>
+
+<li> 
+Our build contains one subproject called <ks>app</ks> that represents the Java application we are building. 
+It is configured in the <a href="../app/build.gradle.kts" target="web">build.gradle.kts</a> file.
+
+<pre>
+plugins { application  }
+
+repositories { jcenter() }
+
+dependencies {
+    testImplementation("junit:junit:4.13")
+    <kc>// This dependency is used by the application.</kc>
+    implementation("com.google.guava:guava:29.0-jre")
+}
+
+application { mainClass.set("demo.App") }
+</pre>
+
+The plugin <a href="https://docs.gradle.org/current/userguide/application_plugin.html" target="web">Application</a> 
+implicitly applies the 
+<a href="https://docs.gradle.org/current/userguide/java_plugin.html#java_plugin" target="web">Java plugin</a>
+
+Java plugin and the 
+<a href="https://docs.gradle.org/current/userguide/distribution_plugin.html#distribution_plugin" target="web">Distribution plugin</a>
+that facilitates building archives that serve as distributions of the project. 
+Distribution archives typically contain the executable application and other supporting files, such as documentation.
+ 
+</li>
+
+<li>Loook at the generated file <a href="../settings.gradle.kts" target="web">settings.gradle.kts</a>.
+<div class="remark">
+One of the purposes of the <a href="../settings.gradle.kts" target="web">settings</a> object is to allow you 
+to declare a <k>list of projects</k> which are to be included in the build. <br/>
+Each subproject has its own <tt>build.gradle.kts</tt> file. See the section <a href="#multiprojects">Multi projects</a>.
+</div>
+By default, Gradle uses the directory name as project name. 
+You can change this in the <a href="../settings.gradle.kts" target="web">settings.gradle.kts</a> file.
+
+</li>
+
+
+<li>
+
+<h3 id="buildrun">Build and run</h3>
+
+The <ks>Gradle wrapper</ks> is the correct way to use gradle.
+
+ 
+The <a href="https://docs.gradle.org/current/userguide/application_plugin.html" target="web">Application</a> 
+bundles the application, with all its dependencies.
+<pre>
+<k>gradlew build</k> 	 
+SETTINGS RUNS ...
+
+> Configure project :app
+ ...... build in app
+
+BUILD SUCCESSFUL in 9s
+7 actionable tasks: 6 executed, 1 up-to-date
+</pre>
+Look at the generated directory <a href="../app/build/" target="web"><ks>app/build/</ks></a> and at the generated report file for tests
+<a href="../app/build/reports/tests/test/index.html" target="web"><ks>index.html</ks></a>.
+
+<br/><br/>
+As the script executes, it configures an object called the <ks>delegate object</ks> of the script:
+	<ul>
+	<li><i>Build</i> script: delegates to instance of 
+	<a href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html" target="web">Project</a>
+	</li>
+	<li><i>Settings</i>  script: delegates to instance of 
+	<a href="https://docs.gradle.org/current/dsl/org.gradle.api.initialization.Settings.html" target="web">Settings</a>
+	</li>  
+	<li><i>Init</i>  script: delegates to instance of 
+	<a href="https://docs.gradle.org/current/dsl/org.gradle.api.invocation.Gradle.html" target="web">Gradle</a>
+	</li> 
+	</ul>
+</li>
+
+<li>
+<pre>
+<k>gradlew -q build</k> 	<kc>//-q suppresses Gradle’s log messages</kc>
+SETTINGS RUNS ...
+ ...... build top-level		//After Multi project
+ ...... build in app
+</pre>
+
+</li>
+
+<li>
+<pre>
+<k>java -cp app/build/classes/java/main    demo.App </k> 	<kc>//using Java to run</kc>
+Hello World!
+</pre>
+</li>
+
+<li>
+<pre>
+<k>gradlew run</k> 	<kc>//using Gradle to run</kc>
+SETTINGS RUNS ...
+
+> Configure project :app
+ ...... build in app
+
+> Task :app:run
+Hello World!
+
+<kc>BUILD SUCCESSFUL</kc> in 7s
+2 actionable tasks: 2 executed 
+</pre>
+</li> 
+ 
+<li>
+<pre>
+</k>jar tf app/build/libs/app-1.0.jar</k>	<kc>//Verify that the archive is valid</kc>
+META-INF/
+META-INF/MANIFEST.MF
+demo/
+demo/App.class
+
+<k>gradlew jar</k>	<kc>//Already done by application</kc>
+
+<k>jar xf app/build/libs/app-1.0.jar META-INF/MANIFEST.MF</k>
+
+<k>java -jar app/build/libs/app-1.0.jar</k> 	<kc>//run from jar</kc>
+Hello World!
+</pre>
+</li>
+
+<li><h3>Properties</h3>
+Each instance of Project and Task provides properties that are accessible through getter
+and setter methods. A property could be a task’s description or the project’s version.
+<br/><br/>
+Properties can be directly injected into your project by declaring them in a properties
+file named <ks>gradle.properties</ks></a>
+under the directory <tt>&lt;USER_HOME>/.gradle</tt> or a project’s root directory. 
+This file consists of key-value pairs.
+
+<pre>
+myprop1="myprop1-value"
+</pre>
+
+<h4>Extra properties</h4>
+All enhanced objects in Gradle’s domain model can hold extra user-defined properties.
+This includes, but is not limited to, projects, tasks, and source sets.
+<pre>
+ext{
+    set( "myprop3", "myprop3-value defined using the ext namespace ")
+}
+</pre>
+Extra properties on a project are visible from its subprojects.
+<br/><br/>
+For examples, see later the sub-project <a href="#taskProperties"><ks>taskProperites</ks></a>:
+
+
+<h4>Predefined access to properties</h4>
+<pre>
+<k>gradlew project</k> 	<kc>//get information about your project</kc>
+
+Root project 'demo'
+\--- Project ':app'
+
+
+<k>gradlew properties</k> 	<kc>//get a list of  standard and plugin properties</kc>
+allprojects: [root project 'demo', project ':app']
+...
+name: demo
+...
+project: root project 'demo'
+...
+rootDir: C:\Didattica2018Work\iss2021Lab\GradleIntro
+rootProject: root project 'demo'
+...
+subprojects: [project ':app']
+...
+</pre>
+
+
+</li>
+
+<!--
+<h2 id="dependencies">About <a href="https://docs.gradle.org/current/userguide/declaring_dependencies.html" target="web"> dependencies</a>
+and <a href="https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.Configuration.html" target="web"> Configuration</a></h2>
+-->
+
+<li>
+<h3>Implementation configuration</h3>
+
+<!-- From https://tomgregory.com/gradle-implementation-vs-compile-dependencies/ -->
+When we’re configuring Gradle dependencies in a Java project, all we’re really doing is configuring which dependencies should appear 
+on two classpaths:
+<ul>
+<li><k>Compile classpath</k> – this is a list of dependencies that are required for the JDK to be able to compile Java code into <tt>.class</tt> files</li>
+<li><k>Runtime classpath</k> – this list of dependencies is required to actually run the compiled Java code</li>
+</ul>
+
+Given there are only two classpaths, it makes sense that we have three options to declare our dependencies.
+
+<center><img src="./img/JavaDependencies.png" alt="JavaDependencies.png" width="65%" height="65%"></center>
+Use the <k>implementation</k> dependency configuration if you need the dependency to be on both the compile and runtime classpaths. 
+If not, consider <tt> compileOnly</tt> or <tt> runtimeOnly</tt>. 
+<br/><br/>
+
+ 
+You can inspect your classpaths using the task <k>dependencies</k> (see
+ <a href="https://docs.gradle.org/current/userguide/viewing_debugging_dependencies.html" target="web"><ks>Viewing and debugging dependencies</ks></a> 
+ )
+ Gradle can visualize the whole dependency tree for every configuration available in a project.
+<pre>
+<k>gradle -q :app:dependencies --configuration implementation</k>
+implementation - Implementation only dependencies for source set 'main'. (n)
+\--- com.google.guava:guava:29.0-jre (n)
+
+(n) - Not resolved (configuration is not meant to be resolved)
+A web-based, searchable dependency report is available by adding the --scan option.
+</pre>
+
+It’s a very similar story for test dependencies, with the Gradle Java plugin providing the 
+<tt>testRuntimeOnly</tt>, <tt>testImplementation</tt>, and <tt>testCompileOnly</tt> dependency configurations. 
+
+<center><img src="./img/JavaTestDependencies.png" alt="JavaTestDependencies.png" width="65%" height="65%"></center>
+
+<pre>
+
+<k>gradle -q :app:dependencies </k>
+testImplementation - Implementation only dependencies for source set 'test'. (n)
+\--- junit:junit:4.13 (n)
+
+(n) - Not resolved (configuration is not meant to be resolved)
+A web-based, searchable dependency report is available by adding the --scan option.
+</pre>
+
+
+The `gradle dependencies` command that lists all the dependencies of a project for each dependency target 
+<pre>
+<k>gradle -q dependencies </k>
+No configurations
+
+<k>gradlew :app:dependencies</k>
+<kc>//... list all the dependencies</kc>
+
+<k>gradlew :app:dependencies --configuration testRuntimeClasspath</k>
+testRuntimeClasspath - Runtime classpath of source set 'test'.
++--- com.google.guava:guava:29.0-jre
+|    +--- com.google.guava:failureaccess:1.0.1
+|    +--- com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
+|    +--- com.google.code.findbugs:jsr305:3.0.2
+|    +--- org.checkerframework:checker-qual:2.11.1
+|    +--- com.google.errorprone:error_prone_annotations:2.3.4
+|    \--- com.google.j2objc:j2objc-annotations:1.3
+\--- junit:junit:4.13
+     \--- org.hamcrest:hamcrest-core:1.3
+</pre>
+
+
+<h3>Configuration hierarchies</h3>
+A configuration can extend other configurations to form an inheritance hierarchy. 
+Child configurations inherit the whole set of dependencies declared for any of its superconfigurations.
+  <br/> <br/>
+Configuration inheritance is heavily used by Gradle core plugins like the 
+<a href="https://docs.gradle.org/current/userguide/java_plugin.html" target="web">Java plugin</a>. 
+A Java project that uses JUnit to write and execute test code also needs Guava if its classes are imported in the production source code.
+
+<center><img src="./img/dependency-management-configuration-inheritance.png" 
+	alt="dependency-management-configuration-inheritance.png" width="65%" height="65%"></center>
+
+
+
+
+<hr/>
+A project dependency is a special form of an execution dependency. 
+It causes the other project to be built first and adds the jar with the classes of the other project to the classpath. 
+It also adds the dependencies of the other project to the classpath.
+<hr/>
+
+</li>
+</ul>
+
+
+
+<h2>About build, project, <a href="https://docs.gradle.org/current/dsl/org.gradle.api.Task.html" target="web">Tasks</a></h2>
+
+A <ks>Task</ks>is an atomic operation on the project, which can have input and output files,
+depend on other tasks (can be executed only if those are completed).
+
+<ol>
+
+<li><h3>Tasks as operations</h3>
+
+From <a href="https://docs.gradle.org/current/userguide/tutorial_using_tasks.html" target="web">Build Script Basics</a>:<br/><br/>
+Example: add a task in <a href="../app/build.gradle.kts" target="web">build.gradle.kts</a>
+and execute it.
+
+<pre>
+tasks("hello") { <!-- <kc>//Inline function with reified type!</kc> -->
+    doLast {	<kc>//a shortcut to define an action</kc>
+         println("Hello world from app - this=${this}")
+    }
+}
+
+<k>gradlew hello</k>
+SETTINGS RUNS ...
+
+> Configure project :app
+ ...... build in app
+
+> Task :app:hello
+Hello world from app - this=task ':app:hello'
+
+BUILD SUCCESSFUL in 6s
+1 actionable task: 1 executed
+
+<k>gradlew -q hello</k>	<kc>//<k>-q</k> suppresses Gradle’s log messages</kc>
+SETTINGS RUNS ...
+ ...... build in app
+Hello world from app - this=task ':app:hello'
+
+
+<k>gradlew -q :app:hello</k>	<kc>//Another way to call</kc>
+---------------------------------------------------------------------
+<k>gradlew tasks --all </k>	<kc>//Shows all available tasks</kc>
+</pre>
+
+
+From <a href="https://docs.gradle.org/current/dsl/index.html" target="web">Gradle Build Language Reference</a> we read:
+<div class="remark">
+A build script is made up of zero or more statements and  script blocks. <br/>
+<ul>
+<li><ks>Statements</ks> can include method calls, property assignments, and local variable definitions. </li>
+<li>A <ks>script block</ks> is a method call which takes a <ks>closure</ks> as a parameter. 
+<!-- The closure is treated as a <i>configuration closure</i> which configures some delegate object as it executes. -->
+</li>
+</ul>
+</div>
+
+In particular:
+		<ul>
+		<li>Every task has a list of <k>actions</k>, and when it executes it runs all of them in the order they are declared.	</li>
+		<li>The default task has only actions <tt>doFirst</tt> and <tt>doLast</tt>.</li>
+		<li>Tasks can declare dependencies among each other: one task may need other tasks to complete successfully.</li>
+		<li>The less dependencies are declared, the faster is the build (due to parallelization).</li>
+		<li>Transitive dependencies are resolved automatically (if available in the repository <k>Maven Central / JCenter</k>).</li>
+		</ul>
+</li>
+
+<!--
+<li><h3>TaskContainer</h3>
+
+From <a href="https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskContainer.html" target="web">Interface TaskContainer</a>
+we gain knowledge about <tt>register</tt>:
+<pre>
+TaskProvider&lt;Task> register​(String name, Action&lt;? super Task> configurationAction)
+</pre>
+<ul>
+<li>A TaskContainer is responsible for managing a set of Task instances.</li>
+<li>You can obtain a <tt>TaskContainer</tt> instance by calling <ks>Project.getTasks()</ks>, 
+or using the tasks property in your build script.</li>
+</ul>
+</li>
+-->
+
+<li><h3>Task configuration vs. task execution</h3>
+<div class="remark">
+The build script executes when Gradle is invoked; it <k>configures</k> tasks and
+dependencies.<br/>
+A task is actually <k>executed later</k>,  when it is invoked.
+</div>
+ 
+
+<pre>
+tasks("notgood"){
+    println("Message shown during the configuration phase: no task action defined ")
+}
+
+<k>gradlew -q notgood</k>	
+SETTINGS RUNS ...
+ ...... build in app
+Message shown during the configuration phase: no task action defined in task ':app:notgood'
+</pre>
+</li>
+
+
+
+
+<li><h3>Gradle’s tasks embeds code.</h3>
+<div class="remark">
+Gradle’s <ks>build scripts are code</ks>: they give you the full power of Groovy and Kotlin.
+<br/><br/>
+<ks>tasks</ks> is a container objects that contain Task objects. You can use:<br/>
+ the <ks>register()</ks> method to create new ones <br/>
+ the <ks>named()</ks> method to configure existing tasks. 
+</div>
+
+<br/>
+Example: add in <a href="../app/build.gradle.kts" target="web">build.gradle.kts</a>
+<pre>
+tasks.register("count") {
+    doLast {
+        repeat(4) { print("$it ") }
+        println()
+    }
+}
+
+<k>gradlew -q count</k>
+SETTINGS RUNS ...
+ ...... build in app
+0 1 2 3
+
+-----------------------------------------------------------
+tasks.named("count"){
+    doFirst { println("count STARTS ")}
+}
+
+<k>gradlew -q count</k>
+SETTINGS RUNS ...
+ ...... build in app
+count STARTS
+0 1 2 3
+
+</pre>
+
+</li>
+ 
+
+
+<li><h3>Task dependencies</h3>
+ 
+
+You can declare tasks that <ks>depend on other tasks</ks>.
+Example: add in <a href="../app/build.gradle.kts" target="web">app/build.gradle.kts</a>
+<pre>
+tasks.register("welcome") {	<kc>//could be declared <k>before</k> <tt>hello</tt> and <tt>count</tt> (hoisting)</kc>
+    dependsOn("hello")
+    dependsOn("count")
+    doLast {
+        println("Welcome task that depends on tasks hello and count ")
+    }
+}
+
+<k>gradlew -q welcome</k> 
+SETTINGS RUNS ...
+ ...... build in app
+0 1 2 3
+Hello world from app - this=task ':app:hello'
+Welcome task that depends on tasks hello and count
+</pre>
+
+<div class="remark">
+Gradle’s philosophy is to declare <k>what</k> should be executed before a given task, <k>not how</k> it should be executed.
+Thus, Gradle <ks>doesn’t guarantee</ks> the order in which the dependencies of a task are executed.
+<br/><br/>
+However, the execution order is automatically determined by the <ks>input/output specification</ks> of a task.
+Task inputs and outputs are evaluated during the <k>configuration phase</k> to wire up the task dependencies
+</div>
+
+<h4>Task inputs and outputs</h4>
+A task is considered <k>up to date</k> if inputs and outputs haven’t changed since the last task execution.
+Therefore, the task only runs if the inputs and outputs are different; otherwise, it’s skipped.
+Inputs and outputs are defined as fields in class 
+<a href="https://docs.gradle.org/current/javadoc/org/gradle/api/DefaultTask.html" target="web"> <ks>DefaultTask</ks></a>.
+<br/><br/>
+For examples see the section <a href="#userdefinedtasks">User-defined Task types</a>.
+
+</li>
+
+
+
+<li><h3>The <ks>clean</ks> task </h3>  
+The clean task is defined by the 
+<a href="https://docs.gradle.org/current/userguide/java_plugin.html" target="web">Java plugin</a>
+
+ and it simply removes the <a href="../app/build/" target="web">app/build/</a> (buildDir) folder, that contains the output of the gradle operation)
+
+<br/><br/>
+Gradle will track task dependencies and clean appropriate parts for you. Thus, You don't need to run the clean task. 
+However, if custom tasks don't track their dependencies well (they're bugged), then clean is a workaround.
+ 
+<pre>
+tasks.register("myclean") {  
+	doLast {
+		if ( !buildDir.deleteRecursively() ) {
+			throw IllegalStateException("Cannot delete $buildDir")
+		}
+	}
+}
+
+<k>gradlew clean</k> 	 
+ 
+</pre>
+
+</li>
+
+<li><h3>Dynamic Tasks</h3>
+You can <ks>create tasks dynamically</ks>.
+
+<pre>
+repeat(4) { counter ->
+    tasks.register("task$counter") {
+        doLast {
+            println("I'm task number $counter")
+        }
+    }
+}
+
+<k>gradlew -q task1</k>
+SETTINGS RUNS ...
+ ...... build in app
+I'm task number 1
+</pre>
+</li>
+
+<li>
+You can exploit <ks>existing task types</ks>
+<pre>
+tasks.register<k>&lt;Copy></k>("mycopy") {    <kc>//Registers a new task of type Copy and configures it</kc>
+    println("projectDir= $projectDir") <kc>//GradleIntro\app</kc>
+    println("buildDir  = $buildDir")   <kc>//GradleIntro\app\build</kc>
+    from("$projectDir/../app/src"){
+        exclude( "**/main/resources", "**/test" )
+    }
+    into( "../copiedFiles" )
+}
+
+<k>gradlew -q mycopy</k>
+SETTINGS RUNS ...
+ ...... build in app
+projectDir= C:\Didattica2018Work\iss2021Lab\GradleIntro\app
+buildDir  = C:\Didattica2018Work\iss2021Lab\GradleIntro\app\build
+<kc>//Look at the (created) directory <i>copiedFiles</i></kc>
+</pre>
+</li>
+
+ 
+
+
+<!--
+<pre>
+<kc>// Gradle way to create a configuration</kc>
+val compileClasspath by configurations.creating <kc>// Delegation</kc>
+	dependencies {
+		forEachLibrary { // this function does not exist, unfortunate...
+		compileClasspath(files(it))
+	}
+}
+
+
+tasks.register&lt;Exec>("compileJava") {
+	<kc>// Resolve the classpath configuration (in general, files could be remote and need fetching)</kc>
+	val classpathFiles = compileClasspath.resolve()
+	val sources = findSources() <kc>// Find sources</kc>
+	if (sources != null) {
+		val javacExecutable = Jvm.current().javacExecutable.absolutePath
+		val separator = if (Os.isFamily(Os.FAMILY_WINDOWS)) ";" else ":"  
+		commandLine(
+          "$javacExecutable", "-cp", classpathFiles.joinToString(separator = separator),
+          "-d", "bin", *sources
+	    )
+	}
+}
+
+data class FinderInFolder(val directory: String) {
+fun withExtension(extension: String): Array<String> = projectDir
+	.listFiles { it: File -> it.isDirectory && it.name == directory }
+	?.firstOrNull()
+	?.walk()
+	?.filter { it.extension == extension }
+	?.map { it.absolutePath }
+	?.toList()
+	?.toTypedArray()
+	?: emptyArray()
+}
+fun findFilesIn(directory: String) = FinderInFolder(directory)
+fun findSources() = findFilesIn("src").withExtension("java")
+fun findLibraries() = findFilesIn("lib").withExtension("jar")
+fun DependencyHandlerScope.forEachLibrary(todo: DependencyHandlerScope.(String) -> Unit) {
+findLibraries().forEach { todo(it) }
+}
+
+
+</pre>
+-->
+
+ 
+<h1 id="">Advanced</h1>
+
+<h2 id="multiprojects">Multi projects</h2>
+One of the purposes of the <a href="../settings.gradle.kts" target="web">settings</a> object is to allow you 
+to declare all the projects which are to be included in the build. See
+<a href="https://docs.gradle.org/current/userguide/multi_project_builds.html" target="web">Multi-Project Builds in Gradle</a>
+
+<div class="remark">
+The benefits of using modular programming include:
+<ul>
+<li>less code has to be written.</li>
+<li>a single procedure can be developed for reuse, eliminating the need to retype the code many times.</li>
+<li>the code is stored across multiple files.</li>
+<li>errors can easily be identified, as they are localised to a subroutine or function.</li>
+<li>the same code can be used in many applications.</li>
+<li>the scoping of variables can easily be controlled.</li>
+</ul>
+</div>
+ 
+
+In the following, we will create new subprojects to introduce further examples of gradle tasks.
+<br/><br/>
+
+To this end, we will introduce a <ks>new directory for each example</ks>, by properly extending the content of the 
+<a href="../settings.gradle.kts" target="web">settings.gradle.kts</a> file. For example:
+
+<pre>
+println("SETTINGS RUNS ...")
+rootProject.name = "demo"  
+include("app")  
+<k>include("taskAccess")</k>
+</pre>
+
+
+Moreover, we introduce a <a href="../build.gradle.kts" target="web"><ks>top-level project build.gradle.kts</ks></a>  
+that configures build behaviour that is <k>shared</k> between all sub-modules so that we don’t have to duplicate things in the sub-modules:
+
+<pre>
+println(" ...... build top-level   ")
+
+allprojects{
+    tasks.register("explain"){	<kc>//The (sub-)project shows itself</kc>
+        doLast {
+            println( "Hello, I'm ${project.name} project. My tasks are:")
+            tasks.forEach { println("${it.name}") }
+        }
+    }
+    repeat(4) { counter ->	<kc>//Each (sub-)project defines 4 tasks</kc>
+        tasks.register("commontask$counter") {
+            doLast {
+                println("I'm commontask number $counter n project ${<k>project.name</k>}")
+            }
+        }
+    }
+}
+</pre>
+
+<h4>gradlew -q project</h4>	
+Shows the structure of the project.
+
+<pre>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+Message shown during the configuration phase: no task action defined in task ':app:notgood'
+
+Root project 'demo'
++--- Project ':app'
+\--- Project ':taskAccess'
+</pre>
+
+ 
+
+<h4>gradlew -q :app:explain</h4>
+First, all the build configurations are executed and then the shared task <tt>explain</tt> is executed with reference 
+to the (sub-)project <tt>app</tt>
+<pre>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+ ...... build in taskAccess sub-project
+Hello, I'm app project. My tasks are:
+Message shown during the configuration phase: no task action defined in task ':app:notgood'
+... 
+    <kc>//Shows the tasks defined in the <k>java plugin</k>, the tasks defined in  the top-level project build
+    <a href="../build.gradle.kts" target="web"><k>./build.gradle.kts</k></a>  (e.g. <ks>explain, commontask0, commontask1, commontask2, commontask3</ks>)
+    and the tasks defined in the <tt>app</tt> build
+    <a href="../app/build.gradle.kts" target="web"><k>app/build.gradle.kts</k></a>  (e.g. <ks>hello, notgood, count, task0, task1, task2, task3, welcome</ks>)
+</kc>
+</pre>
+
+<ol>
+<li><h3>Running multi-project tasks</h3>
+Let us try some call, to better understand the behavior of Gradle.
+<pre>
+<k>gradlew -q :app:commontask0</k>   <kc>//execute a task of (sub-)project app</kc>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+ ...... build in taskAccess sub-project
+I'm commontask number 0 in project app
+
+
+<k>gradlew -q :taskAccess:commontask0</k>  <kc>//execute a task of (sub-)project taskAccess</kc>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+ ...... build in taskAccess sub-project
+I'm commontask number 0 in project taskAccess
+
+<k>gradlew -q commontask0</k>  <kc>//execute the task in all the (sub-)projects</kc>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+ ...... build in taskAccess sub-project
+I'm commontask number 0 in project demo
+I'm commontask number 0 in project app
+I'm commontask number 0 in project taskAccess
+</pre>
+ 
+</li>
+
+<li><h3>Default tasks</h3>
+Gradle allows you to define one or more default tasks that are executed if no other tasks are specified. 
+
+<pre>
+defaultTasks( "count" )	<kc>//declared in <a href="../build.gradle.kts" target="web"><k>build.gradle.kts</k></a> allprojects </kc>
+<kc>//The task <tt>count</tt> is defined in <a href="../app/build.gradle.kts" target="web"><k>app/build.gradle.kts</k></a> </kc>
+
+<k>gradlew -q </k>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+0 1 2 3		<kc>//Result of the task <tt>count</tt> defined in <tt>app</tt>
+</pre>
+</li>
+
+<li id="taskProperties"><h3>Using properties</h3>
+In order to experiment the usage of (extra properties), let us introduce a new sub-project <tt>taskProperties</tt> with a local file
+ <a href="../taskProperties/gradle.properties" target="web"><ks>taskProperties/gradle.properties</ks></a>.
+ <br/> <br/>
+The sub-project
+build file <a href="../taskProperties/build.gradle.kts" target="web">taskProperties/build.gradle.kts</a>  
+does introduce a set of differnet ways to declare extra properties and defines a task named <tt>showMyProps</tt>
+that accesses these properties and shows their value.
+ 
+ 
+<pre>
+<k>gradle -q taskProperties:showMyProps</k>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in taskProperties
+myprop1                   = "myprop1-value defined in taskProperties/gradle.properies"
+myprop2                   = myprop2-value defined using by extra
+ext.get("myprop3")      = myprop3-value defined using the ext namespace
+extra["logo"]           = this is a task
+project.extra["purpose"]= todo
+</pre>
+ 
+</li>
+
+<li><h3>Accessing a task via API - adding behavior</h3>
+Delaying the actual execution of tasks is especially useful when <ks>modifying existing behavior</ks>. 
+<br/><br/>
+Let us extends the behavior of the shared task <ks>commontask1</ks> by adding in the build file 
+<a href="../taskAccess/build.gradle.kts" target="web"><ks>taskAccess/build.gradle.kts</ks></a> of the <tt>taskAccess</tt> subproject 
+a <tt> doFirst</tt>  and another <tt> doLast</tt> operations for that task.
+<pre>
+val t1 = tasks.named("commontask1")
+
+t1{	<kc>//Accessing a task via API - adding behaviour</kc>
+    doFirst {
+        println("Configured later, but executed as first in task named ${t1.name}")
+    }
+}
+t1{ <kc>//Accessing a task via API - adding behaviour</kc>
+    doLast {
+        println("Another last of task named ${t1.name}")
+    }
+}
+
+<k>gradlew -q :taskAcces:commontask1</k>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+ ...... build in taskAccess sub-project
+Configured later, but executed as first in task named commontask1
+I'm commontask number 1 in project taskAccess
+Another last of task named commontask1 
+</pre>
+<hr/>
+Let us extends the behavior of the shared task <ks>explain</ks> by adding in the build file 
+<a href="../taskAccess/build.gradle.kts" target="web"><ks>taskAccess/build.gradle.kts</ks></a> of the <tt>taskAccess</tt> subproject 
+a <tt> doFirst</tt>  and another <tt> doLast</tt> operations for that task.
+<pre>
+tasks.named("explain") {
+    doFirst{	<kc>//additional configuration to the task explain</kc>
+        println( "	- I'm the taskAccess sub-project: START - ")
+    }
+    doLast{	<kc>//additional configuration to the task explain</kc>
+        println( "	- I'm the taskAccess sub-project: END - ")
+    }
+}
+</pre>
+
+</li>
+
+<h4>gradlew -q :taskAccess:explain</h4>
+The shared task <tt>explain</tt> shows the tasks available in (sub-)project <tt>taskAccess</tt> with our new prefix and suffix messages. 
+They are less than the tasks available in <tt>app</tt> since the <tt>java plugin</tt>  is not included in the <tt>taskAccess</tt> subproject .
+<pre>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+ ...... build in taskAccess sub-project
+        - I'm the taskAccess sub-project: START -
+Hello, I'm taskAccess project. My tasks are:
+buildEnvironment
+commontask0
+commontask1
+commontask2
+commontask3
+components
+dependencies
+dependencyInsight
+dependentComponents
+explain
+hello
+help
+kotlinDslAccessorsReport
+model
+outgoingVariants
+projects
+properties
+tasks
+        - I'm the taskAccess sub-project: END -
+</pre>
+
+</li>
+
+<li>
+<h3>Accessing a task via API - adding dependency</h3>
+State that, in (sub-)project <tt>taskAccess</tt> the shared task <tt>commontask0</tt>, depends on other tasks:
+<pre>
+tasks.named("commontask0") { 	<kc>//Accessing a task via API - adding a dependency</kc>
+	dependsOn("commontask3", "commontask2") 
+}
+
+<k>gradlew -q :taskAccess:commontask0</k>  <kc>//execute a task of (sub-)project taskAccess</kc>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+ ...... build in taskAccess sub-project
+I'm commontask number 2 in project taskAccess
+I'm commontask number 3 in project taskAccess
+I'm commontask number 0 in project taskAccess
+</pre>
+ 
+</li>
+
+<li>
+<h3>Accessing a task via API - control the execution order</h3>
+In some cases it is useful to <ks>control the order</ks> in whichtasks will execute, without introducing an explicit dependency between those tasks.
+<br/>
+There are two ordering rules available: <k>must run after</k> and <k>should run after</k>.
+See <a href="https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:ordering_tasks" target="web">Ordering tasks</a>
+
+
+<pre>
+tasks.named("commontask2") { 
+	mustRunAfter(tasks.named("task3")) 
+}
+
+<k>gradlew -q :taskAccess:commontask0</k>  <kc>//execute a task of (sub-)project taskAccess</kc>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+ ...... build in taskAccess sub-project
+I'm commontask number 3 in project taskAccess
+I'm commontask number 2 in project taskAccess
+I'm commontask number 0 in project taskAccess
+</pre>
+
+</li>
+ 
+<li><h3>Hooking into the build lifecycle</h3>
+In Gradle, a <k>lifecycle event</k> can occur before, during, or after a specific build phase.
+<br/>
+Sometimes, it could be useful to execute code when a specific lifecycle event occurs. 
+For example, to get feedback about failed builds as early as possible, we could send an email
+to all developers on the team.
+<br/><br/>
+Let us introduce a new sub-project <tt>taskEvents</tt>
+The sub-project build file <a href="../taskEvents/build.gradle.kts" target="web">taskEvents/build.gradle.kts</a>  
+show the two main ways to write a callback to build lifecycle events: <br/><br/>
+<ul>
+<li>within a closure
+<pre>
+gradle.taskGraph.whenReady {
+    println("whenReady version=$version ${hasTask(":taskEvents:release")}" )
+    version =
+            if (hasTask(":taskEvents:release")) "1.0"
+            else "1.0-SNAPSHOT"
+}
+</pre>
+</li>
+<li>with an implementation of a listener interface provided by the Gradle API.
+<pre>
+</pre>
+</li>
+</ul> 
+
+<pre>
+<k>gradle -q :taskEvents:release</k>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in taskEvents sub-project
+whenReady version=not-yet-defined true
+We build the zip with version=1.0
+We release now
+</pre>
+</li>
+
+<!--
+For example, let us introduce a subproject that shows how tasks can be accessed/modified by using Gradle API
+
+<pre>
+println("SETTINGS RUNS ...")
+
+rootProject.name = "demo"   <kc>//overrides the default behavior of naming </kc>
+include("app") <kc>//defines that the build consists of one subproject called app </kc>
+include("taskAccessControl") <kc>//defines a subproject called exampleCompile </kc>
+
+<k>gradle project</k>
+Root project 'demo'
++--- Project ':app'
+\--- Project ':taskAccessControl'
+</pre>
+
+With Kotlin dsl, you can add your dependencies as long as you use either 
+<pre>
+apply(plugin = "org.jetbrains.kotlin.jvm") 
+apply(plugin = "java").
+</pre>
+https://docs.gradle.org/current/userguide/organizing_gradle_projects.html
+<br/>
+
+
+In this subproject we will make reference to the set of dynamically created tasks.
+<br/><br/>
+https://docs.gradle.org/current/userguide/declaring_dependencies_between_subprojects.html
+<br/>
+https://docs.gradle.org/current/userguide/sharing_build_logic_between_subprojects.html:
+Gradle’s recommended way of organizing build logic is to use its plugin system. <br/>
+Another, discouraged, way to share build logic between subproject is cross project configuration via the subprojects {} 
+and allprojects {} DSL constructs.
+
+<br/>
+https://docs.gradle.org/current/userguide/declaring_dependencies_between_subprojects.html
+<br/>
+
+The basic rule behind Gradle’s behavior is: execute all tasks down the hierarchy which have this name. 
+-->
+
+ 
+
+
+</ol>
+
+
+
+
+<h2>Custom task types</h2>
+Gradle supports two types of task. 
+<ul>
+<li>One such type is the simple task, where you define the task with an <ks>action closure</ks>,
+as done so far. </li>
+<li>The other type of task is the enhanced task, where the <ks>behaviour is built into the task</ks>, 
+and the task provides some properties which you can use to configure the behaviour.
+<br/>
+See <a href="https://docs.gradle.org/current/userguide/more_about_tasks.html#more_about_tasks" target="web">Authoring Tasks</a>
+and
+<a href="https://docs.gradle.org/current/userguide/custom_tasks.html#custom_tasks" target="web">Developing Custom Gradle Task Types</a>
+</li>
+</ul>
+ 
+<ol>
+
+Gradle offers some facilities to make it writing new tasks easier. <br/>
+The Gradle API includes a wide range of existing tasks (like <tt>Copy</tt>, <tt>Wrapper</tt>, and <tt>Exec</tt>) 
+that you can use simply by setting properties.<br/>
+ 
+
+
+<li><h3>Example: using <a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.Exec.html" target="web">org.gradle.api.Exec</a></h3>
+ 
+As an example, let us introduce the new sub-project <tt>taskCustom</tt> (with its own
+build file <a href="../taskCustom/build.gradle.kts" target="web">taskCustom/build.gradle.kts</a> )
+and a custom version of the 
+Task <a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.Exec.html" target="web"><ks>org.gradle.api.Exec</ks></a> 
+(see <a href="https://docs.gradle.org/current/dsl/index.html" target="web"><ks>Gradle Build Language Reference </ks></a>) 
+that executes a command line process.
+
+
+<!-- done with http://www.plantuml.com/plantuml/uml/ -->
+<center><img src="./img/gradleExec.png" alt="gradleExec.png" width="30%" height="30%"></center>
+
+ 
+<h4>Example: execute a command</h4>
+
+<pre>
+task&lt;Exec>("mycmd") {
+    workingDir("$projectDir")
+    if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+        commandLine(
+                "cmd", "/c", <kc>//Esegue il comando specificato dalla stringa e poi si arresta</kc>
+                "echo", "Hello from Windows"    
+                //"cmd1.bat"    <kc>//Another command <a href="../taskCustom/cmd1.bat" target="web">cmd1.bat</a></kc>
+		)
+    } else {
+        commandLine(
+                "sh", "-c",
+                "echo", "Hello from NO-Windows" )
+    }
+}
+
+<k>gradlew -q :taskCustom:mycmd</k>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+Message shown during the configuration phase: no task action defined in task ':app:notgood'
+ ...... build in taskAccess sub-project
+ ...... build in taskCustom sub-project
+"Hello from Windows"
+</pre>
+
+
+<h4>Example: print the current version of Java</h4>
+
+<pre>
+import org.gradle.internal.jvm.Jvm
+println(" ...... build in taskCustom sub-project  ")
+
+tasks.register&lt;Exec>("printJavaVersion") {  
+<kc>// Configuration action is of type T.() -> Unit, in this case Exec.T() -> Unit</kc>
+   val javaExecutable = Jvm.current().javaExecutable.absolutePath
+   commandLine( <kc>//this is a method of class org.gradle.api.Exec</kc>
+	javaExecutable, "-version"
+   )
+<kc>// There is no need of <k>doLast / doFirst</k>, actions are already configured
+// Still, we may want to do something before or after the task has been executed</kc>
+  doLast {  println("-------- printJavaVersion END") }
+  doFirst { println("-------- printJavaVersion START") }
+}
+
+<k>gradlew -q :taskCustom:printJavaVersion</k>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+Message shown during the configuration phase: no task action defined in task ':app:notgood'
+ ...... build in taskAccess sub-project
+ ...... build in taskCustom sub-project
+-------- printJavaVersion STARTS
+java version "15.0.1" 2020-10-20
+Java(TM) SE Runtime Environment (build 15.0.1+9-18)
+Java HotSpot(TM) 64-Bit Server VM (build 15.0.1+9-18, mixed mode, sharing)
+-------- printJavaVersion END</pre>
+</li>
+<li> 
+ 
+<h3>Example: commands to compile Java</h3>
+Let us introduce the new sub-project <tt>taskJavaCompile</tt> ( with its own
+build file <a href="../taskJavaCompile/build.gradle.kts" target="web">taskJavaCompile/build.gradle.kts</a> )
+and modify <a href="../settings.gradle.kts" target="web">settings.gradle.kts</a> as follows:
+<pre>
+println("SETTINGS RUNS ...")
+rootProject.name = "demo"  
+include("app")  
+//include("taskAccess")
+//include("taskCustom")
+include("taskJavaCompile")
+</pre>
+<pre>
+fun findJavaSources(): Array&lt;String> = projectDir  
+        .listFiles { it: File -> it.isDirectory && it.name == "src" }  
+        ?.firstOrNull() <kc>// If it's not there we're done</kc>
+        ?.walk() <kc>// If it's there, iterate all its content (returns Sequence&lt;File>)</kc>
+        ?.filter { it.extension == "java" } <kc>// Pick all Java files</kc>
+        ?.map { it.absolutePath } <kc>// Map them to their absolute path</kc>
+        ?.toList() <kc>// Sequences can't get converted to arrays, we must go through lists</kc>
+        ?.toTypedArray() <kc>// Convert to Array&lt;String></kc>
+        ?: emptyArray() <kc>// Yeah if anything's missing there are no sources</kc>
+
+<kc>// Create a new configuration, our compileClasspath</kc>
+val compileClasspath by configurations.creating
+
+tasks.register<Exec>("mycompileJava") {
+    val sep  = if (Os.isFamily(Os.FAMILY_WINDOWS)) ";" else ":"
+    val classpathFiles = compileClasspath.resolve()  <kc>//could be empty: NO joinToString</kc>
+    val myclasspath    = if( classpathFiles.size==0 ) classpathFiles;
+                         else classpathFiles.joinToString(separator = sep )
+    // Build the command
+    val sources = findJavaSources()
+    println("sources.size=" + sources.size)
+    if (sources.isNotEmpty())  {
+        val javacExecutable = Jvm.current().javacExecutable.absolutePath
+        commandLine(
+            "$javacExecutable",
+            "-cp", myclasspath,  
+            "-d", "$projectDir/output", <kc>//The compiled files go here</kc>
+            *sources
+        )
+    }
+}
+
+<k>gradlew -q :taskJavaCompile:mycompileJava</k>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+Message shown during the configuration phase: no task action defined in task ':app:notgood'
+ ...... build in taskJavaCompile
+sources.size=2
+
+</pre>
+<!--
+
+classpath=[C:\Users\anatali\.gradle\caches\modules-2\files-2.1\junit\junit\4.13\e49ccba652b735c93bd6e6f59760d8254cf597dd\junit-4.13.jar, C:\Users\anatali\.gradle\caches\modules-2\files-2.1\com.google.guava\guava\29.0-jre\801142b4c3d0f0770dd29abea50906cacfddd447\guava-29.0-jre.jar, C:\Users\anatali\.gradle\caches\modules-2\files-2.1\org.hamcrest\hamcrest-core\1.3\42a25dc3219429f0e5d060061f71acb49bf010a0\hamcrest-core-1.3.jar, C:\Users\anatali\.gradle\caches\modules-2\files-2.1\com.google.guava\failureaccess\1.0.1\1dcf1de382a0bf95a3d8b0849546c88bac1292c9\failureaccess-1.0.1.jar, C:\Users\anatali\.gradle\caches\modules-2\files-2.1\com.google.guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\b421526c5f297295adef1c886e5246c39d4ac629\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar, C:\Users\anatali\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.2\25ea2e8b0c338a877313bd4672d3fe056ea78f0d\jsr305-3.0.2.jar, C:\Users\anatali\.gradle\caches\modules-2\files-2.1\org.checkerframework\checker-qual\2.11.1\8c43bf8f99b841d23aadda6044329dad9b63c185\checker-qual-2.11.1.jar, C:\Users\anatali\.gradle\caches\modules-2\files-2.1\com.google.errorprone\error_prone_annotations\2.3.4\dac170e4594de319655ffb62f41cbd6dbb5e601e\error_prone_annotations-2.3.4.jar, C:\Users\anatali\.gradle\caches\modules-2\files-2.1\com.google.j2objc\j2objc-annotations\1.3\ba035118bc8bac37d7eff77700720999acd9986d\j2objc-annotations-1.3.jar]
+
+javac -cp app\build\classes\java\main\demo\  .\app\src\test\java\demo\AppTest.java
+javac -cp .\app\junit-4.13.jar;.\app\build\bin\demo\*.class .\app\src\test\java\demo\AppTest.java
+javac -cp .\app\junit-4.13.jar;.\app\build\libs\app.jar .\app\src\test\java\demo\AppTest.java
+https://docs.gradle.org/current/userguide/building_java_projects.html
+https://github.com/gradle/kotlin-dsl-samples/tree/master/samples
+-->
+</li>
+
+<li><h3>Example: commands to run Java</h3>
+
+
+Let us introduce the new sub-project <tt>taskJavaRun</tt> ( with its own
+build file <a href="../taskJavaRun/build.gradle.kts" target="web">taskJavaRun/build.gradle.kts</a> )
+and modify <a href="../taskJavaRun/settings.gradle.kts" target="web">settings.gradle.kts</a> as follows:
+<pre>
+println("SETTINGS RUNS ...")
+rootProject.name = "demo"  
+include("app")  
+//include("taskAccess")
+//include("taskCustom")
+//include("taskJavaCompile")
+<k>include("taskJavaRun")</k>
+</pre>
+
+In the new project, we include the following directories:
+<pre>
+Root project 'demo'
++--- Project ':app'
+\--- Project ':taskJavaRun'
+              lib	
+                 junit-4.13.jar
+              src
+                <a href="../taskJavaRun/src/Program1.java" target="web">Program1.java</a>
+                <a href="../taskJavaRun/src/TestProgram1.java" target="web">TestProgram1.java</a> <kc>//Requires JUnit</kc>
+</pre>
+<h4>runtimeClasspath  “inherits” from compileClasspath </h4>
+The  build file for this project is <a href="../taskJavaRun/build.gradle.kts" target="web">taskJavaRun/build.gradle.kts</a>:
+<pre>
+import org.apache.tools.ant.taskdefs.condition.Os
+import org.gradle.internal.jvm.Jvm
+
+println(" ...... build in taskJavaRun  ")
+
+<kc>//a runtimeClasspath configuration 'inherits' from compileClasspath and includes the output folder</kc>
+val compileClasspath by configurations.creating
+val runtimeClasspath by configurations.creating {
+	<kc>// The configuration is an extension of compileClasspath</kc>
+    extendsFrom(compileClasspath) 
+}
+
+val sep = if (Os.isFamily(Os.FAMILY_WINDOWS)) ";" else ":"
+
+data class FinderInFolder(val directory: String) {
+    fun withExtension(extension: String): Array<String> = projectDir
+            .listFiles { it: File -> it.isDirectory && it.name == directory }
+            ?.firstOrNull()
+            ?.walk()
+            ?.filter { it.extension == extension }
+            ?.map { it.absolutePath }
+            ?.toList()
+            ?.toTypedArray()
+            ?: emptyArray()
+}
+fun findFilesIn(directory: String) = FinderInFolder(directory)
+fun findSources() = findFilesIn("src").withExtension("java")
+fun findLibraries() = findFilesIn("lib").withExtension("jar")
+fun DependencyHandlerScope.forEachLibrary(todo: DependencyHandlerScope.(String) -> Unit) {
+    findLibraries().forEach {
+        println("library $it")
+        todo(it)
+    }
+}
+
+dependencies {
+    forEachLibrary {
+        compileClasspath(files(it))
+    }
+    runtimeClasspath( files("$projectDir/bin") )
+}
+
+val compileJava = tasks.register<Exec>("compileJava") {
+    val classpathFiles = compileClasspath.resolve()
+    val myclasspath    = if( classpathFiles.size==0 ) classpathFiles;
+                         else classpathFiles.joinToString(separator = sep )
+    // Build the command
+    val sources = findSources()
+    if (sources != null)  {
+        // Use the current JVM's javac
+        val javacExecutable = Jvm.current().javacExecutable.absolutePath
+
+        commandLine(
+                "$javacExecutable",
+                "-cp", myclasspath,  
+                "-d", "$projectDir/bin", //The compiled files go here
+                *sources
+        )
+    }
+}
+
+tasks.register<Exec>("runJava") {
+    val classpathFiles = runtimeClasspath.resolve()
+    val myclasspath    = if( classpathFiles.size==0 ) classpathFiles;
+                         else classpathFiles.joinToString(separator = sep )
+    val mainClass = "Program1" <kc>//TODO: avoid hardcoding the name</kc>
+    val javaExecutable = Jvm.current().javaExecutable.absolutePath
+
+    commandLine(
+            "$javaExecutable",
+            "-cp", myclasspath,
+            mainClass
+    )
+
+    dependsOn(compileJava)
+}
+
+<k>gradlew -q :taskJavaRun:runJava</k>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+Message shown during the configuration phase: no task action defined in task ':app:notgood'
+ ...... build in taskJavaRun
+library C:\Didattica2018Work\iss2021Lab\GradleIntro\taskJavaRun\lib\junit-4.13.jar
+Hello from Program1 written in Java
+</pre>
+</li>
+
+<li><h3 id="userdefinedtasks">User-defined Task types</h3>
+New, user defined tasks:
+<ul>
+<li>must implement the  <a href="https://docs.gradle.org/current/javadoc/org/gradle/api/ask.html" target="web"> <ks>Task</ks></a> interface</li>
+<li>must be extensible (<ks>open</ks> class). At runtime, Gradle creates subclasses on the fly.</li>
+<li>usually inherit from <a href="https://docs.gradle.org/current/javadoc/org/gradle/api/DefaultTask.html" target="web"> <ks>DefaultTask</ks></a></li>
+<li>must have a parameterless constructor annotated with <ks>@Inject</ks>, since the costruction of tasks happens via dependency injection</li>
+<li>A public method can be marked as <ks>@TaskAction</ks>, and will get invoked to execute the task</li>
+</ul>
+
+<div class="remark">
+It is a good practice (that will become mandatory in future Gradle releases) to annotate
+every <ks>public property</ks> of a task with a marker annotation that determines whether it is an <k>input</k> or
+an <k>output</k>.
+<pre>
+<kc>@Input,	@InputFile,	@InputFiles,	@InputDirectory,	@InputDirectories</kc>
+<kc>@OutputFile,	@OutputFiles,	@OutputDirectory,	@OutputDirectories</kc>
+<kc>@Internal</kc> marks some property that is used as output internally.
+</pre>
+</div>
+
+<h4>Incremental builds and incremental tasks</h4>
+The reason of Input/Output annotations is related to
+<a href="https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:up_to_date_checks" target="web"> <ks> Incremental Build</ks></a>
+and the need of
+<a href="https://docs.gradle.org/current/userguide/custom_tasks.html#incremental_tasks" target="web"> <ks>Incremental tasks</ks></a>.
+<ul>
+<li>Gradle caches intermediate build results, using Input/Output markers to undersand
+whether or not some task is up to date. Time to build completion can decrease from tens on minutes to seconds!</li>
+<li>When launched with the <ks>-t</ks> option, Gradle re-runs the requested tasks every time something
+changes. Input/Output markers are used to understand <ks>what</ks> to actually run again</li>
+
+</ul>
+
+Let us introduce the new sub-project <tt>taskClasses</tt> ( with its own
+build file <a href="../taskClasses/build.gradle.kts" target="web">taskClasses/build.gradle.kts</a> )
+and modify <a href="../settings.gradle.kts" target="web">settings.gradle.kts</a> as follows:
+<pre>
+println("SETTINGS RUNS ...")
+rootProject.name = "demo"  
+include("app")  
+//include("taskAccess")
+//include("taskCustom")
+//include("taskJavaCompile")
+include("taskJavaRun") 
+<k>include("taskClasses")</k>
+</pre>
+See also <a href="https://docs.gradle.org/current/userguide/custom_tasks.html" target="web">Developing Custom Gradle Task Types</a>
+<pre>
+open class GreetingTask : DefaultTask() {
+	@Input
+	var greeting = "default hello from GreetingTask"
+	
+    @TaskAction
+    fun greet() {
+         println(greeting)
+    }
+}
+
+<kc>// Create a task using the new tasktype and customize</kc>
+tasks.register&lt;GreetingTask>("mygreetings"){
+	greeting = "my customised greetings from GreetingTask"
+}
+
+<k>gradlew -q :taskClasses:mygreetings</k>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+Message shown during the configuration phase: no task action defined in task ':app:notgood'
+ ...... build in taskClasses sub-project
+my customised greetings from GreetingTask
+
+</pre>
+</li>
+
+</ol>
+
+
+<h2>Gradle buildSrc</h2>
+Since subprojects have no access to the root’s defined types, Gradle provides project-global type definitions using a special 
+<a href="https://docs.gradle.org/current/userguide/organizing_gradle_projects.html#sec:build_sources" target="web"><ks>buildSrc</ks></a> folder.
+<br/><br/>
+Upon discovery of the directory, Gradle automatically compiles and tests this code and puts it in the classpath of your build script. <br/> 
+This allows imperative code to get isolated and shared among subprojects.
+<br/>
+For multi-project builds there can be only one <tt>buildSrc</tt> directory, which has to sit in the root project directory. 
+<br/><br/>
+<pre>
+Root project 'demo'
++--- Project ':app'
+buildSrc	
+  src
+    main
+       kotlin 
+         <a href="../buildSrc/src/main/kotlin/CommonOps.kt" target="web">CommonOps.kt</a> 
+ </pre>
+ 
+<a href="../buildSrc/src/main/kotlin/CommonOps.kt" target="web">buildSrc/src/main/kotlin/CommonOps.kt</a> includes the definition of the code of a custom  Task.
+<pre>
+open class CommonTask @Inject constructor() : DefaultTask() {
+    @Input var prefix ="buildSrc/CommonTask | "
+    @Input var msg    ="Hello from CommonTask"
+    @TaskAction
+    fun commonOp() {
+        println("$prefix $msg  ")
+    }
+}
+</pre>
+The custom task cannot be used by itself; we need to create an enanced task.
+<br/>
+Let us introduce the new sub-project <tt>taskForBuildSrc</tt> ( with its own
+build file <a href="../taskForBuildSrc/build.gradle.kts" target="web">taskForBuildSrc/build.gradle.kts</a> )
+and modify <a href="../settings.gradle.kts" target="web">settings.gradle.kts</a> as follows:
+
+
+<pre>
+println("SETTINGS RUNS ...")
+rootProject.name = "demo"  
+include("app")  
+...
+include("taskForBuildSrc")    
+</pre>
+<!-- For example, let us consider the sub-projects <tt>app</tt> and <tt>taskAcces</tt> -->
+Now introduce an enhanced  <tt>CommonTask</tt> named <tt>ct</tt>:
+
+<pre>
+task<CommonTask>("ct"){
+    msg ="Hello from ${this.name} in ${project.name}"
+}
+</pre>
+Finally, let us tell Gradle to run the task named <tt>ct</tt>:
+</pre>
+<pre>
+<k>gradlew -q ct</k>
+SETTINGS RUNS ...
+ ...... build top-level
+ ...... build in app
+Message shown during the configuration phase: no task action defined in task ':app:notgood'
+ ...... build in taskAccess sub-project
+taskAccess | compileClasspath= configuration ':taskForBuildSrc:compileClasspath'
+<ks>buildSrc/CommonTask |  Hello from ct in taskForBuildSrc</ks>
+
+</pre>
+Note that Gradle creates a <a href="../buildSrc/build/" target="web"><ks>buildSrc/build</ks></a> directory. 
+Gradle automatically compiles and tests the <tt>buildSrc</tt> code and puts it in the classpath of the build script. <br/> 
+
+<pre>
+<k>gradlew :taskForBuildSrc:dependencies</k>
+
+</pre>
+<h3>Refactoring Java operations to compile/run</h3>
+Now, let us define our custom tasks to compile and run Java programs within 
+<a href="../buildSrc/src/main/kotlin/JavaCompileRun.kt" target="web"><ks>JavaCompileRun.kt</ks></a> and introduce a new sub-project 
+<tt>taskForBuildSrc</tt> with its own
+build file <a href="../taskForBuildSrc/build.gradle.kts" target="web">taskForBuildSrc/build.gradle.kts</a>.
+<br/><br/>
+
+Here, we exploit the declarative style of Gradle to define enanched tasks to compile and run Java programs
+written somewhere in the  <a href="../taskForBuildSrc/src" target="web"><ks>taskForBuildSrc/src</ks></a> directory.
+For example:
+<pre>
+lib
+   junit-4-13.jar
+src
+   main  
+      java
+	     <a href="../taskForBuildSrc/src/main/java/P1.java" target="web">P1.java</a> 
+   test	 
+      java
+	     <a href="../taskForBuildSrc/src/test/java/P1Test.java" target="web">P1Test.java</a>  <kc>//requires JUnit</kc>
+ <a href="../taskForBuildSrc/src/P0.java" target="web">P0.java</a> 	
+</pre>
+ 
+We can modify <a href="../settings.gradle.kts" target="web">settings.gradle.kts</a> to include the project
+<tt>taskForBuildSrc</tt> only:
+<pre>
+println("SETTINGS RUNS ...")
+rootProject.name = "demo"  
+//include("app")  
+//include("taskAccess")
+//include("taskCustom")
+//include("taskJavaCompile")
+//include("taskJavaRun")
+//include("taskClasses")
+include("taskForBuildSrc")
+</pre>
+
+Now, we can execute:
+
+<pre>
+<k>gradlew -q :taskForBuildSrc:RunJava</k>
+ ...... build top-level
+ ...... build in taskForBuildSrc sub-project
+taskForBuildSrc | dependencies BUIILDIR= C:\...\taskForBuildSrc\build
+taskForBuildSrc | FOUND lib: C:\...\taskForBuildSrc\lib\junit-4.13.jar
+JavaTask | task ':taskForBuildSrc:runJava' - fromConfiguration classPath=[<kc>jars in lib and build/bin</kc>] 
+<=============> 100% CONFIGURING [3s]
+> IDLE
+</pre>
+<div class="remark">
+The task waits  (see the <tt>readline</tt> in task <tt>runJava</tt> 
+in <a href="../taskForBuildSrc/src" target="web">taskForBuildSrc/src</a>) 
+until the user writes on the console the name of the program to run:
+</div>
+<pre>
+<k>P1</k>
+RunJava  | going to run ... P1
+JavaTask | javaCommandLine RunJava update - n arguments= 1	the first is: P1 
+JavaTask | javaCommandLine CompileJava update - n arguments= 5 <kc>The source files</kc>
+Hello from P1 written in Java
+</pre>
+
+Let us re-run the task, by interting the name of a program that requires <ks>JUnit</ks>:
+<pre>
+<k>P1Test</k>
+RunJava  | going to run ... P1Test
+JavaTask | javaCommandLine RunJava update - num of arguments= 1  the first is: P1Test  
+JavaTask | javaCommandLine CompileJava update - num of arguments= 5
+P1Test | true
+</pre>
+
+ 
+
+<!--
+You can create a separate project for your task class. 
+This project produces and publishes a JAR which you can then use in multiple builds and share with others. 
+Generally, this JAR might include some custom plugins, or bundle several related task classes into a single library. 
+Or some combination of the two.
+-->
+
+
+ </li>
+</ol>
+
+<h2>Custom plugins</h2>
+https://docs.gradle.org/current/userguide/custom_plugins.html 
+
+<h3>buildScript</h3>
+The buildscript block is for the build.gradle file itself.<br/>
+The buildScript block determines which plugins, task classes, and other classes are available for use in the rest of the build script. 
+Without a buildScript block, you can use everything that ships with Gradle out-of-the-box. 
+If you additionally want to use third-party plugins, task classes, or other classes (in the build script!), 
+you have to specify the corresponding dependencies in the buildScript block.
+<br/><br/>
+https://medium.com/@StefMa/its-time-to-ditch-the-buildscript-block-a1ab12e0d9ce
+<br/>
+https://tomgregory.com/introduction-to-gradle-plugins/
+
+<br/><br/>
+https://www.vogella.com/tutorials/GradleTutorial/article.html
+You can refresh dependencies in your cache with the command line option --refresh-dependencies. 
+You can also delete the cached files under ~/.gradle/caches. With the next build Gradle attempts to download the dependencies again
+
+<br/><br/>
+Currently gradle provides two publishing mechanisms. Original - shipped with java plugin - is described here and is based on a task of type Upload. 
+https://docs.gradle.org/current/userguide/artifact_management.html
+<br/><br/>
+This mechanism is going to be replaced by the - currently incubating - second mechanism that is separated from java plugin 
+and also splitted into maven and ivy. This new mechanism is described here.
+https://docs.gradle.org/current/userguide/publishing_maven.html <br/>
+Read this before:
+https://docs.gradle.org/current/userguide/publishing_setup.html#publishing_overview
+
+<h3>From  https://docs.gradle.org/current/userguide/plugins.html</h3>
+Binary plugins can reside within a build script, within the project hierarchy or externally in a plugin jar. 
+Script plugins are additional build scripts that further configure the build and usually implement a declarative approach to manipulating the build.
+<br/><br/>
+A plugin often starts out as a script plugin (because they are easy to write) and then, 
+as the code becomes more valuable, it’s migrated to a binary plugin that can be easily tested and shared between multiple projects or organizations.
+<br/><br/>
+
+To use the build logic encapsulated in a plugin, Gradle needs to perform two steps. <br/>
+First, it needs to resolve the plugin, and then it needs to apply the plugin to the target, usually a Project.
+<br/><br/>
+Script plugins are self-resolving in that they are resolved from the specific file path or URL provided when applying them. 
+
+<br/><br/> 
+From https://medium.com/decisionbrain/when-to-not-use-mavenlocal-in-your-gradle-build-script-6da03902f9df<br/>
+mavenLocal() repository is not the Gradle dependency cache. It is a repository where you can deploy components with ./gradlew publishToMavenLocal (assuming you use the maven-publish Gradle plugin).
+
+
+<h2>Continuos delivery</h2>
+
+
+<ul>
+<li>When launched with the -t option, Gradle re-runs the requested tasks every time something changes</li>
+<li>(In/Out)put markers are used to understand what to actually run again</li>
+</ul>
+
+See <a href="https://en.wikipedia.org/wiki/DevOpsIntro.html" target="web">DevOpsIntro.html</a>
+
+</div>
+<br/><br/>
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI  
+</div> 
+</body>
+</html>

@@ -1,0 +1,718 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 700px;
+    font-size: 15px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #C0F0E0;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+
+<style>
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 260px;
+  background-color: #F3F781;
+  color: black;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+</style>
+
+<script>
+// When the user clicks on <div>, open the popup
+function myFunction() {
+  var popup = document.getElementById("myPopup");
+  popup.classList.toggle("show");
+}
+</script>
+    
+<head>
+   
+<title>DevOpsIntro</title></head>
+    
+<body>
+<div id="top">
+<h1>LabIss2021 |  Introduction to DevOps<font size="5"></font> </h1>
+</div>  
+
+
+<div class="body"> 
+<h2>Introduction</h2> 
+ From  <a href="https://en.wikipedia.org/wiki/DevOps" target="web">DevOps (wikipedia)</a> we read:
+ <div class="remark">
+ DevOps is a set of practices that combines <a href="https://en.wikipedia.org/wiki/Software_development" target="web">Software development</a>
+ (<k>Dev</k>) and Information technology (IT) operations operations (<k>Ops</k>).<br/><br/>
+  IT operations can be defined as 
+ <i>the people and management processes associated with IT service management to deliver the right set of services 
+ at the right quality and at competitive costs for customers.</i>.<br/><br/>
+DevOps aims to shorten the systems development life cycle and provide
+ <a href="https://en.wikipedia.org/wiki/Continuous_delivery" target="web">Continuous_delivery </a>
+ with high software quality.
+<center><img src="./img/continuosDelivery.png" alt="continuosDelivery.png" width="80%" height="80%"></center>
+   </div>
+   
+   
+   
+Several DevOps practices came from
+  <a href="https://en.wikipedia.org/wiki/Agile_software_development" target="web">Agile software development</a>.
+ <ul> 
+<li>Workflow organization</li>
+<li>Self-testing code</li>
+<li>Code quality control</li>
+<li>Continuous Integration</li>
+<li>Continuous Delivery</li>
+<li>Continuous Deployment</li>
+<li>Continuous Monitoring</li>
+</ul>
+
+The only difference between Continuous Delivery and Continuous Deployment is the presence of the automated push to production. 
+Continuous Integration requires a manual push to production while CD makes that step automatic.
+
+ <center><img src="./img/continuousintegration_cycle.jpg" alt="continuousintegration_cycle.jpg" width="50%" height="50%"></center>  
+
+<!--
+<ul>
+<li>When launched with the <k>-t option</k>, Gradle re-runs the requested tasks every time something changes</li>
+<li>(In/Out)put markers are used to understand what to actually run again</li>
+</ul>
+-->
+
+<h3>CI tools</h3>
+One of the necessities for the execution of Continuous Integration is the use of CI tools, also known as build servers.
+
+Currently, there is a wide range of continuous integration tools. <br/>We will look at
+<ul>
+<li>
+<a href="https://www.jenkins.io/doc/" target="web">Jankins </a><br/><br/>
+<center><img src="./img/GradleJenkinsSlack.png" alt="GradleJenkinsSlack.png" width="80%" height="80%"></center>
+
+
+<!-- <a href="https://en.wikipedia.org/wiki/Jenkins_(software)" target="web">Jankins </a><br/><br/> -->
+Today Jenkins is the leading open-source automation server with some 1,600 plug-ins to support the automation of all kinds of development tasks. 
+The problem Kawaguchi (the author - when in SUN - of Hudson) was originally trying to solve, continuous integration and continuous delivery 
+of Java code (i.e. building projects, running tests, doing static code analysis, and deploying) 
+is only one of many processes that people automate with Jenkins. 
+Now, 1,600 plug-ins span five areas: platforms, UI, administration, source code management, and, most frequently, build management.
+</li>
+<li><a href="https://docs.gitlab.com/ee/ci/introduction/" target="web">GitLab CI/CD </a><br/><br/>
+
+
+
+
+<center><img src="./img/gitlab_workflow_example_11_9.png" alt="gitlab_workflow_example_11_9.png" width="80%" height="80%"></center>
+ 
+
+</li>
+<a href="https://github.com/features/actions" target="web">GitHub Actions</a><br/><br/>
+<a href="https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/introduction-to-github-actions" target="web">
+Introduction to GitHub Actions</a><br/><br/>
+
+
+<li>
+</li>
+
+</ul>
+ 
+
+<h2>A project</h2>
+
+<center><img src="./img/cidemo.png" alt="cidemo" width="40%" height="40%"></center>
+<pre>
+<kc>In C:\...\cidemo:</kc>
+
+gradle init   2 4 1 2 - -
+</pre>
+
+<center><img src="./img/cidemoStartup.png" alt="cidemoStartup" width="40%" height="40%"></center>
+<pre>
+git status
+git add -A
+git commit -m "startup"
+git push origin main
+</pre>
+<!-- Starting from git
+<pre>
+git remote add origin  https://anatali:nat25650@github.com/anatali/reponame.git
+git remote rm origin
+git remote add origin  git@github.com:anatali/cidemoJava.git
+git push -u origin master
+
+
+echo "# cidemoJava" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/anatali/cidemoJava.git
+git push -u origin main
+</pre>
+-->
+<center><img src="./img/cidemoGitStartup.png" alt="cidemoGitStartup" width="40%" height="40%"></center>
+
+From https://docs.github.com/en/free-pro-team@latest/actions/guides/building-and-testing-java-with-gradle
+<pre>
+<kc>In https://github.com/.../cidemo/actions/new</kc>
+
+<ks>Skip this and set up a workflow yourself -></ks>
+
+name: CIdemoStart
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest    <kc># downloads a copy of your repository on the runner</kc>
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8  <kc>#configures the Java 1.8 JDK</kc>
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+     - name: Change wrapper permissions
+       run: chmod +x ./gradlew     #to gain gradlew run permission
+     - name: Build with Gradle
+       run: ./gradlew build  
+        <m><kc>#runs the gradlew wrapper script to ensure that your code builds, tests pass, and a package can be created</kc></m>	
+	- uses: actions/upload-artifact@v2		#see https://github.com/actions/upload-artifact
+	  with:
+		name: Package
+		path: build/libs		
+</pre>
+
+<center><img src="./img/cidemoCIStart.png" alt="cidemoCIStart" width="80%" height="80%"></center>
+
+<pre>
+<ks>Start commit ... Commit new file</ks>		
+</pre>
+
+<center><img src="./img/cidemoCIworkflowsmain.png" alt="cidemoCIworkflowsmain.png" width="80%" height="80%"></center>
+
+<pre>
+git pull 			<kc>=> appears .github/workflows/main.yml</kc>
+</pre>
+
+<center><img src="./img/cidemoCIActions.png" alt="cidemoCIActions.png" width="80%" height="80%"></center>
+<br/>
+
+Build error: <k>./gradlew: Permission denied</k>	(manca run: chmod +x ./gradlew)
+<br/>
+<center><img src="./img/cidemoCIBuildError.png" alt="cidemoCIBuildError.png" width="80%" height="80%"></center>
+ 
+
+ 
+<h2>CI</h2>
+<pre>
+https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/migrating-from-jenkins-to-github-actions
+
+https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/introduction-to-github-actions
+
+https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions
+
+https://knapsackpro.com/ci_comparisons/jenkins/vs/github-actions
+
+ORACLE
+cbTP=d-vwW*tA3
+set JAVA_HOME="C:\Program Files\Java\jdk-11.0.9"
+
+https://vimeo.com/138873446	Xtext
+https://dl.bintray.com/jetbrains/kotlin/eclipse-plugin/0.8.18/
+eclipse -vm "C:\Program Files\Java\jdk-12.0.1\bin"
+
+
+GIT	(with DEVOPS intro)
+https://www.youtube.com/watch?v=hDxIdPxKt5w
+
+https://www.youtube.com/watch?v=N_bMCff8q6A			**
+
+GITHUB actions
+https://www.youtube.com/watch?v=R8_veQiYBjI&t=17s   ***
+
+GRADLE
+https://www.youtube.com/watch?v=kONQCIAcWeI
+https://www.youtube.com/watch?v=Nabjqv8KDgc
+
+TechWorld with Nana
+DOCKERFILE
+https://www.youtube.com/watch?v=WmcdMiyqfZs
+
+DOCKER
+https://www.youtube.com/watch?v=3c-iBn73dDE
+
+DOCKER - DOCKER Compose	** (general, no yaml explaination)
+https://www.bing.com/videos/search?q=docker+compose+video&docid=608050950300107607&mid=E2BF30F99FEA101525DEE2BF30F99FEA101525DE&view=detail&FORM=VIRE
+https://www.bing.com/videos/search?q=docker+compose+video&docid=608046895837873695&mid=4CF92B5BD37B5846E8FA4CF92B5BD37B5846E8FA&view=detail&FORM=VIRE
+(Flask, Python)
+
+
+KUBERNETES	 
+https://www.youtube.com/watch?v=3c-iBn73dDE
+https://www.youtube.com/watch?v=X48VuDVv0do
+
+AWS container services
+https://www.youtube.com/watch?v=AYAh6YDXuho
+
+ISTIO
+https://www.youtube.com/watch?v=16fgzklcF7Y
+
+
+
+MICROSERVICES
+https://www.youtube.com/watch?v=BnknNTN8icw
+https://www.youtube.com/watch?v=xzJO03LpapI
+
+SPRING BOOT
+https://www.youtube.com/watch?v=27dPN4aMz30
+
+no more docker
+https://www.youtube.com/watch?v=7KUdmFyefSA
+
+DOCKERHUB
+https://hub.docker.com/					SIGN IN
+https://docs.docker.com/docker-hub/		DOCS
+
+----------------------------------------------------------
+Nana Janashia video
+Developing with Docker                     ►  <a href="https://youtu.be/6YisG2GcXaw" target="web">https://youtu.be/6YisG2GcXaw</a>  Js + MOngo
+Docker Compose                             ►  <a href="https://youtu.be/MVIcrmeV_6c" target="web">https://youtu.be/MVIcrmeV_6c</a>  MongoDb + MongoExpress
+Dockerfile                                 ►  <a href="https://youtu.be/WmcdMiyqfZs" target="web">https://youtu.be/WmcdMiyqfZs </a> 
+Private Repository                         ►  <a href="https://youtu.be/vWSRWpOPHws" target="web">https://youtu.be/vWSRWpOPHws </a>
+Deploy your containerized Application      ►  <a href="https://youtu.be/ZowjOhpAcIc" target="web">https://youtu.be/ZowjOhpAcIc </a> 
+Docker volumes                             ►  <a href="https://www.youtube.com/watch?v=p2PH_YPCsis" target="web">https://www.youtube.com/watch?v=p2PH_YPCsis</a> 
+
+You can check out my videos for the Pre-Requisites:
+ ✅ Basic Docker Concepts: https://youtu.be/GeqaTjKMWeY
+ ✅ Basic Commands: https://youtu.be/xGn7cFR3ARU
+</pre> 
+
+
+
+
+<h3>Create an image using Docker commands</h3> 
+<pre>
+docker build -t xxx:1.2 .
+docker run -ti -p ppp:qqq -p ...:... --rm xxx:1.2  /bin/bash	or /bin/sh
+</pre>
+
+<h3>Create and register an image using Docker commands</h3>
+A <k>Docker repository</k> is where you put different versions of a specific image, 
+whereas a <k>Docker registry</k> (e.g. <a href="https://hub.docker.com/" target="web"><ks>Docker Hub</ks></a>) is where those repositories live.
+<br/><br/>
+Steps:
+<ul>
+<li>Sign up for a Docker account</li>
+<li>Create your first repository</li>
+<li>Build a Docker container image on your computer</li>
+<li>Push it successfully to Docker Hub</li>
+</ul>
+<hr/>
+<ol>
+<li>Sign into the Docker Desktop application using the Docker ID
+<pre>
+<ks>docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"</ks>
+
+docker login -u="natbodocker" -p="...."		
+<kc>WARNING! Using --password via the CLI is insecure. Use --password-stdin. 
+See <a href="https://docs.docker.com/engine/reference/commandline/login/" target="web">Log in to a Docker registry</a></kc>
+
+type docker_password.txt | docker login --username natbodocker --password-stdin
+</pre>
+</li>
+ 
+
+<li>CREATE IMAGE FROM <a href="Dockerfile" target="code">Dockerfile</a>
+
+<pre>
+<ks>docker build -t <your_username>/my-private-repo .</ks>
+
+docker build -t natbodocker/citest:1.0 .
+<kc>The dot "." at the end of the command denotes location of the Dockerfile.</kc>
+
+<kc>TEST the image locally</kc>
+docker run natbodocker/citest	
+docker run -it image  /bin/bash	
+docker cp ./demo0.pl 09d3ce1e3ea0:/app/bin/demo0.pl	
+</pre>
+
+<li>
+TAG an image
+<pre>
+<ks>docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]</ks>
+</pre>
+</li>
+
+</li>
+<li>PUSH the image
+<pre>
+docker push natbodocker/citest
+<kc>1.0: digest: sha256:c6aae5e9db4ad74b7e419aa9e2430b1b8fddd58b27c2ba16f94f34f8fa78c858 size: 1372</kc>
+</pre>
+</li>
+<li>PULL an image
+<pre>
+<ks>docker pull [OPTIONS] NAME[:TAG|@DIGEST]</ks>
+ 
+docker pull  natbodocker/citest:1.0
+</pre>
+</li>
+
+<li></li>
+</ol>
+
+<h3>Create and register an image using Gradle</h3>
+https://tomgregory.com/automating-docker-builds-with-gradle/
+<pre>
+java -jar springbootify.jar
+http://localhost:8080/doit
+</pre>
+https://github.com/palantir/gradle-docker<br/>
+https://plugins.gradle.org/plugin/com.palantir.docker
+
+<pre>
+ /*
+ Gradle plugins for working with Docker containers
+ */
+plugins {
+    id "com.palantir.docker" version "0.25.0"
+	id "com.palantir.docker-run" version "0.25.0"
+}
+
+version '0.1.0'
+
+/*
+specify a configuration for the com.palantir.docker plugin to build the image
+*/
+
+docker {
+     name "${project.name}:${project.version}"
+     files 'springbootify.jar'
+}
+
+//gradlew docker 	builds the image
+
+/*
+A specific configuration for running the container
+configures the plugin to create a container with the given name, 
+using an image with the same name we configured in the docker configuration block
+
+connecting to port 8080 on the container as this is what our application uses, 
+and exposing that on the host also on port 8080.
+
+It’s useful to include the clean true property so that when you stop the container 
+it gets automatically removed as well.
+*/
+dockerRun {
+    name "${project.name}"
+    image "${project.name}:${project.version}"
+    ports '8080:8080'
+    clean true
+}
+
+//gradlew dockerRun		run the container
+//gradlew dockerStop	stop the application
+
+//gradlew build docker  build your application, generate a jar file, build your image
+
+/*
+Go to Docker Hub - Repositories and create a private repository called gradle-docker-example
+Docker’s mechanism to push an image to a central repository involves 
+first tagging the image with the repository name, then pushing it. 
+*/
+docker {
+    name "${project.name}:${project.version}"
+    files 'springbootify.jar'
+    tag 'DockerHub', "natbodocker/gradle-docker-example:${project.version}"
+}
+/*
+the DockerHub string we put in the tag configuration is used to dynamically generate 
+the tasks dockerTagDockerHub and dockerPushDockerHub.
+Run gradlew tasks
+*/
+//gradlew dockerTagDockerHub   		tags the image
+//AUTHENTICATE docker login
+//gradlew dockerPushDockerHub		Docker pushes are incremental.
+
+</pre>
+<ol>
+<li><pre>
+<k>docker run -it hub.docker.com/natbodocker/cidemo:1.1 /bin/bash</k>
+<ks>bash-4.2# ls</ks>
+app  app.bat  demo0.pl  sysRules.pl 
+<ks>bash-4.2# ./app</ks>
+Hello World with CI!
+UtilsInKotlin | loadRules userDirPath= /app/bin
+UtilsInKotlin | loadRules load sysRules.pl= yes.
+UtilsInKotlin | loadRules load demo0.pl= yes.
+App numOfActors=2
+numOfActors = 2 
+
+
+docker run --rm natbodocker/cidemoapp:1.2
+docker run -it --rm natbodocker/cidemoapp:1.2 /bin/bash
+
+</pre>
+
+</li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ol>
+
+<h3>Using docker compose</h3>
+<pre>
+docker netwrok ls
+docker-compose -f app.yaml up -d
+
+docker-compose -f app.yaml down
+</pre>
+
+<h3>Create and register an image using GitHub Actions</h3>
+<a href="https://docs.github.com/en/actions/guides/publishing-docker-images" target="code">Publishing Docker images</a>.<br/>
+<a href="https://www.youtube.com/watch?v=R8_veQiYBjI&t=1475s" target="web">GitHub Actions (video-nana) 1475</a>.
+<!--
+You can create a separate project for your task class. 
+This project produces and publishes a JAR which you can then use in multiple builds and share with others. 
+Generally, this JAR might include some custom plugins, or bundle several related task classes into a single library. 
+Or some combination of the two.
+-->
+<br/><br/>
+
+<li><h3>Docker volumes</h3>
+<a href="https://www.youtube.com/watch?v=p2PH_YPCsis" target="web"> (video-nana)  </a>.
+</li>
+
+</div>
+ </li>
+</ol>
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI  
+</div> 
+</body>
+</html>

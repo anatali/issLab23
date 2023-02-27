@@ -51,12 +51,12 @@
 <h2>Installazioni su PC<a class="headerlink" href="#installazioni-su-pc" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Installare <span class="blue">Java JDK 11</span>  (non useremo versioni più recenti)</p></li>
-<li><p>Installare <span class="blue">GIT</span> <span class="brown">PERSONALE PRIVATO</span> e dare accesso al docente</p></li>
+<li><p>Installare <span class="blue">GIT</span> <a href="#id1"><span class="problematic" id="id2">:brown:`PERSONALE PRIVATO`</span></a> e dare accesso al docente</p></li>
 <li><p>Compilare <a class="reference external" href="_static/templateToFill.html">template2023</a> inserendo Fotografia, email e numero di matricola</p></li>
 <li><p>Clonare <a class="reference external" href="https://github.com/anatali/issLab23">https://github.com/anatali/issLab23</a> in una directory vuota e.g. <code class="docutils literal notranslate"><span class="pre">C:/.../issLab23</span></code></p></li>
 <li><p>Installare <span class="blue">Gradle</span>  (7.6)</p></li>
 <li><p>Installare <span class="blue">IntelliJ</span></p></li>
-<li><p>Installare <span class="blue">Eclipse IDE</span> for <span class="brown">Java and DSL Developers</span> (2022 06)</p></li>
+<li><p>Installare <span class="blue">Eclipse IDE</span> for <a href="#id3"><span class="problematic" id="id4">:brown:`Java and DSL Developers`</span></a> (2022 06)</p></li>
 <li><p>Installare <span class="blue">Docker</span></p></li>
 <li><p>Installare <span class="blue">Node.js</span></p></li>
 <li><p>Installare <span class="blue">Python (3.8.8)</span></p></li>
@@ -75,8 +75,6 @@ per modellare il suo proprio  domain-building software.</p>
 <li><p>Creo la directory <strong>unibolibs</strong>, che conterrà le librerie (file <code class="docutils literal notranslate"><span class="pre">.jar</span></code>) da noi sviluppate.
 Per il momento, inserisco le seguenti librerie:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">2p301</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">uniboInterfaces.jar</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">unibo.basicomm23-1.0</span></code></p></li>
 </ul>
 </li>
@@ -195,6 +193,10 @@ il quale assume <code class="docutils literal notranslate"><span class="pre">src
 
     <span class="o">//</span> <span class="n">This</span> <span class="n">dependency</span> <span class="ow">is</span> <span class="n">used</span> <span class="n">by</span> <span class="n">the</span> <span class="n">application</span><span class="o">.</span>
     <span class="n">implementation</span> <span class="s1">&#39;com.google.guava:guava:30.1.1-jre&#39;</span>
+    <span class="o">//</span><span class="n">HTTP</span>
+    <span class="n">implementation</span> <span class="s1">&#39;org.apache.httpcomponents:httpclient:4.5&#39;</span>
+    <span class="o">//</span><span class="n">JSON</span>
+    <span class="n">implementation</span> <span class="s1">&#39;com.googlecode.json-simple:json-simple:1.1.1&#39;</span>
 
     <span class="o">//</span><span class="n">CUSTOM</span> <span class="n">unibo</span>
     <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;unibo.basicomm23-1.0&#39;</span>
@@ -208,7 +210,7 @@ il quale assume <code class="docutils literal notranslate"><span class="pre">src
 </div>
 </li>
 <li><p>Creo la directory <code class="docutils literal notranslate"><span class="pre">Appl1/userDocs</span></code> e vi inserisco in <code class="docutils literal notranslate"><span class="pre">userDocs</span></code> copia del file  <a class="reference external" href="_static/templateToFill.html">template2023</a> con la mia foto,
-lo ridenomino <cite>application1.html</cite> e vi copio i requisiti dati dal committente.</p></li>
+lo ridenomino <cite>CognomeNomeApplication1.html</cite> e vi copio i requisiti dati dal committente.</p></li>
 <li><p>Usando una command shell o il Terminal di <code class="docutils literal notranslate"><span class="pre">IntelliJ</span></code>:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradlew</span> <span class="n">run</span>
@@ -292,20 +294,6 @@ Quindi aggiungiamo il nostro progetto al repository:</p>
 </ol>
 </section>
 </section>
-<section id="su-raspberrypi">
-<h2>Su RaspberryPi<a class="headerlink" href="#su-raspberrypi" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
-<li><p>Acquisire RaspberryPi 3 Model B+,</p></li>
-<li><p>Sarebbe bene acquisire anche <cite>HC-SR04</cite> Distance Sensor e qualche Led che useremo nella FASE1</p></li>
-<li><p>Al termine della FASE1 faremo anche uso di una (usb) WebCam</p></li>
-<li><p>Per i robot si veda  <a href="#id1"><span class="problematic" id="id2">`robot reali`_</span></a></p></li>
-</ol>
-<ul class="simple">
-<li><p><a class="reference internal" href="#creazione-progetto-con-gradle"><span class="std std-ref">Creazione progetto con Gradle</span></a></p></li>
-<li><p><a class="reference internal" href="#applicazione"><span class="std std-ref">Applicazione</span></a></p></li>
-<li><p><a class="reference internal" href="#uso-di-git"><span class="std std-ref">Uso di GIT</span></a></p></li>
-</ul>
-</section>
 </section>
 
 
@@ -328,7 +316,6 @@ Quindi aggiungiamo il nostro progetto al repository:</p>
 <li><a class="reference internal" href="#creazione-di-un-repository-remoto">Creazione di un repository remoto</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#su-raspberrypi">Su RaspberryPi</a></li>
 </ul>
 </li>
 </ul>

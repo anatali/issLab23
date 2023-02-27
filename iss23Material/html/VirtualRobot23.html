@@ -537,8 +537,39 @@ lo stesso metodo <a class="reference internal" href="#callhttp"><span class="std
 </div>
 </li>
 </ul>
-<p><span class="slide1">Uso di javax.websocket library</span></p>
 </section>
+</section>
+<section id="automatictesthttp">
+<h4>AutomaticTestHTTP<a class="headerlink" href="#automatictesthttp" title="Permalink to this headline">¶</a></h4>
+<p>Grazie a JUnit, possiamo includere le azioni di <a class="reference internal" href="#testmovesusinghttp-tests"><span class="std std-ref">TestMovesUsingHttp tests</span></a>
+all’interno di una unità di testing che le esegue in modo automatizzato.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">org.junit.Before</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.CloseableHttpClient</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.HttpClients</span><span class="p">;</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">AutomaticTestHTTP</span> <span class="p">{</span>
+
+<span class="n">private</span> <span class="n">CloseableHttpClient</span> <span class="n">httpclient</span><span class="p">;</span>
+
+ <span class="nd">@Before</span>
+ <span class="n">public</span> <span class="n">void</span> <span class="n">init</span><span class="p">(){</span>
+     <span class="n">httpclient</span> <span class="o">=</span> <span class="n">HttpClients</span><span class="o">.</span><span class="n">createDefault</span><span class="p">();</span>
+     <span class="o">//</span><span class="n">ASSUNZIONE</span><span class="p">:</span> <span class="n">prima</span> <span class="n">di</span> <span class="n">ogni</span> <span class="n">test</span> <span class="n">il</span> <span class="n">robot</span> <span class="n">deve</span> <span class="n">essere</span> <span class="ow">in</span> <span class="n">HOME</span>
+ <span class="p">}</span>
+
+ <span class="nd">@Test</span>
+ <span class="n">public</span> <span class="n">void</span> <span class="n">doForward</span><span class="p">()</span> <span class="p">{</span>
+     <span class="n">JSONObject</span> <span class="n">result</span> <span class="o">=</span> <span class="n">callHTTP</span><span class="p">(</span>  <span class="n">forwardcmd</span>  <span class="p">);</span>
+     <span class="k">assert</span><span class="p">(</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;endmove&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;move&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;moveForward&quot;</span><span class="p">))</span> <span class="p">;</span>
+     <span class="o">//</span><span class="n">BACK</span> <span class="n">TO</span> <span class="n">HOME</span>
+     <span class="n">JSONObject</span> <span class="n">result1</span> <span class="o">=</span> <span class="n">callHTTP</span><span class="p">(</span>  <span class="n">backwardcmd</span>  <span class="p">);</span>
+     <span class="k">assert</span><span class="p">(</span> <span class="n">result1</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;move&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">()</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;moveBackward&quot;</span><span class="p">))</span> <span class="p">;</span>
+ <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">Uso di javax.websocket library</span></p>
 </section>
 </section>
 <section id="testmovesusingws">
@@ -560,11 +591,13 @@ lo stesso metodo <a class="reference internal" href="#callhttp"><span class="std
 </tbody>
 </table>
 <p>Dal punto di vista ‘sistemistico’, osserviamo che:</p>
-<ul>
+<ul class="simple">
 <li><p>Il codice di comunicazione è scritto completamente dal progettista dell’applicazione, che utilizza
-la libreria <code class="docutils literal notranslate"><span class="pre">javax.websocket</span></code>  (vedi anche <a class="reference external" href="http://losviluppatore.it/i-websocket-comunicazione-asincrona-full-duplex-per-il-web/">I WebSocket Comunicazione Asincrona Full-Duplex Per Il Web</a>)</p>
-<p><span class="slide1">Annotazioni</span></p>
-<p>Gli eventi del ciclo di vita dell’endpoint WebSocket sono gestiti mediante <span class="blue">Annotazioni</span>
+la libreria <code class="docutils literal notranslate"><span class="pre">javax.websocket</span></code>  (vedi anche <a class="reference external" href="http://losviluppatore.it/i-websocket-comunicazione-asincrona-full-duplex-per-il-web/">I WebSocket Comunicazione Asincrona Full-Duplex Per Il Web</a>)</p></li>
+</ul>
+<p><cite>Annotazioni</cite></p>
+<blockquote>
+<div><p>Gli eventi del ciclo di vita dell’endpoint WebSocket sono gestiti mediante <a class="reference internal" href="Annotazioni.html#annotazioni"><span class="std std-ref">Annotazioni</span></a>
 secondo lo schema che segue:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>@ClientEndpoint  //La classe viene trattata come un client WebSocket
 public class ... {
@@ -582,8 +615,7 @@ public class ... {
  }
 </pre></div>
 </div>
-</li>
-</ul>
+</div></blockquote>
 <p>Dal punto di vista ‘applicativo’, osserviamo che:</p>
 <ul class="simple">
 <li><p>Il chiamante esegue concettualmente una <em>fire-and-forget</em>.</p></li>
@@ -733,6 +765,12 @@ una procedura di utilità definita come segue:</p>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="automatictestws">
+<h4>AutomaticTestWs<a class="headerlink" href="#automatictestws" title="Permalink to this headline">¶</a></h4>
+<p>La definizione di una classe di testing automatizzato analoga <a class="reference internal" href="#automatictesthttp"><span class="std std-ref">AutomaticTestHTTP</span></a> potrebbe non essere
+di immediata realizzazione. Il lettore è inviatato a individuare i problemi che sorgono a livello di scrittura
+del codice, sui quali noi torneremo in seguito.</p>
 <p><span class="worktodo">TODO: Deliverable BoundaryWalk</span></p>
 </section>
 </section>
@@ -759,6 +797,11 @@ che induce il robot:</p>
 </li>
 <li><p>Compilare la sezione <code class="docutils literal notranslate"><span class="pre">Testing</span></code> descrivendo una strategia di collaudo.</p></li>
 </ol>
+<section id="vr-problem">
+<h3>VR problem<a class="headerlink" href="#vr-problem" title="Permalink to this headline">¶</a></h3>
+<p><span class="slide">Problema: Due protocolli =&gt; due codifiche</span></p>
+<p><span class="slide1">E’ possibile evitarlo?</span></p>
+</section>
 </section>
 </section>
 
@@ -808,17 +851,22 @@ che induce il robot:</p>
 <li><a class="reference internal" href="#invio-di-alarm">Invio di alarm</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#automatictesthttp">AutomaticTestHTTP</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#testmovesusingws">TestMovesUsingWs</a><ul>
 <li><a class="reference internal" href="#callws">callWS</a></li>
 <li><a class="reference internal" href="#testmovesusingws-onmesage">TestMovesUsingWs onMesage</a></li>
 <li><a class="reference internal" href="#testmovesusingws-tests">TestMovesUsingWs tests</a></li>
+<li><a class="reference internal" href="#automatictestws">AutomaticTestWs</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#deliverableboundarywalk">DeliverableBoundaryWalk</a></li>
+<li><a class="reference internal" href="#deliverableboundarywalk">DeliverableBoundaryWalk</a><ul>
+<li><a class="reference internal" href="#vr-problem">VR problem</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

@@ -59,8 +59,7 @@ A partire dalla versione Java SE 8, le annotazioni possono essere applicate non 
 allo scopo di realizzare uno più forte controllo di tipo (si pensi ad esempio a <span class="blue">&#64;NonNull</span> ).</p>
 <p>Oggi le annotazioni si trovano quasi ovunque nei programmi e sono introdotte per diversi scopi:</p>
 <ul class="simple">
-<li><p>per dare semantica aggiuntiva a vari elementi di una classe, che
-possono aiutare a meglio comprenderne l’intento;</p></li>
+<li><p>per aiutare a meglio comprenderne l’intento a vari elementi di una classe;</p></li>
 <li><p>per permettere ulteriori controlli in fase di compilazione che garantiscono il rispetto di vari vincoli;</p></li>
 <li><p>per dare supporto ad analisi aggiuntiva del codice  tramite strumenti sensibili alle annotazioni.</p></li>
 </ul>
@@ -70,8 +69,7 @@ sfruttando in questo caso le API di <a class="reference external" href="https://
 dare supporto a un <strong>paradigma di progettazione basato su configurazione esplicita</strong>, il che
 permette di semplificare diversi aspetti della configurazione, con
 grande impatto sul processo di sviluppo.</p>
-<p>Framework molto diffusi che sfruttano questo aspetto sono <a class="reference external" href="https://www.baeldung.com/spring-vs-spring-boot">Spring and Spring Boot</a> che useremo più avanti, quando vorremo dotare
-le nostre applicazioni di una WebGUI.</p>
+<p>Framework molto diffusi che sfruttano questo aspetto sono <a class="reference external" href="https://www.baeldung.com/spring-vs-spring-boot">Spring and Spring Boot</a> che useremo più avanti.</p>
 <p>Per il momento ci limitiamo a illustrare i meccanismi Java che permettono di sfruttare le annotazioni nelle nostre applicazioni.</p>
 <section id="meta-annotation-in-java">
 <h2>Meta-Annotation in Java<a class="headerlink" href="#meta-annotation-in-java" title="Permalink to this headline">¶</a></h2>
@@ -132,8 +130,7 @@ vengono definite <strong>Meta-Annotation</strong>.</p>
 <h2>Annotazioni: esempio<a class="headerlink" href="#annotazioni-esempio" title="Permalink to this headline">¶</a></h2>
 <section id="annotation-definizione">
 <h3>Annotation: definizione<a class="headerlink" href="#annotation-definizione" title="Permalink to this headline">¶</a></h3>
-<p>Come esempio, definiamo una annotazione per descrivere il modo di accedere ad una applicazione
-(il codice si trova in <code class="docutils literal notranslate"><span class="pre">test/annotations</span></code> del progetto <code class="docutils literal notranslate"><span class="pre">unibo.actor22</span></code>):</p>
+<p>Come esempio, definiamo una annotazione per descrivere il modo di accedere ad una applicazione</p>
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Retention</span><span class="p">(</span><span class="n">RetentionPolicy</span><span class="p">.</span><span class="na">RUNTIME</span><span class="p">)</span>
 <span class="nd">@Inherited</span>
 <span class="kd">public</span> <span class="nd">@interface</span> <span class="n">AccessSpec</span> <span class="p">{</span>
@@ -226,127 +223,6 @@ l’annotazione:
 </div>
 </section>
 </section>
-<section id="configurare-con-annotation">
-<h2>Configurare con Annotation<a class="headerlink" href="#configurare-con-annotation" title="Permalink to this headline">¶</a></h2>
-<p>Nel package <code class="docutils literal notranslate"><span class="pre">unibo.actor22.annotations</span></code> del progetto <code class="docutils literal notranslate"><span class="pre">unibo.actor22</span></code>,
-definiamo due annotazioni, una per dichiarare attori locali e una per dichiarare attori remoti.</p>
-<section id="actorlocal-e-actorremote">
-<h3>&#64;ActorLocal e &#64;ActorRemote<a class="headerlink" href="#actorlocal-e-actorremote" title="Permalink to this headline">¶</a></h3>
-<table class="colwidths-given docutils align-default" style="width: 100%">
-<colgroup>
-<col style="width: 30%" />
-<col style="width: 70%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>&#64;ActorLocal</p>
-<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Retention</span><span class="p">(</span><span class="n">RetentionPolicy</span><span class="p">.</span><span class="na">RUNTIME</span><span class="p">)</span>
-<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">ActorLocal</span> <span class="p">{</span>
-  <span class="n">String</span><span class="o">[]</span> <span class="nf">name</span><span class="p">();</span>
-   <span class="n">Class</span><span class="o">[]</span>  <span class="nf">implement</span><span class="p">();</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</td>
-<td><p>La dichiarazione consiste nella specifica di un array di nomi di attori e di un corrispondente
-array di classi di implentazione</p></td>
-</tr>
-<tr class="row-even"><td><p>&#64;ActorRemote</p>
-<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Retention</span><span class="p">(</span><span class="n">RetentionPolicy</span><span class="p">.</span><span class="na">RUNTIME</span><span class="p">)</span>
-<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">ActorRemote</span> <span class="p">{</span>
-      <span class="n">String</span><span class="o">[]</span> <span class="nf">name</span><span class="p">();</span>
-      <span class="n">String</span><span class="o">[]</span> <span class="nf">host</span><span class="p">();</span>
-      <span class="n">String</span><span class="o">[]</span> <span class="nf">port</span><span class="p">();</span>
-      <span class="n">String</span><span class="o">[]</span> <span class="nf">protocol</span><span class="p">();</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</td>
-<td><p>La dichiarazione consiste nella specifica di un array di nomi di attori e di  corrispondenti
-array per specificare l’idirizzo (host) la porta (port) e il protocollo (protocol) relativi
-al contesto (si veda <span class="xref std std-ref">Qak22Context</span>) in cui sono dichiarati come attori locali.</p></td>
-</tr>
-</tbody>
-</table>
-<section id="esempio">
-<h4>Esempio<a class="headerlink" href="#esempio" title="Permalink to this headline">¶</a></h4>
-<p>Nel package <code class="docutils literal notranslate"><span class="pre">unibo.actor22.distrib.annot</span></code> della directory <code class="docutils literal notranslate"><span class="pre">test</span></code> del progetto <code class="docutils literal notranslate"><span class="pre">unibo.actor22</span></code>,
-definiamo il main della parte di sistema ad attori allocata sul PC che contiene un <code class="docutils literal notranslate"><span class="pre">ControllerActor</span></code>
-che utilizza attori remoti relativi a dispositivi Led e Sonar allocati su uno stesso RaspberryPi
-di indirizzo definito in <code class="docutils literal notranslate"><span class="pre">ApplData.raspAddr</span></code>:</p>
-<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@ActorLocal</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span>     <span class="p">{</span><span class="s">&quot;controller&quot;</span> <span class="p">},</span>
-        <span class="n">implement</span> <span class="o">=</span> <span class="p">{</span><span class="n">unibo</span><span class="p">.</span><span class="na">actor22</span><span class="p">.</span><span class="na">common</span><span class="p">.</span><span class="na">ControllerActor</span><span class="p">.</span><span class="na">class</span> <span class="p">})</span>
-<span class="nd">@ActorRemote</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span>   <span class="p">{</span><span class="s">&quot;led&quot;</span><span class="p">,</span><span class="s">&quot;sonar&quot;</span><span class="p">},</span>
-            <span class="n">host</span><span class="o">=</span>    <span class="p">{</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">raspAddr</span><span class="p">,</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">raspAddr</span><span class="p">},</span>
-            <span class="n">port</span><span class="o">=</span>    <span class="p">{</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">ApplData</span><span class="p">.</span><span class="na">ctxPort</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">ApplData</span><span class="p">.</span><span class="na">ctxPort</span><span class="p">},</span>
-            <span class="n">protocol</span><span class="o">=</span><span class="p">{</span> <span class="s">&quot;TCP&quot;</span> <span class="p">,</span> <span class="s">&quot;TCP&quot;</span> <span class="p">})</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UsingActorsWithAnnotOnPc</span> <span class="p">{</span>
-    <span class="p">...</span>
-    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="p">()</span> <span class="p">{</span>
-        <span class="n">Qak22Context</span><span class="p">.</span><span class="na">handleLocalActorDecl</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-        <span class="n">Qak22Context</span><span class="p">.</span><span class="na">handleRemoteActorDecl</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="p">...</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>La fase di configurazione consiste ora nella invocazione di operazioni del contesto capaci di
-analizzare le dichiarazioni ed agire di conseguenza.</p>
-</section>
-</section>
-<section id="qak22context-handlelocalactordecl">
-<h3>Qak22Context.handleLocalActorDecl<a class="headerlink" href="#qak22context-handlelocalactordecl" title="Permalink to this headline">¶</a></h3>
-<p>La gestione della dichiarazione degli attori locali consiste nel creare una istanza di ciascuna classe,
-trasferendo al costruttore il nome corrispondente.</p>
-<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">handleLocalActorDecl</span><span class="p">(</span><span class="n">Object</span> <span class="n">element</span><span class="p">)</span> <span class="p">{</span>
-<span class="k">new</span> <span class="n">EventMsgHandler</span><span class="p">(</span>   <span class="p">);</span>   <span class="c1">//attore di sistema</span>
-<span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">clazz</span>            <span class="o">=</span> <span class="n">element</span><span class="p">.</span><span class="na">getClass</span><span class="p">();</span>
-<span class="n">Annotation</span><span class="o">[]</span> <span class="n">annotations</span>  <span class="o">=</span> <span class="n">clazz</span><span class="p">.</span><span class="na">getAnnotations</span><span class="p">();</span>
-  <span class="k">for</span> <span class="p">(</span><span class="n">Annotation</span> <span class="n">annot</span> <span class="p">:</span> <span class="n">annotations</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">annot</span> <span class="k">instanceof</span> <span class="n">ActorLocal</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">ActorLocal</span> <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">ActorLocal</span><span class="p">)</span> <span class="n">annot</span><span class="p">;</span>
-      <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">a</span><span class="p">.</span><span class="na">name</span><span class="p">().</span><span class="na">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">String</span> <span class="n">name</span>     <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="na">name</span><span class="p">()</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
-        <span class="n">Class</span>  <span class="n">impl</span>     <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="na">implement</span><span class="p">()</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
-        <span class="k">try</span> <span class="p">{</span>
-          <span class="n">impl</span><span class="p">.</span><span class="na">getConstructor</span><span class="p">(</span> <span class="n">String</span><span class="p">.</span><span class="na">class</span> <span class="p">).</span><span class="na">newInstance</span><span class="p">(</span> <span class="n">name</span> <span class="p">);</span>
-        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span> <span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="qak22context-handleremoteactordecl">
-<h3>Qak22Context.handleRemoteActorDecl<a class="headerlink" href="#qak22context-handleremoteactordecl" title="Permalink to this headline">¶</a></h3>
-<p>La gestione della dichiarazione degli attori remoti si traduce in una automatizzazione della
-invocazione alla operazione  <span class="xref std std-ref">setActorAsRemote</span> con i parametri specificati nella annotazione
-per ciascun attore.</p>
-<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">handleRemoteActorDecl</span><span class="p">(</span><span class="n">Object</span> <span class="n">element</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">clazz</span>            <span class="o">=</span> <span class="n">element</span><span class="p">.</span><span class="na">getClass</span><span class="p">();</span>
-    <span class="n">Annotation</span><span class="o">[]</span> <span class="n">annotations</span>  <span class="o">=</span> <span class="n">clazz</span><span class="p">.</span><span class="na">getAnnotations</span><span class="p">();</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">Annotation</span> <span class="n">annot</span> <span class="p">:</span> <span class="n">annotations</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">annot</span> <span class="k">instanceof</span> <span class="n">ActorRemote</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">ActorRemote</span> <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">ActorRemote</span><span class="p">)</span> <span class="n">annot</span><span class="p">;</span>
-        <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">a</span><span class="p">.</span><span class="na">name</span><span class="p">().</span><span class="na">length</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">String</span> <span class="n">name</span>     <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="na">name</span><span class="p">()</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
-            <span class="n">String</span> <span class="n">host</span>     <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="na">host</span><span class="p">()</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
-            <span class="n">String</span> <span class="n">port</span>     <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="na">port</span><span class="p">()</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
-            <span class="n">String</span> <span class="n">protocol</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="na">protocol</span><span class="p">()</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
-            <span class="n">Qak22Context</span><span class="p">.</span><span class="na">setActorAsRemote</span><span class="p">(</span>
-                <span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">ProtocolInfo</span><span class="p">.</span><span class="na">getProtocol</span><span class="p">(</span><span class="n">protocol</span><span class="p">));</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="altre-annotazioni-di-configurazione">
-<h3>Altre annotazioni di configurazione<a class="headerlink" href="#altre-annotazioni-di-configurazione" title="Permalink to this headline">¶</a></h3>
-<p><span class="worktodo">WORKTODO: proporre altre forme di dichiarazione del sistema mediante annotazioni</span></p>
-</section>
-</section>
 </section>
 
 
@@ -364,16 +240,6 @@ per ciascun attore.</p>
 <li><a class="reference internal" href="#annotazioni-esempio">Annotazioni: esempio</a><ul>
 <li><a class="reference internal" href="#annotation-definizione">Annotation: definizione</a></li>
 <li><a class="reference internal" href="#annotation-uso">Annotation: uso</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#configurare-con-annotation">Configurare con Annotation</a><ul>
-<li><a class="reference internal" href="#actorlocal-e-actorremote">&#64;ActorLocal e &#64;ActorRemote</a><ul>
-<li><a class="reference internal" href="#esempio">Esempio</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#qak22context-handlelocalactordecl">Qak22Context.handleLocalActorDecl</a></li>
-<li><a class="reference internal" href="#qak22context-handleremoteactordecl">Qak22Context.handleRemoteActorDecl</a></li>
-<li><a class="reference internal" href="#altre-annotazioni-di-configurazione">Altre annotazioni di configurazione</a></li>
 </ul>
 </li>
 </ul>

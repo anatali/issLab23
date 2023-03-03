@@ -1,0 +1,33 @@
+plugins {
+    id 'application'
+    id 'eclipse'
+    id 'jacoco'
+}
+
+version '1.0'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    flatDir { dirs '../../unibolibs' }
+}
+
+dependencies {
+    // Use JUnit test framework.
+    testImplementation 'junit:junit:4.13.2'
+
+    // This dependency is used by the application.
+    implementation 'com.google.guava:guava:30.1.1-jre'
+    //HTTP
+    implementation 'org.apache.httpcomponents:httpclient:4.5'
+    //JSON
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+    //CUSTOM unibo
+    implementation name: 'unibo.basicomm23-1.0'
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'unibo.Application1'
+}

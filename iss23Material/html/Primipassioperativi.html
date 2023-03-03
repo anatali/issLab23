@@ -51,12 +51,12 @@
 <h2>Installazioni su PC<a class="headerlink" href="#installazioni-su-pc" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Installare <span class="blue">Java JDK 11</span>  (non useremo versioni più recenti)</p></li>
-<li><p>Installare <span class="blue">GIT</span> <a href="#id1"><span class="problematic" id="id2">:brown:`PERSONALE PRIVATO`</span></a> e dare accesso al docente</p></li>
+<li><p>Installare <span class="blue">GIT</span> <span class="brown">PERSONALE PRIVATO</span> e dare accesso al docente</p></li>
 <li><p>Compilare <a class="reference external" href="_static/templateToFill.html">template2023</a> inserendo Fotografia, email e numero di matricola</p></li>
 <li><p>Clonare <a class="reference external" href="https://github.com/anatali/issLab23">https://github.com/anatali/issLab23</a> in una directory vuota e.g. <code class="docutils literal notranslate"><span class="pre">C:/.../issLab23</span></code></p></li>
 <li><p>Installare <span class="blue">Gradle</span>  (7.6)</p></li>
 <li><p>Installare <span class="blue">IntelliJ</span></p></li>
-<li><p>Installare <span class="blue">Eclipse IDE</span> for <a href="#id3"><span class="problematic" id="id4">:brown:`Java and DSL Developers`</span></a> (2022 06)</p></li>
+<li><p>Installare <span class="blue">Eclipse IDE</span> for <span class="brown">Java and DSL Developers</span> (2022 06)</p></li>
 <li><p>Installare <span class="blue">Docker</span></p></li>
 <li><p>Installare <span class="blue">Node.js</span></p></li>
 <li><p>Installare <span class="blue">Python (3.8.8)</span></p></li>
@@ -80,7 +80,8 @@ Per il momento, inserisco le seguenti librerie:</p>
 </li>
 <li><p>Creo una directory per il progetto di nome <span class="blue">Appl1</span> e mi posiziono in essa.</p></li>
 <li><p>Eseguo il comando</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradle</span> <span class="n">init</span> <span class="p">(</span><span class="n">select</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="p">,</span> <span class="o">-</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradle</span> <span class="n">init</span>
+<span class="p">(</span><span class="n">select</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="p">,</span> <span class="o">-</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>La risposta <code class="docutils literal notranslate"><span class="pre">2</span></code> alla prima domanda, implica che Gradle costruisca una applicazione-base che possiamo subito
@@ -156,13 +157,14 @@ il quale assume <code class="docutils literal notranslate"><span class="pre">src
 <li><p>Creo in <code class="docutils literal notranslate"><span class="pre">application1</span></code> le directories (come in <em>app</em>):</p>
 <ul class="simple">
 <li><p><em>src/main/java</em> e <em>src/main/resources</em></p></li>
-<li><p><em>scr/test/java</em> e <em>scr/test/resources</em></p></li>
+<li><p><em>src/test/java</em> e <em>src/test/resources</em></p></li>
 </ul>
 </li>
+<li><p>Marco src come source directory</p></li>
 <li><p>Creo la directory   <em>src/main/java</em>/<strong>unibo</strong>, che funge da nuovo package</p></li>
-<li><p>Creo in <code class="docutils literal notranslate"><span class="pre">application1/src/main/java</span></code> un file di prova</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unibo.basicomm23.utils.CommUtils</span><span class="p">;</span>
-<span class="n">package</span> <span class="n">unibo</span><span class="p">;</span>
+<li><p>Creo in <code class="docutils literal notranslate"><span class="pre">application1/src/main/java/unibo</span></code> un file di prova <em>Application1.java</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="n">unibo</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">unibo.basicomm23.utils.CommUtils</span><span class="p">;</span>
 <span class="n">public</span> <span class="k">class</span> <span class="nc">Application1</span> <span class="p">{</span>
         <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span> <span class="n">String</span><span class="p">[]</span> <span class="n">args</span> <span class="p">){</span>
             <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Application1 hello&quot;</span><span class="p">);</span>
@@ -209,15 +211,16 @@ il quale assume <code class="docutils literal notranslate"><span class="pre">src
 </pre></div>
 </div>
 </li>
-<li><p>Creo la directory <code class="docutils literal notranslate"><span class="pre">Appl1/userDocs</span></code> e vi inserisco in <code class="docutils literal notranslate"><span class="pre">userDocs</span></code> copia del file  <a class="reference external" href="_static/templateToFill.html">template2023</a> con la mia foto,
-lo ridenomino <cite>CognomeNomeApplication1.html</cite> e vi copio i requisiti dati dal committente.</p></li>
-<li><p>Usando una command shell o il Terminal di <code class="docutils literal notranslate"><span class="pre">IntelliJ</span></code>:</p>
+<li><p>Usando una command shell o il Terminal di <code class="docutils literal notranslate"><span class="pre">IntelliJ</span></code> su <code class="docutils literal notranslate"><span class="pre">C:\Didattica2023\issLab23\Appl1</span></code>, eseguo:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradlew</span> <span class="n">run</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradlew</span> <span class="n">build</span>
+<span class="n">gradlew</span> <span class="n">run</span>
 </pre></div>
 </div>
 </div></blockquote>
 </li>
+<li><p>Creo la directory <code class="docutils literal notranslate"><span class="pre">Appl1/userDocs</span></code> e vi inserisco in <code class="docutils literal notranslate"><span class="pre">userDocs</span></code> copia del file  <a class="reference external" href="_static/templateToFill.html">template2023</a> con la mia foto,
+lo ridenomino <cite>CognomeNomeApplication1.html</cite> e vi copio i requisiti dati dal committente.</p></li>
 </ol>
 </section>
 </section>

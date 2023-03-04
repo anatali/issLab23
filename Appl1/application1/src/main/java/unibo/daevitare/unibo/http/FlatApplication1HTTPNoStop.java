@@ -14,7 +14,7 @@ import unibo.common.VrobotMsgs;
 
 import java.net.URI;
 
-public class FatApplication1HTTPNoStop {
+public class FlatApplication1HTTPNoStop {
     private  final String localHostName    = "localhost"; //"localhost"; 192.168.1.7
     private  final int port                = 8090;
     private  final String URL              = "http://"+localHostName+":"+port+"/api/move";
@@ -32,7 +32,7 @@ public class FatApplication1HTTPNoStop {
     }
 
     //Procedura responsabile del movimento in avanti, con collisione
-    public void walkAheadUntilCollision(int n) {
+    private void walkAheadUntilCollision(int n) {
         String cmd = VrobotMsgs.forwardlongcmd;
         CommUtils.outyellow("walkAheadUntilCollision requestSynch cmd="+cmd);
         JSONObject result = requestSynch(  URL, cmd  );
@@ -68,7 +68,7 @@ public class FatApplication1HTTPNoStop {
 
     public static void main( String[] args ){
         CommUtils.aboutThreads("Before start - ");
-        FatApplication1HTTPNoStop appl = new FatApplication1HTTPNoStop();
+        FlatApplication1HTTPNoStop appl = new FlatApplication1HTTPNoStop();
         appl.walkAtBoundary();
         CommUtils.aboutThreads("At end - ");
     }

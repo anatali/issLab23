@@ -1,16 +1,16 @@
 import org.junit.Before;
 import org.junit.Test;
-import unibo.daevitare.unibo.http.FatApplication1HTTPNoStop;
+import unibo.daevitare.unibo.http.FlatApplication1HTTPNoStop;
 
 public class TestFatApplication1HTTPNostop {
-    protected FatApplication1HTTPNoStop appl;
+    protected FlatApplication1HTTPNoStop appl;
     @Before
     public void init() {
         initSystem();
     }
     protected void initSystem() {
         //Il robot deve essere in HOME !
-        appl = new FatApplication1HTTPNoStop();
+        appl = new FlatApplication1HTTPNoStop();
     }
     @Test
     public void testWorkDone(){

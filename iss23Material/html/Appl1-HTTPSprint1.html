@@ -1,0 +1,705 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Appl1-HTTPSprint1 &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Appl1-HTTPSprint2" href="Appl1-HTTPSprint2.html" />
+    <link rel="prev" title="Applicazione1" href="Applicazione1.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Appl1-HTTPSprint2.html" title="Appl1-HTTPSprint2"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Applicazione1.html" title="Applicazione1"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appl1-HTTPSprint1</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="appl1-httpsprint1">
+<h1>Appl1-HTTPSprint1<a class="headerlink" href="#appl1-httpsprint1" title="Permalink to this headline">¶</a></h1>
+<p>Dopo l’<a class="reference internal" href="Applicazione1.html#appl1-analisi-del-problema"><span class="std std-ref">Appl1: Analisi del problema</span></a> è stata defnita l’<a class="reference internal" href="Applicazione1.html#appl1-architettura-logica"><span class="std std-ref">Appl1: Architettura logica</span></a> del sistema, che
+in questo sprint si riduce a:</p>
+<a class="reference internal image-reference" href="_images/Appl1HTTPSPrint1Arch.png"><img alt="_images/Appl1HTTPSPrint1Arch.png" src="_images/Appl1HTTPSPrint1Arch.png" style="width: 50%;" /></a>
+<section id="overview-di-appl1-httpsprint1">
+<h2>Overview di Appl1-HTTPSprint1<a class="headerlink" href="#overview-di-appl1-httpsprint1" title="Permalink to this headline">¶</a></h2>
+<p>In questo Sprint, affrontiamo il <span class="remark">core problem</span> dell’applicazione, di cui è responsabile il componente <em>Appl1</em>,
+seguendo deliberatamante un approccio:</p>
+<p><span class="slide">bottom-up partendo da HTTP</span></p>
+<p><span class="slide1">Il core problem</span></p>
+<section id="requisito-sprint1-il-core-problem">
+<h3>Requisito SPRINT1: il core problem<a class="headerlink" href="#requisito-sprint1-il-core-problem" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">Il VirtualRobot</span></a> deve percorrere (una volta) il bordo perimetrale della stanza rappresentata ne
+<a class="reference internal" href="VirtualRobot23.html#la-scena-di-wenv"><span class="std std-ref">La scena di WEnv</span></a>.</p>
+<p>Il requisito impone una fase <span class="remark">proattiva</span>, in cui
+il robot percorre il perimetro della stanza <em>senza gestire i comandi stop/resume</em>.
+In questa sezione, procederemo come segue.</p>
+<ul class="simple">
+<li><p>1] <strong>Fase iniziale</strong></p></li>
+</ul>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Seguiamo un ‘convenzionale’ <span class="blue">impulso immediato alla codifica</span> decomponendo il codice
+in diverse  <strong>funzioni</strong>, per definire azioni con precise responsabilità:
+<a class="reference internal" href="#unibo-http-flatapplication1httpnostop"><span class="std std-ref">unibo.http.FlatApplication1HTTPNoStop</span></a>.</p></li>
+<li><p>Definiamo la funzione <a class="reference internal" href="#requestsynch"><span class="std std-ref">requestSynch</span></a> che ha la responsabilità di interagire con il robot
+via HTTP, restituendo l’esito del movimento.</p></li>
+<li><p>Impostiamo una prima procedura  di Testing automatizzato: <a class="reference internal" href="#testflatapplication1nostop"><span class="std std-ref">TestFlatApplication1Nostop</span></a>
+(poco soddisfacente, ma utile per delineare la problematica generale).</p></li>
+</ol>
+</div></blockquote>
+<ul class="simple">
+<li><p>2]  <strong>Analizziamo criticamente</strong> il lavoro svolto e introduciamo qualche cambiamento:</p>
+<ol class="arabic simple">
+<li><p>Teniamo memoria delle <span class="blue">azioni riusabili</span> (come <a class="reference internal" href="#requestsynch"><span class="std std-ref">requestSynch</span></a>)
+in un oggetto-utility: <a class="reference internal" href="#unibo-basicomm23-http-httpcommapache"><span class="std std-ref">unibo.basicomm23.http.HTTPCommApache</span></a>.</p></li>
+<li><p>Superiamo la dipendenza diretta dal
+<a class="reference internal" href="VirtualRobot23.html#comandi-base-per-il-robot-in-cril"><span class="std std-ref">linguaggio cril</span></a> definendo  ad <span class="blue">operazioni ad alto livello</span>
+(<a class="reference internal" href="#unibo-common-ivrobotmoves"><span class="std std-ref">unibo.common.IVrobotMoves</span></a>) per muovere un robot.
+Oltre alle solite operazioni, includiamo una <span class="blue">nuova mossa</span>: lo <a class="reference internal" href="#step"><span class="std std-ref">step</span></a>.</p></li>
+<li><p>Introduciamo un supporto che realizza le operazioni <a class="reference internal" href="#unibo-common-ivrobotmoves"><span class="std std-ref">IVrobotMoves</span></a>
+per <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a> usando l’utlity <a class="reference internal" href="#unibo-supports-vrobothlmoveshttpapache"><span class="std std-ref">VrobotHLMovesHTTPApache</span></a>).</p></li>
+<li><p>Esprimiamo il <span class="remark">risultato dello SPRINT1</span>: <a class="reference internal" href="#unibo-http-appl1httpsprint1"><span class="std std-ref">unibo.http.Appl1HTTPSprint1</span></a>, che
+introduce una esplicita <span class="blue">fase di configurazione</span> del sistema.</p></li>
+<li><p>Discutiamo una possibile <a class="reference internal" href="#strategia-di-testing-per-boundarywalk"><span class="std std-ref">Strategia di testing per BoundaryWalk</span></a>.
+Sfruttando la nuova mossa <a class="reference internal" href="#step"><span class="std std-ref">step</span></a>,  definiremo la test-unit
+<a class="reference internal" href="#testappl1httpsprint1"><span class="std std-ref">TestAppl1HTTPSprint1</span></a> che include anche la possibilità di controllare che il robot sia in
+<a class="reference internal" href="VirtualRobot23.html#stato-iniziale-del-virtualrobot"><span class="std std-ref">HOME</span></a> (funzione <a class="reference internal" href="#checkrobotathome"><span class="std std-ref">checkRobotAtHome</span></a>).</p></li>
+</ol>
+</li>
+</ul>
+</section>
+</section>
+<section id="un-esempio-da-non-imitare">
+<h2>Un esempio da non imitare<a class="headerlink" href="#un-esempio-da-non-imitare" title="Permalink to this headline">¶</a></h2>
+<p>In prima battuta, il progetto sembra consistere essenzialmente nell’utilizzare una qualche libreria Java per
+inviare comandi via <code class="docutils literal notranslate"><span class="pre">HTTP</span></code> al <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a>.</p>
+<p>Proviamo a seguire subito questo <em>impulso immediato alla codifica</em>, riservandoci poi, se fosse il caso,
+di migliorare la struttura del prodotto, con opportuna opera di <em>code-refactoring</em>.</p>
+<p><span class="slide1">Prepariamoci al refactoring …</span></p>
+<p>Il titolo della sezione indica che questo approccio sarebbe da evitare, a favore di una più
+approfondita (e ‘formalizzata’) fase di analisi e progettazione
+(ricordiamo il nostro <a class="reference internal" href="Introduzione23.html#il-motto"><span class="std std-ref">motto</span></a>).</p>
+<section id="unibo-http-flatapplication1httpnostop">
+<h3>unibo.http.FlatApplication1HTTPNoStop<a class="headerlink" href="#unibo-http-flatapplication1httpnostop" title="Permalink to this headline">¶</a></h3>
+<p>Partendo dal più semplice modo di <a class="reference internal" href="VirtualRobot23.html#interazione-sincrona"><span class="std std-ref">Interazione sincrona</span></a> basato su HTTP, risolviamo il problema inviando al robot
+un comando di movimento in avanti per un tempo abbastanza lungo a garantire una collisione con la parete di fronte.
+Dopo la collisione inviamo un comando di rotazione a sinistra e ripetiamo il tutto 4 volte.</p>
+<p>Naturalmente <span class="remark">questo non è l’unico modo di procedere</span>. Il lettore è invitato (come analista e/o come progettista)
+a individuare alternatve.</p>
+<p>In ogni caso, per evitare la scrittura di lunghe stringhe di codice,
+introduciano una classe di comodo che definisce alcuni comandi-base
+per il robot:</p>
+<section id="unibo-common-vrobotmsgs">
+<h4>unibo.common.VrobotMsgs<a class="headerlink" href="#unibo-common-vrobotmsgs" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">VrobotMsgs</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">turnrightcmd</span> <span class="o">=</span>
+      <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;turnRight\&quot;    , \&quot;time\&quot;: \&quot;300\&quot;}&quot;</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">turnleftcmd</span>  <span class="o">=</span>
+      <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;turnLeft\&quot;     , \&quot;time\&quot;: \&quot;400\&quot;}&quot;</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">haltcmd</span>      <span class="o">=</span>
+      <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;alarm\&quot; ,        \&quot;time\&quot;: \&quot;10\&quot;}&quot;</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">stepcmd</span>      <span class="o">=</span>
+      <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveForward\&quot;  , \&quot;time\&quot;: \&quot;350\&quot;}&quot;</span><span class="p">;</span>
+
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">forwardcmd</span>   <span class="o">=</span>
+      <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveForward\&quot;  , \&quot;time\&quot;: TIME}&quot;</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">backwardcmd</span>  <span class="o">=</span>
+      <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveBackward\&quot; , \&quot;time\&quot;: TIME}&quot;</span><span class="p">;</span>
+
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">forwardlongcmd</span>   <span class="o">=</span>
+      <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveForward\&quot;  , \&quot;time\&quot;: \&quot;2300\&quot;}&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">Funzioni come prima forma di componente sw</span></p>
+<p>Lo schema risolutivo può essere espresso  <strong>decomponendo</strong> le azioni in funzioni con precise, singole responsabilità
+(stiamo applicando alle funzioni il <span class="slide1">single responsibility principle</span> dei principi
+<a class="reference internal" href="Principi.html#id1"><span class="std std-ref">SOLID</span></a> per gli oggetti).</p>
+</section>
+<section id="flatapplication1nostop-walkatboundary">
+<h4>FlatApplication1NoStop walkAtBoundary<a class="headerlink" href="#flatapplication1nostop-walkatboundary" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FlatApplication1HTTPNoStop</span> <span class="p">{</span>
+<span class="kd">private</span>  <span class="kd">final</span> <span class="n">String</span> <span class="n">localHostName</span>    <span class="o">=</span> <span class="s">&quot;localhost&quot;</span><span class="p">;</span>
+<span class="kd">private</span>  <span class="kd">final</span> <span class="kt">int</span> <span class="n">port</span>                <span class="o">=</span> <span class="mi">8090</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">JSONParser</span> <span class="n">simpleparser</span>        <span class="o">=</span> <span class="k">new</span> <span class="n">JSONParser</span><span class="p">();</span>
+<span class="kd">private</span> <span class="kt">int</span> <span class="n">Nedges</span>                     <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">//For testing</span>
+<span class="kd">private</span> <span class="n">httpclient</span> <span class="o">=</span> <span class="n">org</span><span class="p">.</span><span class="na">apache</span><span class="p">.</span><span class="na">http</span><span class="p">.</span><span class="na">impl</span><span class="p">.</span><span class="na">client</span><span class="p">.</span><span class="na">HttpClients</span><span class="p">.</span><span class="na">createDefault</span><span class="p">();</span>
+
+<span class="c1">//Procedura responsabile della business logic</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">walkAtBoundary</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="mi">4</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">walkAheadUntilCollision</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="n">requestSynch</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">turnleftcmd</span><span class="p">);</span> <span class="c1">//discard result</span>
+        <span class="n">Nedges</span><span class="o">++</span><span class="p">;</span>  <span class="c1">//For testing</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">//Procedura responsabile del movimento in avanti, con collisione</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">walkAheadUntilCollision</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">cmd</span> <span class="o">=</span> <span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">forwardlongcmd</span><span class="p">;</span>
+    <span class="n">JSONObject</span> <span class="n">result</span> <span class="o">=</span> <span class="n">requestSynch</span><span class="p">(</span>  <span class="n">URL</span><span class="p">,</span> <span class="n">cmd</span>  <span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="o">!</span> <span class="n">result</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;collision&quot;</span><span class="p">)</span>  <span class="p">)</span> <span class="p">{</span>
+        <span class="n">CommUtils</span><span class="p">.</span><span class="na">outred</span><span class="p">(</span><span class="s">&quot;Flatal error: no collision&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kt">int</span> <span class="nf">getNedges</span><span class="p">(){</span> <span class="c1">//For testing</span>
+    <span class="k">return</span> <span class="n">Nedges</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La variabile <span class="blue">Nedges</span> (e metodo correlato <span class="blue">getNedges</span>)
+non nasce da esigenze applicative, ma dalla necessità di avere informazioni utili per il testing
+(si veda <a class="reference internal" href="#testflatapplication1nostop"><span class="std std-ref">TestFlatApplication1Nostop</span></a>).</p>
+<p><span class="slide1">La funzione requestSynch</span></p>
+<p>La funzione <a class="reference internal" href="#requestsynch"><span class="std std-ref">requestSynch</span></a> ha la responsabilità di interagire con il robot con <a class="reference internal" href="VirtualRobot23.html#interazione-sincrona"><span class="std std-ref">Interazione sincrona</span></a> via HTTP,
+restituendo l’esito del movimento.</p>
+</section>
+<section id="requestsynch">
+<h4>requestSynch<a class="headerlink" href="#requestsynch" title="Permalink to this headline">¶</a></h4>
+<p>La procedura  <em>requestSynch</em> nasce dall’intento di liberare il codice della business logic dai dettagli della interazione
+via HTTP.  Per rendere la procedura più generale, viene fornito in ingresso l’URL del destinatario.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="n">JSONObject</span> <span class="nf">requestSynch</span><span class="p">(</span> <span class="n">String</span> <span class="n">URL</span><span class="p">,</span> <span class="n">String</span> <span class="n">crilCmd</span> <span class="p">)</span>  <span class="p">{</span>
+    <span class="n">JSONObject</span> <span class="n">jsonEndmove</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">StringEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringEntity</span><span class="p">(</span><span class="n">crilCmd</span><span class="p">);</span>
+        <span class="n">HttpUriRequest</span> <span class="n">httppost</span> <span class="o">=</span> <span class="n">RequestBuilder</span><span class="p">.</span><span class="na">post</span><span class="p">()</span>
+                <span class="p">.</span><span class="na">setUri</span><span class="p">(</span><span class="k">new</span> <span class="n">URI</span><span class="p">(</span><span class="n">URL</span><span class="p">))</span>
+                <span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;Content-Type&quot;</span><span class="p">,</span> <span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+                <span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;Accept&quot;</span><span class="p">,</span> <span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+                <span class="p">.</span><span class="na">setEntity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+                <span class="p">.</span><span class="na">build</span><span class="p">();</span>
+        <span class="n">CloseableHttpResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">httpclient</span><span class="p">.</span><span class="na">execute</span><span class="p">(</span><span class="n">httppost</span><span class="p">);</span>
+        <span class="n">String</span> <span class="n">jsonStr</span> <span class="o">=</span> <span class="n">EntityUtils</span><span class="p">.</span><span class="na">toString</span><span class="p">(</span> <span class="n">response</span><span class="p">.</span><span class="na">getEntity</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">jsonEndmove</span> <span class="o">=</span> <span class="p">(</span><span class="n">JSONObject</span><span class="p">)</span> <span class="n">simpleparser</span><span class="p">.</span><span class="na">parse</span><span class="p">(</span><span class="n">jsonStr</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">){</span> <span class="p">...</span>  <span class="p">}</span>
+    <span class="k">return</span> <span class="n">jsonEndmove</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="testflatapplication1nostop">
+<h3>TestFlatApplication1Nostop<a class="headerlink" href="#testflatapplication1nostop" title="Permalink to this headline">¶</a></h3>
+<p>Impostiamo anche una procedura automatizzata di <a class="reference internal" href="Principi.html#testing"><span class="std std-ref">User Acceptance Test</span></a>, anche se non adeguata.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>public class TestFlatApplication1HTTPNostop {
+ protected FlatApplication1HTTPNoStop appl;
+ @Before
+ public void init() {
+     initSystem();
+ }
+ protected void initSystem() {
+     //Il robot deve essere in HOME !
+     appl = new FlatApplication1HTTPNoStop();
+ }
+ @Test
+ public void testWorkDone(){
+     appl.walkAtBoundary();
+     assert( appl.getNedges() == 4 ); //NON adeguato
+ }
+}
+</pre></div>
+</div>
+<section id="verificare-implica-conosecere">
+<h4>Verificare implica conosecere<a class="headerlink" href="#verificare-implica-conosecere" title="Permalink to this headline">¶</a></h4>
+<p>Ci rendiamo conto che sorge una <span class="blue">nuova problematica</span>:</p>
+<p><span class="slide1">conoscere e verificare l’effettivo percorso del robot</span></p>
+<p>Riprenderemo questo problema più avanti, nella sezione  <a class="reference internal" href="#strategia-di-testing-per-boundarywalk"><span class="std std-ref">Strategia di testing per BoundaryWalk</span></a>.</p>
+</section>
+</section>
+</section>
+<section id="una-prima-osservazione-critica">
+<h2>Una prima osservazione critica<a class="headerlink" href="#una-prima-osservazione-critica" title="Permalink to this headline">¶</a></h2>
+<p>La procedura <a class="reference internal" href="#requestsynch"><span class="std std-ref">requestSynch</span></a> non ha nulla a che fare con la logica del problema da risolvere; essa
+rappresenta una funzionalità che dovrebbe
+essere progettata, sviluppata, testata e resa disponibile (<em>deployed</em>)
+in una infrastruttura di supporto alle comunicazioni,
+liberando l’<span class="blue">applicazion-designer</span> da compiti di questo tipo.</p>
+<p><span class="slide1">Oggetti con utilità di comunicazione</span></p>
+<p>Procediamo dunque a un primo <strong>refactoring</strong> del codice, cercando di incapsulare questa procedura entro un
+oggetto che possa essere riusato anche in altre applicazioni.</p>
+</section>
+<section id="progetto-unibo-basicomm23-anticipazione">
+<h2>Progetto unibo.basicomm23: anticipazione<a class="headerlink" href="#progetto-unibo-basicomm23-anticipazione" title="Permalink to this headline">¶</a></h2>
+<p>Una volta intrapresa la direzione di creare supporti riusabili per le comunicazioni,
+conviene accumulare questi sforzi progettuali e realizzativi in un progetto ad hoc.</p>
+<p>All’interno del team di lavoro, questo compito potrebbe essere svolto da uno dei nostri
+<span class="blue">system-designer</span>.</p>
+<p>Per accumulare conoscenze ed utilità ‘sistemistiche’, noi introduciamo
+il progetto <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a>, che includerà supporti di tipo
+generale per un insieme di protocolli definito come segue:</p>
+<section id="unibo-basicomm23-msg-protocoltype">
+<h3>unibo.basicomm23.msg.ProtocolType<a class="headerlink" href="#unibo-basicomm23-msg-protocoltype" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">enum</span> <span class="n">ProtocolType</span> <span class="p">{</span>
+    <span class="n">http</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">tcp</span><span class="p">,</span> <span class="n">udp</span><span class="p">,</span> <span class="n">coap</span><span class="p">,</span> <span class="n">mqtt</span><span class="p">,</span> <span class="n">bluetooth</span><span class="p">,</span> <span class="n">serial</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il progetto è organizzato in un insieme di packages come quello mostrato nell figura che segue:</p>
+<blockquote>
+<div><table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="_images/basicComm23.png" class="align-center" src="_images/basicComm23.png" />
+</td>
+<td><p>Nel package <code class="docutils literal notranslate"><span class="pre">utils</span></code> viene definita la classe <span class="blue">CommUtils</span> in cui inseriremo vari metodi <em>static</em> di uso
+comune, tra cui:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">delay</span></code>: per sospendere l’esecuzione del Thred corrente</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">outxxx</span></code>, con <code class="docutils literal notranslate"><span class="pre">xxx=blue,red,grenn,yellow,</span> <span class="pre">...</span></code> per visualizzare messaggi colorati su <code class="docutils literal notranslate"><span class="pre">System.out</span></code>,
+una feature che risultà utile per differenzare le informazioni emesse dai diversi componenti delle nostre applicazioni</p></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="unibo-basicomm23-http-httpcommapache">
+<h3>unibo.basicomm23.http.HTTPCommApache<a class="headerlink" href="#unibo-basicomm23-http-httpcommapache" title="Permalink to this headline">¶</a></h3>
+<p>La classe <code class="docutils literal notranslate"><span class="pre">HTTPCommApache</span></code> rappresenta un primo passo verso la creazione di una infrastruttura di
+supporto alle comunicazioni.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HTTPCommApache</span> <span class="p">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">CloseableHttpClient</span> <span class="n">httpclient</span> <span class="o">=</span> <span class="n">HttpClients</span><span class="p">.</span><span class="na">createDefault</span><span class="p">();</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">JSONParser</span> <span class="n">simpleparser</span>        <span class="o">=</span> <span class="k">new</span> <span class="n">JSONParser</span><span class="p">();</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">URL</span><span class="p">;</span>
+
+    <span class="kd">public</span> <span class="nf">HTTPCommApache</span><span class="p">(</span><span class="n">String</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">URL</span> <span class="o">=</span> <span class="s">&quot;http://&quot;</span> <span class="o">+</span><span class="n">url</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="n">JSONObject</span> <span class="nf">requestSynch</span><span class="p">(</span> <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span>  <span class="p">{</span>
+        <span class="n">JSONObject</span> <span class="n">jsonEndmove</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="p">....</span>
+        <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">){...}</span>
+        <span class="k">return</span> <span class="n">jsonEndmove</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Nel nome della classe compare il termine <em>Apache</em> per enfatizzare che essa fa uso della libreria
+<em>org.apache.http</em>, mentre in futuri progetti (come <code class="docutils literal notranslate"><span class="pre">unibo.comm23</span></code>) faremo uso di altre librerie,
+come <em>com.squareup.okhttp3</em>.</p>
+</section>
+</section>
+<section id="comunicazioni-di-alto-livello-col-robot">
+<h2>Comunicazioni di alto livello col robot<a class="headerlink" href="#comunicazioni-di-alto-livello-col-robot" title="Permalink to this headline">¶</a></h2>
+<p>La classe <a class="reference internal" href="#unibo-basicomm23-http-httpcommapache"><span class="std std-ref">unibo.basicomm23.http.HTTPCommApache</span></a> si occupa di interazioni low-level HTTP di tipo generale.</p>
+<p>Tuttavia, da un punto di vosta logico, la nostra attenzione è rivolta alla comunicazione con il robot, che
+conviene sia caratterizzata da concetti di più alto livello, quali le operazioni definite dalla
+seguente interfaccia:</p>
+<section id="unibo-common-ivrobotmoves">
+<h3>unibo.common.IVrobotMoves<a class="headerlink" href="#unibo-common-ivrobotmoves" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IVrobotMoves</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">step</span><span class="p">(</span><span class="kt">int</span> <span class="n">time</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnLeft</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnRight</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span> <span class="kt">int</span> <span class="n">time</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">backward</span><span class="p">(</span> <span class="kt">int</span> <span class="n">time</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">halt</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">Comunicare con un robot logico</span></p>
+<p>La classe
+<a class="reference internal" href="#unibo-supports-vrobothlmoveshttpapache"><span class="std std-ref">unibo.supports.VrobotHLMovesHTTPApache</span></a> fornisce il supporto alle comunicazioni  con il  <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a>,
+in relazione alle operazioni definite nell’interfaccia <a class="reference internal" href="#unibo-common-ivrobotmoves"><span class="std std-ref">unibo.common.IVrobotMoves</span></a>.</p>
+<p>Ovviamente, questo ulteriore livello <strong>non</strong> non viene incluso nel progetto  <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a>, in quanto specifio
+per la nostra applicazione corrente.</p>
+<p><span class="slide1">Una operazione che il VirtualRobot non ha</span></p>
+</section>
+<section id="step">
+<h3>step<a class="headerlink" href="#step" title="Permalink to this headline">¶</a></h3>
+<p>Notiamo che, rispetto ai <a class="reference internal" href="VirtualRobot23.html#comandi-base-per-il-robot-in-cril"><span class="std std-ref">Comandi-base per il robot in cril</span></a>,
+in <a class="reference internal" href="#unibo-common-ivrobotmoves"><span class="std std-ref">IVrobotMoves</span></a>
+compare la nuova operazione  <span class="blue">step</span>, che:</p>
+<ul class="simple">
+<li><p>muove in avanti il robot per un tempo dato, restituendo il  <em>boolean</em> <code class="docutils literal notranslate"><span class="pre">true</span></code>
+se il movimento termina con successo e <code class="docutils literal notranslate"><span class="pre">false</span></code> nel caso
+il movimento non possa essere completato, per via di una collisione.</p></li>
+</ul>
+</section>
+<section id="unibo-supports-vrobothlmoveshttpapache">
+<h3>unibo.supports.VrobotHLMovesHTTPApache<a class="headerlink" href="#unibo-supports-vrobothlmoveshttpapache" title="Permalink to this headline">¶</a></h3>
+<p>La classe di supporto alle comunicazioni di alto livello con il robot si avvale, al momento, di una istanza di
+<a class="reference internal" href="#unibo-basicomm23-http-httpcommapache"><span class="std std-ref">HTTPCommApache</span></a> per inviare comandi via <cite>HTTP</cite>.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span>  <span class="nc">VrobotHLMovesHTTPApache</span> <span class="kd">implements</span> <span class="n">IVrobotMoves</span><span class="p">{</span>
+  <span class="kd">private</span> <span class="n">HTTPCommApache</span> <span class="n">httpSupport</span>  <span class="p">;</span>
+
+  <span class="kd">public</span> <span class="nf">VrobotHLMovesHTTPApache</span><span class="p">(</span><span class="n">HTTPCommApache</span> <span class="n">httpSupport</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="na">httpSupport</span> <span class="o">=</span> <span class="n">httpSupport</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="c1">//Implementazione delle operazioni di  IVrobotMoves</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La realizzazione delle operazioni <a class="reference internal" href="#unibo-common-ivrobotmoves"><span class="std std-ref">IVrobotMoves</span></a> è semplice,
+grazie anche a <a class="reference internal" href="#unibo-common-vrobotmsgs"><span class="std std-ref">VrobotMsgs</span></a>. Ad esempio:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnLeft</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
+    <span class="n">httpSupport</span><span class="p">.</span><span class="na">requestSynch</span><span class="p">(</span>  <span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">turnleftcmd</span>  <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span><span class="kt">int</span> <span class="n">time</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
+  <span class="n">JSONObject</span> <span class="n">result</span> <span class="o">=</span> <span class="n">httpSupport</span><span class="p">.</span><span class="na">requestSynch</span><span class="p">(</span>
+               <span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">forwardcmd</span><span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;TIME&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">time</span><span class="p">));</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;collision&quot;</span><span class="p">)){</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="n">CollisionException</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Si noti che è stata definita anche una nuova eccezione, che può essere sollevata dalle operazioni <em>forward</em> e <em>backward</em>:</p>
+</section>
+<section id="unibo-common-collisionexception">
+<h3>unibo.common.CollisionException<a class="headerlink" href="#unibo-common-collisionexception" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CollisionException</span> <span class="kd">extends</span> <span class="n">Exception</span><span class="p">{</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getMessage</span><span class="p">(){</span> <span class="k">return</span> <span class="s">&quot;collision&quot;</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="step-implementazione">
+<h3>step: implementazione<a class="headerlink" href="#step-implementazione" title="Permalink to this headline">¶</a></h3>
+<p>Anche la implementazione della operazione <a class="reference internal" href="#step"><span class="std std-ref">step</span></a> non risulta complicata, in quanto stiamo agendo con
+<a class="reference internal" href="VirtualRobot23.html#interazione-sincrona"><span class="std std-ref">Interazione sincrona</span></a> e, nel caso di <a class="reference internal" href="VirtualRobot23.html#collision"><span class="std std-ref">Collision</span></a>, il comando ha comunque durata <code class="docutils literal notranslate"><span class="pre">time</span></code>.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">step</span><span class="p">(</span><span class="kt">int</span> <span class="n">time</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
+    <span class="n">String</span> <span class="n">cmd</span> <span class="o">=</span> <span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">forwardcmd</span><span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;TIME&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">time</span><span class="p">);</span>
+    <span class="n">JSONObject</span> <span class="n">result</span> <span class="o">=</span> <span class="n">httpSupport</span><span class="p">.</span><span class="na">requestSynch</span><span class="p">(</span>   <span class="n">cmd</span>  <span class="p">);</span>
+    <span class="c1">//{&quot;endmove&quot;:true,&quot;move&quot;:&quot;moveForward&quot;}  OPPURE:</span>
+    <span class="c1">//{&quot;endmove&quot;:&quot;false&quot;,&quot;move&quot;:&quot;moveForward-collision&quot;}</span>
+    <span class="kt">boolean</span> <span class="n">collision</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;collision&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">!</span> <span class="n">collision</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">Creazione, configurazione, esecuzione</span></p>
+<p>Ora, avvalendoci di questi suppporti, possiamo impostare una soluzione al nostro core-problem che
+<span class="remark">elimina dal codice molti dettagli, evidenziando solo la logica della soluzione</span> stessa:</p>
+</section>
+<section id="unibo-http-appl1httpsprint1">
+<h3>unibo.http.Appl1HTTPSprint1<a class="headerlink" href="#unibo-http-appl1httpsprint1" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Appl1HTTPSprint1</span> <span class="p">{</span>
+  <span class="kd">private</span> <span class="n">IVrobotMoves</span> <span class="n">vr</span>  <span class="p">;</span>
+
+  <span class="kd">public</span> <span class="nf">Appl1HTTPSprint1</span><span class="p">(){</span>
+      <span class="n">configure</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="p">(){</span>
+      <span class="n">String</span> <span class="n">URL</span> <span class="o">=</span> <span class="s">&quot;localhost:8090/api/move&quot;</span><span class="p">;</span>
+      <span class="c1">//URL potrebbe essere letto da un file di configurazione</span>
+      <span class="n">HTTPCommApache</span> <span class="n">httpSupport</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HTTPCommApache</span><span class="p">(</span>  <span class="n">URL</span> <span class="p">);</span>
+      <span class="n">vr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">VrobotHLMovesHTTPApache</span><span class="p">(</span> <span class="n">httpSupport</span> <span class="p">);</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span> <span class="n">String</span><span class="o">[]</span> <span class="n">args</span> <span class="p">)</span>  <span class="p">{</span>
+      <span class="n">Appl1HTTPSprint1</span> <span class="n">appl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Appl1HTTPSprint1</span><span class="p">();</span>
+      <span class="k">try</span> <span class="p">{</span>
+          <span class="n">appl</span><span class="p">.</span><span class="na">walkAtBoundary</span><span class="p">();</span>  <span class="c1">//ENTRY POINT</span>
+      <span class="p">}</span><span class="k">catch</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">){...</span>  <span class="p">}</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<section id="walkatboundary">
+<h4>walkAtBoundary<a class="headerlink" href="#walkatboundary" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">walkAtBoundary</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="mi">4</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">walkAheadUntilCollision</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="c1">//walkByStepping();</span>
+        <span class="n">vr</span><span class="p">.</span><span class="na">turnLeft</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="walkaheaduntilcollision">
+<h4>walkAheadUntilCollision<a class="headerlink" href="#walkaheaduntilcollision" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span>  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">walkAheadUntilCollision</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span>  <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
+      <span class="k">try</span><span class="p">{</span>
+          <span class="n">vr</span><span class="p">.</span><span class="na">forward</span><span class="p">(</span><span class="mi">2300</span> <span class="p">);</span>
+      <span class="p">}</span><span class="k">catch</span><span class="p">(</span> <span class="n">CollisionException</span> <span class="n">e</span><span class="p">){</span>  <span class="k">return</span><span class="p">;</span>  <span class="p">}</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="s">&quot;no collision&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Osserviamo che <a class="reference internal" href="Appl1-HTTPSprint2.html#walkatboundary"><span class="std std-ref">walkAtBoundary</span></a> potrebbe adottare anche una strategia di movimento basata su <a class="reference internal" href="#step"><span class="std std-ref">step</span></a>:</p>
+</section>
+<section id="walkbystepping">
+<h4>walkByStepping<a class="headerlink" href="#walkbystepping" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">walkByStepping</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="kt">boolean</span> <span class="n">goon</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span> <span class="n">goon</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="n">goon</span> <span class="o">=</span>  <span class="n">vr</span><span class="p">.</span><span class="na">step</span><span class="p">(</span><span class="mi">350</span><span class="p">);</span>
+        <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span> <span class="c1">//to show the steps better</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide">Verso una strategia di testing</span></p>
+</section>
+</section>
+</section>
+<section id="strategia-di-testing-per-boundarywalk">
+<h2>Strategia di testing per BoundaryWalk<a class="headerlink" href="#strategia-di-testing-per-boundarywalk" title="Permalink to this headline">¶</a></h2>
+<p>Ricordando il <span class="xref std std-ref">Requisito SPRINT1</span>, il <span class="blue">bordo perimetrale</span> può essere definito ragionando
+su un <span class="slide1">modello della stanza</span>.</p>
+<section id="modello-della-stanza">
+<h3>Modello della stanza<a class="headerlink" href="#modello-della-stanza" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="_images/ModelloStanza.png" src="_images/ModelloStanza.png" />
+</td>
+<td><ul class="simple">
+<li><p>Il <span class="blue">Bordo perimetrale</span> ha lunghezza <code class="docutils literal notranslate"><span class="pre">lf+ld+lr+lu</span></code>.</p></li>
+<li><p>Poichè la stanza è rettangolare, si ha <code class="docutils literal notranslate"><span class="pre">lf==lr</span> <span class="pre">&amp;&amp;</span> <span class="pre">ld==lu</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DR=2R</span></code>, essendo <code class="docutils literal notranslate"><span class="pre">R</span></code> il <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">raggio del cerchio</span></a> in cui può essere racchiuso il VirtualRobot</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>Sorge una <span class="remark">nuova problematica</span>:</p>
+<ul class="simple">
+<li><p>Come conoscere la lunghezza percorsa dopo <a class="reference internal" href="#walkaheaduntilcollision"><span class="std std-ref">walkAheadUntilCollision</span></a>.</p></li>
+</ul>
+<p>Ma possiamo anche fare riferimento a una conosceza meno precisa, ma utile al testing:
+supponendo di muovere il robot per passi (<a class="reference internal" href="#walkbystepping"><span class="std std-ref">walkByStepping</span></a>) potremmo:</p>
+<ul class="simple">
+<li><p><span class="remark">contare i passi</span> eseguiti con successo
+per ogni lato del perimetro e controllare che il numero di passi su due lati oppsti sia uguale.</p></li>
+</ul>
+<section id="walkbystepping-che-conta-i-passi">
+<h4>walkByStepping che conta i passi<a class="headerlink" href="#walkbystepping-che-conta-i-passi" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">boundarySteps</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">};</span> <span class="c1">//For testing</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">walkByStepping</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="kt">boolean</span> <span class="n">goon</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span> <span class="n">goon</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="n">goon</span> <span class="o">=</span>  <span class="n">vr</span><span class="p">.</span><span class="na">step</span><span class="p">(</span><span class="mi">350</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">goon</span> <span class="p">)</span> <span class="n">boundarySteps</span><span class="o">[</span><span class="n">n</span><span class="o">]++</span><span class="p">;</span>
+        <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span> <span class="c1">//to show the steps better</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">public</span> <span class="kt">int</span><span class="o">[]</span> <span class="nf">getBoundarySteps</span><span class="p">(){</span>  <span class="c1">//for testig</span>
+    <span class="k">return</span> <span class="n">boundarySteps</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="checkrobotathome">
+<h4>checkRobotAtHome<a class="headerlink" href="#checkrobotathome" title="Permalink to this headline">¶</a></h4>
+<p>L’uso della mossa <a class="reference internal" href="#step"><span class="std std-ref">step</span></a> aiuta anche a scrivere codice per verificare che il
+robot sia nello <span class="xref std std-ref">stato iniziale</span> (come proposto da <em>Matteo Giri</em>).</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">checkRobotAtHome</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">vr</span><span class="p">.</span><span class="na">turnRight</span><span class="p">();</span>
+        <span class="kt">boolean</span> <span class="n">res</span> <span class="o">=</span> <span class="n">vr</span><span class="p">.</span><span class="na">step</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="n">vr</span><span class="p">.</span><span class="na">turnRight</span><span class="p">();</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">vr</span><span class="p">.</span><span class="na">step</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="n">vr</span><span class="p">.</span><span class="na">turnLeft</span><span class="p">();</span>
+        <span class="n">vr</span><span class="p">.</span><span class="na">turnLeft</span><span class="p">();</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+         <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="testappl1httpsprint1">
+<h3>TestAppl1HTTPSprint1<a class="headerlink" href="#testappl1httpsprint1" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestAppl1HTTPSprint1</span> <span class="p">{</span>
+ <span class="kd">protected</span> <span class="n">Appl1HTTPSprint1</span> <span class="n">appl</span><span class="p">;</span>
+
+ <span class="nd">@Before</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">initSystem</span><span class="p">(){</span>
+     <span class="n">appl</span>         <span class="o">=</span> <span class="k">new</span> <span class="n">Appl1HTTPSprint1</span><span class="p">();</span>
+     <span class="kt">int</span><span class="o">[]</span> <span class="n">bsteps</span> <span class="o">=</span> <span class="n">appl</span><span class="p">.</span><span class="na">getBoundarySteps</span><span class="p">();</span>
+     <span class="k">assert</span><span class="p">(</span> <span class="n">bsteps</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">bsteps</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">bsteps</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">bsteps</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">);</span>
+ <span class="p">}</span>
+
+ <span class="nd">@Test</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testBoundary</span><span class="p">(){</span>
+     <span class="k">try</span> <span class="p">{</span>
+         <span class="n">appl</span><span class="p">.</span><span class="na">walkAtBoundary</span><span class="p">();</span>
+         <span class="kt">int</span><span class="o">[]</span> <span class="n">bsteps</span> <span class="o">=</span> <span class="n">appl</span><span class="p">.</span><span class="na">getBoundarySteps</span><span class="p">();</span>
+         <span class="k">assert</span><span class="p">(</span><span class="n">appl</span><span class="p">.</span><span class="na">checkRobotAtHome</span><span class="p">());</span>
+         <span class="k">assert</span><span class="p">(</span> <span class="n">bsteps</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">==</span> <span class="n">bsteps</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="n">bsteps</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">==</span> <span class="n">bsteps</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span> <span class="p">);</span>
+     <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+         <span class="n">fail</span><span class="p">(</span><span class="s">&quot;testBoundary&quot;</span><span class="p">);</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Passiamo ora a <a class="reference internal" href="Appl1-HTTPSprint2.html#appl1-httpsprint2"><span class="std std-ref">Appl1-HTTPSprint2</span></a>.</p>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Appl1-HTTPSprint1</a><ul>
+<li><a class="reference internal" href="#overview-di-appl1-httpsprint1">Overview di Appl1-HTTPSprint1</a><ul>
+<li><a class="reference internal" href="#requisito-sprint1-il-core-problem">Requisito SPRINT1: il core problem</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#un-esempio-da-non-imitare">Un esempio da non imitare</a><ul>
+<li><a class="reference internal" href="#unibo-http-flatapplication1httpnostop">unibo.http.FlatApplication1HTTPNoStop</a><ul>
+<li><a class="reference internal" href="#unibo-common-vrobotmsgs">unibo.common.VrobotMsgs</a></li>
+<li><a class="reference internal" href="#flatapplication1nostop-walkatboundary">FlatApplication1NoStop walkAtBoundary</a></li>
+<li><a class="reference internal" href="#requestsynch">requestSynch</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testflatapplication1nostop">TestFlatApplication1Nostop</a><ul>
+<li><a class="reference internal" href="#verificare-implica-conosecere">Verificare implica conosecere</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#una-prima-osservazione-critica">Una prima osservazione critica</a></li>
+<li><a class="reference internal" href="#progetto-unibo-basicomm23-anticipazione">Progetto unibo.basicomm23: anticipazione</a><ul>
+<li><a class="reference internal" href="#unibo-basicomm23-msg-protocoltype">unibo.basicomm23.msg.ProtocolType</a></li>
+<li><a class="reference internal" href="#unibo-basicomm23-http-httpcommapache">unibo.basicomm23.http.HTTPCommApache</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#comunicazioni-di-alto-livello-col-robot">Comunicazioni di alto livello col robot</a><ul>
+<li><a class="reference internal" href="#unibo-common-ivrobotmoves">unibo.common.IVrobotMoves</a></li>
+<li><a class="reference internal" href="#step">step</a></li>
+<li><a class="reference internal" href="#unibo-supports-vrobothlmoveshttpapache">unibo.supports.VrobotHLMovesHTTPApache</a></li>
+<li><a class="reference internal" href="#unibo-common-collisionexception">unibo.common.CollisionException</a></li>
+<li><a class="reference internal" href="#step-implementazione">step: implementazione</a></li>
+<li><a class="reference internal" href="#unibo-http-appl1httpsprint1">unibo.http.Appl1HTTPSprint1</a><ul>
+<li><a class="reference internal" href="#walkatboundary">walkAtBoundary</a></li>
+<li><a class="reference internal" href="#walkaheaduntilcollision">walkAheadUntilCollision</a></li>
+<li><a class="reference internal" href="#walkbystepping">walkByStepping</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#strategia-di-testing-per-boundarywalk">Strategia di testing per BoundaryWalk</a><ul>
+<li><a class="reference internal" href="#modello-della-stanza">Modello della stanza</a><ul>
+<li><a class="reference internal" href="#walkbystepping-che-conta-i-passi">walkByStepping che conta i passi</a></li>
+<li><a class="reference internal" href="#checkrobotathome">checkRobotAtHome</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testappl1httpsprint1">TestAppl1HTTPSprint1</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Applicazione1.html"
+                          title="previous chapter">Applicazione1</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="Appl1-HTTPSprint2.html"
+                          title="next chapter">Appl1-HTTPSprint2</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Appl1-HTTPSprint1.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Appl1-HTTPSprint2.html" title="Appl1-HTTPSprint2"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Applicazione1.html" title="Applicazione1"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appl1-HTTPSprint1</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

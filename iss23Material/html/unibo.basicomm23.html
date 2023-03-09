@@ -1,0 +1,353 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>unibo.basicomm23 &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">unibo.basicomm23</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="unibo-basicomm23">
+<h1>unibo.basicomm23<a class="headerlink" href="#unibo-basicomm23" title="Permalink to this headline">¶</a></h1>
+<p>Il progetto intende definire realizzare il concetto di <a class="reference internal" href="Interaction2021.html#interconnessione"><span class="std std-ref">Interconnessione</span></a>,
+fornendo supporti di tipo generale per un insieme di protocolli.</p>
+<section id="tipi-di-protocollo">
+<h2>Tipi di protocollo<a class="headerlink" href="#tipi-di-protocollo" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">enum</span> <span class="n">ProtocolType</span> <span class="p">{</span>
+    <span class="n">http</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">tcp</span><span class="p">,</span> <span class="n">udp</span><span class="p">,</span> <span class="n">coap</span><span class="p">,</span> <span class="n">mqtt</span><span class="p">,</span> <span class="n">bluetooth</span><span class="p">,</span> <span class="n">serial</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Per ogni protocollo viene definito un package che ne contiene i supporti low-level.</p>
+<a class="reference internal image-reference" href="_images/basicComm23.png"><img alt="_images/basicComm23.png" class="align-center" src="_images/basicComm23.png" style="width: 25%;" /></a>
+<p>Nel package <code class="docutils literal notranslate"><span class="pre">utils</span></code> viene definita la classe <a class="reference internal" href="#unibo-basicomm23-utils-commutils"><span class="std std-ref">CommUtils</span></a>,
+di cui parleremo in seguito.</p>
+<section id="unibo-basicomm23-utils-connectionfactory">
+<h3>unibo.basicomm23.utils.ConnectionFactory<a class="headerlink" href="#unibo-basicomm23-utils-connectionfactory" title="Permalink to this headline">¶</a></h3>
+<p>Come implicito nel modello delle inversioni di dipendenza,
+le istanziazioni di variabili richiedono l’implementazione di un pattern creazionale come un <em>factory mthod</em>
+o il <em>pattern factory</em>, o l’uso di un framework di <em>dependency-injection</em>.</p>
+<p>In questo progetto, introduciamo una classe <code class="docutils literal notranslate"><span class="pre">ConnectionFactory</span></code> che definisce il metodo:</p>
+<p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">static</span> <span class="pre">Interaction2021</span> <span class="pre">createClientSupport(</span> <span class="pre">ProtocolType</span> <span class="pre">protocol,</span> <span class="pre">String</span> <span class="pre">hostAddr,</span> <span class="pre">String</span> <span class="pre">entry</span> <span class="pre">)</span></code></p>
+<p>che restituisce un supporto che permette di utilizzare il protocollo <code class="docutils literal notranslate"><span class="pre">protocol</span></code> per inviare informazioni
+al nodo di indirizzo <code class="docutils literal notranslate"><span class="pre">hostAddr</span></code>; la stringa relativa al parametro <span class="blue">entry</span> denota valori che dipendono
+dal protocollo: di solito è un numero di porta, ma potrebbe essere anche un <em>Uniform Resource Identifier</em> (URI)
+o altro ancora.</p>
+<p>L’oggetto di supporto alle comunicazioni restituito dalla factory implementa l’interfaccia <code class="docutils literal notranslate"><span class="pre">Interaction2021</span></code>,
+nascondendo al livello applicativo i dettagli relativi al protocollo.</p>
+</section>
+</section>
+<section id="unibo-basicomm23-utils-commutils">
+<h2>unibo.basicomm23.utils.CommUtils<a class="headerlink" href="#unibo-basicomm23-utils-commutils" title="Permalink to this headline">¶</a></h2>
+<p>Nel package <code class="docutils literal notranslate"><span class="pre">utils</span></code> del progetto, viene definita la classe <em>CommUtils</em>  che definisce
+vari metodi <em>static</em> di utilità.</p>
+<section id="metodi-di-uso-comune">
+<h3>Metodi di uso comune<a class="headerlink" href="#metodi-di-uso-comune" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">delay(Int)</span></code>: per sospendere l’esecuzione del Thred corrente</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">outxxx(String)</span></code>, con <code class="docutils literal notranslate"><span class="pre">xxx=blue,red,grenn,yellow,</span> <span class="pre">...</span></code> per visualizzare messaggi colorati su <code class="docutils literal notranslate"><span class="pre">System.out</span></code>,
+una feature che risultà utile per differenzare le informazioni emesse dai diversi componenti delle nostre applicazioni</p></li>
+</ul>
+</section>
+<section id="metodi-per-la-costruzione-di-messaggi">
+<h3>Metodi per la costruzione di messaggi<a class="headerlink" href="#metodi-per-la-costruzione-di-messaggi" title="Permalink to this headline">¶</a></h3>
+<p>La classe definisce anche metodi statici che agevolano la costruzione e l’invio di
+<a class="reference internal" href="Interaction2021.html#natura-e-struttura-dei-messaggi-applicativi"><span class="std std-ref">messaggi applicativi</span></a></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">JSONObject</span> <span class="pre">parseForJson(String</span> <span class="pre">message)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IApplMessage</span> <span class="pre">buildDispatch(String</span> <span class="pre">sender,</span> <span class="pre">String</span> <span class="pre">msgId,</span> <span class="pre">String</span> <span class="pre">payload,</span> <span class="pre">String</span> <span class="pre">dest)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IApplMessage</span> <span class="pre">buildRequest(String</span> <span class="pre">sender,</span> <span class="pre">String</span> <span class="pre">msgId,</span> <span class="pre">String</span> <span class="pre">payload,</span> <span class="pre">String</span> <span class="pre">dest)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IApplMessage</span> <span class="pre">buildReply(String</span> <span class="pre">sender,</span> <span class="pre">String</span> <span class="pre">msgId,</span> <span class="pre">String</span> <span class="pre">payload,</span> <span class="pre">String</span> <span class="pre">dest)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IApplMessage</span> <span class="pre">prepareReply(IApplMessage</span> <span class="pre">requestMsg,</span> <span class="pre">String</span> <span class="pre">answer)</span></code></p></li>
+</ul>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">prepareReply</span></code> confeziona una reply relativa alla <code class="docutils literal notranslate"><span class="pre">requestMsg</span></code> data in ingresso, da cui
+determina il nome del chiamante.</p>
+</section>
+<section id="metodi-per-l-invio-di-messaggi">
+<h3>Metodi per l’invio di messaggi<a class="headerlink" href="#metodi-per-l-invio-di-messaggi" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">forwardOnInterconn(</span> <span class="pre">Interaction2021</span> <span class="pre">conn,String</span> <span class="pre">msg</span> <span class="pre">)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">replyOnInterconn(</span> <span class="pre">Interaction2021</span> <span class="pre">conn,String</span> <span class="pre">msg</span> <span class="pre">)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">requestSynchOnInterconn(Interaction2021</span> <span class="pre">conn,</span> <span class="pre">String</span> <span class="pre">msg</span> <span class="pre">)</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="abilitatori-di-comunicazione">
+<h2>Abilitatori di comunicazione<a class="headerlink" href="#abilitatori-di-comunicazione" title="Permalink to this headline">¶</a></h2>
+<p>I componenti di un sistema distribuito devono, di norma, essere capaci di</p>
+<ol class="arabic simple">
+<li><p><em>ricevere messaggi</em>. Normalmente questo obiettivo viene raggiunto introducendo un <span class="blue">server</span>.</p></li>
+<li><p><em>inviare messaggi</em>. Normalmente questo obiettivo viene raggiunto
+facendo operare il componente come un <span class="blue">client</span> di un qualche server .</p></li>
+</ol>
+<p>Il progetto <a class="reference internal" href="#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a> fornisce supporti per entrambe queste esigenze, attraverso due ‘enti abilitatori’:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#unibo-basicomm23-enablers-enablerasserver"><span class="std std-ref">EnablerAsServer</span></a>, che permette di dotare un oggetto applicativo,
+senza modificarlo,  della capacità di ricevere e gestire messaggi usando uno dei protocolli definiti
+in <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-basicomm23-msg-protocoltype"><span class="std std-ref">ProtocolType</span></a>. La gestione dei messaggi a livello applicativo
+è delegata a un oggetto che implementa l’interfaccia <a class="reference internal" href="#unibo-basicomm23-interfaces-iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a></p></li>
+<li><p><a class="reference internal" href="#unibo-basicomm23-enablers-callerasclient"><span class="std std-ref">CallerAsClient</span></a>, che permette a un oggetto applicativo di
+inviare messaggi usando uno dei protocolli definiti in <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-basicomm23-msg-protocoltype"><span class="std std-ref">ProtocolType</span></a>.</p></li>
+</ol>
+<section id="unibo-basicomm23-interfaces-iapplmsghandler">
+<h3>unibo.basicomm23.interfaces IApplMsgHandler<a class="headerlink" href="#unibo-basicomm23-interfaces-iapplmsghandler" title="Permalink to this headline">¶</a></h3>
+<p>Un oggetto che implementa l’interfaccia <em>IApplMsgHandler</em> deve essere definito dall’application designer per
+specificare, data una <a class="reference internal" href="Interaction2021.html#interconnessione"><span class="std std-ref">Interconnessione</span></a>  <code class="docutils literal notranslate"><span class="pre">conn</span></code>, come gestire un messaggio ricevuto (metodo <code class="docutils literal notranslate"><span class="pre">ealborate</span></code>)
+e come inviare repliche o risposte al chiamante su <code class="docutils literal notranslate"><span class="pre">conn</span></code>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IApplMsgHandler</span>  <span class="p">{</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">elaborate</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">message</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span> <span class="p">);</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sendMsgToClient</span><span class="p">(</span> <span class="n">String</span> <span class="n">message</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span> <span class="p">);</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sendAnswerToClient</span><span class="p">(</span> <span class="n">String</span> <span class="n">message</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span>  <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unibo-basicomm23-enablers-enablerasserver">
+<h3>unibo.basicomm23.enablers.EnablerAsServer<a class="headerlink" href="#unibo-basicomm23-enablers-enablerasserver" title="Permalink to this headline">¶</a></h3>
+<p>Un oggetto di questa classe realizza un server che riceve messaggi, delegandone la gestione a un oggetto che
+implementa <a class="reference internal" href="#unibo-basicomm23-interfaces-iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EnablerAsServer</span>   <span class="p">{</span>
+  <span class="kd">public</span> <span class="nf">EnablerAsServer</span><span class="p">(</span>
+      <span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">IApplMsgHandler</span> <span class="n">handler</span> <span class="p">){</span>
+        <span class="p">...</span>
+        <span class="n">setServerSupport</span><span class="p">(</span> <span class="n">port</span><span class="p">,</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">handler</span>  <span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">setServerSupport</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">port</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">IApplMsgHandler</span> <span class="n">handler</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
+    <span class="cm">/*</span>
+<span class="cm">    Attiva un server per lo specifico protocol</span>
+<span class="cm">    */</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unibo-basicomm23-enablers-callerasclient">
+<h3>unibo.basicomm23.enablers.CallerAsClient<a class="headerlink" href="#unibo-basicomm23-enablers-callerasclient" title="Permalink to this headline">¶</a></h3>
+<p>Un oggetto di questa classe realizza un client che stabilisce una <a class="reference internal" href="Interaction2021.html#interconnessione"><span class="std std-ref">Interconnessione</span></a> con un server remoto
+che opera su un nodo con  <code class="docutils literal notranslate"><span class="pre">hostAddr</span></code> dato, usando <a class="reference internal" href="#unibo-basicomm23-utils-connectionfactory"><span class="std std-ref">ConnectionFactory</span></a>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CallerAsClient</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">;</span>
+      <span class="kd">public</span> <span class="nf">CallerAsClient</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">String</span> <span class="n">hostAddr</span><span class="p">,</span> <span class="n">String</span> <span class="n">entry</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span><span class="p">)</span> <span class="p">{</span>
+      <span class="p">...</span>
+      <span class="n">conn</span> <span class="o">=</span> <span class="n">ConnectionFactory</span><span class="p">.</span><span class="na">createClientSupport</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span><span class="n">host</span><span class="p">,</span><span class="n">entry</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kd">public</span> <span class="n">Interaction2021</span> <span class="nf">getConn</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="n">conn</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="unibo-basicomm23-interfaces">
+<h2>unibo.basicomm23.interfaces<a class="headerlink" href="#unibo-basicomm23-interfaces" title="Permalink to this headline">¶</a></h2>
+<p>Il package <em>interfaces</em> include la definizione di alcune interfacce, tra cui le già viste
+<span class="xref std std-ref">Interaction2021</span> ,
+<a class="reference internal" href="#unibo-basicomm23-interfaces-iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a>,
+<a class="reference internal" href="Interaction2021.html#unibo-interaction-interfaces-iapplmessage"><span class="std std-ref">IApplMessage</span></a> e le seguenti, relative a oggetti osservabili e osservatori:</p>
+<section id="unibo-basicomm23-interfaces-iobserver">
+<h3>unibo.basicomm23.interfaces.IObserver<a class="headerlink" href="#unibo-basicomm23-interfaces-iobserver" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IObserver</span> <span class="kd">extends</span> <span class="n">java</span><span class="p">.</span><span class="na">util</span><span class="p">.</span><span class="na">Observer</span><span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span> <span class="n">String</span> <span class="n">value</span> <span class="p">);</span>
+  <span class="c1">//From Observer: public void update(Observable o, Object news)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Notiamo che <code class="docutils literal notranslate"><span class="pre">java.util.Observer</span></code> è <span class="blue">deprecated</span> da <strong>Java9</strong> in avanti.  Dovremo approfondire le ragioni di ciò,
+ma al momento osserviamo che non viene messa in discussione l’idea di osservabilità, ma solo il modo
+in cui viene realizzata nel mondo della <em>oop classica</em>.</p>
+</section>
+<section id="unibo-basicomm23-interfaces-iobservable">
+<h3>unibo.basicomm23.interfaces.IObservable<a class="headerlink" href="#unibo-basicomm23-interfaces-iobservable" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IObservable</span>  <span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addObserver</span><span class="p">(</span><span class="n">IObserver</span> <span class="n">obs</span> <span class="p">);</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteObserver</span><span class="p">(</span><span class="n">IObserver</span> <span class="n">obs</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La classe <code class="docutils literal notranslate"><span class="pre">java.util.Observable</span></code> implementa i metodi di <em>IObservable</em>, in quanto
+<a class="reference internal" href="#unibo-basicomm23-interfaces-iobserver"><span class="std std-ref">IObserver</span></a> estende <code class="docutils literal notranslate"><span class="pre">java.util.Observer</span></code>.</p>
+</section>
+</section>
+<section id="applabstractobserver">
+<h2>ApplAbstractObserver<a class="headerlink" href="#applabstractobserver" title="Permalink to this headline">¶</a></h2>
+<p>La classe astratta <code class="docutils literal notranslate"><span class="pre">unibo.basicomm23.utils.ApplAbstractObserver</span></code> fornisce lo sceheletro di un observer
+che implementa <a class="reference internal" href="#unibo-basicomm23-interfaces-iobserver"><span class="std std-ref">IObserver</span></a>, lasciando non specificato
+il metodo <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">void</span> <span class="pre">update(String</span> <span class="pre">msg)</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">abstract</span>  <span class="k">class</span> <span class="nc">ApplAbstractObserver</span> <span class="n">implements</span> <span class="n">IObserver</span><span class="p">{</span>
+
+  <span class="nd">@Override</span>
+  <span class="n">public</span> <span class="n">void</span> <span class="n">update</span><span class="p">(</span><span class="n">Observable</span> <span class="n">o</span><span class="p">,</span> <span class="n">Object</span> <span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">update</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">toString</span><span class="p">());</span>
+  <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="n">public</span> <span class="n">abstract</span> <span class="n">void</span> <span class="n">update</span><span class="p">(</span><span class="n">String</span> <span class="n">value</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="esempi-di-uso-di-basicomm23">
+<h2>Esempi di uso di basicomm23<a class="headerlink" href="#esempi-di-uso-di-basicomm23" title="Permalink to this headline">¶</a></h2>
+<section id="unibo-basicomm23-examples-prodcons">
+<h3>unibo.basicomm23.examples.ProdCons<a class="headerlink" href="#unibo-basicomm23-examples-prodcons" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ProdCons</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="mi">9010</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">EnablerAsServer</span> <span class="n">server</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">Interaction2021</span> <span class="n">client</span><span class="p">;</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doJob</span><span class="p">(</span> <span class="n">ProtocolType</span> <span class="n">protocol</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="n">EnablerAsServer</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="n">EnablerAsServer</span><span class="p">(</span><span class="s">&quot;server&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">protocol</span><span class="p">,</span>
+                                            <span class="k">new</span> <span class="n">ConsMsgHandler</span><span class="p">(</span><span class="s">&quot;consumer&quot;</span><span class="p">)</span> <span class="p">);</span>
+    <span class="n">server</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
+
+    <span class="n">IApplMessage</span> <span class="n">msg</span>       <span class="o">=</span>
+        <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildRequest</span><span class="p">(</span><span class="s">&quot;producer&quot;</span><span class="p">,</span> <span class="s">&quot;date&quot;</span><span class="p">,</span> <span class="s">&quot;today&quot;</span><span class="p">,</span> <span class="s">&quot;consumer&quot;</span><span class="p">);</span>
+    <span class="n">Interaction2021</span> <span class="n">client</span> <span class="o">=</span>
+       <span class="n">ConnectionFactory</span><span class="p">.</span><span class="na">createClientSupport</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span><span class="s">&quot;localhost&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">port</span><span class="p">);</span>
+    <span class="n">String</span> <span class="n">answer</span>          <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="na">request</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">toString</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">CommUtils</span><span class="p">.</span><span class="na">outblue</span><span class="p">(</span><span class="s">&quot;ProdCons answer=&quot;</span> <span class="o">+</span> <span class="n">answer</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[]</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
+      <span class="n">CommUtils</span><span class="p">.</span><span class="na">outblue</span><span class="p">(</span><span class="s">&quot;ProdCons starts&quot;</span><span class="p">);</span>
+      <span class="n">ProdCons</span> <span class="n">appl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ProdCons</span><span class="p">();</span>
+      <span class="n">appl</span><span class="p">.</span><span class="na">doJob</span><span class="p">(</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">tcp</span>  <span class="p">);</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unibo-basicomm23-examples-consmsghandler">
+<h3>unibo.basicomm23.examples.ConsMsgHandler<a class="headerlink" href="#unibo-basicomm23-examples-consmsghandler" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ConsMsgHandler</span> <span class="kd">extends</span> <span class="n">ApplMsgHandler</span><span class="p">{</span>
+
+  <span class="kd">public</span> <span class="nf">ConsMsgHandler</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">)</span> <span class="p">{</span> <span class="kd">super</span><span class="p">(</span><span class="n">name</span><span class="p">);</span> <span class="p">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">elaborate</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">message</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="n">IApplMessage</span> <span class="n">reply</span> <span class="o">=</span>
+           <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildReply</span><span class="p">(</span><span class="s">&quot;consumer&quot;</span><span class="p">,</span> <span class="s">&quot;date&quot;</span><span class="p">,</span> <span class="s">&quot;today&quot;</span><span class="p">,</span> <span class="n">message</span><span class="p">.</span><span class="na">msgSender</span><span class="p">());</span>
+      <span class="n">conn</span><span class="p">.</span><span class="na">reply</span><span class="p">(</span><span class="n">reply</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span>  <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">unibo.basicomm23</a><ul>
+<li><a class="reference internal" href="#tipi-di-protocollo">Tipi di protocollo</a><ul>
+<li><a class="reference internal" href="#unibo-basicomm23-utils-connectionfactory">unibo.basicomm23.utils.ConnectionFactory</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unibo-basicomm23-utils-commutils">unibo.basicomm23.utils.CommUtils</a><ul>
+<li><a class="reference internal" href="#metodi-di-uso-comune">Metodi di uso comune</a></li>
+<li><a class="reference internal" href="#metodi-per-la-costruzione-di-messaggi">Metodi per la costruzione di messaggi</a></li>
+<li><a class="reference internal" href="#metodi-per-l-invio-di-messaggi">Metodi per l’invio di messaggi</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#abilitatori-di-comunicazione">Abilitatori di comunicazione</a><ul>
+<li><a class="reference internal" href="#unibo-basicomm23-interfaces-iapplmsghandler">unibo.basicomm23.interfaces IApplMsgHandler</a></li>
+<li><a class="reference internal" href="#unibo-basicomm23-enablers-enablerasserver">unibo.basicomm23.enablers.EnablerAsServer</a></li>
+<li><a class="reference internal" href="#unibo-basicomm23-enablers-callerasclient">unibo.basicomm23.enablers.CallerAsClient</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unibo-basicomm23-interfaces">unibo.basicomm23.interfaces</a><ul>
+<li><a class="reference internal" href="#unibo-basicomm23-interfaces-iobserver">unibo.basicomm23.interfaces.IObserver</a></li>
+<li><a class="reference internal" href="#unibo-basicomm23-interfaces-iobservable">unibo.basicomm23.interfaces.IObservable</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#applabstractobserver">ApplAbstractObserver</a></li>
+<li><a class="reference internal" href="#esempi-di-uso-di-basicomm23">Esempi di uso di basicomm23</a><ul>
+<li><a class="reference internal" href="#unibo-basicomm23-examples-prodcons">unibo.basicomm23.examples.ProdCons</a></li>
+<li><a class="reference internal" href="#unibo-basicomm23-examples-consmsghandler">unibo.basicomm23.examples.ConsMsgHandler</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/unibo.basicomm23.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">unibo.basicomm23</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

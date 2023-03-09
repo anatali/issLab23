@@ -152,8 +152,9 @@ per il robot:</p>
 <span class="kd">private</span>  <span class="kd">final</span> <span class="n">String</span> <span class="n">localHostName</span>    <span class="o">=</span> <span class="s">&quot;localhost&quot;</span><span class="p">;</span>
 <span class="kd">private</span>  <span class="kd">final</span> <span class="kt">int</span> <span class="n">port</span>                <span class="o">=</span> <span class="mi">8090</span><span class="p">;</span>
 <span class="kd">private</span> <span class="n">JSONParser</span> <span class="n">simpleparser</span>        <span class="o">=</span> <span class="k">new</span> <span class="n">JSONParser</span><span class="p">();</span>
+<span class="kd">private</span>  <span class="kd">final</span> <span class="n">String</span> <span class="n">URL</span>              <span class="o">=</span> <span class="s">&quot;http://&quot;</span><span class="o">+</span><span class="n">localHostName</span><span class="o">+</span><span class="s">&quot;:&quot;</span><span class="o">+</span><span class="n">port</span><span class="o">+</span><span class="s">&quot;/api/move&quot;</span><span class="p">;</span>
 <span class="kd">private</span> <span class="kt">int</span> <span class="n">Nedges</span>                     <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">//For testing</span>
-<span class="kd">private</span> <span class="n">httpclient</span> <span class="o">=</span> <span class="n">org</span><span class="p">.</span><span class="na">apache</span><span class="p">.</span><span class="na">http</span><span class="p">.</span><span class="na">impl</span><span class="p">.</span><span class="na">client</span><span class="p">.</span><span class="na">HttpClients</span><span class="p">.</span><span class="na">createDefault</span><span class="p">();</span>
+<span class="kd">private</span> <span class="n">CloseableHttpClient</span> <span class="n">httpclient</span> <span class="o">=</span> <span class="n">org</span><span class="p">.</span><span class="na">apache</span><span class="p">.</span><span class="na">http</span><span class="p">.</span><span class="na">impl</span><span class="p">.</span><span class="na">client</span><span class="p">.</span><span class="na">HttpClients</span><span class="p">.</span><span class="na">createDefault</span><span class="p">();</span>
 
 <span class="c1">//Procedura responsabile della business logic</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">walkAtBoundary</span><span class="p">()</span> <span class="p">{</span>
@@ -318,6 +319,7 @@ supporto alle comunicazioni.</p>
 <p>Nel nome della classe compare il termine <em>Apache</em> per enfatizzare che essa fa uso della libreria
 <em>org.apache.http</em>, mentre in futuri progetti (come <code class="docutils literal notranslate"><span class="pre">unibo.comm23</span></code>) faremo uso di altre librerie,
 come <em>com.squareup.okhttp3</em>.</p>
+<p><span class="slide">Dal robot virtuale al robot logico</span></p>
 </section>
 </section>
 <section id="comunicazioni-di-alto-livello-col-robot">
@@ -483,7 +485,8 @@ grazie anche a <a class="reference internal" href="#unibo-common-vrobotmsgs"><sp
 </section>
 <section id="strategia-di-testing-per-boundarywalk">
 <h2>Strategia di testing per BoundaryWalk<a class="headerlink" href="#strategia-di-testing-per-boundarywalk" title="Permalink to this headline">¶</a></h2>
-<p>Ricordando il <span class="xref std std-ref">Requisito SPRINT1</span>, il <span class="blue">bordo perimetrale</span> può essere definito ragionando
+<p>Ricordando il <a class="reference internal" href="#requisito-sprint1-il-core-problem"><span class="std std-ref">Requisito SPRINT1</span></a>,
+il <span class="blue">bordo perimetrale</span> può essere definito ragionando
 su un <span class="slide1">modello della stanza</span>.</p>
 <section id="modello-della-stanza">
 <h3>Modello della stanza<a class="headerlink" href="#modello-della-stanza" title="Permalink to this headline">¶</a></h3>
@@ -537,7 +540,7 @@ per ogni lato del perimetro e controllare che il numero di passi su due lati opp
 <section id="checkrobotathome">
 <h4>checkRobotAtHome<a class="headerlink" href="#checkrobotathome" title="Permalink to this headline">¶</a></h4>
 <p>L’uso della mossa <a class="reference internal" href="#step"><span class="std std-ref">step</span></a> aiuta anche a scrivere codice per verificare che il
-robot sia nello <span class="xref std std-ref">stato iniziale</span> (come proposto da <em>Matteo Giri</em>).</p>
+robot sia nello <a class="reference internal" href="VirtualRobot23.html#stato-iniziale-del-virtualrobot"><span class="std std-ref">stato iniziale</span></a> (come proposto da <em>Matteo Giri</em>).</p>
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">checkRobotAtHome</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">try</span> <span class="p">{</span>
         <span class="n">vr</span><span class="p">.</span><span class="na">turnRight</span><span class="p">();</span>

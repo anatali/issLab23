@@ -123,7 +123,6 @@ definite in <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-com
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">Appl1Core</span> <span class="n">implements</span> <span class="n">IAppl1Core</span><span class="p">{</span>
 <span class="n">protected</span> <span class="n">boolean</span> <span class="n">started</span>    <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
 <span class="n">protected</span> <span class="n">boolean</span> <span class="n">stopped</span>    <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
-<span class="n">private</span> <span class="n">Appl1ObserverForpath</span> <span class="n">obsForpath</span><span class="p">;</span>
 <span class="n">protected</span> <span class="n">IVrobotMoves</span> <span class="n">vr</span> <span class="p">;</span>
 
 <span class="n">public</span> <span class="n">Appl1Core</span><span class="p">(){</span>
@@ -139,9 +138,6 @@ definite in <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-com
     <span class="o">//</span><span class="n">URL</span> <span class="n">potrebbe</span> <span class="n">essere</span> <span class="n">letto</span> <span class="n">da</span> <span class="n">un</span> <span class="n">file</span> <span class="n">di</span> <span class="n">configurazione</span>
     <span class="n">HTTPCommApache</span> <span class="n">httpSupport</span> <span class="o">=</span> <span class="n">new</span> <span class="n">HTTPCommApache</span><span class="p">(</span>  <span class="n">URL</span> <span class="p">);</span>
     <span class="n">vr</span> <span class="o">=</span> <span class="n">new</span> <span class="n">VrobotHLMovesHTTPApache</span><span class="p">(</span> <span class="n">httpSupport</span> <span class="p">);</span>
-    <span class="o">//</span><span class="n">Auto</span><span class="o">-</span><span class="n">aggiunta</span> <span class="n">di</span> <span class="n">un</span> <span class="n">observer</span><span class="o">.</span> <span class="n">Alternativa</span><span class="p">:</span> <span class="n">configuratore</span> <span class="n">esterno</span>
-    <span class="n">obsForpath</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Appl1ObserverForpath</span><span class="p">();</span>
-    <span class="n">addObserver</span><span class="p">(</span>  <span class="n">obsForpath</span> <span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -431,7 +427,7 @@ definisce il metodo  void <code class="docutils literal notranslate"><span class
     <span class="o">//</span><span class="n">URL</span> <span class="n">potrebbe</span> <span class="n">essere</span> <span class="n">letto</span> <span class="n">da</span> <span class="n">un</span> <span class="n">file</span> <span class="n">di</span> <span class="n">configurazione</span>
     <span class="n">HTTPCommApache</span> <span class="n">httpSupport</span> <span class="o">=</span> <span class="n">new</span> <span class="n">HTTPCommApache</span><span class="p">(</span>  <span class="n">URL</span> <span class="p">);</span>
     <span class="n">vr</span>         <span class="o">=</span> <span class="n">new</span> <span class="n">VrobotHLMovesHTTPApache</span><span class="p">(</span> <span class="n">httpSupport</span> <span class="p">);</span>
-    <span class="o">//</span><span class="n">AGGIUNGO</span> <span class="n">OBSERVER</span>
+    <span class="o">//</span><span class="n">Auto</span><span class="o">-</span><span class="n">aggiunta</span> <span class="n">di</span> <span class="n">un</span> <span class="n">OBSERVER</span><span class="o">.</span> <span class="n">Alternativa</span><span class="p">:</span> <span class="n">configuratore</span> <span class="n">esterno</span>
     <span class="n">obsForpath</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Appl1ObserverForpath</span><span class="p">();</span>
     <span class="n">addObserver</span><span class="p">(</span>  <span class="n">obsForpath</span> <span class="p">);</span>
 <span class="p">}</span>

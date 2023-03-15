@@ -1,4 +1,4 @@
-package unibo.model;
+package unibo.appl1.model;
 
 import unibo.basicomm23.utils.CommUtils;
 

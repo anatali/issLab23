@@ -1,4 +1,4 @@
-package unibo.model;
+package unibo.appl1.model;
 
 public class Box {
     private boolean isObstacle;

@@ -1,4 +1,4 @@
-package unibo.common;
+package unibo.appl1.common;
 
 public interface IVrobotMoves {
     public boolean step(int time) throws Exception;

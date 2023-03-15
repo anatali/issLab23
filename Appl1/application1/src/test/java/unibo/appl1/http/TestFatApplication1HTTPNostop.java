@@ -1,6 +1,8 @@
+package unibo.appl1.http;
+
 import org.junit.Before;
 import org.junit.Test;
-import unibo.daevitare.unibo.http.FlatApplication1HTTPNoStop;
+import unibo.appl1.daevitare.unibo.http.FlatApplication1HTTPNoStop;
 
 public class TestFatApplication1HTTPNostop {
     protected FlatApplication1HTTPNoStop appl;

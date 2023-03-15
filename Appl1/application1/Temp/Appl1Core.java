@@ -1,4 +1,4 @@
-package unibo.daevitare.unibo.http;
+package unibo.appl1.daevitare.unibo.http;
 
 import unibo.appl1.common.IAppl1Core;
 import unibo.appl1.common.IVrobotMoves;
@@ -6,7 +6,6 @@ import unibo.basicomm23.http.HTTPCommApache;
 import unibo.basicomm23.http.HttpConnection;
 import unibo.basicomm23.interfaces.Interaction2021;
 import unibo.basicomm23.utils.CommUtils;
-import unibo.common.IVrobotMoves;
 import unibo.supports.VrobotHLMovesHTTPApache;
 import unibo.supports.VrobotHLMovesInteractionSynch;
 

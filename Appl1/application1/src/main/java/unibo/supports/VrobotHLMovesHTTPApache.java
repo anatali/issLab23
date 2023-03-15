@@ -2,9 +2,9 @@ package unibo.supports;
 
 import org.json.simple.JSONObject;
 import unibo.basicomm23.http.HTTPCommApache;
-import unibo.common.CollisionException;
-import unibo.common.IVrobotMoves;
-import unibo.common.VrobotMsgs;
+import unibo.appl1.common.CollisionException;
+import unibo.appl1.common.IVrobotMoves;
+import unibo.appl1.common.VrobotMsgs;
 
 public class  VrobotHLMovesHTTPApache implements IVrobotMoves {
     private HTTPCommApache httpSupport  ;

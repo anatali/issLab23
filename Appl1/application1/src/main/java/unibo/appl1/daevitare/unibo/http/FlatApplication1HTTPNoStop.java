@@ -1,4 +1,4 @@
-package unibo.daevitare.unibo.http;
+package unibo.appl1.daevitare.unibo.http;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -10,7 +10,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import unibo.basicomm23.utils.CommUtils;
-import unibo.common.VrobotMsgs;
+import unibo.appl1.common.VrobotMsgs;
 
 import java.net.URI;
 

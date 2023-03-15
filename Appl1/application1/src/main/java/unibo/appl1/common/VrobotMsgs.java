@@ -1,4 +1,4 @@
-package unibo.common;
+package unibo.appl1.common;
 
 public class VrobotMsgs {
     public final static String turnrightcmd =

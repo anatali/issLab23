@@ -3,6 +3,7 @@ package unibo.appl1.observer;
 import unibo.appl1.model.RobotState;
 import unibo.basicomm23.utils.ApplAbstractObserver;
 import unibo.basicomm23.utils.CommUtils;
+
 import java.util.HashSet;
 import java.util.Set;
 

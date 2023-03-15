@@ -1,20 +1,21 @@
 package unibo.appl1.model;
 
-public class Box {
+import unibo.appl1.common.IBox;
+
+public class Box implements IBox {
     private boolean isObstacle;
-    private boolean isDirty;
+    private boolean isFree;
     private boolean isRobot;
 
     public Box(){
-        this(false,true,false);
+        this(false,false,false);
     }
 
-    public Box(boolean isObstacle, boolean isDirty, boolean isRobot) {
+    public Box(boolean isObstacle, boolean isFree, boolean isRobot) {
         this.isObstacle = isObstacle;
-        this.isDirty    = isDirty;
+        this.isFree     = isFree;
         this.isRobot    = isRobot;
     }
-
 
     public boolean isRobot() {
         return this.isRobot;
@@ -22,18 +23,18 @@ public class Box {
     public boolean isObstacle() {
         return this.isObstacle;
     }
-    public boolean isDirty() {
-        return this.isDirty;
+    public boolean isFree() {
+        return this.isFree;
     }
 
-    public void setRobot(boolean isRobot) {
-        this.isRobot = isRobot;
+    public void setRobot( ) {
+        this.isRobot = true;
     }
-    public void setObstacle(boolean isObstacle) {
-        this.isObstacle = isObstacle;
+    public void setObstacle() {
+        this.isObstacle = true;
     }
-    public void setDirty(boolean isDirty) {
-        this.isDirty = isDirty;
+    public void setFree( ) {
+        this.isFree = true;
     }
 
 

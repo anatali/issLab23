@@ -1,7 +1,8 @@
 package unibo.appl1.model;
 
+import unibo.appl1.common.IBox;
+import unibo.appl1.common.IRoomModel;
 import unibo.basicomm23.utils.CommUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +14,11 @@ import java.util.List;
   ------------------------------
 X
  */
-public class RoomModel {
+public class RoomModel implements IRoomModel {
 
     private static RoomModel singletonRoomModel;
 
-    private List<ArrayList<Box>> roomMap = new ArrayList<ArrayList<Box>>();
+    private List<ArrayList<IBox>> roomMap = new ArrayList<ArrayList<IBox>>();
     //Un array (Y) di array di Box (X)
 
     public static RoomModel getRoomModel() {
@@ -29,7 +30,7 @@ public class RoomModel {
     private RoomModel() {
         super();
         for (int i=0; i<1; i++) {
-            roomMap.add(new ArrayList<Box>());
+            roomMap.add(new ArrayList<IBox>());
             for (int j=0; j<1; j++) {
                 roomMap.get(i).add(null);
             }
@@ -44,6 +45,8 @@ public class RoomModel {
         return roomMap.size();
     }
 
+
+
     public int getDimX() {
         int result=0;
         for (int i=0; i<roomMap.size(); i++) {
@@ -55,16 +58,16 @@ public class RoomModel {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        for (ArrayList<Box> a : roomMap) {
+        for (ArrayList<IBox> a : roomMap) {
             builder.append("|");
-            for (Box b : a) {
+            for (IBox b : a) {
                 if (b == null)
                     break;
                 if (b.isRobot())
                     builder.append("r, ");
                 else if (b.isObstacle())
                     builder.append("X, ");
-                else if (b.isDirty())
+                else if (b.isFree())
                     builder.append("0, ");
                 else
                     builder.append("1, ");
@@ -74,15 +77,15 @@ public class RoomModel {
         return builder.toString();
     }
 
-
-    public void put(int x, int y, Box box) {
+    @Override
+    public void put(int x, int y, IBox box) {
         try {
             roomMap.get(y);
         } catch (IndexOutOfBoundsException e) {
             for (int i=roomMap.size(); i<y; i++) {
-                roomMap.add(new ArrayList<Box>());
+                roomMap.add(new ArrayList<IBox>());
             }
-            roomMap.add(y, new ArrayList<Box>());
+            roomMap.add(y, new ArrayList<IBox>());
         }
         try {
             roomMap.get(y).get(x);
@@ -96,6 +99,7 @@ public class RoomModel {
         }
     }
 
+    //Just to test ....
     public static void main(String[] args){
         RoomModel room = RoomModel.getRoomModel();
         CommUtils.outblue( room.toString() );

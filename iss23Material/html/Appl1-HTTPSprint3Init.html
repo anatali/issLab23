@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Appl1-HTTPSprint3Init &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Appl1-HTTPSprint3" href="Appl1-HTTPSprint3.html" />
+    <link rel="prev" title="Appl1-HTTPSprint2" href="Appl1-HTTPSprint2.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Appl1-HTTPSprint3.html" title="Appl1-HTTPSprint3"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Appl1-HTTPSprint2.html" title="Appl1-HTTPSprint2"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appl1-HTTPSprint3Init</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="appl1-httpsprint3init">
+<h1>Appl1-HTTPSprint3Init<a class="headerlink" href="#appl1-httpsprint3init" title="Permalink to this headline">¶</a></h1>
+<p>Nello <a class="reference internal" href="Appl1-HTTPSprint2.html#appl1-httpsprint2"><span class="std std-ref">Appl1-HTTPSprint2</span></a>, abbiamo costruito e testato un sistema  che soddisfa i requisiti del core-businness
+in ambiente locale, la cui architettura è schematizzata in figura:</p>
+<a class="reference internal image-reference" href="_images/Appl1HTTPSprint2Final.png"><img alt="_images/Appl1HTTPSprint2Final.png" class="align-center" src="_images/Appl1HTTPSprint2Final.png" style="width: 60%;" /></a>
+<p>La classe <a class="reference internal" href="Appl1-HTTPSprint2.html#appl1core-osservabile"><span class="std std-ref">Appl1Core osservabile</span></a>  realizza la logica applicativa.</p>
+<section id="requisiti-sprint3">
+<h2>Requisiti SPRINT3<a class="headerlink" href="#requisiti-sprint3" title="Permalink to this headline">¶</a></h2>
+<p>In questa nuova fase dello sviluppo, dobbiamo superare le limitazioni che ci siamo imposti in precedenza,
+tenendo conto di quanto già osservato in
+<a class="reference internal" href="Applicazione1.html#appl1-natura-dei-componenti"><span class="std std-ref">Appl1: Natura dei componenti</span></a> della <a class="reference internal" href="Applicazione1.html#appl1-architettura-logica"><span class="std std-ref">Appl1: Architettura logica</span></a>.</p>
+<p>L’archittura logica di riferimento può ora essere rappresentata come segue:</p>
+<a class="reference internal image-reference" href="_images/Appl1ArchSprinr3init.png"><img alt="_images/Appl1ArchSprinr3init.png" class="align-center" src="_images/Appl1ArchSprinr3init.png" style="width: 60%;" /></a>
+<p>In particolare detto <code class="docutils literal notranslate"><span class="pre">P</span></code> uno dei protocolli definiti in <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-basicomm23-msg-protocoltype"><span class="std std-ref">ProtocolType</span></a>:</p>
+<ol class="arabic simple">
+<li><p>L’applicazione <em>Appl1</em> viene ora concepito come un ente attivo capace  di ricevere messaggi (comandi <code class="docutils literal notranslate"><span class="pre">start/stop/resume</span></code>)
+via <code class="docutils literal notranslate"><span class="pre">P</span></code> e   <span class="blue">interpretare</span> tali messaggi,  convertendoli in comandi a <a class="reference internal" href="Appl1-HTTPSprint2.html#unibo-appl1-http-appl1core"><span class="std std-ref">Appl1Core</span></a>
+(e di qui a <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a>).</p></li>
+<li><p><em>CmdConsole</em> deve diventare un ente attivo che interagisce con un utente umano e che invia comandi ad <code class="docutils literal notranslate"><span class="pre">Appl1</span></code>
+usando il protocollo <code class="docutils literal notranslate"><span class="pre">P</span></code>.</p></li>
+</ol>
+<p>La fase di interpretazione dei comandi è affidata a <em>Appl1</em> in quanto:</p>
+<p>…</p>
+<p><span class="worktodo">TODO: problematiche dovute a CmdConsoleRemote</span></p>
+<p>Dall’analisi emerge l’opportunità di impostare il seguente:</p>
+<p><span class="worktodo">TODO: defnire un piano di lavoro</span></p>
+<p>Viene inoltre richiesto di pensare a come:</p>
+<p><span class="worktodo">TODO: comunicare con il VirtualRobot via WS</span></p>
+<p>Il ‘diario di bordo’ con analisi e proposte (<span class="brown">in modo sintetico/essnziale</span>) deve pervenire in un
+file denominato  <span class="blue">Appl1HTTPSprint3CognomeNomeV0.html</span>  entro</p>
+<p><span class="slide2">le ore 24 del 21/03/2023</span></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Appl1-HTTPSprint3Init</a><ul>
+<li><a class="reference internal" href="#requisiti-sprint3">Requisiti SPRINT3</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Appl1-HTTPSprint2.html"
+                          title="previous chapter">Appl1-HTTPSprint2</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="Appl1-HTTPSprint3.html"
+                          title="next chapter">Appl1-HTTPSprint3</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Appl1-HTTPSprint3Init.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Appl1-HTTPSprint3.html" title="Appl1-HTTPSprint3"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Appl1-HTTPSprint2.html" title="Appl1-HTTPSprint2"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appl1-HTTPSprint3Init</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

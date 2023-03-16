@@ -20,7 +20,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Appl1-HTTPSprint3" href="Appl1-HTTPSprint3.html" />
+    <link rel="next" title="Appl1-HTTPSprint3Init" href="Appl1-HTTPSprint3Init.html" />
     <link rel="prev" title="Appl1-HTTPSprint1" href="Appl1-HTTPSprint1.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,7 +30,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="Appl1-HTTPSprint3.html" title="Appl1-HTTPSprint3"
+          <a href="Appl1-HTTPSprint3Init.html" title="Appl1-HTTPSprint3Init"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="Appl1-HTTPSprint1.html" title="Appl1-HTTPSprint1"
@@ -70,7 +70,7 @@ il robot deve poter gestire i comandi <em>stop/resume</em> mentre sta percorrend
 <li><p>fissiamo il <span class="blue">requisito non funzionale</span> di racchiudere
 la logica applicativa in un <strong>singolo POJO</strong> (si veda <a class="reference external" href="https://it.wikipedia.org/wiki/Plain_Old_Java_Object">https://it.wikipedia.org/wiki/Plain_Old_Java_Object</a>),
 scorporandola dal main program.
-Ciò allo scopo di poter risuare questo ogetto come una risorsa in future applicazioni.</p></li>
+Ciò allo scopo di poter riusare questo ogetto come una risorsa in future applicazioni.</p></li>
 <li><p><span class="blue">evitiamo la complessità della distribuzione</span>, sostituendo la Console remota con
 un simulatore prima e una Console locale poi.</p></li>
 </ul>
@@ -94,7 +94,8 @@ come un <span class="slide1">configuratore del sistema</span></p></li>
 <li><p>Impostiamo il testing dell’applicazione sul concetto di <span class="slide1">osservabilità</span>,
 definendo il POJO <a class="reference internal" href="#appl1core"><span class="std std-ref">Appl1Core</span></a>  come un oggetto <span class="blue">osservabile</span>.</p></li>
 <li><p>Definiamo una JUnit per il testing <a class="reference internal" href="#unibo-appl1-http-testappl1httpsprint2"><span class="std std-ref">unibo.appl1.http.TestAppl1HTTPSprint2</span></a>
-utilizzando un observer: <span class="xref std std-ref">unibo.appl1.common.Appl1Observer</span>.</p></li>
+utilizzando due observer: <a class="reference internal" href="#unibo-appl1-observer-appl1observerforpath"><span class="std std-ref">unibo.appl1.observer.Appl1ObserverForpath</span></a> e
+<a class="reference internal" href="#unibo-appl1-observer-appl1coreteststartstopobserver"><span class="std std-ref">unibo.appl1.observer.Appl1CoreTestStartStopObserver</span></a>.</p></li>
 </ol>
 <p><span class="slide1">Applicazione come POJO</span></p>
 </section>
@@ -123,6 +124,7 @@ definite in <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-com
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">Appl1Core</span> <span class="n">implements</span> <span class="n">IAppl1Core</span><span class="p">{</span>
 <span class="n">protected</span> <span class="n">boolean</span> <span class="n">started</span>    <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
 <span class="n">protected</span> <span class="n">boolean</span> <span class="n">stopped</span>    <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+<span class="n">private</span> <span class="n">Appl1ObserverForpath</span> <span class="n">obsForpath</span><span class="p">;</span>
 <span class="n">protected</span> <span class="n">IVrobotMoves</span> <span class="n">vr</span> <span class="p">;</span>
 
 <span class="n">public</span> <span class="n">Appl1Core</span><span class="p">(){</span>
@@ -199,12 +201,8 @@ resettata a <code class="docutils literal notranslate"><span class="pre">false</
 </section>
 <section id="stop">
 <h3>stop<a class="headerlink" href="#stop" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span>  <span class="kt">void</span> <span class="nf">stop</span><span class="p">(</span>  <span class="p">)</span> <span class="p">{</span>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">stop</span><span class="p">(</span>  <span class="p">)</span> <span class="p">{</span>
     <span class="n">stopped</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="k">try</span> <span class="p">{</span>
-        <span class="n">vr</span><span class="p">.</span><span class="na">halt</span><span class="p">();</span>
-    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{...);</span>
-    <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -317,7 +315,7 @@ ma solo inidividuare situazioni in cui ciò non accade, al fine di porvi rimedio
 altrettanti effetti nel mondo fisico.</p>
 <p>Dobbiamo anche essere preparati al fatto che un sistema software logicamente corretto potrebbe non produrre gli effetti
 desiderati nel mondi reale. Si pensi ad esempio ad un robot fisico che ha esaurito le batterie, senza
-che il sistema applicativo abbia sensori in grado di rilevare questa sistuazione.</p>
+che il sistema applicativo abbia sensori in grado di rilevare questa situazione.</p>
 <p>L’idea di rendere introdurre una rappresentazione dello stato del sistema  con variabili e metodi ad-hoc,
 come i <a class="reference internal" href="Appl1-HTTPSprint1.html#walkbystepping-che-conta-i-passi"><span class="std std-ref">conteggio dei passi</span></a> nello Sprint precedente,
 significa introdurre codice che ha poco o nulla a che fare con la logica applicativa, rendendo più confuso e prolisso
@@ -325,6 +323,12 @@ il codice stesso.</p>
 <p>Un modo per raggiungere lo scopo senza perturbare troppo il codice applicativo, è
 fare riferimento al <strong>pattern observer</strong>  (uno dei più noti <a class="reference internal" href="Principi.html#design-patterns"><span class="std std-ref">Design patterns</span></a>)
 e <span class="blue">rendere l’applicazione osservabile</span>.</p>
+<p>Il <em>pattern observer</em> può essere descritto dal seguente diagramma UML:</p>
+<a class="reference internal image-reference" href="_images/ObserverPatternUML.PNG"><img alt="_images/ObserverPatternUML.PNG" class="align-center" src="_images/ObserverPatternUML.PNG" style="width: 60%;" /></a>
+<p>Prima di procedere possiamo formulare un principio-base:</p>
+<ul class="simple">
+<li><p><span class="slide2">Un osservatore non deve occuparsi di logica applicativa</span></p></li>
+</ul>
 <p>Ora però nascono nuove problematiche.</p>
 <section id="problematiche-sulla-osservabilita">
 <h3>Problematiche sulla Osservabilità<a class="headerlink" href="#problematiche-sulla-osservabilita" title="Permalink to this headline">¶</a></h3>
@@ -382,7 +386,6 @@ Occorre garantire che sia rispettato il seguente principio
 <ul class="simple">
 <li><p><span class="slide2">Un osservatore non deve influenzare l’osservato</span></p></li>
 </ul>
-<p><span class="slide1">A) Rendiamo osservabile il POJO applicativo</span></p>
 </section>
 <section id="appl1core-osservabile">
 <h3>Appl1Core osservabile<a class="headerlink" href="#appl1core-osservabile" title="Permalink to this headline">¶</a></h3>
@@ -394,7 +397,7 @@ Occorre garantire che sia rispettato il seguente principio
 <tbody>
 <tr class="row-odd"><td><a class="reference internal image-reference" href="_images/Appl1HTTPSprint2ArchWthSupportObservable.png"><img alt="_images/Appl1HTTPSprint2ArchWthSupportObservable.png" class="align-center" src="_images/Appl1HTTPSprint2ArchWthSupportObservable.png" style="width: 100%;" /></a>
 </td>
-<td><p>Introduciamo la seguente modifica:</p>
+<td><p>Introduciamo la seguente modifica a <a class="reference internal" href="#unibo-appl1-http-appl1core"><span class="std std-ref">unibo.appl1.http.Appl1Core</span></a>:</p>
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Appl1Core</span>  <span class="kd">extends</span> <span class="n">java</span><span class="p">.</span><span class="na">util</span><span class="p">.</span><span class="na">Observable</span> <span class="kd">implements</span> <span class="n">IAppl1Core</span><span class="p">{</span>
 <span class="kd">protected</span> <span class="kt">boolean</span> <span class="n">started</span>    <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 <span class="kd">protected</span> <span class="kt">boolean</span> <span class="n">stopped</span>    <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
@@ -419,6 +422,8 @@ permette di aggiungere/rimuovere oggetti che implementano la classe
 <a class="reference external" href="https://docs.oracle.com/javase/7/docs/api/java/util/Observer.html">java.util.Observer</a>, la quale
 definisce il metodo  void <code class="docutils literal notranslate"><span class="pre">update(Observable</span> <span class="pre">o,</span> <span class="pre">Object</span> <span class="pre">news)</span></code> che viene invocato dal metodo
 <code class="docutils literal notranslate"><span class="pre">notifyObservers(String</span> <span class="pre">news)</span></code> definito in <code class="docutils literal notranslate"><span class="pre">Observable</span></code>.</p>
+<p>Più avanti introdurremto la classe <a class="reference internal" href="#unibo-appl1-observer-appl1observerforpath"><span class="std std-ref">unibo.appl1.observer.Appl1ObserverForpath</span></a> che definisce
+un osservatore che associamo al POJO nella sua fase di configurazione.</p>
 </section>
 <section id="appl1core-observable-configure">
 <h3>Appl1Core observable configure<a class="headerlink" href="#appl1core-observable-configure" title="Permalink to this headline">¶</a></h3>
@@ -427,7 +432,7 @@ definisce il metodo  void <code class="docutils literal notranslate"><span class
     <span class="o">//</span><span class="n">URL</span> <span class="n">potrebbe</span> <span class="n">essere</span> <span class="n">letto</span> <span class="n">da</span> <span class="n">un</span> <span class="n">file</span> <span class="n">di</span> <span class="n">configurazione</span>
     <span class="n">HTTPCommApache</span> <span class="n">httpSupport</span> <span class="o">=</span> <span class="n">new</span> <span class="n">HTTPCommApache</span><span class="p">(</span>  <span class="n">URL</span> <span class="p">);</span>
     <span class="n">vr</span>         <span class="o">=</span> <span class="n">new</span> <span class="n">VrobotHLMovesHTTPApache</span><span class="p">(</span> <span class="n">httpSupport</span> <span class="p">);</span>
-    <span class="o">//</span><span class="n">Auto</span><span class="o">-</span><span class="n">aggiunta</span> <span class="n">di</span> <span class="n">un</span> <span class="n">OBSERVER</span><span class="o">.</span> <span class="n">Alternativa</span><span class="p">:</span> <span class="n">configuratore</span> <span class="n">esterno</span>
+    <span class="o">//</span><span class="n">AGGIUNGO</span> <span class="n">OBSERVER</span>
     <span class="n">obsForpath</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Appl1ObserverForpath</span><span class="p">();</span>
     <span class="n">addObserver</span><span class="p">(</span>  <span class="n">obsForpath</span> <span class="p">);</span>
 <span class="p">}</span>
@@ -568,9 +573,11 @@ lo scheletro di un observer che lascia non specificato il metodo <code class="do
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><span class="slide1">Un osservatore per il testing</span></p>
+<p><span class="slide1">Un osservatore per il path</span></p>
 <p>Specializziamo dunque la classe <a class="reference internal" href="unibo.basicomm23.html#applabstractobserver"><span class="std std-ref">ApplAbstractObserver</span></a> per <span class="blue">definire un osservatore</span>
-di <a class="reference internal" href="#appl1core"><span class="std std-ref">Appl1Core</span></a> da usare nella fase di testing.</p>
+di <a class="reference internal" href="#appl1core"><span class="std std-ref">Appl1Core</span></a>, che abbiamo già menzionato
+nella <a class="reference internal" href="#appl1core-observable-configure"><span class="std std-ref">fase di configurazione</span></a>
+del POJO applicativo osservabile.</p>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
 <col style="width: 40%" />
@@ -584,6 +591,9 @@ fornendo anche un metodo che blocca un chiamante fino a che l’applicazione giu
 </tr>
 </tbody>
 </table>
+</section>
+<section id="emittedinfo-per-il-path">
+<h4>emittedInfo per il path<a class="headerlink" href="#emittedinfo-per-il-path" title="Permalink to this headline">¶</a></h4>
 <p>In questa fase, definiamo l’insieme delle stringhe <a class="reference internal" href="#emittedinfo"><span class="std std-ref">emittedInfo</span></a> come segue:</p>
 <ul class="simple">
 <li><p><span class="blue">robot-stepdone</span> :  il robot ha effettuato uno <a class="reference internal" href="Appl1-HTTPSprint1.html#step"><span class="std std-ref">step</span></a> con successo</p></li>
@@ -597,6 +607,7 @@ fornendo anche un metodo che blocca un chiamante fino a che l’applicazione giu
 </section>
 <section id="unibo-appl1-observer-appl1observerforpath">
 <h3>unibo.appl1.observer.Appl1ObserverForpath<a class="headerlink" href="#unibo-appl1-observer-appl1observerforpath" title="Permalink to this headline">¶</a></h3>
+<p>L’osservatore che gestisce le informazioni (osservabili) <a class="reference internal" href="#emittedinfo-per-il-path"><span class="std std-ref">emittedInfo per il path</span></a>, può essere impostato come segue:</p>
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Appl1ObserverForpath</span> <span class="kd">extends</span> <span class="n">ApplAbstractObserver</span> <span class="p">{</span>
     <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">applIsTerminated</span> <span class="p">;</span>
     <span class="kd">private</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">moveHistory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
@@ -608,48 +619,53 @@ fornendo anche un metodo che blocca un chiamante fino a che l’applicazione giu
         <span class="n">moveCmds</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;robot-turnLeft&quot;</span><span class="p">);</span>
         <span class="n">moveCmds</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;robot-athomeend&quot;</span><span class="p">);</span>
     <span class="p">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;robot-stepdone&quot;</span><span class="p">)){</span><span class="n">moveHistory</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;w&quot;</span><span class="p">);}</span>
-        <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;robot-turnLeft&quot;</span><span class="p">)){</span><span class="n">moveHistory</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;l&quot;</span><span class="p">);}</span>
-        <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;robot-collision&quot;</span><span class="p">)</span> <span class="p">){</span><span class="n">moveHistory</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;|&quot;</span><span class="p">);}</span>
-        <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;robot-athomeend&quot;</span><span class="p">)</span> <span class="p">){</span><span class="n">setTerminated</span><span class="p">();}</span>
-    <span class="p">}</span>
-
-    <span class="kd">private</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">setTerminated</span><span class="p">(){</span>
-        <span class="n">applIsTerminated</span> <span class="o">=</span><span class="kc">true</span><span class="p">;</span>
-        <span class="n">notifyAll</span><span class="p">();</span> <span class="c1">//riattiva getPath</span>
-    <span class="p">}</span>
-
-    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="n">String</span> <span class="nf">getPath</span><span class="p">(){</span>
-        <span class="k">while</span><span class="p">(</span> <span class="o">!</span> <span class="n">applIsTerminated</span> <span class="p">)</span> <span class="p">{</span>
-            <span class="k">try</span> <span class="p">{</span>
-                <span class="n">wait</span><span class="p">();</span>
-            <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
-                <span class="n">CommUtils</span><span class="p">.</span><span class="na">outred</span><span class="p">(</span><span class="s">&quot;Appl1ObserverForpath: getPath ERROR&quot;</span><span class="p">);</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-         <span class="k">return</span> <span class="n">getPathAsCompactString</span><span class="p">();</span>
-    <span class="p">}</span>
-
-    <span class="kd">private</span> <span class="n">String</span> <span class="nf">getPathAsCompactString</span><span class="p">(){</span>
-        <span class="n">String</span> <span class="n">hflat</span> <span class="o">=</span> <span class="n">moveHistory</span><span class="p">.</span><span class="na">toString</span><span class="p">()</span>
-                <span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;[&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;]&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">);</span>
-        <span class="k">return</span> <span class="n">hflat</span><span class="p">;</span>
-    <span class="p">}</span>
-
-    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">evalBoundaryDone</span><span class="p">(){</span>
-        <span class="n">String</span> <span class="n">hflat</span>      <span class="o">=</span> <span class="n">getPath</span><span class="p">();</span>  <span class="c1">//bloccante</span>
-        <span class="n">String</span><span class="o">[]</span> <span class="n">splitted</span> <span class="o">=</span> <span class="n">hflat</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">split</span><span class="p">(</span><span class="s">&quot;l&quot;</span><span class="p">);</span>
-        <span class="kt">boolean</span> <span class="n">boundaryDone</span> <span class="o">=</span> <span class="n">splitted</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="o">==</span><span class="n">splitted</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">.</span><span class="na">length</span><span class="p">()</span>
-                <span class="o">&amp;&amp;</span> <span class="n">splitted</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="o">==</span><span class="n">splitted</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="p">.</span><span class="na">length</span><span class="p">();</span>
-        <span class="k">return</span> <span class="n">boundaryDone</span><span class="p">;</span>
-    <span class="p">}</span>
+</pre></div>
+</div>
+<section id="gestione-di-emittedinfo-per-path">
+<h4>Gestione di emittedInfo per path<a class="headerlink" href="#gestione-di-emittedinfo-per-path" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="n">public</span> <span class="n">void</span> <span class="n">update</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;robot-stepdone&quot;</span><span class="p">)){</span><span class="n">moveHistory</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">);}</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;robot-turnLeft&quot;</span><span class="p">)){</span><span class="n">moveHistory</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;l&quot;</span><span class="p">);}</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;robot-collision&quot;</span><span class="p">)</span> <span class="p">){</span><span class="n">moveHistory</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">);}</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;robot-athomeend&quot;</span><span class="p">)</span> <span class="p">){</span><span class="n">setTerminated</span><span class="p">();}</span>
 <span class="p">}</span>
+
+<span class="n">private</span> <span class="n">synchronized</span> <span class="n">void</span> <span class="n">setTerminated</span><span class="p">(){</span>
+    <span class="n">applIsTerminated</span> <span class="o">=</span><span class="n">true</span><span class="p">;</span>
+    <span class="n">notifyAll</span><span class="p">();</span> <span class="o">//</span><span class="n">riattiva</span> <span class="n">getPath</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="metodi-utili-per-osservatori-di-path">
+<h4>Metodi utili per osservatori di path<a class="headerlink" href="#metodi-utili-per-osservatori-di-path" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    public synchronized String getPath(){
+        while( ! applIsTerminated ) {
+            try {
+                wait();
+            } catch (InterruptedException e) {... }
+        }
+         return getPathAsCompactString();
+    }
+
+    private String getPathAsCompactString(){
+        String hflat = moveHistory.toString()
+                .replace(&quot;[&quot;,&quot;&quot;)
+                .replace(&quot;]&quot;,&quot;&quot;)
+                .replace(&quot;,&quot;,&quot;&quot;)
+                .replace(&quot; &quot;,&quot;&quot;);
+        return hflat;
+    }
+
+    public boolean evalBoundaryDone(){
+        String hflat      = getPath();  //bloccante
+        String[] splitted = hflat.toString().split(&quot;l&quot;);
+        boolean boundaryDone = splitted[0].length()==splitted[2].length()
+                &amp;&amp; splitted[1].length()==splitted[3].length();
+        return boundaryDone;
+    }
+}
 </pre></div>
 </div>
 <p>Il percorso viene rappresentato come una stringa della forma:</p>
@@ -664,21 +680,88 @@ il percorso ha seguito il perimetro di una stanza vuota se viene verificata la c
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">C</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">CD</span><span class="p">)</span>
 </pre></div>
 </div>
+<p><span class="slide1">Un osservatore per start/stop</span></p>
 <p>Un altro osservatore può gestire altre stringhe di <a class="reference internal" href="#emittedinfo"><span class="std std-ref">emittedInfo</span></a> quali:</p>
 <ul class="simple">
+<li><p><span class="blue">robot-moving</span> : il robot si sta muovendo</p></li>
 <li><p><span class="blue">robot-stopped</span> : il robot ha eseguito il comando <code class="docutils literal notranslate"><span class="pre">stop</span></code></p></li>
 <li><p><span class="blue">robot-resumed</span> : il robot ha eseguito il comando <code class="docutils literal notranslate"><span class="pre">resume</span></code></p></li>
 </ul>
 </section>
+</section>
 <section id="unibo-appl1-observer-appl1coreteststartstopobserver">
 <h3>unibo.appl1.observer.Appl1CoreTestStartStopObserver<a class="headerlink" href="#unibo-appl1-observer-appl1coreteststartstopobserver" title="Permalink to this headline">¶</a></h3>
+<p>L’osservatore che gestisce le informazioni (osservabili) <em>robot-stopped</em> e <em>robot-resumed</em>
+e altre stringhe di pertinenza, può essere impostato come segue:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">Appl1CoreTestStartStopObserver</span> <span class="n">extends</span> <span class="n">ApplAbstractObserver</span> <span class="p">{</span>
-<span class="o">...</span>
+<span class="n">private</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">moveHistory</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">private</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">moveCmds</span> <span class="o">=</span> <span class="n">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">private</span> <span class="n">boolean</span> <span class="n">stopped</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+<span class="n">private</span> <span class="n">boolean</span> <span class="n">resumed</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+
+    <span class="n">public</span> <span class="n">Appl1CoreTestStartStopObserver</span><span class="p">(){</span>
+        <span class="n">moveCmds</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;robot-athomebegin&quot;</span><span class="p">);</span>
+        <span class="n">moveCmds</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;robot-moving&quot;</span><span class="p">);</span>
+        <span class="n">moveCmds</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;robot-stepdone&quot;</span><span class="p">);</span>
+        <span class="n">moveCmds</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;robot-stopped&quot;</span><span class="p">);</span>
+        <span class="n">moveCmds</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;robot-resumed&quot;</span><span class="p">);</span>
+        <span class="n">moveCmds</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;robot-athomeend&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="o">//</span><span class="n">permette</span> <span class="n">di</span> <span class="n">riusare</span> <span class="n">l</span><span class="s1">&#39;observer in fase di testing</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">init</span><span class="p">(){</span>
+        <span class="n">moveHistory</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<section id="gestione-delle-emittedinfo">
+<h4>Gestione delle emittedInfo<a class="headerlink" href="#gestione-delle-emittedinfo" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="n">public</span> <span class="n">void</span> <span class="n">update</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">moveCmds</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">msg</span><span class="p">)){</span>
+        <span class="n">moveHistory</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;robot-stopped&quot;</span><span class="p">))</span> <span class="p">{</span> <span class="n">gotStopped</span><span class="p">();</span> <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;robot-resumed&quot;</span><span class="p">))</span> <span class="p">{</span> <span class="n">gotResumed</span><span class="p">();</span> <span class="p">}</span>
+    <span class="p">}</span>
 <span class="p">}</span>
+<span class="n">private</span> <span class="n">synchronized</span>  <span class="n">void</span> <span class="n">gotStopped</span><span class="p">(){</span>
+    <span class="n">stopped</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+    <span class="n">resumed</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+    <span class="n">notifyAll</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="n">private</span> <span class="n">synchronized</span>  <span class="n">void</span> <span class="n">gotResumed</span><span class="p">(){</span>
+    <span class="n">resumed</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+    <span class="n">stopped</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+    <span class="n">notifyAll</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="metodi-utili-per-gli-osservatori-di-stop-resume">
+<h4>Metodi utili per gli osservatori di stop/resume<a class="headerlink" href="#metodi-utili-per-gli-osservatori-di-stop-resume" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    public Vector&lt;String&gt; getMoveHistory(){
+        return moveHistory;
+    }
+    public synchronized Vector&lt;String&gt; getMoveHistoryAfterStop(){
+        while( ! stopped    ){
+              try {
+                wait();
+            } catch (InterruptedException e) {...}
+        }
+        return moveHistory;
+    }
+    public synchronized void waitUntilResume(){
+        while( ! (resumed )  ){
+            try {
+                wait();
+            } catch (InterruptedException e) {... }
+        }
+    }
+}
 </pre></div>
 </div>
 <p>A questo punto possiamo definire un programma, basato su <strong>JUnit</strong>, che effettua i test introdotti in
 <a class="reference internal" href="Applicazione1.html#appl1-piani-di-testing-funzionale"><span class="std std-ref">Appl1: Piani di testing funzionale</span></a>.</p>
+</section>
 </section>
 </section>
 <section id="unibo-appl1-http-testappl1httpsprint2">
@@ -686,7 +769,7 @@ il percorso ha seguito il perimetro di una stanza vuota se viene verificata la c
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestAppl1HTTPSprint2</span> <span class="p">{</span>
 <span class="kd">private</span> <span class="n">Appl1Core</span> <span class="n">appl</span><span class="p">;</span>
 <span class="kd">private</span> <span class="n">Appl1CoreTestStartStopObserver</span> <span class="n">obsStartStop</span><span class="p">;</span>
-<span class="c1">//private Appl1CoreTestingObserver obsPath;</span>
+<span class="c1">//private Appl1ObserverForpath obsPath; //Già creato nel POJO</span>
 
 <span class="c1">//Metodi di utilità</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">initSystemToTest</span><span class="p">(){...}</span>
@@ -699,21 +782,24 @@ il percorso ha seguito il perimetro di una stanza vuota se viene verificata la c
 <section id="initsystemtotest">
 <h3>initSystemTotest<a class="headerlink" href="#initsystemtotest" title="Permalink to this headline">¶</a></h3>
 <p>Inizializza il sistema da testare: dopo avere creato il POJO applicativo, associa ad esso un osservatore
-<span class="xref std std-ref">Appl1CoreTestingObserver</span>.</p>
+<a class="reference internal" href="#unibo-appl1-observer-appl1coreteststartstopobserver"><span class="std std-ref">Appl1CoreTestStartStopObserver</span></a>.</p>
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Before</span>
 <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">initSystemTotest</span><span class="p">(){</span>
     <span class="n">appl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Appl1Core</span><span class="p">();</span> <span class="c1">//Il robot viene verificato in HOME !</span>
     <span class="n">obsStartStop</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">Appl1CoreTestStartStopObserver</span><span class="p">();</span>
     <span class="n">obsStartStop</span><span class="p">.</span><span class="na">init</span><span class="p">();</span>
+    <span class="c1">//AGGIUNGO OSSERVATORE per start/stop</span>
     <span class="n">appl</span><span class="p">.</span><span class="na">addObserver</span><span class="p">(</span> <span class="n">obsStartStop</span> <span class="p">);</span>
-    <span class="c1">//appl.addObserver(obsPath);</span>
+    <span class="c1">//appl.addObserver(obsPath); //Già aggiunto nel POJO</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>Il POJO applicativo <a class="reference internal" href="#appl1core"><span class="std std-ref">Appl1Core</span></a> è associato a due osservatori:</p>
+<a class="reference internal image-reference" href="_images/Appl1HTTPSprint2TestTwoObservers.PNG"><img alt="_images/Appl1HTTPSprint2TestTwoObservers.PNG" class="align-center" src="_images/Appl1HTTPSprint2TestTwoObservers.PNG" style="width: 60%;" /></a>
 </section>
 <section id="starttheapplication">
 <h3>startTheApplication<a class="headerlink" href="#starttheapplication" title="Permalink to this headline">¶</a></h3>
-<p>Invoca il metodo <code class="docutils literal notranslate"><span class="pre">appl.start</span></code> (che sua volta invoca <span class="xref std std-ref">walkAtBoundary</span>) all’interno di
+<p>Invoca il metodo <code class="docutils literal notranslate"><span class="pre">appl.start</span></code> (che sua volta invoca <a class="reference internal" href="Appl1-HTTPSprint1.html#walkatboundary"><span class="std std-ref">walkAtBoundary</span></a>) all’interno di
 un nuovo Thread,
 per evitare di bloccare il Thread di testing, nel momento in cui l’applicazione entra nella fase proattiva.</p>
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span> <span class="kt">void</span> <span class="nf">startTheApplication</span><span class="p">(){</span>
@@ -819,7 +905,7 @@ unitamente a una sua realizzazione.</p></td>
 <h2>Modellazione della stanza come griglia<a class="headerlink" href="#modellazione-della-stanza-come-griglia" title="Permalink to this headline">¶</a></h2>
 <p>Il robot (virtuale o reale) è un oggetto inscrivibile in un cerchio di raggio <code class="docutils literal notranslate"><span class="pre">R</span></code>.</p>
 <p>Muovere il robot con mossa <code class="docutils literal notranslate"><span class="pre">step(T)</span></code> con tempo <code class="docutils literal notranslate"><span class="pre">T</span></code> tale da spostare il robot (con velocità prefissata)
-di uno spazio <code class="docutils literal notranslate"><span class="pre">R</span></code>, permette di costruire una mappa della stanza formata da celle quadrate <code class="docutils literal notranslate"><span class="pre">RxR</span></code>.
+di uno spazio <code class="docutils literal notranslate"><span class="pre">R</span></code>, permette di costruire una mappa della stanza formata da celle quadrate <code class="docutils literal notranslate"><span class="pre">2Rx2R</span></code>.
 Ad esempio:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">3</span>  <span class="mi">4</span>  <span class="mi">5</span>  <span class="mi">6</span>  <span class="mi">7</span> <span class="o">....</span> <span class="n">x</span>
 <span class="mi">0</span> <span class="o">|</span><span class="n">r</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
@@ -834,7 +920,7 @@ Ad esempio:</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p><span class="blue">0</span> denoita una cella mai percorsa</p></li>
+<li><p><span class="blue">0</span> denota una cella mai percorsa</p></li>
 <li><p><span class="blue">1</span> denota una cella libera (e percorsa)</p></li>
 <li><p><span class="blue">X</span> denota una cella occupata da un ostacolo</p></li>
 <li><p><span class="blue">r</span> denota la posizione corrente del robot</p></li>
@@ -869,6 +955,21 @@ Ad esempio:</p>
 </pre></div>
 </div>
 </section>
+<section id="unibo-appl1-model-roommodel">
+<h3>unibo.appl1.model.RoomModel<a class="headerlink" href="#unibo-appl1-model-roommodel" title="Permalink to this headline">¶</a></h3>
+<p>Realizziamo il modello della stanza come un POJO <span class="slide2">singleton</span>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">RoomModel</span> <span class="n">implements</span> <span class="n">IRoomModel</span><span class="p">{</span>
+<span class="n">private</span> <span class="n">static</span> <span class="n">RoomModel</span> <span class="n">singletonRoomModel</span><span class="p">;</span>
+    <span class="n">public</span> <span class="n">static</span> <span class="n">RoomModel</span> <span class="n">getRoomModel</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">singletonRoomModel</span> <span class="o">==</span> <span class="n">null</span><span class="p">)</span>
+            <span class="n">singletonRoomModel</span> <span class="o">=</span> <span class="n">new</span> <span class="n">RoomModel</span><span class="p">();</span>
+        <span class="k">return</span> <span class="n">singletonRoomModel</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="modellazione-della-posizione-del-robot">
 <h2>Modellazione della posizione del robot<a class="headerlink" href="#modellazione-della-posizione-del-robot" title="Permalink to this headline">¶</a></h2>
@@ -890,7 +991,38 @@ da una classe  <code class="docutils literal notranslate"><span class="pre">unib
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Passiamo ora a <a class="reference internal" href="Appl1-HTTPSprint3.html#appl1-httpsprint3"><span class="std std-ref">Appl1-HTTPSprint3</span></a>.</p>
+<p><span class="worktodo">TODO: realizzare RobotState implements IRobotState</span></p>
+<p>Ora possiamo costruire una rappresentazione a griglia della stanza, mediante un observer.</p>
+<p><span class="slide1">Un osservatore per creare roomModel</span></p>
+</section>
+<section id="unibo-appl1-observerappl1observerforroommodel">
+<h3>unibo.appl1.observerAppl1ObserverForRoomModel<a class="headerlink" href="#unibo-appl1-observerappl1observerforroommodel" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">Appl1ObserverForRoomModel</span> <span class="n">extends</span> <span class="n">ApplAbstractObserver</span> <span class="p">{</span>
+    <span class="n">private</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">moveCmds</span>  <span class="o">=</span> <span class="n">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
+    <span class="n">private</span> <span class="n">RobotState</span> <span class="n">robotState</span><span class="p">;</span>
+
+    <span class="n">public</span> <span class="n">Appl1ObserverForRoomModel</span><span class="p">(){</span>
+        <span class="n">moveCmds</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;robot-athomebegin&quot;</span><span class="p">);</span>
+        <span class="n">moveCmds</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;robot-stepdone&quot;</span><span class="p">);</span>
+        <span class="n">moveCmds</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;robot-turnLeft&quot;</span><span class="p">);</span>
+        <span class="n">moveCmds</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;robot-athomeend&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nd">@Override</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">update</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;robot-athomebegin&quot;</span><span class="p">)){</span>
+            <span class="n">robotState</span> <span class="o">=</span> <span class="n">new</span> <span class="n">RobotState</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="n">RobotState</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">DOWN</span><span class="p">);</span>
+        <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;robot-stepdone&quot;</span><span class="p">)){</span>
+            <span class="n">robotState</span><span class="o">.</span><span class="n">forward</span><span class="p">();</span>
+        <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;robot-turnLeft&quot;</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">robotState</span><span class="o">.</span><span class="n">turnLeft</span><span class="p">();</span>
+        <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;robot-athomeend&quot;</span><span class="p">)</span> <span class="p">){</span>   <span class="p">}</span>
+            <span class="n">String</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">robotState</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+            <span class="n">CommUtils</span><span class="o">.</span><span class="n">outblue</span><span class="p">(</span><span class="n">s1</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Passiamo a <a class="reference internal" href="Appl1-HTTPSprint3.html#appl1-httpsprint3"><span class="std std-ref">Appl1-HTTPSprint3</span></a> per realizzare un sistema distribuito, con <em>CmdConsole remota</em>.</p>
 </section>
 </section>
 </section>
@@ -939,10 +1071,19 @@ da una classe  <code class="docutils literal notranslate"><span class="pre">unib
 <li><a class="reference internal" href="#unibo-basicomm23-e-osservabilita">unibo.basicomm23 e osservabilità</a><ul>
 <li><a class="reference internal" href="#unibo-basicomm23-interfaces-iobserver">unibo.basicomm23.interfaces.IObserver</a></li>
 <li><a class="reference internal" href="#unibo-basicomm23-utils-applabstractobserver">unibo.basicomm23.utils.ApplAbstractObserver</a></li>
+<li><a class="reference internal" href="#emittedinfo-per-il-path">emittedInfo per il path</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#unibo-appl1-observer-appl1observerforpath">unibo.appl1.observer.Appl1ObserverForpath</a></li>
-<li><a class="reference internal" href="#unibo-appl1-observer-appl1coreteststartstopobserver">unibo.appl1.observer.Appl1CoreTestStartStopObserver</a></li>
+<li><a class="reference internal" href="#unibo-appl1-observer-appl1observerforpath">unibo.appl1.observer.Appl1ObserverForpath</a><ul>
+<li><a class="reference internal" href="#gestione-di-emittedinfo-per-path">Gestione di emittedInfo per path</a></li>
+<li><a class="reference internal" href="#metodi-utili-per-osservatori-di-path">Metodi utili per osservatori di path</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unibo-appl1-observer-appl1coreteststartstopobserver">unibo.appl1.observer.Appl1CoreTestStartStopObserver</a><ul>
+<li><a class="reference internal" href="#gestione-delle-emittedinfo">Gestione delle emittedInfo</a></li>
+<li><a class="reference internal" href="#metodi-utili-per-gli-osservatori-di-stop-resume">Metodi utili per gli osservatori di stop/resume</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#unibo-appl1-http-testappl1httpsprint2">unibo.appl1.http.TestAppl1HTTPSprint2</a><ul>
@@ -958,10 +1099,12 @@ da una classe  <code class="docutils literal notranslate"><span class="pre">unib
 <li><a class="reference internal" href="#modellazione-della-stanza-come-griglia">Modellazione della stanza come griglia</a><ul>
 <li><a class="reference internal" href="#unibo-appl1-common-ibox">unibo.appl1.common.IBox</a></li>
 <li><a class="reference internal" href="#unibo-appl1-common-iroommodel">unibo.appl1.common.IRoomModel</a></li>
+<li><a class="reference internal" href="#unibo-appl1-model-roommodel">unibo.appl1.model.RoomModel</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#modellazione-della-posizione-del-robot">Modellazione della posizione del robot</a><ul>
 <li><a class="reference internal" href="#unibo-appl1-common-irobotstate">unibo.appl1.common.IRobotState</a></li>
+<li><a class="reference internal" href="#unibo-appl1-observerappl1observerforroommodel">unibo.appl1.observerAppl1ObserverForRoomModel</a></li>
 </ul>
 </li>
 </ul>
@@ -976,8 +1119,8 @@ da una classe  <code class="docutils literal notranslate"><span class="pre">unib
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="Appl1-HTTPSprint3.html"
-                          title="next chapter">Appl1-HTTPSprint3</a></p>
+    <p class="topless"><a href="Appl1-HTTPSprint3Init.html"
+                          title="next chapter">Appl1-HTTPSprint3Init</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -1007,7 +1150,7 @@ da una classe  <code class="docutils literal notranslate"><span class="pre">unib
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="Appl1-HTTPSprint3.html" title="Appl1-HTTPSprint3"
+          <a href="Appl1-HTTPSprint3Init.html" title="Appl1-HTTPSprint3Init"
              >next</a> |</li>
         <li class="right" >
           <a href="Appl1-HTTPSprint1.html" title="Appl1-HTTPSprint1"

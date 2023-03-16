@@ -3,6 +3,7 @@ package unibo.appl1.model;
 import unibo.appl1.common.IBox;
 import unibo.appl1.common.IRoomModel;
 import unibo.basicomm23.utils.CommUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,13 +29,6 @@ public class RoomModel implements IRoomModel {
     }
 
     private RoomModel() {
-        super();
-        for (int i=0; i<1; i++) {
-            roomMap.add(new ArrayList<IBox>());
-            for (int j=0; j<1; j++) {
-                roomMap.get(i).add(null);
-            }
-        }
         this.put(0, 0, new Box( ));
     }
 
@@ -68,9 +62,9 @@ public class RoomModel implements IRoomModel {
                 else if (b.isObstacle())
                     builder.append("X, ");
                 else if (b.isFree())
-                    builder.append("0, ");
-                else
                     builder.append("1, ");
+                else
+                    builder.append("0, ");
             }
             builder.append("\n");
         }

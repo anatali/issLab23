@@ -1,0 +1,455 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Appl1-HTTPSprint3 &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Appunti su tecnologie" href="AppuntiTecnologie.html" />
+    <link rel="prev" title="Appl1-HTTPSprint3Init" href="Appl1-HTTPSprint3Init.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Appl1-HTTPSprint3Init.html" title="Appl1-HTTPSprint3Init"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appl1-HTTPSprint3</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="appl1-httpsprint3">
+<h1>Appl1-HTTPSprint3<a class="headerlink" href="#appl1-httpsprint3" title="Permalink to this headline">¶</a></h1>
+<p>Nello <a class="reference internal" href="Appl1-HTTPSprint2.html#appl1-httpsprint2"><span class="std std-ref">Appl1-HTTPSprint2</span></a>, abbiamo costruito e testato un sistema  che soddisfa i requisiti del core-businness
+in ambiente locale, la cui architettura è schematizzata in figura:</p>
+<a class="reference internal image-reference" href="_images/Appl1HTTPSprint2Final.png"><img alt="_images/Appl1HTTPSprint2Final.png" class="align-center" src="_images/Appl1HTTPSprint2Final.png" style="width: 60%;" /></a>
+<p>La classe <a class="reference internal" href="Appl1-HTTPSprint2.html#appl1core-osservabile"><span class="std std-ref">Appl1Core osservabile</span></a>  realizza la logica applicativa.</p>
+<section id="requisiti-sprint3">
+<h2>Requisiti SPRINT3<a class="headerlink" href="#requisiti-sprint3" title="Permalink to this headline">¶</a></h2>
+<p>In questa nuova fase dello sviluppo, dobbiamo superare le limitazioni che ci siamo imposti in precedenza,
+tenendo conto di quanto già osservato in
+<a class="reference internal" href="Applicazione1.html#appl1-natura-dei-componenti"><span class="std std-ref">Appl1: Natura dei componenti</span></a> della <a class="reference internal" href="Applicazione1.html#appl1-architettura-logica"><span class="std std-ref">Appl1: Architettura logica</span></a>.</p>
+<p>L’archittura logica di riferimento può ora essere rappresentata come segue:</p>
+<a class="reference internal image-reference" href="_images/Appl1ArchSprinr3init.png"><img alt="_images/Appl1ArchSprinr3init.png" class="align-center" src="_images/Appl1ArchSprinr3init.png" style="width: 60%;" /></a>
+<p>In particolare detto <code class="docutils literal notranslate"><span class="pre">P</span></code> uno dei protocolli definiti in <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-basicomm23-msg-protocoltype"><span class="std std-ref">ProtocolType</span></a>:</p>
+<ol class="arabic simple">
+<li><p>L’applicazione <em>Appl1</em> viene ora concepito come un ente attivo capace  di ricevere messaggi (comandi <code class="docutils literal notranslate"><span class="pre">start/stop/resume</span></code>)
+via <code class="docutils literal notranslate"><span class="pre">P</span></code> e   <span class="blue">interpretare</span> tali messaggi,  convertendoli in comandi a <a class="reference internal" href="Appl1-HTTPSprint2.html#unibo-appl1-http-appl1core"><span class="std std-ref">Appl1Core</span></a>
+(e di qui a <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a>).</p></li>
+<li><p><em>CmdConsole</em> deve diventare un ente attivo che interagisce con un utente umano e che invia comandi ad <code class="docutils literal notranslate"><span class="pre">Appl1</span></code>
+usando il protocollo <code class="docutils literal notranslate"><span class="pre">P</span></code>.</p></li>
+</ol>
+<p>La fase di interpretazione dei comandi è affidata a <em>Appl1</em> in quanto:</p>
+<ul class="simple">
+<li><p>la <em>CmdConsole</em> è <span class="remark">solo un dispositivo di input</span>, che si vuole mantenere libero da aspetti applicativi;</p></li>
+<li><p><em>Appl1</em> potrebbe ricevere comandi da dispositivi diversi dalla <em>CmdConsole</em>.</p></li>
+</ul>
+<p>Dobbiamo dunque:</p>
+<ol class="arabic simple">
+<li><p>Affrontare il progetto e la realizzazione della <em>CmdConsole</em> remota.</p></li>
+<li><p>Affrontare il progetto e la realizzazione di un sistema distribuito.</p></li>
+</ol>
+<p>Siamo di fronte a un passaggio logico <span class="remark">da sistemi ad oggetti locali</span>  che interagiscono
+mediante <em>procedure-call</em> a sistemi <span class="remark">a componenti distribuiti attivi che interagiscono a messaggi</span>
+attraverso l’uso di vari protocolli, come quelli introdotti in  <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-basicomm23-msg-protocoltype"><span class="std std-ref">unibo.basicomm23.msg.ProtocolType</span></a>.</p>
+<p><span class="slide1">Il principio di inversione delle dipendenze</span></p>
+<p>Per evitare che l’<em>application designer</em> debba occuparsi
+di dettagli implementativi legati alle interazioni,
+possiamo intreprendere una strada che trae ispirazione dal
+un altro dei principi <a class="reference external" href="https://en.wikipedia.org/wiki/SOLID">SOLID</a>,
+secondo il quale:</p>
+<ul class="simple">
+<li><p><span class="slide2">Componenti di alto livello non devono dipendere da componenti di livello più basso</span></p></li>
+</ul>
+<p>Seguire questa via significa anche che il nostro approccio passa:</p>
+<p><span class="slide">da bottom-up a top-down</span></p>
+<p>In altre parole, è il livello applicativo (il problema stesso) che deve dire di quali
+elementi astratti (interfacce) o concreti ha bisogno per realizzare operazioni di più basso livello
+(quali le comunicazioni di rete) e demandarne la
+realizzazione a opportuni supporti che realizzino quanto dichiarato.</p>
+<p>Lo schema logico viene reimpostato come segue:</p>
+<a class="reference internal image-reference" href="_images/Appl1ArchSprint3initLogico.png"><img alt="_images/Appl1ArchSprint3initLogico.png" class="align-center" src="_images/Appl1ArchSprint3initLogico.png" style="width: 75%;" /></a>
+</section>
+<section id="l-idea-di-interconnessione">
+<h2>L’idea di Interconnessione<a class="headerlink" href="#l-idea-di-interconnessione" title="Permalink to this headline">¶</a></h2>
+<p>Con <a class="reference internal" href="Interaction2021.html#interaction2021"><span class="std std-ref">Interaction2021</span></a> indichiamo un <em>canale di comunicazione bidirezionale</em>
+tra due end-points, cioè un ente capace di realizzare il concetto asratto di <span class="blue">Interconnessione</span>.</p>
+<p>Il contratto che il livello applicativo fissa in relazione al questo concetto, viene
+formalizzato dalla seguente interfaccia.</p>
+<section id="unibo-basicomm23-interfaces-interaction2021">
+<h3>unibo.basicomm23.interfaces.Interaction2021<a class="headerlink" href="#unibo-basicomm23-interfaces-interaction2021" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">interface</span> <span class="nc">Interaction2021</span>  <span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">request</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">reply</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">receiveMsg</span><span class="p">(</span>  <span class="p">)</span>  <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="p">(</span> <span class="p">)</span>  <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Ogni metodo rappresenta una modalità di invio   (<code class="docutils literal notranslate"><span class="pre">forward/reply/request</span></code>)
+o di ricezione (<code class="docutils literal notranslate"><span class="pre">receiveMsg</span></code>) di informazione.</p>
+</section>
+<section id="approfondimenti">
+<h3>Approfondimenti<a class="headerlink" href="#approfondimenti" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><span class="slide2">Interaction2021</span>. L’insieme degli elementi (astratti e non) che il livello applicativo
+assume di avere a disposizione per inviare e ricevere messaggi
+viene descritto in <a class="reference internal" href="Interaction2021.html#interaction2021"><span class="std std-ref">Interaction2021</span></a> che descrive anche la <a class="reference internal" href="Interaction2021.html#natura-e-struttura-dei-messaggi-applicativi"><span class="std std-ref">Natura e struttura dei messaggi applicativi</span></a>.</p></li>
+<li><p><span class="slide2">unibo.basicomm23</span>. I supporti che realizzano l’idea di <em>Interconnessione</em> con i diversi protocolli
+menzionati in <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-basicomm23-msg-protocoltype"><span class="std std-ref">ProtocolType</span></a> sono realizati e descriiti in
+<a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a>.</p></li>
+</ul>
+<p><span class="slide">Interazioni Appl1 -&gt; robot</span></p>
+</section>
+</section>
+<section id="interazioni-apll1-robot">
+<h2>Interazioni Apll1-&gt;robot<a class="headerlink" href="#interazioni-apll1-robot" title="Permalink to this headline">¶</a></h2>
+<p>La classe <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-supports-vrobothlmoveshttpapache"><span class="std std-ref">unibo.supports.VrobotHLMovesHTTPApache</span></a>
+può essere ridefinita in modo da utilizzare
+un supporto che implementa <a class="reference internal" href="#unibo-basicomm23-interfaces-interaction2021"><span class="std std-ref">unibo.basicomm23.interfaces.Interaction2021</span></a>
+(su <code class="docutils literal notranslate"><span class="pre">HTTP</span></code>).</p>
+<a class="reference internal image-reference" href="_images/Appl1ArchSprint3InteractionSynch.png"><img alt="_images/Appl1ArchSprint3InteractionSynch.png" class="align-center" src="_images/Appl1ArchSprint3InteractionSynch.png" style="width: 75%;" /></a>
+<section id="refactoring-di-vrobothlmoveshttpapache">
+<h3>Refactoring di VrobotHLMovesHTTPApache<a class="headerlink" href="#refactoring-di-vrobothlmoveshttpapache" title="Permalink to this headline">¶</a></h3>
+<p>Si usa  la classe  <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-common-vrobotmsgs"><span class="std std-ref">unibo.common.VrobotMsgs</span></a> defnita in <a class="reference internal" href="Appl1-HTTPSprint1.html#appl1-httpsprint1"><span class="std std-ref">Appl1-HTTPSprint1</span></a>.</p>
+<section id="unibo-supports-vrobothlmovesinteractionsynch">
+<h4>unibo.supports.VrobotHLMovesInteractionSynch<a class="headerlink" href="#unibo-supports-vrobothlmovesinteractionsynch" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span> <span class="kd">public</span> <span class="kd">class</span> <span class="nc">VrobotHLMovesInteractionSynch</span> <span class="kd">implements</span> <span class="n">IVrobotMoves</span><span class="p">{</span>
+ <span class="kd">private</span> <span class="n">Interaction2021</span> <span class="n">commSupport</span>  <span class="p">;</span>
+
+   <span class="kd">public</span> <span class="nf">VrobotHLMovesInteractionSynch</span><span class="p">(</span><span class="n">Interaction2021</span> <span class="n">commSupport</span><span class="p">){</span>
+      <span class="k">this</span><span class="p">.</span><span class="na">commSupport</span> <span class="o">=</span> <span class="n">commSupport</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="nd">@Override</span>
+   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnLeft</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span> <span class="n">commSupport</span><span class="p">.</span><span class="na">request</span><span class="p">(</span><span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">turnleftcmd</span><span class="p">);}</span>
+   <span class="nd">@Override</span>
+   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnRight</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span><span class="n">commSupport</span><span class="p">.</span><span class="na">request</span><span class="p">(</span><span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">turnrightcmd</span><span class="p">);}</span>
+   <span class="nd">@Override</span>
+   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span><span class="kt">int</span> <span class="n">time</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
+      <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">commSupport</span><span class="p">.</span><span class="na">request</span><span class="p">(</span>  <span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">forwardcmd</span><span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;TIME&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">time</span><span class="p">)</span>  <span class="p">);</span>
+      <span class="k">if</span><span class="p">(</span> <span class="n">result</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;collision&quot;</span><span class="p">)</span>  <span class="p">){</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">CollisionException</span><span class="p">(</span>  <span class="p">)</span> <span class="p">;</span> <span class="p">}</span>
+   <span class="p">}</span>
+   <span class="nd">@Override</span>
+   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">backward</span><span class="p">(</span><span class="kt">int</span> <span class="n">time</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
+      <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">commSupport</span><span class="p">.</span><span class="na">request</span><span class="p">(</span>  <span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">backwardcmd</span><span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;TIME&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">time</span><span class="p">)</span>  <span class="p">);</span>
+      <span class="k">if</span><span class="p">(</span> <span class="n">result</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;collision&quot;</span><span class="p">)</span>  <span class="p">){</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">CollisionException</span><span class="p">(</span>  <span class="p">)</span> <span class="p">;</span> <span class="p">}</span>
+   <span class="p">}</span>
+   <span class="nd">@Override</span>
+   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">halt</span><span class="p">(</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span> <span class="n">commSupport</span><span class="p">.</span><span class="na">request</span><span class="p">(</span>  <span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">haltcmd</span>  <span class="p">);</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La classe  <a class="reference internal" href="#unibo-supports-vrobothlmovesinteractionsynch"><span class="std std-ref">VrobotHLMovesInteractionSynch</span></a> realizza
+le mosse di alto livelo del robot usando l’implementazione di
+<a class="reference internal" href="#unibo-basicomm23-interfaces-interaction2021"><span class="std std-ref">unibo.basicomm23.interfaces.Interaction2021</span></a> che riceve nel costruttore.</p>
+<p>Una di tali implementazioni, che realizza interazioni via HTTP, è <a class="reference internal" href="Interaction2021-HTTP-WS.html#httpconnection"><span class="std std-ref">HttpConnection</span></a>.</p>
+<p>In prospettiva, svilupperemo anche una classe
+<span class="xref std std-ref">VrobotHLMovesInteractionAsynch</span> per realizzare
+le mosse di alto livelo del robot  usando il supporto <a class="reference internal" href="Interaction2021-HTTP-WS.html#wsconnection"><span class="std std-ref">WsConnection</span></a> per le interazioni con WEnv.</p>
+<p>E’ quindi opportuno fare riferimento ai DesignPattern per introdurre anche una factory
+con cui costruire l’opportuno oggetto di supporto alla comunicazione
+con il robot che implementa l’intefaccia <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-common-ivrobotmoves"><span class="std std-ref">IVrobotMoves</span></a>
+usando <code class="docutils literal notranslate"><span class="pre">HTTP</span></code> o <code class="docutils literal notranslate"><span class="pre">WS</span></code>.</p>
+<p><span class="slide1">Una Factory di supporti</span></p>
+</section>
+</section>
+<section id="unibo-supports-vrobothlsupportfactory">
+<h3>unibo.supports.VrobotHLSupportFactory<a class="headerlink" href="#unibo-supports-vrobothlsupportfactory" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">VrobotHLSupportFactory</span> <span class="p">{</span>
+   <span class="kd">public</span> <span class="kd">static</span> <span class="n">IVrobotMoves</span> <span class="nf">create</span><span class="p">(</span><span class="n">String</span> <span class="n">hostIp</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">http</span> <span class="p">)</span> <span class="k">return</span> <span class="n">supportForHTTP</span><span class="p">(</span><span class="n">hostIp</span><span class="p">);</span>
+      <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">ws</span> <span class="p">)</span> <span class="k">return</span> <span class="n">supportForWS</span><span class="p">(</span><span class="n">hostIp</span><span class="p">);</span>
+      <span class="k">else</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="s">&quot;VrobotHLSupportFactory protocol not allowed&quot;</span><span class="p">);</span>
+   <span class="p">}</span>
+   <span class="kd">public</span> <span class="kd">static</span> <span class="n">IVrobotMoves</span> <span class="nf">supportForHTTP</span><span class="p">(</span><span class="n">String</span> <span class="n">hostIp</span><span class="p">){</span>
+      <span class="n">Interaction2021</span> <span class="n">connToWEnv</span> <span class="o">=</span> <span class="n">HttpConnection</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">hostIp</span><span class="o">+</span><span class="s">&quot;:8090/api/move&quot;</span><span class="p">);</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="n">VrobotHLMovesInteractionSynch</span><span class="p">(</span> <span class="n">connToWEnv</span>  <span class="p">);</span>
+   <span class="p">}</span>
+   <span class="kd">public</span> <span class="kd">static</span> <span class="n">IVrobotMoves</span> <span class="nf">supportForWS</span><span class="p">(</span><span class="n">String</span> <span class="n">hostIp</span><span class="p">){</span>
+      <span class="n">Interaction2021</span> <span class="n">connToWEnv</span> <span class="o">=</span> <span class="n">WsConnection</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">hostIp</span><span class="o">+</span><span class="s">&quot;:8091&quot;</span><span class="p">);</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="n">VrobotHLMovesInteractionAsynch</span><span class="p">(</span> <span class="n">connToWEnv</span>  <span class="p">);</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="applcore-sprint3">
+<h3>ApplCore Sprint3<a class="headerlink" href="#applcore-sprint3" title="Permalink to this headline">¶</a></h3>
+<p><span class="slide1">Una modifica radicale solo riconfigurando</span></p>
+<p>Per ottenere una nuova versione di <a class="reference internal" href="Appl1-HTTPSprint2.html#appl1core"><span class="std std-ref">Appl1Core</span></a> che sfrutta i nuovi supporti, è sufficiente modificare
+la fase di configurazione.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">Appl1Core</span> <span class="n">extends</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">Observable</span> <span class="n">implements</span> <span class="n">IAppl1Core</span> <span class="p">{</span>
+<span class="n">protected</span> <span class="n">IVrobotMoves</span> <span class="n">vr</span> <span class="p">;</span>
+<span class="o">...</span>
+  <span class="n">public</span> <span class="n">Appl1Core</span><span class="p">(){</span>
+     <span class="n">stopped</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+     <span class="o">//</span><span class="n">configure</span><span class="p">();</span>
+     <span class="n">configureSprint3</span><span class="p">();</span>
+  <span class="p">}</span>
+ <span class="n">protected</span> <span class="n">void</span> <span class="n">configureSprint3</span><span class="p">(){</span>
+     <span class="n">String</span> <span class="n">URL</span>                 <span class="o">=</span> <span class="s2">&quot;localhost:8090/api/move&quot;</span><span class="p">;</span>
+     <span class="o">//</span><span class="n">URL</span> <span class="n">potrebbe</span> <span class="n">essere</span> <span class="n">letto</span> <span class="n">da</span> <span class="n">un</span> <span class="n">file</span> <span class="n">di</span> <span class="n">configurazione</span>
+     <span class="n">Interaction2021</span> <span class="n">httpConn</span>   <span class="o">=</span> <span class="n">HttpConnection</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">URL</span><span class="p">);</span>
+     <span class="n">HTTPCommApache</span> <span class="n">httpSupport</span> <span class="o">=</span> <span class="n">new</span> <span class="n">HTTPCommApache</span><span class="p">(</span>  <span class="n">URL</span> <span class="p">);</span>
+     <span class="n">vr</span> <span class="o">=</span> <span class="n">new</span> <span class="n">VrobotHLMovesInteractionSynch</span><span class="p">(</span> <span class="n">httpConn</span> <span class="p">);</span>
+ <span class="p">}</span>
+   <span class="o">...</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide">Interazioni CmdConsole -&gt; Appl1</span></p>
+</section>
+</section>
+<section id="interazioni-console-appl1">
+<h2>Interazioni Console-Appl1<a class="headerlink" href="#interazioni-console-appl1" title="Permalink to this headline">¶</a></h2>
+<p>Affrontiamo ora le interazioni <span class="remark">CmdConsole –&gt; Appl1</span>, osservando che:</p>
+<ol class="arabic simple">
+<li><p><em>Appl1</em> deve ‘evolvere’ in modo da poter ricevere messaggi: normalmente questo obiettivo implica la introduzione
+di un <span class="blue">server</span>.</p></li>
+<li><p><em>CmdConsole</em> deve operare come un <span class="blue">client</span> nei confronti del server relativo ad <em>Appl1</em>.</p></li>
+</ol>
+<p>Il progetto <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a>  fornisce supporti per entrambe queste esigenze,
+attraverso due ‘enti abilitatori’:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-enablers-enablerasserver"><span class="std std-ref">EnablerAsServer</span></a>  (Su <code class="docutils literal notranslate"><span class="pre">8030</span></code>)</p></li>
+<li><p><a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-enablers-callerasclient"><span class="std std-ref">CallerAsClient</span></a></p></li>
+</ol>
+<section id="enablerasserver">
+<h3>EnablerAsServer<a class="headerlink" href="#enablerasserver" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/Appl1Enabler.png"><img alt="_images/Appl1Enabler.png" src="_images/Appl1Enabler.png" style="width: 100%;" /></a>
+</td>
+<td><ul class="simple">
+<li><p><a class="reference internal" href="Applicazione1-HTTP-Distribuita.html#unibo-appl1-interaction-appl1msghandler"><span class="std std-ref">Appl1MsgHandler</span></a> gestisce i messaggi ricevuti
+da  <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-enablers-enablerasserver"><span class="std std-ref">EnablerAsServer</span></a> invocando i metodi di
+<a class="reference internal" href="#applcore-sprint3"><span class="std std-ref">Appl1Core</span></a>.</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="callerasclient">
+<h3>CallerAsClient<a class="headerlink" href="#callerasclient" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="_images/CallerAsClient.png"><img alt="_images/CallerAsClient.png" src="_images/CallerAsClient.png" style="width: 50%;" /></a>
+</section>
+<section id="cmdconsole">
+<h3>CmdConsole<a class="headerlink" href="#cmdconsole" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p><em>CmdConsole</em> deve diventare un ente attivo che interagisce con un utente umano e che invia comandi ad <code class="docutils literal notranslate"><span class="pre">Appl1</span></code>
+usando un protocollo <code class="docutils literal notranslate"><span class="pre">P</span></code> tra quelli definiti in <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-basicomm23-msg-protocoltype"><span class="std std-ref">ProtocolType</span></a>.</p></li>
+</ol>
+<p>Dopo colloquio con il committente, si è convenuto di usare <code class="docutils literal notranslate"><span class="pre">TCP</span></code>.</p>
+<p>Piano di lavoro:</p>
+<ol class="arabic">
+<li><p>In primo luogo definiamo un simulatore simile a <a class="reference internal" href="Appl1-HTTPSprint2.html#unibo-console-cmdconsolesimulator"><span class="std std-ref">unibo.console.CmdConsoleSimulator</span></a> che denominiamo
+<span class="blue">CmdConsoleRemote</span>, per evidenziare che non opera più con interazioni locali a procedure call</p></li>
+<li><p>Successivamente, definiamo una <a class="reference internal" href="#unibo-console-gui-startstopguiremote"><span class="std std-ref">StartStopGuiRemote</span></a> in Java, che offre ad un utente umano un insieme di pulsanti
+per inviare ad Appl1 i comandi  <code class="docutils literal notranslate"><span class="pre">start/stop/resume</span></code>.</p>
+<p>TODO: Appl1HTTPSprint3CmdConsole</p>
+</li>
+</ol>
+</section>
+<section id="unibo-appl1-interaction-cmdconsoleremote">
+<h3>unibo.appl1.interaction.CmdConsoleRemote<a class="headerlink" href="#unibo-appl1-interaction-cmdconsoleremote" title="Permalink to this headline">¶</a></h3>
+<p><em>CmdConsoleRemote</em> estende l’abilitatore <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-enablers-callerasclient"><span class="std std-ref">CallerAsClient</span></a>
+che stabilsce una <a class="reference internal" href="#unibo-basicomm23-interfaces-interaction2021"><span class="std std-ref">Interconnessione</span></a> con xxx
+usando il <code class="docutils literal notranslate"><span class="pre">protocol</span></code> dato.
+L’uso di <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-utils-commutils"><span class="std std-ref">CommUtils</span></a> e di <a class="reference internal" href="Applicazione1-HTTP-Distribuita.html#unibo-appl1-common-vrobotmsgs"><span class="std std-ref">VrobotMsgs</span></a>
+rende il codice più snello e leggibile.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CmdConsoleRemote</span> <span class="kd">extends</span> <span class="n">CallerAsClient</span> <span class="p">{</span>
+ <span class="kd">public</span> <span class="nf">CmdConsoleRemote</span><span class="p">(</span>
+         <span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">String</span> <span class="n">host</span><span class="p">,</span> <span class="n">String</span> <span class="n">entry</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span><span class="p">)</span> <span class="p">{</span>
+     <span class="kd">super</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">protocol</span><span class="p">);</span> <span class="c1">//Realizza connessione</span>
+     <span class="n">activateSimulation</span><span class="p">();</span>
+ <span class="p">}</span>
+
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">activateSimulation</span><span class="p">(</span>   <span class="p">)</span> <span class="p">{</span>
+      <span class="p">...</span>
+   <span class="n">IApplMessage</span> <span class="n">startMsg</span> <span class="o">=</span>
+      <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildDispatch</span><span class="p">(</span><span class="n">name</span><span class="p">.</span><span class="na">toLowerCase</span><span class="p">(),</span><span class="s">&quot;cmd&quot;</span><span class="p">,</span><span class="s">&quot;start&quot;</span><span class="p">,</span><span class="s">&quot;appl1&quot;</span><span class="p">);</span>
+      <span class="n">CommUtils</span><span class="p">.</span><span class="na">forwardOnInterconn</span><span class="p">(</span><span class="n">getConn</span><span class="p">(),</span><span class="n">startMsg</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+      <span class="p">...</span>
+   <span class="n">IApplMessage</span> <span class="n">stopMsg</span> <span class="o">=</span>
+      <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildDispatch</span><span class="p">(</span><span class="n">name</span><span class="p">.</span><span class="na">toLowerCase</span><span class="p">(),</span><span class="s">&quot;cmd&quot;</span><span class="p">,</span><span class="s">&quot;&#39;&quot;</span><span class="o">+</span><span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">stoprobot</span><span class="o">+</span><span class="s">&quot;&#39;&quot;</span><span class="p">,</span><span class="s">&quot;appl1&quot;</span><span class="p">);</span>
+      <span class="n">CommUtils</span><span class="p">.</span><span class="na">forwardOnInterconn</span><span class="p">(</span> <span class="n">getConn</span><span class="p">(),</span> <span class="n">startMsg</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+      <span class="p">...</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unibo-console-gui-startstopguiremote">
+<h3>unibo.console.gui.StartStopGuiRemote<a class="headerlink" href="#unibo-console-gui-startstopguiremote" title="Permalink to this headline">¶</a></h3>
+<p>La classe <em>StartStopGui</em> realizza una semplice GUI Java, che si presenta all’utente come segue:</p>
+<a class="reference internal image-reference" href="_images/StartStopGui.png"><img alt="_images/StartStopGui.png" src="_images/StartStopGui.png" style="width: 20%;" /></a>
+<p>La classe è defiita come un <code class="docutils literal notranslate"><span class="pre">java.util.Observer</span></code> il cui metodo <code class="docutils literal notranslate"><span class="pre">update</span></code> viene invocato
+dal <code class="docutils literal notranslate"><span class="pre">java.awt.event.ActionListener</span></code> realizzato da <code class="docutils literal notranslate"><span class="pre">ButtonAsGui</span></code> che
+estende <code class="docutils literal notranslate"><span class="pre">java.util.Observable</span></code> e che crea i pulsanti su un <code class="docutils literal notranslate"><span class="pre">java.awt.Frame</span></code>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">StartStopGuiRemote</span> <span class="kd">implements</span>  <span class="n">Observer</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">String</span><span class="o">[]</span> <span class="n">buttonLabels</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">[]</span> <span class="p">{</span><span class="s">&quot;start&quot;</span><span class="p">,</span> <span class="s">&quot;stop&quot;</span><span class="p">,</span> <span class="s">&quot;resume&quot;</span><span class="p">,</span> <span class="s">&quot;exit&quot;</span> <span class="p">};</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="n">destName</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">;</span>
+
+   <span class="kd">public</span> <span class="nf">StartStopGuiRemote</span><span class="p">(</span><span class="n">String</span> <span class="n">destName</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">String</span> <span class="n">port</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">ButtonAsGui</span> <span class="n">concreteButton</span> <span class="o">=</span> <span class="n">ButtonAsGui</span><span class="p">.</span><span class="na">createButtons</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">buttonLabels</span> <span class="p">);</span>
+      <span class="n">concreteButton</span><span class="p">.</span><span class="na">addObserver</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+      <span class="k">this</span><span class="p">.</span><span class="na">destName</span> <span class="o">=</span> <span class="n">destName</span><span class="p">;</span>
+      <span class="p">...</span>
+      <span class="n">conn</span> <span class="o">=</span> <span class="n">ConnectionFactory</span><span class="p">.</span><span class="na">createClientSupport</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span><span class="s">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">);</span>
+   <span class="p">}</span>
+   <span class="nd">@Override</span> <span class="c1">//For Observer</span>
+   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span> <span class="n">Observable</span> <span class="n">o</span> <span class="p">,</span> <span class="n">Object</span> <span class="n">arg</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="n">String</span> <span class="n">move</span> <span class="o">=</span> <span class="n">arg</span><span class="p">.</span><span class="na">toString</span><span class="p">();</span>
+      <span class="p">...</span>
+      <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildDispatch</span><span class="p">(</span><span class="s">&quot;gui&quot;</span><span class="p">,</span> <span class="n">move</span><span class="p">,</span> <span class="n">move</span><span class="p">,</span> <span class="n">destName</span><span class="p">);</span>
+      <span class="n">conn</span><span class="p">.</span><span class="na">forward</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+   <span class="p">}</span>
+   <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span> <span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">new</span> <span class="n">StartStopGui</span><span class="p">(</span> <span class="s">&quot;Appl1GuiRemote&quot;</span><span class="p">,</span>
+         <span class="n">Application1SystemBuilder</span><span class="p">.</span><span class="na">protocol</span><span class="p">,</span> <span class="n">Application1SystemBuilder</span><span class="p">.</span><span class="na">port</span> <span class="p">);</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="appl1-httpsprint3-architettura-finale">
+<h3>Appl1-HTTPSprint3: architettura finale<a class="headerlink" href="#appl1-httpsprint3-architettura-finale" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="_images/Appl1FinalArchitecture.png"><img alt="_images/Appl1FinalArchitecture.png" src="_images/Appl1FinalArchitecture.png" style="width: 80%;" /></a>
+<p><span class="slide">Clean Architecture</span></p>
+<p>Il nostro obiettivo qui, è <span class="blue">riusare</span> il più possibile questo codice (già testato), seguendo il
+principio  della <strong>Clean Architecture</strong>: le nuove funzionalità
+di comunicazione vanno introdotte senza modificare il nucleo centrale dell’applicazione.</p>
+<p>Il progetto <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a> aiuta a raggiungere questo obiettivo.</p>
+<p>Cominciamo con il rivedere le interazioni  <span class="remark">Appl –&gt;  VirtualRobot23</span></p>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Appl1-HTTPSprint3</a><ul>
+<li><a class="reference internal" href="#requisiti-sprint3">Requisiti SPRINT3</a></li>
+<li><a class="reference internal" href="#l-idea-di-interconnessione">L’idea di Interconnessione</a><ul>
+<li><a class="reference internal" href="#unibo-basicomm23-interfaces-interaction2021">unibo.basicomm23.interfaces.Interaction2021</a></li>
+<li><a class="reference internal" href="#approfondimenti">Approfondimenti</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#interazioni-apll1-robot">Interazioni Apll1-&gt;robot</a><ul>
+<li><a class="reference internal" href="#refactoring-di-vrobothlmoveshttpapache">Refactoring di VrobotHLMovesHTTPApache</a><ul>
+<li><a class="reference internal" href="#unibo-supports-vrobothlmovesinteractionsynch">unibo.supports.VrobotHLMovesInteractionSynch</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unibo-supports-vrobothlsupportfactory">unibo.supports.VrobotHLSupportFactory</a></li>
+<li><a class="reference internal" href="#applcore-sprint3">ApplCore Sprint3</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#interazioni-console-appl1">Interazioni Console-Appl1</a><ul>
+<li><a class="reference internal" href="#enablerasserver">EnablerAsServer</a></li>
+<li><a class="reference internal" href="#callerasclient">CallerAsClient</a></li>
+<li><a class="reference internal" href="#cmdconsole">CmdConsole</a></li>
+<li><a class="reference internal" href="#unibo-appl1-interaction-cmdconsoleremote">unibo.appl1.interaction.CmdConsoleRemote</a></li>
+<li><a class="reference internal" href="#unibo-console-gui-startstopguiremote">unibo.console.gui.StartStopGuiRemote</a></li>
+<li><a class="reference internal" href="#appl1-httpsprint3-architettura-finale">Appl1-HTTPSprint3: architettura finale</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Appl1-HTTPSprint3Init.html"
+                          title="previous chapter">Appl1-HTTPSprint3Init</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="AppuntiTecnologie.html"
+                          title="next chapter">Appunti su tecnologie</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Appl1-HTTPSprint3.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Appl1-HTTPSprint3Init.html" title="Appl1-HTTPSprint3Init"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appl1-HTTPSprint3</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

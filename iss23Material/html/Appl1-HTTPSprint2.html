@@ -386,6 +386,7 @@ Occorre garantire che sia rispettato il seguente principio
 <ul class="simple">
 <li><p><span class="slide2">Un osservatore non deve influenzare l’osservato</span></p></li>
 </ul>
+<p><span class="slide1">A) Rendiamo osservabile il POJO applicativo</span></p>
 </section>
 <section id="appl1core-osservabile">
 <h3>Appl1Core osservabile<a class="headerlink" href="#appl1core-osservabile" title="Permalink to this headline">¶</a></h3>
@@ -456,7 +457,12 @@ opportune notifiche in un metodo che controlla questa condizione:</p>
 <section id="robotmustbeathome">
 <h4>robotMustBeAtHome<a class="headerlink" href="#robotmustbeathome" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">private</span> <span class="n">void</span> <span class="n">robotMustBeAtHome</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span><span class="p">{</span>
-    <span class="k">if</span><span class="p">(</span> <span class="n">checkRobotAtHome</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="p">)</span> <span class="n">updateObservers</span><span class="p">(</span><span class="s2">&quot;robot-athomebegin&quot;</span><span class="p">);</span>
+    <span class="n">boolean</span> <span class="n">b</span> <span class="o">=</span> <span class="n">checkRobotAtHome</span><span class="p">(</span> <span class="p">);</span>
+    <span class="n">CommUtils</span><span class="o">.</span><span class="n">outblue</span><span class="p">(</span><span class="s2">&quot;robotMustBeAtHome &quot;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">b</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">b</span> <span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;START&quot;</span><span class="p">)</span> <span class="p">)</span> <span class="n">updateObservers</span><span class="p">(</span><span class="s2">&quot;robot-athomebegin&quot;</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;END&quot;</span><span class="p">)</span>   <span class="p">)</span> <span class="n">updateObservers</span><span class="p">(</span><span class="s2">&quot;robot-athomeend&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
     <span class="k">else</span> <span class="n">throw</span> <span class="n">new</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;START: Robot must be at HOME&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 
@@ -640,7 +646,14 @@ fornendo anche un metodo che blocca un chiamante fino a che l’applicazione giu
 </section>
 <section id="metodi-utili-per-osservatori-di-path">
 <h4>Metodi utili per osservatori di path<a class="headerlink" href="#metodi-utili-per-osservatori-di-path" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    public synchronized String getPath(){
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    //Restitusce il valore corrente del path
+    public String getCurrentPath(){
+        return getPathAsCompactString();
+    }
+
+
+    //Blocca il chiamante se la computazione è in corso
+    public synchronized String getPath(){
         while( ! applIsTerminated ) {
             try {
                 wait();
@@ -648,6 +661,7 @@ fornendo anche un metodo che blocca un chiamante fino a che l’applicazione giu
         }
          return getPathAsCompactString();
     }
+
 
     private String getPathAsCompactString(){
         String hflat = moveHistory.toString()
@@ -1022,7 +1036,7 @@ da una classe  <code class="docutils literal notranslate"><span class="pre">unib
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Passiamo a <a class="reference internal" href="Appl1-HTTPSprint3.html#appl1-httpsprint3"><span class="std std-ref">Appl1-HTTPSprint3</span></a> per realizzare un sistema distribuito, con <em>CmdConsole remota</em>.</p>
+<p>Passiamo a <a class="reference internal" href="Appl1-HTTPSprint3Init.html#appl1-httpsprint3init"><span class="std std-ref">Appl1-HTTPSprint3Init</span></a> per realizzare un sistema distribuito, con <em>CmdConsole remota</em>.</p>
 </section>
 </section>
 </section>

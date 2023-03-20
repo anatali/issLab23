@@ -71,6 +71,9 @@ public class RoomModel implements IRoomModel {
         return builder.toString();
     }
 
+    public String toStringFlat(){
+        return toString().replace("\n","@");
+    }
     @Override
     public void put(int x, int y, IBox box) {
         try {

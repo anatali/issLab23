@@ -84,8 +84,8 @@ public class TestAppl1HTTPSprint2 {
     public void testStop(){
         CommUtils.outmagenta("testStop");
             startTheApplication();
-            for( int i=1; i<=3; i++ ) {
-                CommUtils.delay(3000);
+            for( int i=1; i<=4; i++ ) {
+                CommUtils.delay(5000);
                 appl.stop();
                 checkHistoryAfterStop();
                 CommUtils.delay(1500);

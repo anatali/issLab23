@@ -78,6 +78,7 @@ public class Appl1ObserverForpath extends ApplAbstractObserver {
                 && splitted[1].length()==splitted[3].length();
         //the JVM disables assertion validation by default. Insert VM option -enableassertions
         //assert( boundaryDone );
+        CommUtils.outmagenta("Appl1ObserverForpath: evalBoundaryDone="+ boundaryDone);
         return boundaryDone;
     }
 }

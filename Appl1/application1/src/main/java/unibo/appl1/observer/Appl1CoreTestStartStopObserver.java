@@ -28,6 +28,7 @@ private boolean resumed = true;
 
     @Override
     public void update(String msg) {
+        //CommUtils.outgreen("         Appl1CoreTestStartStopObserver | " + msg  );
         if( moveCmds.contains(msg)){
             CommUtils.outyellow("         Appl1CoreTestStartStopObserver | " + msg  );
             moveHistory.add(msg);
@@ -56,7 +57,6 @@ private boolean resumed = true;
             CommUtils.outmagenta("         Appl1CoreTestStartStopObserver | wait for stop");
             try {
                 wait();
-                //CommUtils.delay(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -67,7 +67,6 @@ private boolean resumed = true;
     public synchronized void waitUntilResume(){
         while( ! (resumed )  ){
             CommUtils.outmagenta("         Appl1CoreTestStartStopObserver | wait for resume");
-            //CommUtils.delay(200);
             try {
                 wait();
             } catch (InterruptedException e) {

@@ -5,9 +5,9 @@ import unibo.appl1.common.IVrobotMoves;
 import unibo.appl1.observer.Appl1ObserverForRoomModel;
 import unibo.appl1.observer.Appl1ObserverForpath;
 import unibo.basicomm23.http.HTTPCommApache;
+import unibo.basicomm23.interfaces.IObserver;
 import unibo.basicomm23.utils.CommUtils;
 import unibo.supports.VrobotHLMovesHTTPApache;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -22,18 +22,14 @@ public class Appl1CoreSprint2 extends java.util.Observable implements IAppl1Core
     protected IVrobotMoves vr ;
     protected String vitualRobotIp = "";
 
-    public Appl1CoreSprint2() throws Exception{
-        //stopped = false;
-        //configure();
+    public Appl1CoreSprint2() { }
+
+    @Override
+    public void addObserver(IObserver o) {
+        super.addObserver(o);
     }
+
     protected void configure() throws Exception{
-        /*
-        String URL = "localhost:8090/api/move";
-        //URL potrebbe essere letto da un file di configurazione
-        HTTPCommApache httpSupport = new HTTPCommApache(  URL );
-        vr         = new VrobotHLMovesHTTPApache( httpSupport );
-        obsForpath = new Appl1ObserverForpath();
-        addObserver(  obsForpath );*/
         stopped    = false;
         readConfigFromFile();
     }
@@ -54,7 +50,7 @@ public class Appl1CoreSprint2 extends java.util.Observable implements IAppl1Core
                 + " pathobs=" + pathobs + " robotstateobs="+robotstateobs);
 
         if( vrconn.equals("ws")) configureUsingWS();
-        else if( vrconn.equals("http"))  configureUsingHTTP();
+        else if( vrconn.equals("http"))  configureUsingHTTP(vitualRobotIp);
 
         stepTime = Integer.parseInt( cj.get("steptime").toString() ) ;
         CommUtils.outblue("Appl1Core stepTime=" + stepTime);
@@ -72,9 +68,8 @@ public class Appl1CoreSprint2 extends java.util.Observable implements IAppl1Core
         }else obsForroom = null;
     }
 
-    protected void configureUsingHTTP(){
-        String URL = "localhost:8090/api/move";
-        //URL potrebbe essere letto da un file di configurazione
+    protected void configureUsingHTTP(String vitualRobotIp){
+        String URL = vitualRobotIp+":8090/api/move";
         HTTPCommApache httpSupport = new HTTPCommApache(  URL );
         vr         = new VrobotHLMovesHTTPApache( httpSupport );
     }
@@ -107,7 +102,7 @@ public class Appl1CoreSprint2 extends java.util.Observable implements IAppl1Core
                 waitResume();
             }
             updateObservers("robot-moving");
-            stepOk =  vr.step(370);
+            stepOk =  vr.step(stepTime);
             if( ! stepOk ) updateObservers("robot-collision");
             else updateObservers("robot-stepdone");
             //CommUtils.outgreen( "Application1Core stopped=" + stopped);
@@ -129,13 +124,19 @@ public class Appl1CoreSprint2 extends java.util.Observable implements IAppl1Core
     }
 
     public String getCurrentPath(){
-        return obsForpath.getCurrentPath();
+        if( obsForpath != null ) return obsForpath.getCurrentPath();
+        else return "no path";
     }
+
+
+
     public String getPath(){
-        return obsForpath.getPath();
+        if( obsForpath != null ) return obsForpath.getPath();
+        else return "no path";
     }
     public boolean evalBoundaryDone(){
-        return obsForpath.evalBoundaryDone();
+        if( obsForpath != null ) return obsForpath.evalBoundaryDone();
+        else return true;
     }
 
     @Override
@@ -157,8 +158,8 @@ public class Appl1CoreSprint2 extends java.util.Observable implements IAppl1Core
     public synchronized void stop(  ) {
         try {
             stopped = true;
-            //vr.halt(); //NO: produce errori in quanto 'interrompe' mosse
             CommUtils.outblue( "Appl1CoreSprint2 | stopped");
+            notifyAll();
         } catch (Exception e) {
             CommUtils.outred("Appl1CoreSprint2 | halt error:" + e.getMessage());
         }
@@ -180,12 +181,14 @@ public class Appl1CoreSprint2 extends java.util.Observable implements IAppl1Core
         boolean b = checkRobotAtHome( );
         //CommUtils.outblue("robotMustBeAtHome " + msg + " " + b);
         if( msg.equals("START") ){
+            /*
             while(  ! b ){
                 CommUtils.outblue("Please put robot at HOME");
                 CommUtils.delay(3000);
                 b = checkRobotAtHome( );
-            }
-            updateObservers("robot-athomebegin");
+            }*/
+            if( !b ) throw new Exception("Robot NOT in HOME");
+            else updateObservers("robot-athomebegin");
         }
         if( msg.equals("END")   ) {
             if( b ) updateObservers("robot-athomeend");

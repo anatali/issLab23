@@ -63,7 +63,7 @@ introducendo</p>
 <ul class="simple">
 <li><p>realizzi una fase <span class="remark">reattiva</span>, in cui
 il robot deve poter gestire i comandi <em>stop/resume</em> mentre sta percorrendo il perimetro della stanza.</p></li>
-<li><p>sia predisposta ad operare in seguito a comandi inviati da <a class="reference internal" href="Appl1-HTTPSprint3.html#cmdconsole"><span class="std std-ref">CmdConsole</span></a>.</p></li>
+<li><p>sia predisposta ad operare in seguito a comandi inviati da <a class="reference internal" href="Applicazione1-HTTP-Distribuita.html#cmdconsole"><span class="std std-ref">CmdConsole</span></a>.</p></li>
 </ul>
 <p>In questo Sprint:</p>
 <ul class="simple">
@@ -216,12 +216,12 @@ resettata a <code class="docutils literal notranslate"><span class="pre">false</
 </pre></div>
 </div>
 <p>Per testare la correttezza della logica applicativa in un <span class="blue">ambiente locale</span>, senza le complicazioni della distribuzione,
-introduciamo un simulatore della <a class="reference internal" href="Appl1-HTTPSprint3.html#cmdconsole"><span class="std std-ref">CmdConsole</span></a>, che interagisce direttamente con il POJO <a class="reference internal" href="#appl1core"><span class="std std-ref">Appl1Core</span></a>,
+introduciamo un simulatore della <a class="reference internal" href="Applicazione1-HTTP-Distribuita.html#cmdconsole"><span class="std std-ref">CmdConsole</span></a>, che interagisce direttamente con il POJO <a class="reference internal" href="#appl1core"><span class="std std-ref">Appl1Core</span></a>,
 invocandone i metodi <a class="reference internal" href="#unibo-appl1-common-iappl1core"><span class="std std-ref">IAppl1Core</span></a>.</p>
 </section>
 <section id="unibo-console-cmdconsolesimulator">
 <h3>unibo.console.CmdConsoleSimulator<a class="headerlink" href="#unibo-console-cmdconsolesimulator" title="Permalink to this headline">¶</a></h3>
-<p>Un semplice simulatore della <a class="reference internal" href="Appl1-HTTPSprint3.html#cmdconsole"><span class="std std-ref">CmdConsole</span></a> crea un processo per inviare a <a class="reference internal" href="#appl1core"><span class="std std-ref">Appl1Core</span></a> una sequenza di comandi
+<p>Un semplice simulatore della <a class="reference internal" href="Applicazione1-HTTP-Distribuita.html#cmdconsole"><span class="std std-ref">CmdConsole</span></a> crea un processo per inviare a <a class="reference internal" href="#appl1core"><span class="std std-ref">Appl1Core</span></a> una sequenza di comandi
 <code class="docutils literal notranslate"><span class="pre">stop/resume</span></code> e poi invoca il metodo <code class="docutils literal notranslate"><span class="pre">start</span></code> del POJO applicativo.</p>
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CmdConsoleSimulator</span> <span class="p">{</span>
 <span class="kd">private</span>  <span class="n">Appl1Core</span> <span class="n">appl</span><span class="p">;</span>
@@ -1036,7 +1036,140 @@ da una classe  <code class="docutils literal notranslate"><span class="pre">unib
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Passiamo a <a class="reference internal" href="Appl1-HTTPSprint3Init.html#appl1-httpsprint3init"><span class="std std-ref">Appl1-HTTPSprint3Init</span></a> per realizzare un sistema distribuito, con <em>CmdConsole remota</em>.</p>
+<p><span class="slide1">——————————————————–</span></p>
+<p><span class="slide">Refactoring verso il deployoment</span></p>
+</section>
+</section>
+<section id="verso-una-migliore-user-experience">
+<h2>Verso una migliore User Experience<a class="headerlink" href="#verso-una-migliore-user-experience" title="Permalink to this headline">¶</a></h2>
+<p>Per rendere il sistema più agevole da usare da parte dell’utente finale, introduciamo alcune modifiche.</p>
+<p>Il contratto del core applicativo impone che siano disponibili nuovi metodi per</p>
+<ul class="simple">
+<li><p>ottenere valori di stato applicativi (<code class="docutils literal notranslate"><span class="pre">isRunning</span></code> e <code class="docutils literal notranslate"><span class="pre">getCurrentPath</span></code>)</p></li>
+<li><p>aggiungere osservatori alla risorsa-POJO osservabile  (<code class="docutils literal notranslate"><span class="pre">addObserver</span></code>)</p></li>
+</ul>
+<section id="unibo-appl1-common-iappl1core-refactored">
+<h3>unibo.appl1.common.IAppl1Core refactored<a class="headerlink" href="#unibo-appl1-common-iappl1core-refactored" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">interface</span> <span class="n">IAppl1Core</span> <span class="p">{</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">start</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span><span class="p">;</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">stop</span><span class="p">();</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">resume</span><span class="p">();</span>
+
+    <span class="n">public</span> <span class="n">boolean</span> <span class="n">isRunning</span><span class="p">();</span>
+    <span class="n">public</span> <span class="n">String</span> <span class="n">getCurrentPath</span><span class="p">();</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">addObserver</span><span class="p">(</span><span class="n">IObserver</span> <span class="n">o</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>La CmdConsole offre ora un pulsante per visualizzare il path corrente.</p></li>
+</ul>
+</section>
+<section id="unibo-console-gui-appl1httpsprint2cmdconsole-refactored">
+<h3>unibo.console.gui.Appl1HttpSprint2CmdConsole refactored<a class="headerlink" href="#unibo-console-gui-appl1httpsprint2cmdconsole-refactored" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="_images/CmdConsole.png" src="_images/CmdConsole.png" />
+</td>
+<td><p>getPath visualizza il path corrente</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="configurazione-definita-in-un-file">
+<h3>Configurazione definita in un file<a class="headerlink" href="#configurazione-definita-in-un-file" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>La configurazione dell’applicazione viene fissata leggendo informazioni da un file di nome <code class="docutils literal notranslate"><span class="pre">sprint3Config.json</span></code></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;virtualrobotip&quot;</span><span class="p">:</span><span class="s2">&quot;192.168.1.132&quot;</span><span class="p">,</span> <span class="s2">&quot;virtualrobotconn&quot;</span><span class="p">:</span><span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="s2">&quot;steptime&quot;</span><span class="p">:</span><span class="s2">&quot;370&quot;</span><span class="p">,</span> <span class="s2">&quot;pathobs&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span> <span class="s2">&quot;robotstateobs&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>I parametri di configurazione definiscono:</p>
+<ul class="simple">
+<li><p><span class="blue">virtualrobotip</span>: l’indirizzo del nodo su cui opera il virtual robot</p></li>
+<li><p><span class="blue">virtualrobotconn</span>: il tipo di connessione con il virtual robot (<code class="docutils literal notranslate"><span class="pre">http</span></code> o <code class="docutils literal notranslate"><span class="pre">ws</span></code>)</p></li>
+<li><p><span class="blue">steptime</span>: la lunghezza dello step in msec</p></li>
+<li><p><span class="blue">pathobs</span>: la presenza dell’observer  per il path</p></li>
+<li><p><span class="blue">pathobs</span>: la presenza dell’observer  per lo stato del robot</p></li>
+</ul>
+<p><span class="slide1">Configurazione dinamica</span></p>
+<p>Il metodo di configurazione viene ora invocato dal <code class="docutils literal notranslate"><span class="pre">start</span></code> per permettere la modifica di configurazione tra
+una attivazione e l’altra.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>public class Appl1CoreSprint2 extends java.util.Observable implements IAppl1Core {
+ protected boolean started    = false;
+ protected boolean stopped    = false;
+ protected boolean isRunning  = false;
+ protected int stepTime       = 370;
+ private Appl1ObserverForpath obsForpath;
+ protected Appl1ObserverForRoomModel obsForroom;
+ protected IVrobotMoves vr ;
+ protected String vitualRobotIp = &quot;&quot;;
+
+ public Appl1Core(){}  //Ora vuoto
+
+ protected void configure() throws Exception{
+     stopped    = false;
+     readConfigFromFile();
+ }
+
+ @Override
+ public void start(   ) throws Exception {
+     if( ! started || ! isRunning){
+         started   = true;
+         stopped   = false;
+         configure();
+         walkAtBoundary();
+      }else CommUtils.outred(&quot;Appl1Core |  already started&quot;);
+ }
+</pre></div>
+</div>
+</section>
+<section id="il-metodo-readconfigfromfile">
+<h3>Il metodo readConfigFromFile<a class="headerlink" href="#il-metodo-readconfigfromfile" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Questo metodo iniza leggendo il file di configurazione, da cui ricava i valori dei parametri di configurazione:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">readConfigFromFile</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span><span class="p">{</span>
+    <span class="n">File</span> <span class="n">cfgfile</span>          <span class="o">=</span> <span class="n">new</span> <span class="n">File</span><span class="p">(</span><span class="s2">&quot;sprint3Config.json&quot;</span><span class="p">);</span>
+    <span class="n">BufferedReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">new</span> <span class="n">BufferedReader</span><span class="p">(</span><span class="n">new</span> <span class="n">FileReader</span><span class="p">(</span><span class="n">cfgfile</span><span class="p">));</span>
+    <span class="n">String</span> <span class="n">currentLine</span>    <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">readLine</span><span class="p">();</span>
+
+    <span class="n">vitualRobotIp</span>         <span class="o">=</span> <span class="n">cj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;virtualrobotip&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+    <span class="n">String</span> <span class="n">vrconn</span>         <span class="o">=</span> <span class="n">cj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;virtualrobotconn&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+    <span class="n">String</span> <span class="n">pathobs</span>        <span class="o">=</span> <span class="n">cj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pathobs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+    <span class="n">String</span> <span class="n">robotstateobs</span>  <span class="o">=</span> <span class="n">cj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;robotstateobs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+
+    <span class="n">stepTime</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="n">parseInt</span><span class="p">(</span> <span class="n">cj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;steptime&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">()</span> <span class="p">)</span> <span class="p">;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Poi stabilisce la connessione con il robot, usando <code class="docutils literal notranslate"><span class="pre">HTTP</span></code> o (in futuro) <code class="docutils literal notranslate"><span class="pre">WS</span></code>.</p></li>
+</ol>
+<ol class="arabic simple" start="3">
+<li><p>Infine crea gli observer.</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span> <span class="n">pathobs</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">)</span>   <span class="p">){</span>
+     <span class="k">if</span><span class="p">(</span> <span class="n">obsForpath</span> <span class="o">==</span> <span class="n">null</span> <span class="p">)</span> <span class="p">{</span>
+         <span class="n">obsForpath</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Appl1ObserverForpath</span><span class="p">();</span>
+         <span class="n">addObserver</span><span class="p">(</span><span class="n">obsForpath</span><span class="p">);</span>
+     <span class="p">}</span>
+ <span class="p">}</span><span class="k">else</span> <span class="n">obsForpath</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+
+ <span class="k">if</span><span class="p">(</span> <span class="n">robotstateobs</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">)</span> <span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span>   <span class="n">obsForroom</span> <span class="o">==</span> <span class="n">null</span> <span class="p">)</span> <span class="p">{</span>
+         <span class="n">obsForroom</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Appl1ObserverForRoomModel</span><span class="p">();</span>
+         <span class="n">addObserver</span><span class="p">(</span><span class="n">obsForroom</span><span class="p">);</span>
+     <span class="p">}</span>
+ <span class="p">}</span><span class="k">else</span> <span class="n">obsForroom</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Passiamo ora a <a class="reference internal" href="Appl1-HTTPSprint3Init.html#appl1-httpsprint3init"><span class="std std-ref">Appl1-HTTPSprint3Init</span></a> per realizzare un sistema distribuito, con <em>CmdConsole remota</em>.</p>
 </section>
 </section>
 </section>
@@ -1119,6 +1252,13 @@ da una classe  <code class="docutils literal notranslate"><span class="pre">unib
 <li><a class="reference internal" href="#modellazione-della-posizione-del-robot">Modellazione della posizione del robot</a><ul>
 <li><a class="reference internal" href="#unibo-appl1-common-irobotstate">unibo.appl1.common.IRobotState</a></li>
 <li><a class="reference internal" href="#unibo-appl1-observerappl1observerforroommodel">unibo.appl1.observerAppl1ObserverForRoomModel</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#verso-una-migliore-user-experience">Verso una migliore User Experience</a><ul>
+<li><a class="reference internal" href="#unibo-appl1-common-iappl1core-refactored">unibo.appl1.common.IAppl1Core refactored</a></li>
+<li><a class="reference internal" href="#unibo-console-gui-appl1httpsprint2cmdconsole-refactored">unibo.console.gui.Appl1HttpSprint2CmdConsole refactored</a></li>
+<li><a class="reference internal" href="#configurazione-definita-in-un-file">Configurazione definita in un file</a></li>
+<li><a class="reference internal" href="#il-metodo-readconfigfromfile">Il metodo readConfigFromFile</a></li>
 </ul>
 </li>
 </ul>

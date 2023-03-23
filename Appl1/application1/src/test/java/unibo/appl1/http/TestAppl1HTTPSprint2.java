@@ -1,12 +1,9 @@
 package unibo.appl1.http;
-
 import org.junit.Before;
 import org.junit.Test;
 import unibo.appl1.observer.Appl1CoreTestStartStopObserver;
 import unibo.basicomm23.utils.CommUtils;
-
 import java.util.Vector;
-
 import static org.junit.Assert.fail;
 
 

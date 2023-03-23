@@ -25,6 +25,7 @@ private boolean started        = false;
 			switch( move ){
 				case "start"   : {  if( started ) return;
 									appl = new Appl1CoreSprint2( );
+									started = true;
 				                    new Thread(){  //RUN THE PROACTIVE PART
 				                   	public void run() {
 										try {
@@ -36,8 +37,8 @@ private boolean started        = false;
 									}
 								   }.start();
 				                   break;}
-				case "stop"    : {appl.stop();break;}
-				case "resume"  : {appl.resume();break;}
+				case "stop"    : { if( appl != null ) appl.stop();break;}
+				case "resume"  : { if( appl != null ) appl.resume();break;}
 				case "getpath"    : {
 				                     if( appl != null ){
 					                    if( ! appl.isRunning() ) {

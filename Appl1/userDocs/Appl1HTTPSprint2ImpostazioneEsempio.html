@@ -1,0 +1,355 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+
+    color: #990000;
+
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+    margin-left:  30px;
+    margin-right: 30px;
+    font-size: 21px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+
+<head>
+
+<title>CognomeNomeApplication1</title></head>
+
+<body>
+<div id="top">
+<h1>LABORATORIO DI INGEGNERIA DEI SISTEMI SOFTWARE <font size="5"></font> </h1>
+</div>
+
+<div class="body">
+<h2>Introduction</h2>
+    Questo è lo Sprint2 del progetto BoundaryWalk con HTTP
+    <br/><br/>
+    Lo Sprint1 ha prodotto:
+
+    <li>un programma che realizza il core applicativo
+        <a href="../application1/src/main/java/unibo/appl1/http/Appl1HTTPSprint1.java" target="sprint1">unibo.http.Appl1HTTPSprint1</a> </li>
+    <li>un test automatizzato (non soddisfacente) per il core applicativo
+        <a href="../application1/src/test/java/unibo/appl1/http/TestAppl1HTTPSprint1.java" target="sprint1">unibo.http.Appl1HTTPSprint1</a> </li>
+
+    </li>
+
+    Il sistema costruito si riduce a un main program che usa un supporto per le comunicazioni: <br/>
+<center>
+    <img src="./img/Appl1HTTPAfterSprint1Arch.png" alt="myphotot" width="40%" height="40%">
+</center>
+
+
+    <h2>Requirements (TESTO ORIGINALE)</h2>
+    <div class="req">
+    Scrivere un programma Java che possa inviare al
+    <a href="../../iss23Material/html/VirtualRobot23.html" target="sprint1">VirtualRobot23</a>
+    (attraverso una Console remota):
+
+    <li>un comando start per attivare il VirtualRobot in modo che percorra il bordo perimetrale
+        della stanza rappresentata ne
+    <a href="../../iss23Material/html/VirtualRobot23.html#la-scena-di-wenv" target="sprint1">La scena di WEnv</a>
+    </li>
+    <li>un comando stop per bloccare l’azione del VirtualRobot.</li>
+    <li>un comando di resume per riattivare l’azione del VirtualRobot.</li>
+    </div>
+<h2>Requirement analysis</h2>
+
+<li>La logica applicativa  deve poter operare in seguito a comandi inviati da CmdConsole remota.</li>
+<li>La logica applicativa non deve partire in modo autonomo, ma deve essere attivata dal comando <tt>start</tt>.</li>
+<div class="remark">
+    <li><bc>KEY POINT-Req1</bc> Il comando di <tt>stop</tt> deve poter essere gestito dalla la logica applicativa
+    (attualmente proattiva) mentre sta muovendo il robot</li>
+
+    <li><bc>KEY POINT-Req2</bc> Non sono previste più console</li>
+    <li><bc>KEY POINT-Req3</bc> Non ci sono requisiti sulla sicurezza </li>
+</div>
+<h2>Problem analysis</h2>
+ <ul>
+     <li>La console remota non fa parte della logica applicativa, ma ne provoca l'esecuzione di
+         azioni quali <tt>star/stop/resume</tt>.
+         <div class="remark">
+         <bc>KEY POINT-AP1</bc> Viene naturale modellare la logica applicativa come un POJO
+         che realizza l'interfaccia
+         <pre>
+             interface IAppl1Core {
+                public void start() throws Exception;
+                public void stop();
+                public void resume();
+             }</pre>
+         </div>
+     </li>
+     <li>Il metodo <tt>start</tt> innesca l'azione proattiva che induce il robot a muoversi lungo il perimetro</li>
+     <li>Il metodo <tt>stop</tt> può essere visto come una interruzione della azione proattiva</li>
+     <li>Il metodo <tt>resume</tt> può essere considerato analogo a una <b>return from interrupt</b> che
+     induce l'applicazione a proseguire dal punto in cui era stata interrotta.</li>
+     <li>Con riferimento al codice sviluppato nello Sprint1, il punto significativo in cui l'applicazione
+         può subire lo  <tt>stop</tt> è il durante l'esecuzione di
+         <i>walkAheadUntilCollision</i> oppure di <i>walkByStepping</i></li>
+
+<div class="remark">
+    <li> <bc>KEY POINT-AP2</bc> Muovere il robot per passi, come fa <i>walkByStepping</i>, suggerisce che lo <tt>stop</tt> (l'interrupt)
+    <ks>possa essere gestito tra uno <b>step</b> e l'altro</ks>.
+        Più difficile pensare di rendere interrompibile <i>walkAheadUntilCollision</i>. </li>
+</div>
+     <li>  Realizzare una <i>console remota</i> si presenta <ks>un problema nel problema</ks>, in quanto implica il passaggio concettuale
+        da sistemi ad oggetti che interagiscono a procedre-call a sistemi ad 'enti attivi' che interagiscono a messaggi
+         attraverso la rete.</li>
+<div class="remark">
+     <li> <bc>KEY POINT-AP3</bc>
+         In questo sprint, <ks>al fine di realizzare un protototipo in tempi brevi</ks> ,
+         si ritiene opportuno  introdurre la console come POJO locale,
+         riservando lo sviluppo della <i>console remota</i>
+         allo Sprint3.
+     </li>
+</div>
+     <li>Il main program dello Sprint2 deve essere visto come un
+         <ks>configuratore del sistema</ks>. </li>
+ </ul>
+
+
+
+    <h3>Architettura logica</h3>
+    <center>
+    <img src="./img/Appl1HTTPSprint2Arch.png" alt="myphotot" width="60%" height="60%">
+    </center>
+
+    <li>La figura non mostra il main program che funge da configuratore.</li>
+    <li>L'applicazione viene eseguita nel thread della CmdConsole locale</li>
+
+<h3>Piano di lavoro</h3>
+
+    <ol>
+        <li>Realizzazione di una classe <kc>Appl1Core</kc> che implementa <kc>IAppl1Core</kc>:
+            <ks>WORKTIME: 4 man-hour</ks>
+        </li>
+
+        <li>Realizzazione <kc>del sottoprogetto CmdConsole locale</kc>:
+            <ks>WORKTIME : 1 man-day </ks>
+        </li>
+    </ol>
+
+
+
+<h2>Test plans</h2>
+
+    <li> <bc>KEY POINT-TP1</bc>. <kc>Appl1Core</kc> viene considerata <kc>osservabile</kc> per
+        delegare a qualche observer il compito di effettuare controlli di correttezza a fronte
+        delle informazioni emesse da <kc>Appl1Core</kc>.</li>
+    <li><bc>KEY POINT-TP2</bc>. L'insieme di informazioni emesse da <kc>Appl1Core</kc>
+        (linguaggio <i>emittedInfo</i>) per poter costruire il path del robot è il seguente:
+            <pre>
+robot-stepdone : il robot ha effettuato uno step con successo
+robot-turnLeft : il robot ha effettuato una rotazione a sinistra
+robot-collision : il robot ha incontrato un ostacolo (durante uno step)
+robot-athomebegin : il robot è in HOME all’inizio dell’applicazione
+robot-athomeend : il robot è in HOME al termine dell’applicazione
+            </pre>
+    </li>
+
+<h2>Project</h2>
+
+
+
+<h2>Testing</h2>
+
+
+<h2>Deployment</h2>
+
+
+<h2>Maintenance</h2>
+
+<!-- USEFUL
+<table style="width:100%" border="1">
+<tr>
+<td style="width:50%">
+</td>
+<td></td>
+</tr>
+</table>
+-->
+
+<br/><br/>
+</div>
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:left;color:white">
+By studentName email: student@studio.unibo.it
+<img src="./img/emiglio.png" alt="myphotot" width="20%" height="20%">
+</div>
+</body>
+</html>

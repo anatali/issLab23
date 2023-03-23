@@ -228,7 +228,12 @@ div.imagedesc{
     <li>un comando stop per bloccare l’azione del VirtualRobot.</li>
     <li>un comando di resume per riattivare l’azione del VirtualRobot.</li>
     </div>
-<h2>Requirement analysis</h2>
+
+    <div class="remark">
+    <bc>Goal dello Sprint2</bc>: comandi start/stop/resume e console
+    </div>
+
+    <h2>Requirement analysis</h2>
 
 <li>La logica applicativa  deve poter operare in seguito a comandi inviati da CmdConsole remota.</li>
 <li>La logica applicativa non deve partire in modo autonomo, ma deve essere attivata dal comando <tt>start</tt>.</li>
@@ -239,6 +244,8 @@ div.imagedesc{
     <li><bc>KEY POINT-Req2</bc> Non sono previste più console</li>
     <li><bc>KEY POINT-Req3</bc> Non ci sono requisiti sulla sicurezza </li>
 </div>
+
+
 <h2>Problem analysis</h2>
  <ul>
      <li>La console remota non fa parte della logica applicativa, ma ne provoca l'esecuzione di

@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Interaction &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Appunti su tecnologie" href="AppuntiTecnologie.html" />
+    <link rel="prev" title="Appl1-HTTPSprint3" href="Appl1-HTTPSprint3.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Appl1-HTTPSprint3.html" title="Appl1-HTTPSprint3"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Interaction</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="interaction">
+<h1>Interaction<a class="headerlink" href="#interaction" title="Permalink to this headline">¶</a></h1>
+<p>Protocolli punto-a-punto come <code class="docutils literal notranslate"><span class="pre">TCP,</span> <span class="pre">HTTP,</span> <span class="pre">CoAP</span></code>, etc.
+sono in grado di stabilire una <span class="blue">connessione</span> stabile sulla quale inviare e ricevere messaggi.
+Il protocollo <code class="docutils literal notranslate"><span class="pre">UDP</span></code> non stabilisce una connessione, ma può comunque essere usato per inviare messaggi
+e ricevere risposte.</p>
+<section id="interconnessione">
+<h2>Interconnessione<a class="headerlink" href="#interconnessione" title="Permalink to this headline">¶</a></h2>
+<p>Nel seguito, useremo il termine <span class="blue">Interconnessione</span> nel senso <strong>astratto</strong> di
+<em>canale di comunicazione bidirezionale</em>
+tra due end-points, realizzato  da un oggetto che implementa la seguente interfaccia
+(definita nel progetto <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a>):</p>
+<section id="interaction-interface">
+<h3>Interaction interface<a class="headerlink" href="#interaction-interface" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">interface</span> <span class="nc">Interaction</span>  <span class="p">{</span>         <span class="c1">//In unibo.basicomm23.interfaces</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span> <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">request</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">reply</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">receiveMsg</span><span class="p">(</span>  <span class="p">)</span>  <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span>  <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="n">IApplMessage</span> <span class="nf">request</span><span class="p">(</span>  <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">reply</span><span class="p">(</span>  <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="n">IApplMessage</span> <span class="nf">receive</span><span class="p">(</span>  <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">;</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="p">(</span> <span class="p">)</span>  <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="p">(</span> <span class="p">)</span>  <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Ogni metodo rappresenta una modalità di invio   (<code class="docutils literal notranslate"><span class="pre">forward/reply/request</span></code>)
+o di ricezione (<code class="docutils literal notranslate"><span class="pre">receiveMsg</span></code>) di informazione come introdotto in
+in <a class="reference internal" href="Principi.html#interazioni-dal-punto-di-vista-applicativo"><span class="std std-ref">Interazioni dal punto di vista applicativo</span></a>.</p>
+<ul class="simple">
+<li><p>Il metodo <span class="remark">forward</span> è un metodo di trasmissione <span class="blue">‘fire-and-forget’</span>, mentre il metodo <span class="remark">request</span> denota
+l’invio di informazione cui deve corrispondere una <em>ack</em> o una <span class="blue">response</span> da parte del ricevente.</p></li>
+<li><p>Concettualmente, un componente che invia una <em>response/ack</em> sulla <em>comunicazione connessa</em> con un client,
+effettua una operazione di <span class="remark">reply</span>, assimilabile alla <code class="docutils literal notranslate"><span class="pre">forward</span></code> di un messaggio con appropriato contenuto informativo.</p></li>
+<li><p>La <code class="docutils literal notranslate"><span class="pre">String</span></code> restituita dal metodo <span class="remark">receiveMsg</span> rappresenta un messaggio qualsiasi, tra cui
+la risposta a un messaggio
+inviato in precedenza con <code class="docutils literal notranslate"><span class="pre">forward</span></code>. Lo stesso vale per l’oggetto restituto dal metodo <span class="remark">receive</span>.</p></li>
+</ul>
+<p>L’informazione scambiata è rappresenta in due modi:</p>
+<ul class="simple">
+<li><p>da una <code class="docutils literal notranslate"><span class="pre">String</span></code> che è un tipo di dato presente in tutti i linguaggi di programmazione. I metodi che usano <code class="docutils literal notranslate"><span class="pre">String</span></code>
+non impongono particolari vincoli sulla struttura sintattica e semantica della stringa-messaggio, ma proprio
+per questo possono causare problemi di interpretazione;</p></li>
+<li><p>da un oggetto di tipo <a class="reference internal" href="unibo.basicomm23.html#unibo-interaction-interfaces-iapplmessage"><span class="std std-ref">IApplMessage</span></a> che rappresenta
+uno <span class="blue">standard interno</span> sulla struttura delle informazioni  scambiate via rete:.
+I metodi che usano <code class="docutils literal notranslate"><span class="pre">IApplMessage</span></code> verranno implementati da supporti
+che invieranno e riceveranno <code class="docutils literal notranslate"><span class="pre">String</span></code>  della forma descritta in <a class="reference internal" href="#struttura-dei-messaggi"><span class="std std-ref">Struttura dei messaggi</span></a>.</p></li>
+</ul>
+</section>
+</section>
+<section id="natura-e-struttura-dei-messaggi-applicativi">
+<h2>Natura e struttura dei messaggi applicativi<a class="headerlink" href="#natura-e-struttura-dei-messaggi-applicativi" title="Permalink to this headline">¶</a></h2>
+<p>I messaggi  sono logicamente suddivisi in diverse categorie:</p>
+<blockquote>
+<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">enum</span> <span class="n">ApplMessageType</span><span class="p">{</span>
+    <span class="n">event</span><span class="p">,</span> <span class="n">dispatch</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">reply</span><span class="p">,</span> <span class="n">invitation</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<section id="tipi-di-messaggi">
+<h3>Tipi di messaggi<a class="headerlink" href="#tipi-di-messaggi" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 70%" />
+<col style="width: 30%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><ul class="simple">
+<li><p><span class="blue">dispatch</span>: un messaggio inviato a un preciso destinatario senza attesa  di una risposta
+(in modo detto anche  <cite>fire-and-forget</cite>);</p></li>
+<li><p><span class="blue">invitation</span>: un messaggio inviato a un preciso destinatario aspettandosi un ‘ack’ da parte di questi;</p></li>
+<li><p><span class="blue">request</span>: un messaggio inviato a un preciso destinatario aspettandosi da parte di questi una
+<span class="blue">reply</span> <strong>logicamente correlata alla richiesta</strong>;</p></li>
+<li><p><span class="blue">event</span>: un messaggio inviato a chiunque sia in grado di elaborarlo.</p></li>
+</ul>
+</td>
+<td><a class="reference internal image-reference" href="_images/legendMessages.PNG"><img alt="_images/legendMessages.PNG" class="align-center" src="_images/legendMessages.PNG" style="width: 60%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="struttura-dei-messaggi">
+<h3>Struttura dei messaggi<a class="headerlink" href="#struttura-dei-messaggi" title="Permalink to this headline">¶</a></h3>
+<p>Le stringhe che denotano  messaggi <a class="reference internal" href="unibo.basicomm23.html#unibo-interaction-interfaces-iapplmessage"><span class="std std-ref">IApplMessage</span></a> hanno la forma:</p>
+<blockquote>
+<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">msg</span><span class="p">(</span> <span class="n">MSGID</span><span class="p">,</span> <span class="n">MSGTYPE</span><span class="p">,</span> <span class="n">SENDER</span><span class="p">,</span> <span class="n">RECEIVER</span><span class="p">,</span> <span class="n">CONTENT</span><span class="p">,</span> <span class="n">SEQNUM</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>ove</p>
+<blockquote>
+<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">MSGID</span><span class="p">:</span>    <span class="n">identificativo</span> <span class="n">del</span> <span class="n">messaggio</span>
+<span class="o">-</span> <span class="n">MSGTYPE</span><span class="p">:</span>  <span class="n">tipo</span> <span class="n">del</span> <span class="nf">msg</span> <span class="p">(</span><span class="n">Dispatch</span><span class="p">,</span> <span class="n">Invitation</span><span class="p">,</span><span class="n">Request</span><span class="p">,</span><span class="n">Reply</span><span class="p">,</span><span class="n">Event</span><span class="p">)</span>
+<span class="o">-</span> <span class="n">SENDER</span><span class="p">:</span>   <span class="n">nome</span> <span class="n">del</span> <span class="n">componente</span> <span class="n">che</span> <span class="n">invia</span> <span class="n">il</span> <span class="n">messaggio</span>
+<span class="o">-</span> <span class="n">CONTENT</span><span class="p">:</span>  <span class="n">contenuto</span> <span class="nf">applicativo</span> <span class="p">(</span><span class="n">payload</span><span class="p">)</span> <span class="n">del</span> <span class="n">messaggio</span>
+<span class="o">-</span> <span class="n">RECEIVER</span><span class="p">:</span> <span class="n">nome</span> <span class="n">del</span> <span class="n">componente</span> <span class="n">chi</span> <span class="n">riceve</span> <span class="n">il</span> <span class="n">messaggio</span>
+<span class="o">-</span> <span class="n">SEQNUM</span><span class="p">:</span>   <span class="n">numero</span> <span class="n">di</span> <span class="n">sequenza</span> <span class="n">del</span> <span class="n">messaggio</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Questa struttura  costituisce uno <span class="blue">standard interno</span> sulla struttura delle stringhe-messaggio
+scambiate via rete.</p>
+<section id="sintassi-delle-stringhe-messaggio">
+<h4>Sintassi delle stringhe-messaggio<a class="headerlink" href="#sintassi-delle-stringhe-messaggio" title="Permalink to this headline">¶</a></h4>
+<p>La rappresentazione in forma di <code class="docutils literal notranslate"><span class="pre">String</span></code> dei messaggi segue (per motivi ‘storici’) le regole della sintassi <a class="reference external" href="https://it.wikipedia.org/wiki/Prolog">Prolog</a>.
+In particolare:</p>
+<ul class="simple">
+<li><p>gli identificatori <code class="docutils literal notranslate"><span class="pre">MSGID,SENDER,RECEIVER</span></code> sono espressi da <strong>atomi</strong> Prolog formati da <span class="remark">lettere minuscole</span>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MSGTYPE</span></code> è un atomo prefissato: <code class="docutils literal notranslate"><span class="pre">dispatch,</span> <span class="pre">request,</span> <span class="pre">reply,</span> <span class="pre">event</span></code>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CONTENT</span></code> è un <strong>termine</strong> Prolog;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SEQNUM</span></code> è un intero.</p></li>
+</ul>
+<p>Esempi di stringhe-messaggio:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">msg</span><span class="p">(</span><span class="n">sonarcmd</span><span class="p">,</span><span class="n">dispatch</span><span class="p">,</span><span class="n">controller</span><span class="p">,</span><span class="n">sonar</span><span class="p">,</span><span class="n">deactivate</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">msg</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span><span class="n">dispatch</span><span class="p">,</span><span class="n">controller</span><span class="p">,</span><span class="n">led</span><span class="p">,</span><span class="n">excute</span><span class="p">(</span><span class="n">turnOn</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">msg</span><span class="p">(</span><span class="n">req</span><span class="p">,</span><span class="n">request</span><span class="p">,</span><span class="n">main</span><span class="p">,</span><span class="n">sonar</span><span class="p">,</span><span class="n">getDistance</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">msg</span><span class="p">(</span><span class="n">req</span><span class="p">,</span><span class="n">request</span><span class="p">,</span><span class="n">main</span><span class="p">,</span><span class="n">led</span><span class="p">,</span><span class="n">info</span><span class="p">(</span><span class="n">getState</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><span class="slide1">Implementazione</span></p>
+<p>Il progetto <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a>  realizza il concetto di <a class="reference internal" href="#interconnessione"><span class="std std-ref">Interconnessione</span></a>,
+fornendo supporti che utilizzano i  protocolli definiti in <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-msg-protocoltype"><span class="std std-ref">Tipi di protocollo</span></a>.</p>
+</section>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Interaction</a><ul>
+<li><a class="reference internal" href="#interconnessione">Interconnessione</a><ul>
+<li><a class="reference internal" href="#interaction-interface">Interaction interface</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#natura-e-struttura-dei-messaggi-applicativi">Natura e struttura dei messaggi applicativi</a><ul>
+<li><a class="reference internal" href="#tipi-di-messaggi">Tipi di messaggi</a></li>
+<li><a class="reference internal" href="#struttura-dei-messaggi">Struttura dei messaggi</a><ul>
+<li><a class="reference internal" href="#sintassi-delle-stringhe-messaggio">Sintassi delle stringhe-messaggio</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Appl1-HTTPSprint3.html"
+                          title="previous chapter">Appl1-HTTPSprint3</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="AppuntiTecnologie.html"
+                          title="next chapter">Appunti su tecnologie</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Interaction.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Appl1-HTTPSprint3.html" title="Appl1-HTTPSprint3"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Interaction</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

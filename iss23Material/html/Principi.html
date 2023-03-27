@@ -185,6 +185,62 @@ all’emittente, al ricevente e/o al sistema nel suo complesso.</p></li>
 </ul>
 </section>
 </section>
+<section id="interazioni-dal-punto-di-vista-applicativo">
+<h2>Interazioni dal punto di vista applicativo<a class="headerlink" href="#interazioni-dal-punto-di-vista-applicativo" title="Permalink to this headline">¶</a></h2>
+<p>In un sistema distribuito:</p>
+<ul>
+<li><p>I componenti-base sono enti attivi, che d’ora in poi possiamo denominare, genericamente, <span class="blue">attori</span>.</p></li>
+<li><p>Gli attori <strong>non hanno memoria comune</strong> e scambiano informazione tramite <span class="blue">messaggi</span>.</p></li>
+<li><p>Si distinguono diversi tipi di messggio, descritti nella <a class="reference internal" href="#terminologia-di-riferimento"><span class="std std-ref">Terminologia di riferimento</span></a>. In sintesi:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">enum</span> <span class="n">ApplMessageType</span><span class="p">{</span> <span class="n">event</span><span class="p">,</span> <span class="n">dispatch</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">reply</span><span class="p">,</span> <span class="n">invitation</span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><ul class="simple">
+<li><p><span class="blue">dispatch</span>: un messaggio inviato a un preciso destinatario senza attesa  di una risposta
+(in modo detto anche  <cite>fire-and-forget</cite>);</p></li>
+<li><p><span class="blue">invitation</span>: un messaggio inviato a un preciso destinatario aspettandosi un ‘ack’ da parte di questi;</p></li>
+<li><p><span class="blue">request</span>: un messaggio inviato a un preciso destinatario aspettandosi da parte di questi una
+<span class="blue">reply</span> <strong>logicamente correlata alla richiesta</strong>;</p></li>
+<li><p><span class="blue">event</span>: un messaggio inviato a chiunque sia in grado di elaborarlo.</p></li>
+</ul>
+</td>
+<td><a class="reference internal image-reference" href="_images/legendMessages.PNG"><img alt="_images/legendMessages.PNG" class="align-center" src="_images/legendMessages.PNG" style="width: 50%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>I messaggi sono trasmessi e ricevuti tramite un qualche <span class="blue">supporto fisico</span> che permette scambio di informazione.</p></li>
+<li><p>Gli attori di un sistema si conoscono grazie ai loro <span class="blue">nomi</span> e non attraverso l’uso di un particolare supporto
+di comunicazione.</p></li>
+<li><p>La interazione tra attori è, di base, <span class="blue">asincrona</span>. Se un attore <code class="docutils literal notranslate"><span class="pre">A</span></code> invia a un altro attore  <code class="docutils literal notranslate"><span class="pre">B</span></code>
+un messaggio <span class="blue">request</span>, allora:</p>
+<ul class="simple">
+<li><p>L’attore <code class="docutils literal notranslate"><span class="pre">A</span></code> potrebbe proseguire nella sua esecuzione e decidere di
+elaborare la <span class="blue">reply</span> in un secondo momento.</p></li>
+<li><p>Oppure, <code class="docutils literal notranslate"><span class="pre">A</span></code>  potrebbe decidere di non fare altro prima della ricezione della <span class="blue">reply</span>.</p></li>
+<li><p>Un messaggio <span class="blue">reply</span> viene di norma inviato ad <code class="docutils literal notranslate"><span class="pre">A</span></code> da <code class="docutils literal notranslate"><span class="pre">B</span></code>, ma potrebbe anche accadere che venga inviato da un altro
+attore <code class="docutils literal notranslate"><span class="pre">C</span></code> (delegato da <code class="docutils literal notranslate"><span class="pre">B</span></code>).</p></li>
+</ul>
+</li>
+<li><p>Un attore potrebbe emettere informazione senza un preciso destinatario. Noi denominiamo tale informazione come <span class="blue">evento</span>.</p></li>
+<li><p>L’emissione di un <span class="blue">event</span> da parte di un attore <span class="blue">rende l’attore osservabile</span>,
+senza interferenze dirette da parte degli eventuali observer. Notiamo però che:</p>
+<ul class="simple">
+<li><p>Un attore può anche essere reso osservabile se capace di rispondere a   <span class="blue">request</span> di interesse da parte
+di altri attori.</p></li>
+</ul>
+</li>
+</ul>
+</section>
 <section id="comportamento">
 <h2>Comportamento<a class="headerlink" href="#comportamento" title="Permalink to this headline">¶</a></h2>
 <p>Per esprimere il comportamento di un componente software, si distinguono classicamente tre diversi ‘stili’:</p>
@@ -613,6 +669,7 @@ per definire i test in modo che possano individuare in modo automatico le falle 
 <li><a class="reference internal" href="#terminologia-di-riferimento">Terminologia di riferimento</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#interazioni-dal-punto-di-vista-applicativo">Interazioni dal punto di vista applicativo</a></li>
 <li><a class="reference internal" href="#comportamento">Comportamento</a><ul>
 <li><a class="reference internal" href="#automi-a-stati-finiti">Automi a stati finiti</a></li>
 </ul>

@@ -20,7 +20,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Appunti su tecnologie" href="AppuntiTecnologie.html" />
+    <link rel="next" title="Interaction" href="Interaction.html" />
     <link rel="prev" title="Appl1-HTTPSprint3Init" href="Appl1-HTTPSprint3Init.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,7 +30,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="Interaction.html" title="Interaction"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="Appl1-HTTPSprint3Init.html" title="Appl1-HTTPSprint3Init"
@@ -92,15 +92,21 @@ secondo il quale:</p>
 <p><span class="slide">da bottom-up a top-down</span></p>
 <p>In altre parole, è il livello applicativo (il problema stesso) che deve dire di quali
 elementi astratti (interfacce) o concreti ha bisogno per realizzare operazioni di più basso livello
-(quali le comunicazioni di rete) e demandarne la
+(come le comunicazioni di rete) e demandarne la
 realizzazione a opportuni supporti che realizzino quanto dichiarato.</p>
+<p><span class="slide">Il punto di vista applicativo</span></p>
+<p><span class="slide1">Richiamiamo qui i principi</span> introdotti in <a class="reference internal" href="Principi.html#interazioni-dal-punto-di-vista-applicativo"><span class="std std-ref">Interazioni dal punto di vista applicativo</span></a>.</p>
+<p><span class="slide1">Apriamo un nuovo capitolo</span>: <a class="reference internal" href="Interaction.html#interaction"><span class="std std-ref">Interaction</span></a>.</p>
 <p>Lo schema logico viene reimpostato come segue:</p>
 <a class="reference internal image-reference" href="_images/Appl1ArchSprint3initLogico.png"><img alt="_images/Appl1ArchSprint3initLogico.png" class="align-center" src="_images/Appl1ArchSprint3initLogico.png" style="width: 75%;" /></a>
+<p>Astraendo ancora possiamo evidenziare che l’applicazione richiede qualche supporto per realizzare le interazione
+punto-a-punto  <em>CmdConsole-Appl1</em> e <em>Appl1-VirtualRobot</em>.</p>
+<a class="reference internal image-reference" href="_images/Appl1ArchSprint3Interaction.png"><img alt="_images/Appl1ArchSprint3Interaction.png" class="align-center" src="_images/Appl1ArchSprint3Interaction.png" style="width: 75%;" /></a>
 </section>
 <section id="l-idea-di-interconnessione">
 <h2>L’idea di Interconnessione<a class="headerlink" href="#l-idea-di-interconnessione" title="Permalink to this headline">¶</a></h2>
-<p>Con <a class="reference internal" href="Interaction2021.html#interaction2021"><span class="std std-ref">Interaction2021</span></a> indichiamo un <em>canale di comunicazione bidirezionale</em>
-tra due end-points, cioè un ente capace di realizzare il concetto asratto di <span class="blue">Interconnessione</span>.</p>
+<p>Con <span class="xref std std-ref">Interaction2021</span> indichiamo un <em>canale di comunicazione bidirezionale</em>
+tra due end-points, cioè un ente capace di realizzare il concetto astratto di <span class="blue">Interconnessione</span>.</p>
 <p>Il contratto che il livello applicativo fissa in relazione al questo concetto, viene
 formalizzato dalla seguente interfaccia.</p>
 <section id="unibo-basicomm23-interfaces-interaction2021">
@@ -117,21 +123,64 @@ formalizzato dalla seguente interfaccia.</p>
 <p>Ogni metodo rappresenta una modalità di invio   (<code class="docutils literal notranslate"><span class="pre">forward/reply/request</span></code>)
 o di ricezione (<code class="docutils literal notranslate"><span class="pre">receiveMsg</span></code>) di informazione.</p>
 </section>
-<section id="approfondimenti">
-<h3>Approfondimenti<a class="headerlink" href="#approfondimenti" title="Permalink to this headline">¶</a></h3>
+<section id="dalla-specifica-alla-realizzazione">
+<h3>Dalla specifica alla realizzazione<a class="headerlink" href="#dalla-specifica-alla-realizzazione" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><span class="slide2">Interaction2021</span>. L’insieme degli elementi (astratti e non) che il livello applicativo
 assume di avere a disposizione per inviare e ricevere messaggi
-viene descritto in <a class="reference internal" href="Interaction2021.html#interaction2021"><span class="std std-ref">Interaction2021</span></a> che descrive anche la <a class="reference internal" href="Interaction2021.html#natura-e-struttura-dei-messaggi-applicativi"><span class="std std-ref">Natura e struttura dei messaggi applicativi</span></a>.</p></li>
+viene descritto in <span class="xref std std-ref">Interaction2021</span> che descrive anche la <a class="reference internal" href="Interaction.html#natura-e-struttura-dei-messaggi-applicativi"><span class="std std-ref">Natura e struttura dei messaggi applicativi</span></a>.</p></li>
 <li><p><span class="slide2">unibo.basicomm23</span>. I supporti che realizzano l’idea di <em>Interconnessione</em> con i diversi protocolli
 menzionati in <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-basicomm23-msg-protocoltype"><span class="std std-ref">ProtocolType</span></a> sono realizati e descriiti in
 <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a>.</p></li>
 </ul>
+<p>Il progetto <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a>  fornisce i seguenti supporti (che si possono vedere come <span class="remark">enti abilitatori</span>
+alle interazioni via rete):</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-enablers-enablerasserver"><span class="std std-ref">EnablerAsServer</span></a>  (Su <code class="docutils literal notranslate"><span class="pre">8030</span></code>), che permette la ricezione di messaggi</p></li>
+<li><p><a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-enablers-callerasclient"><span class="std std-ref">CallerAsClient</span></a>, che permette l’invio di messaggi</p></li>
+</ol>
+<section id="enablerasserver">
+<h4>EnablerAsServer<a class="headerlink" href="#enablerasserver" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/Appl1Enabler.png"><img alt="_images/Appl1Enabler.png" src="_images/Appl1Enabler.png" style="width: 100%;" /></a>
+</td>
+<td><ul class="simple">
+<li><p><a class="reference internal" href="Applicazione1-HTTP-Distribuita.html#unibo-appl1-interaction-appl1msghandler"><span class="std std-ref">Appl1MsgHandler</span></a> gestisce i messaggi ricevuti
+da  <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-enablers-enablerasserver"><span class="std std-ref">EnablerAsServer</span></a> invocando i metodi di
+<a class="reference internal" href="#applcore-sprint3"><span class="std std-ref">Appl1Core</span></a>.</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="callerasclient">
+<h4>CallerAsClient<a class="headerlink" href="#callerasclient" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/CallerAsClient.png"><img alt="_images/CallerAsClient.png" src="_images/CallerAsClient.png" style="width: 100%;" /></a>
+</td>
+<td><p><a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-enablers-callerasclient"><span class="std std-ref">CallerAsClient</span></a> stabilisce una <a class="reference internal" href="Interaction.html#interconnessione"><span class="std std-ref">Interconnessione</span></a>
+con un server remoto, avvalendosi di una
+<a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-utils-connectionfactory"><span class="std std-ref">ConnectionFactory</span></a>.</p></td>
+</tr>
+</tbody>
+</table>
 <p><span class="slide">Interazioni Appl1 -&gt; robot</span></p>
 </section>
 </section>
-<section id="interazioni-apll1-robot">
-<h2>Interazioni Apll1-&gt;robot<a class="headerlink" href="#interazioni-apll1-robot" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="interazioni-appl1-robot">
+<h2>Interazioni Appl1-&gt;robot<a class="headerlink" href="#interazioni-appl1-robot" title="Permalink to this headline">¶</a></h2>
 <p>La classe <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-supports-vrobothlmoveshttpapache"><span class="std std-ref">unibo.supports.VrobotHLMovesHTTPApache</span></a>
 può essere ridefinita in modo da utilizzare
 un supporto che implementa <a class="reference internal" href="#unibo-basicomm23-interfaces-interaction2021"><span class="std std-ref">unibo.basicomm23.interfaces.Interaction2021</span></a>
@@ -205,25 +254,52 @@ usando <code class="docutils literal notranslate"><span class="pre">HTTP</span><
 <h3>ApplCore Sprint3<a class="headerlink" href="#applcore-sprint3" title="Permalink to this headline">¶</a></h3>
 <p><span class="slide1">Una modifica radicale solo riconfigurando</span></p>
 <p>Per ottenere una nuova versione di <a class="reference internal" href="Appl1-HTTPSprint2.html#appl1core"><span class="std std-ref">Appl1Core</span></a> che sfrutta i nuovi supporti, è sufficiente modificare
-la fase di configurazione.</p>
+la fase di configurazione del POJO applicativo.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">Appl1Core</span> <span class="n">extends</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">Observable</span> <span class="n">implements</span> <span class="n">IAppl1Core</span> <span class="p">{</span>
 <span class="n">protected</span> <span class="n">IVrobotMoves</span> <span class="n">vr</span> <span class="p">;</span>
 <span class="o">...</span>
-  <span class="n">public</span> <span class="n">Appl1Core</span><span class="p">(){</span>
-     <span class="n">stopped</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
-     <span class="o">//</span><span class="n">configure</span><span class="p">();</span>
-     <span class="n">configureSprint3</span><span class="p">();</span>
-  <span class="p">}</span>
- <span class="n">protected</span> <span class="n">void</span> <span class="n">configureSprint3</span><span class="p">(){</span>
-     <span class="n">String</span> <span class="n">URL</span>                 <span class="o">=</span> <span class="s2">&quot;localhost:8090/api/move&quot;</span><span class="p">;</span>
-     <span class="o">//</span><span class="n">URL</span> <span class="n">potrebbe</span> <span class="n">essere</span> <span class="n">letto</span> <span class="n">da</span> <span class="n">un</span> <span class="n">file</span> <span class="n">di</span> <span class="n">configurazione</span>
-     <span class="n">Interaction2021</span> <span class="n">httpConn</span>   <span class="o">=</span> <span class="n">HttpConnection</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">URL</span><span class="p">);</span>
-     <span class="n">HTTPCommApache</span> <span class="n">httpSupport</span> <span class="o">=</span> <span class="n">new</span> <span class="n">HTTPCommApache</span><span class="p">(</span>  <span class="n">URL</span> <span class="p">);</span>
-     <span class="n">vr</span> <span class="o">=</span> <span class="n">new</span> <span class="n">VrobotHLMovesInteractionSynch</span><span class="p">(</span> <span class="n">httpConn</span> <span class="p">);</span>
+ <span class="n">protected</span> <span class="n">void</span> <span class="n">configure</span><span class="p">(){</span>
+   <span class="n">readConfigFromFile</span><span class="p">();</span>
  <span class="p">}</span>
+ <span class="n">protected</span> <span class="n">void</span> <span class="n">readConfigFromFile</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span><span class="p">{</span>
+     <span class="n">File</span> <span class="n">cfgfile</span>          <span class="o">=</span> <span class="n">new</span> <span class="n">File</span><span class="p">(</span><span class="s2">&quot;sprint3Config.json&quot;</span><span class="p">);</span>
+     <span class="n">BufferedReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">new</span> <span class="n">BufferedReader</span><span class="p">(</span><span class="n">new</span> <span class="n">FileReader</span><span class="p">(</span><span class="n">cfgfile</span><span class="p">));</span>
+     <span class="n">String</span> <span class="n">currentLine</span>    <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">readLine</span><span class="p">();</span>
+     <span class="n">CommUtils</span><span class="o">.</span><span class="n">outblue</span><span class="p">(</span><span class="s2">&quot;Appl1Core currentLine=&quot;</span> <span class="o">+</span> <span class="n">currentLine</span><span class="p">);</span>
+     <span class="n">JSONObject</span> <span class="n">cj</span>         <span class="o">=</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">parseForJson</span><span class="p">(</span><span class="n">currentLine</span><span class="p">);</span>
+     <span class="n">vitualRobotIp</span>         <span class="o">=</span> <span class="n">cj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;virtualrobotip&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+     <span class="n">String</span> <span class="n">vrconn</span>         <span class="o">=</span> <span class="n">cj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;virtualrobotconn&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+     <span class="n">CommUtils</span><span class="o">.</span><span class="n">outblue</span><span class="p">(</span><span class="s2">&quot;Appl1Core vrconn=&quot;</span> <span class="o">+</span> <span class="n">vrconn</span> <span class="o">+</span> <span class="s2">&quot; vitualRobotIp=&quot;</span> <span class="o">+</span> <span class="n">vitualRobotIp</span><span class="p">);</span>
+     <span class="k">if</span><span class="p">(</span> <span class="n">vrconn</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;ws&quot;</span><span class="p">))</span> <span class="n">configureUsingWS</span><span class="p">();</span>
+     <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">vrconn</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">))</span>  <span class="n">configureUsingHTTPInteraction</span><span class="p">();</span> <span class="o">//</span><span class="n">configureUsingHTTPInteraction</span><span class="p">();</span>
+
+ <span class="p">}</span>
+
    <span class="o">...</span>
 
 <span class="p">}</span>
+</pre></div>
+</div>
+<p>La configurazione viene fissata leggendo informazioni da un file</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;virtualrobotip&quot;</span><span class="p">:</span><span class="s2">&quot;192.168.1.10&quot;</span><span class="p">,</span> <span class="s2">&quot;virtualrobotconn&quot;</span><span class="p">:</span><span class="s2">&quot;ws&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo di configurazione viene ora invocato da start.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>public class Appl1Core extends java.util.Observable implements IAppl1Core {
+protected IVrobotMoves vr ;
+...
+  public Appl1Core(){
+  }
+
+ @Override
+ public void start(   ) throws Exception {
+     if( ! started || ! isRunning){
+         started   = true;
+         stopped   = false;
+         configure();
+         walkAtBoundary();
+      }else CommUtils.outred(&quot;Appl1Core |  already started&quot;);
+ }
 </pre></div>
 </div>
 <p><span class="slide">Interazioni CmdConsole -&gt; Appl1</span></p>
@@ -243,30 +319,6 @@ attraverso due ‘enti abilitatori’:</p>
 <li><p><a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-enablers-enablerasserver"><span class="std std-ref">EnablerAsServer</span></a>  (Su <code class="docutils literal notranslate"><span class="pre">8030</span></code>)</p></li>
 <li><p><a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-enablers-callerasclient"><span class="std std-ref">CallerAsClient</span></a></p></li>
 </ol>
-<section id="enablerasserver">
-<h3>EnablerAsServer<a class="headerlink" href="#enablerasserver" title="Permalink to this headline">¶</a></h3>
-<table class="colwidths-given docutils align-default" style="width: 100%">
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/Appl1Enabler.png"><img alt="_images/Appl1Enabler.png" src="_images/Appl1Enabler.png" style="width: 100%;" /></a>
-</td>
-<td><ul class="simple">
-<li><p><a class="reference internal" href="Applicazione1-HTTP-Distribuita.html#unibo-appl1-interaction-appl1msghandler"><span class="std std-ref">Appl1MsgHandler</span></a> gestisce i messaggi ricevuti
-da  <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-enablers-enablerasserver"><span class="std std-ref">EnablerAsServer</span></a> invocando i metodi di
-<a class="reference internal" href="#applcore-sprint3"><span class="std std-ref">Appl1Core</span></a>.</p></li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="callerasclient">
-<h3>CallerAsClient<a class="headerlink" href="#callerasclient" title="Permalink to this headline">¶</a></h3>
-<a class="reference internal image-reference" href="_images/CallerAsClient.png"><img alt="_images/CallerAsClient.png" src="_images/CallerAsClient.png" style="width: 50%;" /></a>
-</section>
 <section id="cmdconsole">
 <h3>CmdConsole<a class="headerlink" href="#cmdconsole" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
@@ -374,10 +426,14 @@ di comunicazione vanno introdotte senza modificare il nucleo centrale dell’app
 <li><a class="reference internal" href="#requisiti-sprint3">Requisiti SPRINT3</a></li>
 <li><a class="reference internal" href="#l-idea-di-interconnessione">L’idea di Interconnessione</a><ul>
 <li><a class="reference internal" href="#unibo-basicomm23-interfaces-interaction2021">unibo.basicomm23.interfaces.Interaction2021</a></li>
-<li><a class="reference internal" href="#approfondimenti">Approfondimenti</a></li>
+<li><a class="reference internal" href="#dalla-specifica-alla-realizzazione">Dalla specifica alla realizzazione</a><ul>
+<li><a class="reference internal" href="#enablerasserver">EnablerAsServer</a></li>
+<li><a class="reference internal" href="#callerasclient">CallerAsClient</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#interazioni-apll1-robot">Interazioni Apll1-&gt;robot</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#interazioni-appl1-robot">Interazioni Appl1-&gt;robot</a><ul>
 <li><a class="reference internal" href="#refactoring-di-vrobothlmoveshttpapache">Refactoring di VrobotHLMovesHTTPApache</a><ul>
 <li><a class="reference internal" href="#unibo-supports-vrobothlmovesinteractionsynch">unibo.supports.VrobotHLMovesInteractionSynch</a></li>
 </ul>
@@ -387,8 +443,6 @@ di comunicazione vanno introdotte senza modificare il nucleo centrale dell’app
 </ul>
 </li>
 <li><a class="reference internal" href="#interazioni-console-appl1">Interazioni Console-Appl1</a><ul>
-<li><a class="reference internal" href="#enablerasserver">EnablerAsServer</a></li>
-<li><a class="reference internal" href="#callerasclient">CallerAsClient</a></li>
 <li><a class="reference internal" href="#cmdconsole">CmdConsole</a></li>
 <li><a class="reference internal" href="#unibo-appl1-interaction-cmdconsoleremote">unibo.appl1.interaction.CmdConsoleRemote</a></li>
 <li><a class="reference internal" href="#unibo-console-gui-startstopguiremote">unibo.console.gui.StartStopGuiRemote</a></li>
@@ -407,8 +461,8 @@ di comunicazione vanno introdotte senza modificare il nucleo centrale dell’app
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="AppuntiTecnologie.html"
-                          title="next chapter">Appunti su tecnologie</a></p>
+    <p class="topless"><a href="Interaction.html"
+                          title="next chapter">Interaction</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -438,7 +492,7 @@ di comunicazione vanno introdotte senza modificare il nucleo centrale dell’app
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="Interaction.html" title="Interaction"
              >next</a> |</li>
         <li class="right" >
           <a href="Appl1-HTTPSprint3Init.html" title="Appl1-HTTPSprint3Init"

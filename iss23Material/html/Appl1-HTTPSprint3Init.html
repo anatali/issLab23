@@ -67,15 +67,36 @@ via <code class="docutils literal notranslate"><span class="pre">P</span></code>
 usando il protocollo <code class="docutils literal notranslate"><span class="pre">P</span></code>.</p></li>
 </ol>
 <p>La fase di interpretazione dei comandi è affidata a <em>Appl1</em> in quanto:</p>
-<p>…</p>
-<p><span class="worktodo">TODO: problematiche dovute a CmdConsoleRemote</span></p>
-<p>Dall’analisi emerge l’opportunità di impostare il seguente:</p>
-<p><span class="worktodo">TODO: defnire un piano di lavoro</span></p>
-<p>Viene inoltre richiesto di pensare a come:</p>
-<p><span class="worktodo">TODO: comunicare con il VirtualRobot via WS</span></p>
-<p>Il ‘diario di bordo’ con analisi e proposte (<span class="brown">in modo sintetico/essnziale</span>) deve pervenire in un
-file denominato  <span class="blue">Appl1HTTPSprint3CognomeNomeV0.html</span>  entro</p>
-<p><span class="slide2">le ore 24 del 22/03/2023</span></p>
+<ul class="simple">
+<li><p>la <em>CmdConsole</em> è <span class="remark">solo un dispositivo di input</span>, che si vuole mantenere libero da aspetti applicativi;</p></li>
+<li><p><em>Appl1</em> potrebbe ricevere comandi da dispositivi diversi dalla <em>CmdConsole</em>.</p></li>
+</ul>
+<p>Dobbiamo dunque:</p>
+<ol class="arabic simple">
+<li><p>Affrontare il progetto e la realizzazione della <em>CmdConsole</em> remota.</p></li>
+<li><p>Affrontare il progetto e la realizzazione di un sistema distribuito.</p></li>
+</ol>
+<p>Siamo di fronte a un passaggio logico <span class="remark">da sistemi ad oggetti locali</span>  che interagiscono
+mediante <em>procedure-call</em> a sistemi <span class="remark">a componenti distribuiti attivi che interagiscono a messaggi</span>
+attraverso l’uso di vari protocolli, come quelli introdotti in  <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-basicomm23-msg-protocoltype"><span class="std std-ref">unibo.basicomm23.msg.ProtocolType</span></a>.</p>
+<p><span class="slide1">Il principio di inversione delle dipendenze</span></p>
+<p>Per evitare che l’<em>application designer</em> debba occuparsi
+di dettagli implementativi legati alle interazioni,
+possiamo intreprendere una strada che trae ispirazione dal
+un altro dei principi <a class="reference external" href="https://en.wikipedia.org/wiki/SOLID">SOLID</a>,
+secondo il quale:</p>
+<ul class="simple">
+<li><p><span class="slide2">Componenti di alto livello non devono dipendere da componenti di livello più basso</span></p></li>
+</ul>
+<p>Seguire questa via significa anche che il nostro approccio passa:</p>
+<p><span class="slide">da bottom-up a top-down</span></p>
+<p>In altre parole, è il livello applicativo (il problema stesso) che deve dire di quali
+elementi astratti (interfacce) o concreti ha bisogno per realizzare operazioni di più basso livello
+(come le comunicazioni di rete) e demandarne la
+realizzazione a opportuni supporti che realizzino quanto dichiarato.</p>
+<p><span class="slide">Il punto di vista applicativo</span></p>
+<p><span class="slide1">Richiamiamo qui i principi</span> introdotti in <a class="reference internal" href="Principi.html#interazioni-dal-punto-di-vista-applicativo"><span class="std std-ref">Interazioni dal punto di vista applicativo</span></a>.</p>
+<p><span class="slide1">Apriamo un nuovo capitolo</span>: <a class="reference internal" href="Interaction.html#interaction"><span class="std std-ref">Interaction</span></a>.</p>
 </section>
 </section>
 

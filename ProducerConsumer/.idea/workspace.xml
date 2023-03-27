@@ -5,35 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="057bed55-f72c-42f9-930c-f2dd9dfc1eac" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ActorNaiveCaller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ActorNaiveReceiver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/Consumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ConsumerCoapResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ConsumerLogic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ConsumerMsgHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/MainProdCons.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ProdConsConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/Producer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ProducerCaller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ProducerLogic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ActorNaiveCaller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ActorNaiveReceiver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/temp/ProducerConsumer/Consumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ConsumerCoapResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ConsumerLogic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ConsumerMsgHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/temp/ProducerConsumer/MainProdCons.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ProdConsConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/temp/ProducerConsumer/Producer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ProducerCaller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ProducerLogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../iss23Material/LectureBologna2023.html" beforeDir="false" afterPath="$PROJECT_DIR$/../iss23Material/LectureBologna2023.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../iss23Material/html/Appl1-HTTPSprint3.html" beforeDir="false" afterPath="$PROJECT_DIR$/../iss23Material/html/Appl1-HTTPSprint3.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../iss23Material/html/Appl1-HTTPSprint3Init.html" beforeDir="false" afterPath="$PROJECT_DIR$/../iss23Material/html/Appl1-HTTPSprint3Init.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../iss23Material/html/Principi.html" beforeDir="false" afterPath="$PROJECT_DIR$/../iss23Material/html/Principi.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../iss23Material/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../iss23Material/html/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../iss23Material/html/unibo.basicomm23.html" beforeDir="false" afterPath="$PROJECT_DIR$/../iss23Material/html/unibo.basicomm23.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibolibs/unibo.basicomm23-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../unibolibs/unibo.basicomm23-1.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../iss23Material/html/_images/ProdCons.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/../iss23Material/html/_images/ProdCons.PNG" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

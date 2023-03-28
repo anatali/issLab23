@@ -23,7 +23,7 @@ public class ProducerCaller extends ActorNaiveCaller {
             IApplMessage req = CommUtils.buildRequest(
                     name, "distance", d, "consumer");
             CommUtils.outblue(name + " | sends request " + i + " " + connSupport);
-            IApplMessage answer = connSupport.request(req);  //raise exception
+            IApplMessage answer = connSpuport.request(req);  //raise exception
             CommUtils.outblue(name + " | answer=" + answer);
             CommUtils.delay(2000);
         }

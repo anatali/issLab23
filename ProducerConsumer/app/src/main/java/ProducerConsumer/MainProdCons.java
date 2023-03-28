@@ -29,8 +29,10 @@ public class MainProdCons {
 
         //Sottosistemi di produzione
         ProducerLogic prodLogic = new ProducerLogic();
-        ProducerCaller prod1 = new ProducerCaller("prod1", prodLogic, protocol, hostAddr, ""+port);
-        ProducerCaller prod2 = new ProducerCaller("prod2", prodLogic, protocol, hostAddr, ""+port);
+        ProducerCaller prod1 = new ProducerCaller(
+                "prod1", prodLogic, protocol, hostAddr, ""+port);
+        ProducerCaller prod2 = new ProducerCaller(
+                "prod2", prodLogic, protocol, hostAddr, ""+port);
 
         //Sottosistmea di consumazione
         ConsumerLogic consunerLogic = new ConsumerLogic();

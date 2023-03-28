@@ -23,8 +23,11 @@ private ConsumerLogic consunerLogic;
             String d = message.msgContent();
             String m = consunerLogic.evalDistance( d ) ;
             //CommUtils.outgreen(m);
-            IApplMessage reply = CommUtils.buildReply("consumer", "outdata", m, message.msgSender());
-            conn.reply( reply );
+            if(message.isRequest()){
+                IApplMessage reply = CommUtils.buildReply(
+                        "consumer", "outdata", m, message.msgSender());
+                conn.reply( reply );
+            }  else CommUtils.outred(name + "elaborate ERROR: not a request");
         } catch (Exception e) {
              e.printStackTrace();
         }

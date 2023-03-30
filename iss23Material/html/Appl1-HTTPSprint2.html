@@ -63,7 +63,7 @@ introducendo</p>
 <ul class="simple">
 <li><p>realizzi una fase <span class="remark">reattiva</span>, in cui
 il robot deve poter gestire i comandi <em>stop/resume</em> mentre sta percorrendo il perimetro della stanza.</p></li>
-<li><p>sia predisposta ad operare in seguito a comandi inviati da <a class="reference internal" href="Applicazione1-HTTP-Distribuita.html#cmdconsole"><span class="std std-ref">CmdConsole</span></a>.</p></li>
+<li><p>sia predisposta ad operare in seguito a comandi inviati da <span class="xref std std-ref">CmdConsole</span>.</p></li>
 </ul>
 <p>In questo Sprint:</p>
 <ul class="simple">
@@ -216,12 +216,12 @@ resettata a <code class="docutils literal notranslate"><span class="pre">false</
 </pre></div>
 </div>
 <p>Per testare la correttezza della logica applicativa in un <span class="blue">ambiente locale</span>, senza le complicazioni della distribuzione,
-introduciamo un simulatore della <a class="reference internal" href="Applicazione1-HTTP-Distribuita.html#cmdconsole"><span class="std std-ref">CmdConsole</span></a>, che interagisce direttamente con il POJO <a class="reference internal" href="#appl1core"><span class="std std-ref">Appl1Core</span></a>,
+introduciamo un simulatore della <span class="xref std std-ref">CmdConsole</span>, che interagisce direttamente con il POJO <a class="reference internal" href="#appl1core"><span class="std std-ref">Appl1Core</span></a>,
 invocandone i metodi <a class="reference internal" href="#unibo-appl1-common-iappl1core"><span class="std std-ref">IAppl1Core</span></a>.</p>
 </section>
 <section id="unibo-console-cmdconsolesimulator">
 <h3>unibo.console.CmdConsoleSimulator<a class="headerlink" href="#unibo-console-cmdconsolesimulator" title="Permalink to this headline">¶</a></h3>
-<p>Un semplice simulatore della <a class="reference internal" href="Applicazione1-HTTP-Distribuita.html#cmdconsole"><span class="std std-ref">CmdConsole</span></a> crea un processo per inviare a <a class="reference internal" href="#appl1core"><span class="std std-ref">Appl1Core</span></a> una sequenza di comandi
+<p>Un semplice simulatore della <span class="xref std std-ref">CmdConsole</span> crea un processo per inviare a <a class="reference internal" href="#appl1core"><span class="std std-ref">Appl1Core</span></a> una sequenza di comandi
 <code class="docutils literal notranslate"><span class="pre">stop/resume</span></code> e poi invoca il metodo <code class="docutils literal notranslate"><span class="pre">start</span></code> del POJO applicativo.</p>
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CmdConsoleSimulator</span> <span class="p">{</span>
 <span class="kd">private</span>  <span class="n">Appl1Core</span> <span class="n">appl</span><span class="p">;</span>
@@ -580,7 +580,7 @@ lo scheletro di un observer che lascia non specificato il metodo <code class="do
 </pre></div>
 </div>
 <p><span class="slide1">Un osservatore per il path</span></p>
-<p>Specializziamo dunque la classe <a class="reference internal" href="unibo.basicomm23.html#applabstractobserver"><span class="std std-ref">ApplAbstractObserver</span></a> per <span class="blue">definire un osservatore</span>
+<p>Specializziamo dunque la classe <span class="xref std std-ref">ApplAbstractObserver</span> per <span class="blue">definire un osservatore</span>
 di <a class="reference internal" href="#appl1core"><span class="std std-ref">Appl1Core</span></a>, che abbiamo già menzionato
 nella <a class="reference internal" href="#appl1core-observable-configure"><span class="std std-ref">fase di configurazione</span></a>
 del POJO applicativo osservabile.</p>
@@ -1037,7 +1037,7 @@ da una classe  <code class="docutils literal notranslate"><span class="pre">unib
 </pre></div>
 </div>
 <p><span class="slide1">——————————————————–</span></p>
-<p><span class="slide">Refactoring verso il deployoment</span></p>
+<p><span class="slide">Refactoring verso il deployment</span></p>
 </section>
 </section>
 <section id="verso-una-migliore-user-experience">
@@ -1085,7 +1085,8 @@ da una classe  <code class="docutils literal notranslate"><span class="pre">unib
 <ul class="simple">
 <li><p>La configurazione dell’applicazione viene fissata leggendo informazioni da un file di nome <code class="docutils literal notranslate"><span class="pre">sprint3Config.json</span></code></p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;virtualrobotip&quot;</span><span class="p">:</span><span class="s2">&quot;192.168.1.132&quot;</span><span class="p">,</span> <span class="s2">&quot;virtualrobotconn&quot;</span><span class="p">:</span><span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="s2">&quot;steptime&quot;</span><span class="p">:</span><span class="s2">&quot;370&quot;</span><span class="p">,</span> <span class="s2">&quot;pathobs&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span> <span class="s2">&quot;robotstateobs&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;virtualrobotip&quot;</span><span class="p">:</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;virtualrobotconn&quot;</span><span class="p">:</span><span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="s2">&quot;steptime&quot;</span><span class="p">:</span><span class="s2">&quot;370&quot;</span><span class="p">,</span> <span class="s2">&quot;pathobs&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span> <span class="s2">&quot;robotstateobs&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>I parametri di configurazione definiscono:</p>

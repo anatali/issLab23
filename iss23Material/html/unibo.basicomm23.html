@@ -19,7 +19,9 @@
     <script src="_static/sidebar.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Appl1-HTTPSprint3" href="Appl1-HTTPSprint3.html" />
+    <link rel="prev" title="Interaction" href="Interaction.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -27,6 +29,12 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Appl1-HTTPSprint3.html" title="Appl1-HTTPSprint3"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Interaction.html" title="Interaction"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">unibo.basicomm23</a></li> 
       </ul>
@@ -102,7 +110,7 @@ uno <span class="blue">standard interno</span> sulla struttura delle informazion
 <p>Un oggetto che implementa l’interfaccia <em>IApplMsgHandler</em> deve essere definito dall’application designer per
 specificare, data una <a class="reference internal" href="Interaction.html#interaction"><span class="std std-ref">Interaction</span></a>  <code class="docutils literal notranslate"><span class="pre">conn</span></code>, come gestire un messaggio ricevuto (metodo <code class="docutils literal notranslate"><span class="pre">elaborate</span></code>)
 e come inviare repliche o risposte al chiamante su <code class="docutils literal notranslate"><span class="pre">conn</span></code>.</p>
-<p>Oggetti di questo tipo sono usati dai server forniti da <a class="reference internal" href="#unibo-basicomm23-enablers-severfactory"><span class="std std-ref">SeverFactory</span></a>.</p>
+<p>Oggetti di questo tipo sono usati dai server forniti da <span class="xref std std-ref">ServerFactory</span>.</p>
 <p><span class="slide">Protocolli</span></p>
 </section>
 </section>
@@ -156,6 +164,44 @@ Al momento sono disponibili:</p>
 <li><p>SerialConnection (todo)</p></li>
 <li><p>BluetoothConnection (todo)</p></li>
 </ul>
+<p>Queste classi specializzano la classe astratta  <a class="reference internal" href="#unibo-basicomm23-utils-connection"><span class="std std-ref">unibo.basicomm23.utils.Connection</span></a>
+che gestisce messaggi di tipo <a class="reference internal" href="#unibo-interaction-interfaces-iapplmessage"><span class="std std-ref">IApplMessage</span></a>
+realizzando i metodi che trattano messaggi di tipo <code class="docutils literal notranslate"><span class="pre">String</span></code>.</p>
+</section>
+<section id="unibo-basicomm23-utils-connection">
+<h3>unibo.basicomm23.utils.Connection<a class="headerlink" href="#unibo-basicomm23-utils-connection" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">abstract</span> <span class="k">class</span> <span class="nc">Connection</span> <span class="n">implements</span> <span class="n">Interaction</span> <span class="p">{</span>
+    <span class="nd">@Override</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">forward</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="n">forward</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">toString</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nd">@Override</span>
+    <span class="n">public</span> <span class="n">IApplMessage</span> <span class="n">request</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">request</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">toString</span><span class="p">());</span>
+        <span class="k">return</span> <span class="n">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">answer</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nd">@Override</span>
+    <span class="n">public</span> <span class="n">IApplMessage</span> <span class="n">receive</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span><span class="p">{</span>
+        <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">receiveMsg</span><span class="p">();</span>
+        <span class="k">return</span> <span class="n">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nd">@Override</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">reply</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="n">reply</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">toString</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="nd">@Override</span>
+    <span class="n">public</span> <span class="n">abstract</span> <span class="n">void</span> <span class="n">forward</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span><span class="p">;</span>
+    <span class="nd">@Override</span>
+    <span class="n">public</span> <span class="n">abstract</span> <span class="n">String</span> <span class="n">request</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span><span class="p">;</span>
+    <span class="nd">@Override</span>
+    <span class="n">public</span> <span class="n">abstract</span> <span class="n">void</span> <span class="n">reply</span><span class="p">(</span><span class="n">String</span> <span class="n">reqid</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span><span class="p">;</span>
+    <span class="nd">@Override</span>
+    <span class="n">public</span> <span class="n">abstract</span> <span class="n">String</span> <span class="n">receiveMsg</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span><span class="p">;</span>
+    <span class="nd">@Override</span>
+    <span class="n">public</span> <span class="n">abstract</span> <span class="n">void</span> <span class="n">close</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p><span class="slide">Abilitatori</span></p>
 <p>I componenti di un sistema distribuito devono, di norma, essere capaci di</p>
 <ol class="arabic simple">
@@ -172,12 +218,12 @@ una sorta di ‘enti abilitatori’ alle comunicazioni.</p>
 <p>Parliamo di classi che abilitano alle comunicazioni per enfatizzare il fatto che queste classi
 <span class="remark">non includono logica applicativa</span>.</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#severfactory"><span class="std std-ref">SeverFactory</span></a>: costruisce server legati a speoifici protocolli.</p></li>
+<li><p><a class="reference internal" href="#serverfactory"><span class="std std-ref">ServerFactory</span></a>: costruisce server legati a speoifici protocolli.</p></li>
 <li><p><a class="reference internal" href="#actornaivecaller"><span class="std std-ref">ActorNaiveCaller</span></a>: fornisce supporto per inviare messaggi a un server.</p></li>
 </ul>
 <p><span class="slide1">Abilitatori per la ricezione</span></p>
-<section id="severfactory">
-<h3>SeverFactory<a class="headerlink" href="#severfactory" title="Permalink to this headline">¶</a></h3>
+<section id="serverfactory">
+<h3>ServerFactory<a class="headerlink" href="#serverfactory" title="Permalink to this headline">¶</a></h3>
 <p>Costruisce server  che danno la capacità di ricevere messaggi usando uno dei protocolli definiti
 in <a class="reference internal" href="#unibo-basicomm23-msg-protocoltype"><span class="std std-ref">ProtocolType</span></a>.</p>
 <section id="unibo-basicomm23-enablers-severfactory">
@@ -261,10 +307,8 @@ secondo il seguente schema architetturale:</p>
 </div>
 <p>Il server pone in esecuzione un consumatore di informazione, la cui logica applicativa è definita nella classe
 <span class="blue">ConsumerLogic</span>; la reponsibilità di gestire i messaggi ricevuti dal
-<a class="reference internal" href="#unibo-basicomm23-enablers-connectionhandler"><span class="std std-ref">ConnectionHandler</span></a></p>
-<blockquote>
-<div><p>è di <span class="blue">ConsumerMsgHandler</span>.</p>
-</div></blockquote>
+<a class="reference internal" href="#unibo-basicomm23-enablers-connectionhandler"><span class="std std-ref">ConnectionHandler</span></a>
+è di <span class="blue">ConsumerMsgHandler</span>.</p>
 <section id="unibo-basicomm23-examples-prodcons-consumermsghandler">
 <h5>unibo.basicomm23.examples.prodcons.ConsumerMsgHandler<a class="headerlink" href="#unibo-basicomm23-examples-prodcons-consumermsghandler" title="Permalink to this headline">¶</a></h5>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">ConsumerMsgHandler</span> <span class="n">extends</span> <span class="n">ApplMsgHandler</span> <span class="p">{</span>
@@ -529,7 +573,10 @@ definiamo un main program di configurazione del sistema.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><span class="slide1">Verso gli attori</span></p>
+<p><span class="slide1">Attori</span></p>
+</section>
+<section id="verso-gli-attori">
+<h3>Verso gli attori<a class="headerlink" href="#verso-gli-attori" title="Permalink to this headline">¶</a></h3>
 <p>Una specifica più compatta del sistema si ottiene incapsulando in opportune classi le configurazioni
 dei sottosistemi di produzione e consumazione.</p>
 <a class="reference internal image-reference" href="_images/ProdCons.PNG"><img alt="_images/ProdCons.PNG" class="align-center" src="_images/ProdCons.PNG" style="width: 55%;" /></a>
@@ -626,10 +673,11 @@ in grado di inviare/ricevere messaggi.</p>
 </li>
 <li><a class="reference internal" href="#unibo-basicomm23-msg-protocoltype">unibo.basicomm23.msg.ProtocolType</a><ul>
 <li><a class="reference internal" href="#unibo-basicomm23-utils-connectionfactory">unibo.basicomm23.utils.ConnectionFactory</a></li>
+<li><a class="reference internal" href="#unibo-basicomm23-utils-connection">unibo.basicomm23.utils.Connection</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#abilitatori-di-comunicazione">Abilitatori di comunicazione</a><ul>
-<li><a class="reference internal" href="#severfactory">SeverFactory</a><ul>
+<li><a class="reference internal" href="#serverfactory">ServerFactory</a><ul>
 <li><a class="reference internal" href="#unibo-basicomm23-enablers-severfactory">unibo.basicomm23.enablers.SeverFactory</a></li>
 <li><a class="reference internal" href="#unibo-basicomm23-enablers-connectionhandler">unibo.basicomm23.enablers.ConnectionHandler</a></li>
 <li><a class="reference internal" href="#esempio-di-creazione-di-un-server">Esempio di creazione di un server</a><ul>
@@ -661,6 +709,7 @@ in grado di inviare/ricevere messaggi.</p>
 </li>
 <li><a class="reference internal" href="#esempi-di-uso-di-basicomm23">Esempi di uso di basicomm23</a><ul>
 <li><a class="reference internal" href="#unibo-basicomm23-examples-mainprodcons">unibo.basicomm23.examples.MainProdCons</a></li>
+<li><a class="reference internal" href="#verso-gli-attori">Verso gli attori</a></li>
 <li><a class="reference internal" href="#producer">Producer</a></li>
 <li><a class="reference internal" href="#consumer">Consumer</a></li>
 <li><a class="reference internal" href="#unibo-basicomm23-examples-pingpong">unibo.basicomm23.examples.pingpong</a></li>
@@ -670,6 +719,16 @@ in grado di inviare/ricevere messaggi.</p>
 </li>
 </ul>
 
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Interaction.html"
+                          title="previous chapter">Interaction</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="Appl1-HTTPSprint3.html"
+                          title="next chapter">Appl1-HTTPSprint3</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -698,6 +757,12 @@ in grado di inviare/ricevere messaggi.</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="Appl1-HTTPSprint3.html" title="Appl1-HTTPSprint3"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Interaction.html" title="Interaction"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">unibo.basicomm23</a></li> 
       </ul>

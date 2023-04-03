@@ -23,8 +23,14 @@ dependencies {
     //JSON
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
+    //SOCKET.IO (for WEnv Sprint3WS)
+    implementation group: 'javax.websocket', name: 'javax.websocket-api', version: '1.1'
+    //javax.websocket api is only the specification
+    implementation group: 'org.glassfish.tyrus.bundles', name: 'tyrus-standalone-client', version: '1.9'
+
     //CUSTOM unibo
     implementation name: 'unibo.basicomm23-1.0'
+    implementation name: '2p301'  //for Sprint3
 }
 
 application {

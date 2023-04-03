@@ -1,0 +1,10 @@
+version: '3'
+services:
+  appl1httpsprint3:
+    image: appl1httpsprint3:1.0
+    ports:
+      - 8030:8030
+
+## docker-compose -f appl1httpsprint3.yaml up
+## docker-compose down
+

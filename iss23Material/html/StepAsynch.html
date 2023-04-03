@@ -1,0 +1,504 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>StepAsynch &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Appunti su tecnologie" href="AppuntiTecnologie.html" />
+    <link rel="prev" title="Appl1-WSSprint3" href="Appl1-WSSprint3.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Appl1-WSSprint3.html" title="Appl1-WSSprint3"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">StepAsynch</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="stepasynch">
+<h1>StepAsynch<a class="headerlink" href="#stepasynch" title="Permalink to this headline">¶</a></h1>
+<p>Nella versione sincrona, il metodo <em>step</em> è stato definito nel supporto
+<a class="reference internal" href="Appl1-WSSprint3.html#unibo-supports-vrobothlmovesinteractionasynch"><span class="std std-ref">unibo.supports.VrobotHLMovesInteractionAsynch</span></a> in modo tale da eseguire una richiesta bloccante,
+pur avendo inviato sulla WebSocket un messaggio in modo asincrono.</p>
+<section id="lo-step-sincrono">
+<h2>Lo step sincrono<a class="headerlink" href="#lo-step-sincrono" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="n">public</span> <span class="n">boolean</span> <span class="n">step</span><span class="p">(</span><span class="nb">int</span> <span class="n">time</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">cmd</span>    <span class="o">=</span>  <span class="n">VrobotMsgs</span><span class="o">.</span><span class="n">forwardcmd</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;TIME&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="o">+</span><span class="n">time</span><span class="p">);</span>
+    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">request</span><span class="p">(</span> <span class="n">cmd</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="la-request-sincrona">
+<h3>La request sincrona<a class="headerlink" href="#la-request-sincrona" title="Permalink to this headline">¶</a></h3>
+<p>L’operazione request invia al robot un comando in modo <span class="blue">asincrono</span>, avvelendosi del supporto
+<code class="docutils literal notranslate"><span class="pre">wsCommSupport</span></code> per <a class="reference internal" href="Interaction2021-HTTP-WS.html#wsconnection"><span class="std std-ref">WsConnection</span></a>:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Interaction2021</span> <span class="n">wsCommSupport</span><span class="p">;</span>
+<span class="n">String</span> <span class="n">moveResult</span><span class="p">;</span>
+<span class="n">public</span> <span class="n">String</span> <span class="n">request</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+  <span class="n">moveResult</span>   <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+  <span class="n">wsCommSupport</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span> <span class="n">msg</span> <span class="p">);</span>             <span class="o">//</span><span class="n">FASE1</span>
+  <span class="n">synchronized</span><span class="p">(</span><span class="n">this</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">while</span><span class="p">(</span>  <span class="n">moveResult</span> <span class="o">==</span> <span class="n">null</span> <span class="p">)</span> <span class="p">{</span> <span class="n">wait</span><span class="p">();</span> <span class="p">}</span> <span class="o">//</span><span class="n">FASE2</span>
+    <span class="k">return</span> <span class="n">moveResult</span><span class="p">;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Dopo la FASE1,
+la <em>request</em>  si blocca (FASE2)  in attesa che <a class="reference internal" href="Appl1-WSSprint3.html#unibo-supports-vrobothlmovesinteractionasynch"><span class="std std-ref">VrobotHLMovesInteractionAsynch</span></a>, agendo
+come <span class="blue">osservatore</span> della <a class="reference internal" href="Interaction2021-HTTP-WS.html#wsconnection"><span class="std std-ref">WsConnection</span></a>, aggiorni la variabile <code class="docutils literal notranslate"><span class="pre">moveResult</span></code> alla
+ricezione del <a class="reference internal" href="VirtualRobot23.html#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a> relativo alla terminazione del comando inviato in FASE1.</p>
+<p>Questo aggiornamento veniva eseguito dal metodo <a class="reference internal" href="Appl1-WSSprint3.html#vrobothlmovesinteractionasynch-update"><span class="std std-ref">VrobotHLMovesInteractionAsynch.update</span></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="n">public</span> <span class="n">void</span> <span class="n">update</span><span class="p">(</span><span class="n">String</span> <span class="n">info</span><span class="p">)</span> <span class="p">{</span>
+<span class="o">...</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">jsonObj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;endmove&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">boolean</span> <span class="n">endmove</span> <span class="o">=</span> <span class="n">jsonObj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;endmove&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">()</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">);</span>
+    <span class="n">String</span>  <span class="n">move</span>    <span class="o">=</span> <span class="n">jsonObj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;move&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+    <span class="n">synchronized</span><span class="p">(</span><span class="n">this</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">moveResult</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="n">endmove</span><span class="p">;</span>
+        <span class="n">notifyAll</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">return</span><span class="p">;</span>
+   <span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">Attenzione ai Thread</span></p>
+<p>Notiamo che:</p>
+<ul class="simple">
+<li><p>il metodo <code class="docutils literal notranslate"><span class="pre">request</span></code> (invcato da <code class="docutils literal notranslate"><span class="pre">step</span></code>) viene chiamato dall’applicazione e quindi eseguito nel Thread applicativo;</p></li>
+<li><p>il metodo <code class="docutils literal notranslate"><span class="pre">update</span></code> viene eseguito nel Thread (di nome <em>Grizzly</em>) della libreria di supporto alle WebSocket.</p></li>
+</ul>
+</section>
+<section id="messaggi-statocomando">
+<h3>messaggi-statocomando<a class="headerlink" href="#messaggi-statocomando" title="Permalink to this headline">¶</a></h3>
+<p>La forma dei messaggi di stato relativa alla terminazione del comando è:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;endmove&quot;</span><span class="p">:</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;move&quot;</span><span class="p">:</span><span class="s2">&quot;moveForward&quot;</span><span class="p">}</span>             <span class="o">//</span><span class="n">SUCESSO</span>
+<span class="p">{</span><span class="s2">&quot;endmove&quot;</span><span class="p">:</span><span class="s2">&quot;false&quot;</span><span class="p">,</span><span class="s2">&quot;move&quot;</span><span class="p">:</span><span class="s2">&quot;moveForward-collision&quot;</span><span class="p">}</span>   <span class="o">//</span><span class="n">FALLIMENTO</span>
+</pre></div>
+</div>
+<p>D’ora in avanti, denomineremo questi messaggi come <span class="remark">messaggi-statocomando</span>.</p>
+</section>
+</section>
+<section id="id1">
+<h2>stepAsynch<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Introduciamo ora una nuova operazione <em>stepAsynch</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">void</span> <span class="n">stepAsynch</span><span class="p">(</span> <span class="nb">int</span> <span class="n">time</span>  <span class="p">)</span> <span class="p">{</span>
+   <span class="o">...</span>
+   <span class="n">wsCommSupport</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">VrobotMsgs</span><span class="o">.</span><span class="n">forwardcmd</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;TIME&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="n">time</span><span class="p">));</span>
+   <span class="o">//</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="n">Non</span> <span class="n">più</span> <span class="n">attesa</span> <span class="n">ma</span> <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>L’idea di <em>step asincrono</em>  consiste nel pensare che:</p>
+<ol class="arabic simple">
+<li><p>siano definite le <em>azioni applicative</em> da svolgere nel caso di <em>step</em> che termina con sucesso  (<code class="docutils literal notranslate"><span class="pre">stepok</span></code>)
+e di <em>step</em> che fallisce per via di una collisione (<code class="docutils literal notranslate"><span class="pre">stepfail</span></code>);</p></li>
+<li><p>queste azioni siano attivate dopo che il supporto
+<a class="reference internal" href="Appl1-WSSprint3.html#unibo-supports-vrobothlmovesinteractionasynch"><span class="std std-ref">VrobotHLMovesInteractionAsynch</span></a>
+ha osservato i <a class="reference internal" href="#messaggi-statocomando"><span class="std std-ref">messaggi-statocomando</span></a>.</p></li>
+</ol>
+<section id="azioni-applicative-di-callback">
+<h3>Azioni applicative (di callback)<a class="headerlink" href="#azioni-applicative-di-callback" title="Permalink to this headline">¶</a></h3>
+<p>Gli esecutori delle azioni applicative,
+possono essere definiti come oggetti che implementano l’interfaccia <a class="reference internal" href="#unibo-appl1-common-iapplaction"><span class="std std-ref">IApplAction</span></a>.</p>
+<section id="unibo-appl1-common-iapplaction">
+<h4>unibo.appl1.common.IApplAction<a class="headerlink" href="#unibo-appl1-common-iapplaction" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IApplAction</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span>  <span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">Azioni di callback</span></p>
+<p>Le azioni applicative operano come <span class="blue">funzioni di callback</span> quando:</p>
+<ol class="arabic simple">
+<li><p>sono eseguite dal supporto <a class="reference internal" href="Appl1-WSSprint3.html#unibo-supports-vrobothlmovesinteractionasynch"><span class="std std-ref">VrobotHLMovesInteractionAsynch</span></a>,
+in modo simile a quanto fanno framework come <a class="reference external" href="https://nodejs.org/it/">Node.js</a>; oppure quando:</p></li>
+<li><p>sono eseguite dalla applicazione stessa, una volta che il supporto le abbia notificato la ricezione dei
+<a class="reference internal" href="#messaggi-statocomando"><span class="std std-ref">messaggi-statocomando</span></a>.</p></li>
+</ol>
+<p><span class="slide1">Relazione supporto-applicazione</span></p>
+<p>La esecuzione di una azione di callback da parte del supporto risulta problematica in quanto
+il metodo <code class="docutils literal notranslate"><span class="pre">update</span></code> viene eseguito nel Thread  <em>Grizzly</em> della libreria di supporto alle WebSocket.
+Per non perdere le informazioni di contesto, è opportuno (in pratica indispensabile) che:</p>
+<p><span class="slide2">le callback siano eseguite nel Thread applicativo</span></p>
+<p>Per ottenere lo scopo, impostiamo la relazione supporto-applicazione pensando al  supporto
+(che gira nel Thread  <em>Grizzly</em>)
+come produttore di informazione e l’applicazione (nel suo proprio Thread) come consumatore.</p>
+<p>I due Thread comunicano mediante una coda di messaggi.</p>
+<p>Il codice di <a class="reference internal" href="#id1"><span class="std std-ref">stepAsynch</span></a> (eseguito nel Thread applicativo) è ora completo:
+al punto (1) non dobbiamo più scrivere nulla.</p>
+<p><span class="slide2">La coda dei messaggi per l’applicazione</span></p>
+</section>
+</section>
+<section id="msgqueue">
+<h3>msgQueue<a class="headerlink" href="#msgqueue" title="Permalink to this headline">¶</a></h3>
+<p>La coda <code class="docutils literal notranslate"><span class="pre">msgQueue</span></code> di ingresso alla applicazione-attore,
+viene fornita al supporto dall’applicazione tramite un apposito metodo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">msgQueue</span><span class="p">;</span>
+
+<span class="n">public</span> <span class="n">void</span> <span class="n">setMsgQueue</span><span class="p">(</span><span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">msgQueue</span><span class="p">){</span>
+    <span class="n">this</span><span class="o">.</span><span class="n">msgQueue</span> <span class="o">=</span> <span class="n">msgQueue</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">Applicazione: actor consumatore di messaggi</span></p>
+<p>L’applicazione viene reimpostata in modo da eseguire una azione (che termina) alla volta, agendo come
+consumatore di una unica coda di messaggi di ingresso. Quindi anche l’applicazione diventa modellata
+come un <a class="reference internal" href="unibo.basicomm23.html#verso-gli-attori"><span class="std std-ref">actor</span></a>.</p>
+<a class="reference internal image-reference" href="_images/Appl1CoreActorlike.png"><img alt="_images/Appl1CoreActorlike.png" class="align-center" src="_images/Appl1CoreActorlike.png" style="width: 30%;" /></a>
+<p><span class="slide2">Il supporto-WS come produttore di messaggi-esitocomando</span></p>
+</section>
+<section id="vrobothlmovesinteractionasynch-update-come-produttore">
+<h3>VrobotHLMovesInteractionAsynch.update come produttore<a class="headerlink" href="#vrobothlmovesinteractionasynch-update-come-produttore" title="Permalink to this headline">¶</a></h3>
+<p>La nuova forma del metodo <code class="docutils literal notranslate"><span class="pre">update</span></code> del supporto
+depone un <a class="reference internal" href="#messaggio-esitocomando"><span class="std std-ref">messaggio-esitocomando</span></a> nella di comunicazione con l’applicazione.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="n">public</span> <span class="n">void</span> <span class="n">update</span><span class="p">(</span><span class="n">String</span> <span class="n">info</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">elapsed</span> <span class="o">=</span> <span class="n">getDuration</span><span class="p">();</span> <span class="o">//</span><span class="n">Tempo</span> <span class="n">trascorso</span> <span class="n">dalla</span> <span class="n">invocazione</span> <span class="n">di</span> <span class="n">stepAsynch</span>
+   <span class="n">JSONObject</span> <span class="n">jsonObj</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">parseForJson</span><span class="p">(</span><span class="n">info</span><span class="p">);</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;_notallowed&quot;</span><span class="p">))</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">jsonObj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;endmove&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">boolean</span> <span class="n">endmove</span> <span class="o">=</span> <span class="n">jsonObj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;endmove&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">()</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">);</span>
+        <span class="n">String</span> <span class="n">move</span> <span class="o">=</span> <span class="n">jsonObj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;move&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">endmove</span> <span class="p">){</span>
+            <span class="n">msgQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s2">&quot;stepdone(&quot;</span> <span class="o">+</span> <span class="n">elapsed</span>  <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">);</span>
+        <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">move</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;collision&quot;</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">msgQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s2">&quot;stepfailed(&quot;</span> <span class="o">+</span> <span class="n">elapsed</span>  <span class="o">+</span> <span class="s2">&quot;, collision )&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="o">//</span><span class="n">Altri</span> <span class="n">messaggi</span> <span class="n">di</span> <span class="n">stato</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<p>I messaggi depositati da update sono detti <span class="remark">messaggi-esitocomando</span>.</p>
+</section>
+<section id="messaggio-esitocomando">
+<h3>messaggio-esitocomando<a class="headerlink" href="#messaggio-esitocomando" title="Permalink to this headline">¶</a></h3>
+<p>Un messaggio relativo all’esito di un comando di movimento del robot può assumere
+una delle due forme seguenti:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stepok</span><span class="p">:</span><span class="n">stepdone</span><span class="p">(</span><span class="n">STEPTIME</span><span class="p">)</span>
+<span class="n">stepfail</span><span class="p">:</span><span class="n">stepfailed</span><span class="p">(</span><span class="n">STEPTIME</span><span class="p">,</span> <span class="n">collision</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Un messaggio di questo tipo
+viene sempre sempre inviato al termine del tempo <code class="docutils literal notranslate"><span class="pre">STEPTIME</span></code> specificato per lo <em>stepAsynch</em>
+per evitare di incorrere nel problema di mossa <a class="reference internal" href="VirtualRobot23.html#messaggio-di-stato"><span class="std std-ref">not-allowed</span></a>.</p>
+<p><span class="slide2">Invio di messaggi di stato</span></p>
+<p>Tuttavia, ora è aperta la via per inviare sulla <code class="docutils literal notranslate"><span class="pre">msgQueue</span></code> applicativa altri messaggi di stato, tra cui
+ovvimente messaggi che denotano una collisione e messaggi di rilevazione-dati del sonar.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="n">public</span> <span class="n">void</span> <span class="n">update</span><span class="p">(</span><span class="n">String</span> <span class="n">info</span><span class="p">)</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">//</span><span class="n">Altri</span> <span class="n">messaggi</span> <span class="n">di</span> <span class="n">stato</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">jsonObj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sonarName&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">long</span> <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">long</span><span class="p">)</span> <span class="n">jsonObj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;distance&quot;</span><span class="p">);</span>
+    <span class="n">msgQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s2">&quot;sonar(&quot;</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="s2">&quot; )&quot;</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">jsonObj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;collision&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">msgQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s2">&quot;collision(&quot;</span> <span class="o">+</span> <span class="n">elapsed</span> <span class="o">+</span> <span class="s2">&quot; )&quot;</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">Applicazione message-driven</span></p>
+</section>
+</section>
+<section id="applicazione-come-actor">
+<h2>Applicazione come actor<a class="headerlink" href="#applicazione-come-actor" title="Permalink to this headline">¶</a></h2>
+<p>La versione che usa <a class="reference internal" href="#id1"><span class="std std-ref">stepAsynch</span></a> può essere ottenuta come specializzazione della
+<a class="reference internal" href="Appl1-HTTPSprint2.html#appl1core"><span class="std std-ref">Appl1Core</span></a> .</p>
+<section id="unibo-appl1-ws-appl1corestepasynch">
+<h3>unibo.appl1.ws.Appl1CoreStepAsynch<a class="headerlink" href="#unibo-appl1-ws-appl1corestepasynch" title="Permalink to this headline">¶</a></h3>
+<p>Per impostare l’applicazione come un attore dotato di un proprio Thread, che esegue una azione alla volta
+in accordo al messaggio ricevuto sulla sua coda di ingresso,
+modifichiamo il metodo <code class="docutils literal notranslate"><span class="pre">start</span></code> aggiungendo alla configurazione</p>
+<ol class="arabic simple">
+<li><p>la iniezione della coda <a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a> nel supporto
+<a class="reference internal" href="Appl1-WSSprint3.html#unibo-supports-vrobothlmovesinteractionasynch"><span class="std std-ref">VrobotHLMovesInteractionAsynch</span></a>;</p></li>
+<li><p>l’immmissione nella coda di un messaggio <span class="blue">activateAppl</span> per attivare la fase proattiva;</p></li>
+<li><p>l’immmissione (opzionale, a scopo dimostrativo) di un di un messaggio <span class="blue">startBackground</span> per
+attivare una uletriore azione locale;</p></li>
+<li><p>l’attivazione del thread che esegue il <span class="remark">mainLoop</span> applicativo di consumazione dei messaggi.</p></li>
+</ol>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Appl1CoreActorlike</span> <span class="kd">extends</span> <span class="n">Appl1Core</span> <span class="p">{</span>
+<span class="kd">protected</span> <span class="kt">int</span> <span class="n">NSteps</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kd">protected</span> <span class="kt">int</span> <span class="n">NEdges</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kd">protected</span> <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">msgQueue</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedBlockingDeque</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="p">(</span>   <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="o">!</span> <span class="n">started</span> <span class="o">||</span> <span class="o">!</span> <span class="n">isRunning</span><span class="p">){</span>
+        <span class="n">isRunning</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="n">started</span>   <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="n">stopped</span>   <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="n">configure</span><span class="p">();</span>
+        <span class="p">((</span><span class="n">VrobotHLMovesInteractionAsynch</span><span class="p">)</span><span class="n">vr</span><span class="p">).</span><span class="na">setMsgQueue</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">msgQueue</span><span class="p">);</span>
+        <span class="n">msgQueue</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;activateAppl&quot;</span><span class="p">);</span>
+        <span class="n">msgQueue</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;startBackground&quot;</span><span class="p">);</span>
+        <span class="k">new</span> <span class="n">Thread</span><span class="p">(){</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="p">(){</span>
+                <span class="n">mainLoop</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}.</span><span class="na">start</span><span class="p">();</span>
+
+    <span class="p">}</span><span class="k">else</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">outred</span><span class="p">(</span><span class="s">&quot;Appl1Core |  already started&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="mainloop">
+<h3>mainLoop<a class="headerlink" href="#mainloop" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">mainLoop</span><span class="p">(){</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="k">while</span><span class="p">(</span> <span class="n">true</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">msgQueue</span><span class="o">.</span><span class="n">take</span><span class="p">();</span>
+            <span class="n">elabMsg</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">protected</span> <span class="n">void</span> <span class="n">elabMsg</span><span class="p">(</span> <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+<span class="o">//</span><span class="n">MESSAGGI</span> <span class="n">DI</span> <span class="n">ATTIVAZIONE</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;activateAppl&quot;</span><span class="p">)){</span>
+        <span class="n">doStepAsynch</span><span class="p">();</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;startBackground&quot;</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">backgroundJob</span><span class="p">();</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="o">//</span><span class="n">MESSAGGI</span> <span class="n">DI</span> <span class="n">esitocomando</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">startsWith</span><span class="p">(</span><span class="s2">&quot;stepdone&quot;</span><span class="p">)){</span>
+        <span class="n">stepok</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">startsWith</span><span class="p">(</span><span class="s2">&quot;stepfailed&quot;</span><span class="p">)</span> <span class="p">){</span>
+        <span class="n">stepfail</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="o">//</span><span class="n">MESSAGGI</span> <span class="n">DI</span> <span class="n">STATO</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">startsWith</span><span class="p">(</span><span class="s2">&quot;collision&quot;</span><span class="p">)){</span>
+        <span class="n">CommUtils</span><span class="o">.</span><span class="n">outred</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%%% e</span><span class="s2">lab COLLISION&quot;</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">startsWith</span><span class="p">(</span><span class="s2">&quot;sonar&quot;</span><span class="p">)){</span>
+        <span class="n">CommUtils</span><span class="o">.</span><span class="n">outred</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%%% e</span><span class="s2">lab SONAR&quot;</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="dostepasynch">
+<h3>doStepAsynch<a class="headerlink" href="#dostepasynch" title="Permalink to this headline">¶</a></h3>
+<p>Alla ricezione del messaggio <code class="docutils literal notranslate"><span class="pre">activateAppl</span></code>, il <a class="reference internal" href="#mainloop"><span class="std std-ref">mainLoop</span></a> invoca l’operazione del (nuovo) supporto
+che esegue uno step in modo asincrono.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doStepAsynch</span><span class="p">(</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="n">checkStop</span><span class="p">();</span>
+    <span class="n">updateObservers</span><span class="p">(</span><span class="s">&quot;robot-moving&quot;</span><span class="p">);</span>
+    <span class="p">((</span><span class="n">VrobotHLMovesInteractionAsynch</span><span class="p">)</span><span class="n">vr</span><span class="p">).</span><span class="na">stepAsynch</span><span class="p">(</span> <span class="n">stepTime</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">checkStop</span><span class="p">(){</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">stopped</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="n">CommUtils</span><span class="p">.</span><span class="na">beep</span><span class="p">();</span>
+        <span class="n">updateObservers</span><span class="p">(</span><span class="s">&quot;robot-stopped&quot;</span><span class="p">);</span>
+        <span class="n">waitResume</span><span class="p">();</span> <span class="c1">//ereditato</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La continuazione della fase proattiva è legata alla ricezione di un <a class="reference internal" href="#messaggio-esitocomando"><span class="std std-ref">messaggio-esitocomando</span></a> di comando
+<em>stepdone</em> (caso in cui si invoca l’azione <a class="reference internal" href="#stepok"><span class="std std-ref">stepok</span></a>) o <em>stepfailed</em> (caso in cui si invoca l’azione <a class="reference internal" href="#stepfail"><span class="std std-ref">stepfail</span></a>).</p>
+</section>
+<section id="stepok">
+<h3>stepok<a class="headerlink" href="#stepok" title="Permalink to this headline">¶</a></h3>
+<p>L’azione che segue la ricezione di un messaggio di successo <em>stepdone</em> aggiorna in modo opportuno lo stato
+locale e gli osservatori e quindo invoca <a class="reference internal" href="#dostepasynch"><span class="std std-ref">doStepAsynch</span></a>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="n">IApplAction</span> <span class="n">stepok</span>   <span class="o">=</span> <span class="p">(</span><span class="n">msg</span> <span class="o">-&gt;</span> <span class="p">{</span>
+    <span class="k">try</span><span class="p">{</span>
+        <span class="n">CommUtils</span><span class="p">.</span><span class="na">outblue</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+        <span class="n">updateObservers</span><span class="p">(</span><span class="s">&quot;robot-stepdone&quot;</span><span class="p">);</span>
+        <span class="n">checkStop</span><span class="p">();</span>
+        <span class="n">NSteps</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span> <span class="c1">//to view steps better</span>
+        <span class="n">doStepAsynch</span><span class="p">();</span>
+    <span class="p">}</span><span class="k">catch</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">){</span> <span class="p">...</span> <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="stepfail">
+<h3>stepfail<a class="headerlink" href="#stepfail" title="Permalink to this headline">¶</a></h3>
+<p>L’azione che segue la ricezione di un messaggio di successo <em>stepfailed</em> aggiorna in modo opportuno lo stato
+locale  e gli osservatori, esegue una rotazione a sinistra (sincrona) e poi,
+se il cammnino non è terminato, invoca ancora <a class="reference internal" href="#dostepasynch"><span class="std std-ref">doStepAsynch</span></a>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span>  <span class="n">IApplAction</span> <span class="n">stepfail</span> <span class="o">=</span> <span class="p">(</span><span class="n">msg</span> <span class="o">-&gt;</span> <span class="p">{</span>
+    <span class="k">try</span><span class="p">{</span>
+         <span class="n">updateObservers</span><span class="p">(</span><span class="s">&quot;robot-collision&quot;</span><span class="p">);</span>
+        <span class="n">NEdges</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">vr</span><span class="p">.</span><span class="na">turnLeft</span><span class="p">();</span>
+        <span class="n">updateObservers</span><span class="p">(</span><span class="s">&quot;robot-turnLeft&quot;</span><span class="p">);</span>
+        <span class="n">checkStop</span><span class="p">();</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">NEdges</span> <span class="o">&lt;</span> <span class="mi">4</span> <span class="p">)</span> <span class="n">doStepAsynch</span><span class="p">();</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="n">isRunning</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+            <span class="n">NEdges</span>    <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">NSteps</span>    <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">robotMustBeAtHome</span><span class="p">(</span><span class="s">&quot;END&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span><span class="k">catch</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">){</span> <span class="p">...</span> <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="backgroundjob">
+<h3>backgroundJob<a class="headerlink" href="#backgroundjob" title="Permalink to this headline">¶</a></h3>
+<p>Questo metodo simula la presenza di una azione aggiuntiva rispetto al task proattivo,
+per presentare un esempio di interleaving di azioni message-driven.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">backgroundJob</span><span class="p">(){</span>
+  <span class="n">CommUtils</span><span class="o">.</span><span class="n">outblue</span><span class="p">(</span><span class="s2">&quot;--- backgroundJob &quot;</span> <span class="o">+</span> <span class="n">NEdges</span>
+        <span class="o">+</span> <span class="s2">&quot; currentpath=&quot;</span> <span class="o">+</span> <span class="n">getCurrentPath</span><span class="p">()</span>
+        <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">Thread</span><span class="o">.</span><span class="n">currentThread</span><span class="p">()</span><span class="o">.</span><span class="n">getName</span><span class="p">());</span>
+        <span class="k">if</span><span class="p">(</span>  <span class="n">isRunning</span>  <span class="p">)</span> <span class="p">{</span>
+            <span class="n">CommUtils</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span> <span class="o">//</span><span class="n">To</span> <span class="n">simulate</span> <span class="n">an</span> <span class="n">action</span> <span class="o">..</span>
+            <span class="o">//</span><span class="n">CONTINUE</span> <span class="n">THE</span> <span class="n">JOB</span>
+            <span class="n">msgQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s2">&quot;startBackground&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">StepAsynch</a><ul>
+<li><a class="reference internal" href="#lo-step-sincrono">Lo step sincrono</a><ul>
+<li><a class="reference internal" href="#la-request-sincrona">La request sincrona</a></li>
+<li><a class="reference internal" href="#messaggi-statocomando">messaggi-statocomando</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id1">stepAsynch</a><ul>
+<li><a class="reference internal" href="#azioni-applicative-di-callback">Azioni applicative (di callback)</a><ul>
+<li><a class="reference internal" href="#unibo-appl1-common-iapplaction">unibo.appl1.common.IApplAction</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#msgqueue">msgQueue</a></li>
+<li><a class="reference internal" href="#vrobothlmovesinteractionasynch-update-come-produttore">VrobotHLMovesInteractionAsynch.update come produttore</a></li>
+<li><a class="reference internal" href="#messaggio-esitocomando">messaggio-esitocomando</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#applicazione-come-actor">Applicazione come actor</a><ul>
+<li><a class="reference internal" href="#unibo-appl1-ws-appl1corestepasynch">unibo.appl1.ws.Appl1CoreStepAsynch</a></li>
+<li><a class="reference internal" href="#mainloop">mainLoop</a></li>
+<li><a class="reference internal" href="#dostepasynch">doStepAsynch</a></li>
+<li><a class="reference internal" href="#stepok">stepok</a></li>
+<li><a class="reference internal" href="#stepfail">stepfail</a></li>
+<li><a class="reference internal" href="#backgroundjob">backgroundJob</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Appl1-WSSprint3.html"
+                          title="previous chapter">Appl1-WSSprint3</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="AppuntiTecnologie.html"
+                          title="next chapter">Appunti su tecnologie</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/StepAsynch.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Appl1-WSSprint3.html" title="Appl1-WSSprint3"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">StepAsynch</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

@@ -153,7 +153,7 @@ o altro ancora.</p>
 <p>L’oggetto di supporto alle comunicazioni restituito dalla factory implementa l’interfaccia
 <a class="reference internal" href="#unibo-basicomm23-interfaces-interaction"><span class="std std-ref">Interaction</span></a>,
 nascondendo al livello applicativo i dettagli relativi al protocollo.
-Al momento sono disponibili:</p>
+Al momento sono disponibili (si veda <a class="reference internal" href="#connessioni"><span class="std std-ref">Connessioni</span></a>):</p>
 <ul class="simple">
 <li><p>HttpConnection</p></li>
 <li><p>WsConnection</p></li>
@@ -164,7 +164,7 @@ Al momento sono disponibili:</p>
 <li><p>SerialConnection (todo)</p></li>
 <li><p>BluetoothConnection (todo)</p></li>
 </ul>
-<p>Queste classi specializzano la classe astratta  <a class="reference internal" href="#unibo-basicomm23-utils-connection"><span class="std std-ref">unibo.basicomm23.utils.Connection</span></a>
+<p>Queste classi specializzano la classe astratta  <a class="reference internal" href="#id5"><span class="std std-ref">unibo.basicomm23.utils.Connection</span></a>
 che gestisce messaggi di tipo <a class="reference internal" href="#unibo-interaction-interfaces-iapplmessage"><span class="std std-ref">IApplMessage</span></a>
 realizzando i metodi che trattano messaggi di tipo <code class="docutils literal notranslate"><span class="pre">String</span></code>.</p>
 </section>
@@ -348,7 +348,8 @@ E’ definito cme una classe astratta che delega alle sue specializzazioni la de
 <p>Il <a href="#id1"><span class="problematic" id="id2">*</span></a>body*` verrà eseguito all’interno di un Thread creato dopo una esplicita attivazione
 (metodo <span class="blue">activate</span>).
 Prima della esecuzione del <a href="#id3"><span class="problematic" id="id4">*</span></a>body*`, il Thread invoca il metodo <span class="blue">connect</span> per stabilire una connessione
-di tipo Interaction con il server, avvaòendosi di <a class="reference internal" href="#unibo-basicomm23-utils-connectionfactory"><span class="std std-ref">ConnectionFactory</span></a>.</p>
+di tipo <a class="reference internal" href="#unibo-basicomm23-interfaces-interaction"><span class="std std-ref">Interaction</span></a>
+con il server, avvaòendosi di <a class="reference internal" href="#unibo-basicomm23-utils-connectionfactory"><span class="std std-ref">ConnectionFactory</span></a>.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">ActorNaiveCaller</span>
  <span class="kd">protected</span> <span class="n">String</span> <span class="n">name</span><span class="p">;</span>
  <span class="kd">protected</span> <span class="n">Interaction</span> <span class="n">connSupport</span><span class="p">;</span>
@@ -414,6 +415,348 @@ ha solo la responsabilità di inviare messaggi.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
+<p><span class="slide">Le connessioni</span></p>
+</section>
+</section>
+</section>
+<section id="connessioni">
+<h2>Connessioni<a class="headerlink" href="#connessioni" title="Permalink to this headline">¶</a></h2>
+<p>Gli oggetti di supporto alle comunicazioni creati dalla <a class="reference internal" href="#unibo-basicomm23-utils-connectionfactory"><span class="std std-ref">ConnectionFactory</span></a>
+implementano l’interfaccia
+<a class="reference internal" href="#unibo-basicomm23-interfaces-interaction"><span class="std std-ref">Interaction</span></a> estendendo una classe astratta che rappresenta
+l’idea generale di <a class="reference internal" href="Interaction.html#interconnessione"><span class="std std-ref">Interconnessione</span></a>.</p>
+<section id="id5">
+<h3>unibo.basicomm23.utils.Connection<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>E’ una classe astratta che implementa le operazioni di  <a class="reference internal" href="#unibo-basicomm23-interfaces-interaction"><span class="std std-ref">Interaction</span></a>
+con argomenti di tipo <a class="reference internal" href="#unibo-interaction-interfaces-iapplmessage"><span class="std std-ref">IApplMessage</span></a>,
+invocando le omonime operazioni con argomenti <code class="docutils literal notranslate"><span class="pre">String</span></code>, la cui realizzazione è lasciata alle classi
+specilizzazione.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Connection</span> <span class="kd">implements</span> <span class="n">Interaction</span> <span class="p">{</span>
+  <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+       <span class="n">forward</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">toString</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">IApplMessage</span> <span class="nf">request</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+        <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">request</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">answer</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">IApplMessage</span> <span class="nf">request</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tout</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+        <span class="n">TimerForRequest</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TimerForRequest</span><span class="p">(</span><span class="n">tout</span><span class="p">);</span>
+        <span class="n">t</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
+
+        <span class="k">new</span> <span class="n">Thread</span><span class="p">(){</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="p">(){</span>
+                <span class="k">try</span> <span class="p">{</span>
+                    <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">request</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+                    <span class="n">t</span><span class="p">.</span><span class="na">setExpiredSinceAnswer</span><span class="p">(</span><span class="n">answer</span><span class="p">);</span>
+                <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{...}</span>
+            <span class="p">}</span>
+        <span class="p">}.</span><span class="na">start</span><span class="p">();</span>
+        <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="na">waitTout</span><span class="p">();</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">answer</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="s">&quot;request timeout&quot;</span><span class="p">);</span>
+        <span class="k">else</span>  <span class="k">return</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">answer</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">IApplMessage</span> <span class="nf">receive</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
+        <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">receiveMsg</span><span class="p">();</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">reply</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+        <span class="n">reply</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="n">String</span> <span class="nf">request</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">reply</span><span class="p">(</span><span class="n">String</span> <span class="n">reqid</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="n">String</span> <span class="nf">receiveMsg</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">close</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">HttpConnection</span></p>
+</section>
+<section id="unibo-basicomm23-http-httpconnection">
+<h3>unibo.basicomm23.http.HttpConnection<a class="headerlink" href="#unibo-basicomm23-http-httpconnection" title="Permalink to this headline">¶</a></h3>
+<p>La implementazione di <a class="reference internal" href="#unibo-basicomm23-interfaces-interaction"><span class="std std-ref">Interaction</span></a> per HTTP non pone particolari problemi:
+si tratta di utilizzare una libreria che fornisce un <em>HTTP-client</em>.
+Qui continuiamo ad usare la libreria <em>org.apache.http</em>, già introdotta in <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HttpConnection</span> <span class="kd">extends</span> <span class="n">Connection</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">HttpConnection</span><span class="o">&gt;</span> <span class="n">connMap</span> <span class="o">=</span>
+                              <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">HttpConnection</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="kd">private</span> <span class="n">HttpClient</span> <span class="n">client</span> <span class="o">=</span>  <span class="n">HttpClients</span><span class="p">.</span><span class="na">createDefault</span><span class="p">();</span>
+<span class="kd">private</span>  <span class="n">String</span> <span class="n">URL</span><span class="p">;</span>
+<span class="c1">//Factory</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">Interaction</span> <span class="nf">create</span><span class="p">(</span><span class="n">String</span> <span class="n">addr</span> <span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span> <span class="o">!</span> <span class="n">connMap</span><span class="p">.</span><span class="na">containsKey</span><span class="p">(</span><span class="n">addr</span><span class="p">)){</span>
+    <span class="n">connMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="k">new</span> <span class="n">HttpConnection</span><span class="p">(</span> <span class="n">addr</span> <span class="p">)</span> <span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">connMap</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">//Costruttore</span>
+<span class="kd">public</span> <span class="nf">HttpConnection</span><span class="p">(</span><span class="n">String</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span> <span class="n">URL</span> <span class="o">=</span> <span class="s">&quot;http://&quot;</span> <span class="o">+</span><span class="n">url</span><span class="p">;}</span>
+</pre></div>
+</div>
+</section>
+<section id="httpconnection-sendhttp">
+<h3>HttpConnection.sendHttp<a class="headerlink" href="#httpconnection-sendhttp" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="n">String</span> <span class="nf">sendHttp</span><span class="p">(</span> <span class="n">String</span> <span class="n">msgJson</span><span class="p">){</span>
+  <span class="p">...</span>
+  <span class="n">HttpPost</span> <span class="n">httpPost</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpPost</span><span class="p">(</span> <span class="n">URL</span> <span class="p">);</span>
+  <span class="n">httpPost</span><span class="p">.</span><span class="na">setEntity</span><span class="p">(</span><span class="k">new</span> <span class="n">StringEntity</span><span class="p">(</span><span class="n">msgJson</span><span class="p">));</span>
+  <span class="n">HttpResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="na">execute</span><span class="p">(</span><span class="n">httpPost</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">EntityUtils</span><span class="p">.</span><span class="na">toString</span><span class="p">(</span> <span class="n">response</span><span class="p">.</span><span class="na">getEntity</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo <em>sendHttp</em> è usato per realizzare l’invio di messaggi in forma di <code class="docutils literal notranslate"><span class="pre">String</span></code>.</p>
+</section>
+<section id="httpconnection-specializza-connection">
+<h3>HttpConnection specializza Connection<a class="headerlink" href="#httpconnection-specializza-connection" title="Permalink to this headline">¶</a></h3>
+<p>I metodi di <a class="reference internal" href="#unibo-basicomm23-interfaces-interaction"><span class="std std-ref">Interaction</span></a> con aromenti <code class="docutils literal notranslate"><span class="pre">String</span></code> sono
+realizzati nella sola forma sincrona. I metodi <code class="docutils literal notranslate"><span class="pre">reply</span></code> e <code class="docutils literal notranslate"><span class="pre">receiveMsg</span></code> solo al di fuori
+del modello di interazione <code class="docutils literal notranslate"><span class="pre">HTTP</span></code> e quindi la loro chiamata provoca una eccezione.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">request</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">sendHttp</span><span class="p">(</span> <span class="n">msg</span> <span class="p">);</span>
+<span class="p">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span> <span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+  <span class="n">sendHttp</span><span class="p">(</span> <span class="n">msg</span> <span class="p">);</span> <span class="c1">//answer ingnored</span>
+<span class="p">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">reply</span><span class="p">(</span><span class="n">String</span> <span class="n">msgJson</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+ <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="s">&quot;HttpConnection does not implement reply&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">receiveMsg</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+ <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="s">&quot;HttpConnection does not implement receiveMsg&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="esperimenti-httpconnection">
+<h4>Esperimenti HTTPConnection<a class="headerlink" href="#esperimenti-httpconnection" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">void</span> <span class="n">doForwardHttp</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+     <span class="n">conn</span> <span class="o">=</span> <span class="n">ConnectionFactory</span><span class="o">.</span><span class="n">createClientSupport</span><span class="p">(</span>
+            <span class="n">ProtocolType</span><span class="o">.</span><span class="n">http</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;8090/api/move&quot;</span><span class="p">);</span>
+     <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">forwardcmd</span><span class="p">);</span>
+     <span class="n">CommUtils</span><span class="o">.</span><span class="n">outblue</span><span class="p">(</span><span class="s2">&quot;doForwardHttp result=&quot;</span> <span class="o">+</span> <span class="n">result</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Eseguiamo il test ponendo il robot in due stati iniziali diversi.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="_images/RobotAtHome.png" src="_images/RobotAtHome.png" />
+</td>
+<td><p>Robot in HOME. La mossa termina con successo.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s">&quot;endmove&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="s">&quot;move&quot;</span><span class="p">:</span><span class="s">&quot;moveForward&quot;</span><span class="p">}</span> <span class="n">time</span><span class="o">=</span><span class="mf">1.08</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><img alt="_images/RobotNearWallDown.png" src="_images/RobotNearWallDown.png" />
+</td>
+<td><p>Robot vicino  a <code class="docutils literal notranslate"><span class="pre">wallDown</span></code>. Il robot collide con la parete.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s">&quot;endmove&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="s">&quot;move&quot;</span><span class="p">:</span><span class="s">&quot;moveForward-collision&quot;</span><span class="p">}</span> <span class="n">time</span><span class="o">=</span><span class="mf">1.071</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Essendo la comunicazione sincrona, le risposte vengono sempre ricevute dopo la durata della mossa (1 sec).</p>
+<a class="reference internal image-reference" href="_images/forwardOk.png"><img alt="_images/forwardOk.png" src="_images/forwardOk.png" style="width: 80%;" /></a>
+<p><span class="slide1">WsConnection</span></p>
+<p>La implementazione di <a class="reference internal" href="#unibo-basicomm23-interfaces-interaction"><span class="std std-ref">Interaction</span></a>
+per WS (WebSocket) induce a modifiche rilevanti nella struttura del codice applicativo,
+in quanto le interazioni sono <span class="blue">asincrone</span>.  Inoltre,
+su una WS-connection possono giungere informazioni
+che sono risposte a messaggi inviati in precedenza o anche di altro tipo
+(ad esempio dati di un sensore, allarmi, <a class="reference internal" href="VirtualRobot23.html#messaggio-di-stato"><span class="std std-ref">Messaggi di stato</span></a>, etc.).</p>
+<p>Per meglio gestire queste informazioni in ingresso,
+questo tipo di connessione è stato realizzato come un <span class="blue">POJO  osservabile</span>
+(che implementa <a class="reference internal" href="#unibo-basicomm23-interfaces-iobservable"><span class="std std-ref">IObservable</span></a>),
+in modo da permettere al livello
+applicativo di gestire i messaggi in arrivo da parte di ossservatori
+che implementano <a class="reference internal" href="#unibo-basicomm23-interfaces-iobserver"><span class="std std-ref">IObserver</span></a>.</p>
+</section>
+</section>
+<section id="unibo-basicomm23-ws-wsconnection">
+<h3>unibo.basicomm23.ws.WsConnection<a class="headerlink" href="#unibo-basicomm23-ws-wsconnection" title="Permalink to this headline">¶</a></h3>
+<p>Implementa il concetto di <a class="reference internal" href="Interaction.html#interconnessione"><span class="std std-ref">Interconnessione</span></a>
+(interfaccia <a class="reference internal" href="#unibo-basicomm23-interfaces-interaction"><span class="std std-ref">Interaction</span></a>)
+su <code class="docutils literal notranslate"><span class="pre">WebSocket</span></code>, utilizzando la libreria <code class="docutils literal notranslate"><span class="pre">javax.websocket</span></code>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@ClientEndpoint</span>  <span class="c1">//Richiesto da javax.websocket</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">WsConnection</span>  <span class="kd">implements</span> <span class="n">Interaction</span><span class="p">,</span> <span class="n">IObservable</span><span class="p">{</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">WsConnection</span><span class="o">&gt;</span> <span class="n">connMap</span><span class="o">=</span><span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">WsConnection</span><span class="o">&gt;</span><span class="p">();</span>
+  <span class="kd">private</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">IObserver</span><span class="o">&gt;</span> <span class="n">observers</span><span class="o">=</span> <span class="k">new</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">IObserver</span><span class="o">&gt;</span><span class="p">();</span>
+  <span class="kd">private</span> <span class="n">Session</span> <span class="n">userSession</span>    <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="p">...</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">WsConnection</span> <span class="nf">create</span><span class="p">(</span><span class="n">String</span> <span class="n">addr</span> <span class="p">){</span>
+    <span class="c1">//Crea una nuova connessione, memorizzandola in connMap</span>
+    <span class="p">...</span>
+    <span class="n">connMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="k">new</span> <span class="n">WsConnection</span><span class="p">(</span> <span class="n">addr</span> <span class="p">)</span> <span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="wsconnection-come-iobservable">
+<h4>WsConnection come IObservable<a class="headerlink" href="#wsconnection-come-iobservable" title="Permalink to this headline">¶</a></h4>
+<p>Per permettere la gestione di messaggi inviati dal server al client
+(ocme i <a class="reference internal" href="VirtualRobot23.html#messaggio-di-stato"><span class="std std-ref">Messaggi di stato</span></a>),
+questa connessione viene definita come <span class="blue">observable</span>, secondo l’interfaccia
+<a class="reference internal" href="#unibo-basicomm23-interfaces-iobservable"><span class="std std-ref">IObservable</span></a>, e quindi definisce metodi per aggiungere e togliere
+observer applicativi.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">addObserver</span><span class="p">(</span><span class="n">IObserver</span> <span class="n">obs</span><span class="p">)</span> <span class="p">{</span> <span class="n">observers</span><span class="p">.</span><span class="na">add</span><span class="p">(</span> <span class="n">obs</span><span class="p">);</span> <span class="p">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteObserver</span><span class="p">(</span><span class="n">IObserver</span> <span class="n">obs</span><span class="p">)</span> <span class="p">{</span> <span class="n">observers</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span> <span class="n">obs</span><span class="p">);</span> <span class="p">}</span>
+
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">updateObservers</span><span class="p">(</span> <span class="n">String</span> <span class="n">msg</span> <span class="p">){</span>
+    <span class="n">observers</span><span class="p">.</span><span class="na">forEach</span><span class="p">(</span> <span class="n">v</span> <span class="o">-&gt;</span> <span class="n">v</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="wsconnection-il-costruttore">
+<h4>WsConnection il costruttore<a class="headerlink" href="#wsconnection-il-costruttore" title="Permalink to this headline">¶</a></h4>
+<p>Il costruttore privato realizza la connessione all’indirizzo dato.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span> <span class="nf">WsConnection</span><span class="p">(</span><span class="n">String</span> <span class="n">addr</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//addr del tipo: localhost:8091</span>
+  <span class="n">wsconnect</span><span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">wsconnect</span><span class="p">(</span><span class="n">String</span> <span class="n">wsAddr</span><span class="p">){</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">WebSocketContainer</span> <span class="n">container</span> <span class="o">=</span> <span class="n">ContainerProvider</span><span class="p">.</span><span class="na">getWebSocketContainer</span><span class="p">();</span>
+        <span class="n">URI</span> <span class="n">uri</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URI</span><span class="p">(</span><span class="s">&quot;ws://&quot;</span><span class="o">+</span><span class="n">wsAddr</span><span class="p">);</span>
+        <span class="n">container</span><span class="p">.</span><span class="na">connectToServer</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">uri</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span> <span class="n">Exception</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{...}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="wsconnection-sendmessage">
+<h4>WsConnection: sendMessage<a class="headerlink" href="#wsconnection-sendmessage" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">sendMessage</span></code> incapsula i dettagli relativi all’invio di un messaggio <code class="docutils literal notranslate"><span class="pre">String</span></code> sulla <code class="docutils literal notranslate"><span class="pre">WS</span></code>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">sendMessage</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+  <span class="c1">//this.userSession.getAsyncRemote().sendText(message);</span>
+  <span class="k">this</span><span class="p">.</span><span class="na">userSession</span><span class="p">.</span><span class="na">getBasicRemote</span><span class="p">().</span><span class="na">sendText</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span><span class="c1">//synch: blocks until msg transmitted</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="wsconnection-gestione-degli-eventi">
+<h4>WsConnection: gestione degli eventi<a class="headerlink" href="#wsconnection-gestione-degli-eventi" title="Permalink to this headline">¶</a></h4>
+<p>Come richiesto dalla libreria <code class="docutils literal notranslate"><span class="pre">javax.websocket</span></code>, si definiscono metodi annotati per la gestione degli eventi
+di apertura/chiusura di connessione e di ricezione di un messaggio.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@OnOpen</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onOpen</span><span class="p">(</span><span class="n">Session</span> <span class="n">userSession</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="na">userSession</span> <span class="o">=</span> <span class="n">userSession</span><span class="p">;</span> <span class="p">}</span>
+<span class="nd">@OnClose</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onClose</span><span class="p">(</span><span class="n">Session</span> <span class="n">userSession</span><span class="p">,</span> <span class="n">CloseReason</span> <span class="n">reason</span><span class="p">)</span> <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="na">userSession</span><span class="o">=</span><span class="kc">null</span><span class="p">;}</span>
+<span class="nd">@OnMessage</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onMessage</span><span class="p">(</span><span class="n">String</span> <span class="n">message</span><span class="p">)</span>   <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">messageHandler</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="na">messageHandler</span><span class="p">.</span><span class="na">handleMessage</span><span class="p">(</span><span class="n">message</span><span class="p">);}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">onMessage</span></code> delega la gestione del messaggio ricevuto  all’handler che
+aggiorna gli observer applicativi.</p>
+</section>
+<section id="wsconnection-specializza-connection">
+<h4>WsConnection specializza Connection<a class="headerlink" href="#wsconnection-specializza-connection" title="Permalink to this headline">¶</a></h4>
+<p>La realizzazione dei metodi di <a class="reference internal" href="#unibo-basicomm23-interfaces-interaction"><span class="std std-ref">Interaction</span></a> con aromenti <code class="docutils literal notranslate"><span class="pre">String</span></code>
+è parziale, in quanto viene esclusa la possibilità di realizzare operazioni sincrone,
+che verranno, nel caso, ottenute a livello applicativo,
+con l’intervento di observer in grado di gestire i <a class="reference internal" href="VirtualRobot23.html#messaggio-di-stato"><span class="std std-ref">Messaggi di stato</span></a>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span> <span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+      <span class="n">sendMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">request</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+  <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="s">&quot;WsConnectio: request not allowed&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">reply</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+  <span class="n">forward</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">receiveMsg</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+  <span class="c1">//Related to onMessage</span>
+  <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="s">&quot;WsConnectio: receiveMsg not allowed&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="esperimenti-wsconnection">
+<h4>Esperimenti WSConnection<a class="headerlink" href="#esperimenti-wsconnection" title="Permalink to this headline">¶</a></h4>
+<p>Per sperimentare l’uso del supporto, eseguiamo due test: uno relativo alla esecuzione con successo ed
+uno che provoca fallimento, dovuto a collisione.</p>
+<p>Il codice ha la forma che segue:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">addr</span>          <span class="o">=</span> <span class="s">&quot;localhost:8091&quot;</span><span class="p">;</span>
+<span class="n">Interaction</span> <span class="n">connWs</span>   <span class="o">=</span> <span class="n">WsConnection</span><span class="p">.</span><span class="na">create</span><span class="p">(</span> <span class="n">addr</span> <span class="p">);</span>
+<span class="n">connWs</span><span class="p">.</span><span class="na">addObserver</span><span class="p">(</span><span class="k">this</span><span class="p">);</span> <span class="c1">//applicazione che funge da observer sulla WebSocket</span>
+
+<span class="n">String</span> <span class="n">forwardcmd</span> <span class="o">=</span> <span class="s">&quot;{\&quot;robotmove\&quot;:\&quot;moveForward\&quot;,\&quot;time\&quot;:\&quot;1000\&quot;}&quot;</span><span class="p">;</span>
+<span class="n">sendMessage</span><span class="p">(</span>  <span class="n">forwardcmd</span>  <span class="p">);</span>   <span class="c1">//ASINCRONO =&gt; no answer</span>
+</pre></div>
+</div>
+<p>Poichè WsConnection è <a class="reference internal" href="#wsconnection-come-iobservable"><span class="std std-ref">Observable</span></a>, la gestione dei messaggi
+inviati dal server è definita nel metodo <code class="docutils literal notranslate"><span class="pre">update</span></code>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">CommUtils</span><span class="p">.</span><span class="na">outmagenta</span><span class="p">(</span><span class="s">&quot;observerd &quot;</span><span class="p">:</span><span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Eseguiamo dunque il test ponendo il robot in due stati iniziali diversi.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="_images/RobotAtHome.png" src="_images/RobotAtHome.png" />
+</td>
+<td><p>Robot in HOME. La mossa termina con successo.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">observerd</span> <span class="p">{</span><span class="s">&quot;endmove&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="s">&quot;move&quot;</span><span class="p">:</span><span class="s">&quot;moveForward&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><img alt="_images/RobotNearWallDown.png" src="_images/RobotNearWallDown.png" />
+</td>
+<td><p>Robot vicino  a <code class="docutils literal notranslate"><span class="pre">wallDown</span></code>. Il robot collide con la parete.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">observerd</span> <span class="p">{</span><span class="s">&quot;collision&quot;</span><span class="p">:</span><span class="s">&quot;moveForward&quot;</span><span class="p">,</span><span class="s">&quot;target&quot;</span><span class="p">:</span><span class="s">&quot;wallDown&quot;</span><span class="p">}</span>
+<span class="n">observerd</span> <span class="p">{</span><span class="s">&quot;endmove&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="s">&quot;move&quot;</span><span class="p">:</span><span class="s">&quot;moveForward-collision&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Essendo la comunicazione asincrona, il <a class="reference internal" href="VirtualRobot23.html#messaggio-di-stato"><span class="std std-ref">Messaggip di stato</span></a> inviato da WEnv
+viene elaborato dall’osservatore posto sulla connessione.</p>
+<a class="reference internal image-reference" href="_images/forwardCollision.png"><img alt="_images/forwardCollision.png" src="_images/forwardCollision.png" style="width: 90%;" /></a>
 <p><span class="slide">Supporti</span></p>
 </section>
 </section>
@@ -689,6 +1032,25 @@ in grado di inviare/ricevere messaggi.</p>
 <li><a class="reference internal" href="#actornaivecaller">ActorNaiveCaller</a><ul>
 <li><a class="reference internal" href="#unibo-basicomm23-enablers-actornaivecaller">unibo.basicomm23.enablers.ActorNaiveCaller</a></li>
 <li><a class="reference internal" href="#esempio-di-actornaivecaller">Esempio di ActorNaiveCaller</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#connessioni">Connessioni</a><ul>
+<li><a class="reference internal" href="#id5">unibo.basicomm23.utils.Connection</a></li>
+<li><a class="reference internal" href="#unibo-basicomm23-http-httpconnection">unibo.basicomm23.http.HttpConnection</a></li>
+<li><a class="reference internal" href="#httpconnection-sendhttp">HttpConnection.sendHttp</a></li>
+<li><a class="reference internal" href="#httpconnection-specializza-connection">HttpConnection specializza Connection</a><ul>
+<li><a class="reference internal" href="#esperimenti-httpconnection">Esperimenti HTTPConnection</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unibo-basicomm23-ws-wsconnection">unibo.basicomm23.ws.WsConnection</a><ul>
+<li><a class="reference internal" href="#wsconnection-come-iobservable">WsConnection come IObservable</a></li>
+<li><a class="reference internal" href="#wsconnection-il-costruttore">WsConnection il costruttore</a></li>
+<li><a class="reference internal" href="#wsconnection-sendmessage">WsConnection: sendMessage</a></li>
+<li><a class="reference internal" href="#wsconnection-gestione-degli-eventi">WsConnection: gestione degli eventi</a></li>
+<li><a class="reference internal" href="#wsconnection-specializza-connection">WsConnection specializza Connection</a></li>
+<li><a class="reference internal" href="#esperimenti-wsconnection">Esperimenti WSConnection</a></li>
 </ul>
 </li>
 </ul>

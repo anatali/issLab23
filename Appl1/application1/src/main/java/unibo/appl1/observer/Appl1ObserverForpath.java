@@ -19,19 +19,23 @@ public class Appl1ObserverForpath extends ApplAbstractObserver {
         moveCmds.add("robot-athomeend");
     }
 
+    public void init(){
+        moveHistory = new Vector<String>();
+    }
 
     @Override
     public void update(String msg) {
-        if( moveCmds.contains(msg) ) CommUtils.outgreen("         Appl1ObserverForpath:" + msg);
+        if( moveCmds.contains(msg) )
+            CommUtils.outgreen("   Appl1ObserverForpath:" + msg + " " + getCurrentPath());
         if( msg.contains("robot-stepdone")){ moveHistory.add("w");  }
         else if( msg.contains("robot-turnLeft")){
             moveHistory.add("l");
         }
         else if( msg.contains("robot-collision")){
             moveHistory.add("|");
-            String s1 = getPathAsCompactString();
+            //String s1 = getPathAsCompactString();
             //if( s1.length() > 5) CommUtils.outred(s1);else
-                CommUtils.outgreen(s1);
+                //CommUtils.outgreen(s1);
         }
         else if( msg.equals("robot-athomeend") ){ setTerminated(); }
         //CommUtils.outgreen( getPath() );
@@ -41,6 +45,10 @@ public class Appl1ObserverForpath extends ApplAbstractObserver {
         CommUtils.outmagenta("         Appl1ObserverForpath: Application TERMINATED");
         applIsTerminated =true;
         notifyAll(); //riattiva getPath
+    }
+
+    public String getCurrentPath(){
+        return getPathAsCompactString();
     }
 
     public synchronized String getPath(){
@@ -56,11 +64,8 @@ public class Appl1ObserverForpath extends ApplAbstractObserver {
         return getPathAsCompactString();
     }
 
-    public String getCurrentPath(){
-        return getPathAsCompactString();
-    }
-
     private String getPathAsCompactString(){
+        if( moveHistory.isEmpty()) return "nopath";
         String hflat = moveHistory.toString()
                 .replace("[","")
                 .replace("]","")
@@ -78,7 +83,6 @@ public class Appl1ObserverForpath extends ApplAbstractObserver {
                 && splitted[1].length()==splitted[3].length();
         //the JVM disables assertion validation by default. Insert VM option -enableassertions
         //assert( boundaryDone );
-        CommUtils.outmagenta("Appl1ObserverForpath: evalBoundaryDone="+ boundaryDone);
         return boundaryDone;
     }
 }

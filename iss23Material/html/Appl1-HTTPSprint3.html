@@ -20,7 +20,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Appunti su tecnologie" href="AppuntiTecnologie.html" />
+    <link rel="next" title="Appl1-WSSprint3" href="Appl1-WSSprint3.html" />
     <link rel="prev" title="unibo.basicomm23" href="unibo.basicomm23.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,7 +30,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="Appl1-WSSprint3.html" title="Appl1-WSSprint3"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="unibo.basicomm23.html" title="unibo.basicomm23"
@@ -131,7 +131,7 @@ privi di memoria comune, ma capaci di interagire mediante scambio di messaggi.</
 <p>La classe <em>unibo.supports.VrobotHLMovesInteractionSynch</em> che implementa <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-common-ivrobotmoves"><span class="std std-ref">IVrobotMoves</span></a>
 (usando  la classe  <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-common-vrobotmsgs"><span class="std std-ref">unibo.common.VrobotMsgs</span></a>)
 è un <a class="reference internal" href="#refactoring-di-vrobothlmoveshttpapache"><span class="std std-ref">Refactoring di VrobotHLMovesHTTPApache</span></a> che utilizza
-il supporto <a class="reference internal" href="Interaction2021-HTTP-WS.html#httpconnection"><span class="std std-ref">HttpConnection</span></a>  che implementa <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-interfaces-interaction"><span class="std std-ref">Interaction</span></a> per <code class="docutils literal notranslate"><span class="pre">HTTP</span></code> .</p>
+il supporto <span class="xref std std-ref">HttpConnection</span>  che implementa <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-interfaces-interaction"><span class="std std-ref">Interaction</span></a> per <code class="docutils literal notranslate"><span class="pre">HTTP</span></code> .</p>
 <section id="unibo-supports-vrobothlmovesinteractionsynch">
 <h4>unibo.supports.VrobotHLMovesInteractionSynch<a class="headerlink" href="#unibo-supports-vrobothlmovesinteractionsynch" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span> <span class="kd">public</span> <span class="kd">class</span> <span class="nc">VrobotHLMovesInteractionSynch</span> <span class="kd">implements</span> <span class="n">IVrobotMoves</span><span class="p">{</span>
@@ -162,11 +162,11 @@ il supporto <a class="reference internal" href="Interaction2021-HTTP-WS.html#htt
 <p>La classe  <a class="reference internal" href="#unibo-supports-vrobothlmovesinteractionsynch"><span class="std std-ref">VrobotHLMovesInteractionSynch</span></a> realizza
 le mosse di alto livelo del robot usando l’implementazione di
 <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-interfaces-interaction"><span class="std std-ref">unibo.basicomm23.interfaces.Interaction</span></a> che riceve nel costruttore.
-<a class="reference internal" href="Interaction2021-HTTP-WS.html#httpconnection"><span class="std std-ref">HttpConnection</span></a> è una di tali implementazioni.</p>
+<a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-http-httpconnection"><span class="std std-ref">HttpConnection</span></a> è una di tali implementazioni.</p>
 <p>In prospettiva però, potremo anche sfruttare interazioni asincrone con il <em>VirtualRobot</em> usando le <em>WebSocket</em>.
 Una classe  (come ad esempio
-<span class="xref std std-ref">VrobotHLMovesInteractionAsynch</span>)  realizzerà
-le mosse di alto livelo del robot  usando il supporto <a class="reference internal" href="Interaction2021-HTTP-WS.html#wsconnection"><span class="std std-ref">WsConnection</span></a> per le interazioni con <em>WEnv</em>.</p>
+<a class="reference internal" href="Appl1-WSSprint3.html#unibo-supports-vrobothlmovesinteractionasynch"><span class="std std-ref">VrobotHLMovesInteractionAsynch</span></a>)  realizzerà
+le mosse di alto livelo del robot  usando il supporto <span class="xref std std-ref">WsConnection</span> per le interazioni con <em>WEnv</em>.</p>
 <p><span class="slide1">Una Factory di supporti</span></p>
 <p>E’ quindi opportuno  introdurre anche una Factory
 con cui costruire l’opportuno oggetto di supporto alla comunicazione
@@ -195,8 +195,8 @@ usando <code class="docutils literal notranslate"><span class="pre">HTTP</span><
 </div>
 <p><span class="slide1">Appl1Core</span></p>
 </section>
-<section id="applcore-sprint3">
-<h3>ApplCore Sprint3<a class="headerlink" href="#applcore-sprint3" title="Permalink to this headline">¶</a></h3>
+<section id="appl1core-sprint3">
+<h3>Appl1Core Sprint3<a class="headerlink" href="#appl1core-sprint3" title="Permalink to this headline">¶</a></h3>
 <p><span class="slide1">Una modifica radicale solo riconfigurando</span></p>
 <p>Per ottenere una nuova versione di <a class="reference internal" href="Appl1-HTTPSprint2.html#appl1core"><span class="std std-ref">Appl1Core</span></a> che sfrutta i nuovi supporti basati su
 <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-interfaces-interaction"><span class="std std-ref">Interaction</span></a>, è sufficiente modificare
@@ -227,8 +227,10 @@ la fase di configurazione del POJO applicativo.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
+<section id="sprint3config-json">
+<h4>Sprint3Config.json<a class="headerlink" href="#sprint3config-json" title="Permalink to this headline">¶</a></h4>
 <p>La configurazione viene fissata leggendo informazioni da un file di nome <code class="docutils literal notranslate"><span class="pre">Sprint3Config.json</span></code></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;virtualrobotip&quot;</span><span class="p">:</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;virtualrobotconn&quot;</span><span class="p">:</span><span class="s2">&quot;ws&quot;</span><span class="p">,</span> <span class="s2">&quot;steptime&quot;</span><span class="p">:</span><span class="s2">&quot;350&quot;</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;virtualrobotip&quot;</span><span class="p">:</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;virtualrobotconn&quot;</span><span class="p">:</span><span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="s2">&quot;steptime&quot;</span><span class="p">:</span><span class="s2">&quot;350&quot;</span><span class="p">,</span>
                                  <span class="s2">&quot;pathobs&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;robotstateobs&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -250,10 +252,11 @@ protected IVrobotMoves vr ;
  }
 </pre></div>
 </div>
-<p>Notiamo che <a class="reference internal" href="#applcore-sprint3"><span class="std std-ref">ApplCore Sprint3</span></a> è un POJO capace di inviare messaggi. Non è  un
+<p>Notiamo che <span class="xref std std-ref">ApplCore Sprint3</span> è un POJO capace di inviare messaggi. Non è  un
 <a class="reference internal" href="Principi.html#interazioni-dal-punto-di-vista-applicativo"><span class="std std-ref">attore</span></a> in
 quanto non ha un flusso di controllo autonomo e non è in grado di ricevere messaggi.</p>
 <p><span class="slide1">Appl1 verso actor</span></p>
+</section>
 </section>
 </section>
 <section id="appl1">
@@ -430,6 +433,58 @@ e inviare le risposte.</p>
    <span class="p">}</span>
 </pre></div>
 </div>
+<p><span class="slide">Distribuzione</span></p>
+</section>
+<section id="distribuzione-httpsprint3">
+<h2>Distribuzione HTTPSprint3<a class="headerlink" href="#distribuzione-httpsprint3" title="Permalink to this headline">¶</a></h2>
+<p>Main program senza attivazione di Console.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">Appl1HTTPSprint3</span> <span class="p">{</span>
+   <span class="o">...</span>
+   <span class="n">public</span> <span class="n">void</span> <span class="n">configureTheSystem</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+     <span class="o">//</span><span class="n">Create</span> <span class="n">the</span> <span class="n">application</span>
+     <span class="n">IAppl1Core</span> <span class="n">applCore</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Appl1Core</span><span class="p">();</span>
+     <span class="n">Appl1</span> <span class="n">appl</span>          <span class="o">=</span> <span class="n">new</span> <span class="n">Appl1</span><span class="p">(</span><span class="n">applCore</span><span class="p">);</span>
+     <span class="n">appl</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
+   <span class="p">}</span>
+   <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span> <span class="n">String</span><span class="p">[]</span> <span class="n">args</span> <span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+     <span class="n">Appl1HTTPSprint3</span> <span class="n">appl</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Appl1HTTPSprint3</span><span class="p">();</span>
+     <span class="n">appl</span><span class="o">.</span><span class="n">configureTheSystem</span><span class="p">();</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p>Controllare il file di configurazione <a class="reference internal" href="#sprint3config-json"><span class="std std-ref">Sprint3Config.json</span></a> con</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;virtualrobotip&quot;</span><span class="p">:</span><span class="s2">&quot;192.168.1.132&quot;</span>   <span class="o">//</span><span class="n">NON</span> <span class="n">LOCAL</span> <span class="n">hostAddr</span>
+</pre></div>
+</div>
+</li>
+<li><p><span class="remark">PROVARE L’APPLICAZIONE</span></p></li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">build.gradle</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">application</span> <span class="p">{</span>
+   <span class="o">//</span> <span class="n">Define</span> <span class="n">the</span> <span class="n">main</span> <span class="k">class</span> <span class="nc">for</span> <span class="n">the</span> <span class="n">application</span><span class="o">.</span>
+   <span class="n">mainClass</span> <span class="o">=</span> <span class="s1">&#39;unibo.appl1.http.Appl1HTTPSprint3&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Crea il file <code class="docutils literal notranslate"><span class="pre">application1/build/distributions/application1-1.0.tar</span></code></p>
+</li>
+<li><p>Eseguire:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradlew</span> <span class="n">distTar</span>
+<span class="p">(</span><span class="n">gradlew</span> <span class="n">build</span> <span class="n">distTar</span> <span class="o">-</span><span class="n">x</span> <span class="n">test</span><span class="p">)</span>
+
+<span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="n">appl1httpsprint3</span><span class="p">:</span><span class="mf">1.0</span> <span class="o">.</span>   <span class="o">//</span><span class="n">NOTE</span> <span class="n">THE</span> <span class="n">DOT</span>
+
+<span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="o">-</span><span class="n">f</span> <span class="n">appl1httpsprint3</span><span class="o">.</span><span class="n">yaml</span> <span class="n">up</span>
+</pre></div>
+</div>
+</li>
+<li><p>Eseguire <code class="docutils literal notranslate"><span class="pre">unibo.console.gui.Appl1HttpSprint3CmdConsole</span></code></p></li>
+</ol>
+<p><span class="slide2">Copiare il file di configurazione nel container</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">cp</span> <span class="n">sprint3Config</span><span class="o">.</span><span class="n">json</span> <span class="mi">112</span><span class="n">b1f413aca</span><span class="p">:</span><span class="o">/</span><span class="n">application1</span><span class="o">-</span><span class="mf">1.0</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">sprint3Config</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -450,7 +505,10 @@ e inviare le risposte.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#unibo-supports-vrobothlsupportfactory">unibo.supports.VrobotHLSupportFactory</a></li>
-<li><a class="reference internal" href="#applcore-sprint3">ApplCore Sprint3</a></li>
+<li><a class="reference internal" href="#appl1core-sprint3">Appl1Core Sprint3</a><ul>
+<li><a class="reference internal" href="#sprint3config-json">Sprint3Config.json</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#appl1">Appl1</a><ul>
@@ -465,6 +523,7 @@ e inviare le risposte.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#console-che-riceve-informazioni">Console che riceve informazioni</a></li>
+<li><a class="reference internal" href="#distribuzione-httpsprint3">Distribuzione HTTPSprint3</a></li>
 </ul>
 </li>
 </ul>
@@ -477,8 +536,8 @@ e inviare le risposte.</p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="AppuntiTecnologie.html"
-                          title="next chapter">Appunti su tecnologie</a></p>
+    <p class="topless"><a href="Appl1-WSSprint3.html"
+                          title="next chapter">Appl1-WSSprint3</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -508,7 +567,7 @@ e inviare le risposte.</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="Appl1-WSSprint3.html" title="Appl1-WSSprint3"
              >next</a> |</li>
         <li class="right" >
           <a href="unibo.basicomm23.html" title="unibo.basicomm23"

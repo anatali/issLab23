@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Appl1-WSSprint3 &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="StepAsynch" href="StepAsynch.html" />
+    <link rel="prev" title="Appl1-HTTPSprint3" href="Appl1-HTTPSprint3.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="StepAsynch.html" title="StepAsynch"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Appl1-HTTPSprint3.html" title="Appl1-HTTPSprint3"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appl1-WSSprint3</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="appl1-wssprint3">
+<h1>Appl1-WSSprint3<a class="headerlink" href="#appl1-wssprint3" title="Permalink to this headline">¶</a></h1>
+<p>In questa sezione vogliamo realizzare le interazioni tra  l’actor <a class="reference internal" href="Appl1-HTTPSprint3.html#appl1"><span class="std std-ref">Appl1</span></a>
+e <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a> utilizzando le <code class="docutils literal notranslate"><span class="pre">WebSocket</span></code>.</p>
+<a class="reference internal image-reference" href="_images/Appl1WS.png"><img alt="_images/Appl1WS.png" class="align-center" src="_images/Appl1WS.png" style="width: 70%;" /></a>
+<p>Impostare un modo di <a class="reference internal" href="VirtualRobot23.html#interazione-asincrona"><span class="std std-ref">Interazione asincrona</span></a> con il <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a> significa inviare comandi
+in modo <span class="blue">fire-and-forget</span> e ottenere informazioni sul loro esito attraverso un <a class="reference internal" href="VirtualRobot23.html#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a>
+che <code class="docutils literal notranslate"><span class="pre">WEnv</span></code> invia a tutti i client connessi.</p>
+<p>Il progetto <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a> definisce la classe <span class="xref std std-ref">WsConnection</span>,
+che offre all’application designer strumenti e meccanismi utili a gestire questa situazione.</p>
+<section id="supporto-per-robot-via-ws">
+<h2>Supporto per robot via WS<a class="headerlink" href="#supporto-per-robot-via-ws" title="Permalink to this headline">¶</a></h2>
+<p>Iniziamo introducendo
+la già citata classe  <a class="reference internal" href="#unibo-supports-vrobothlmovesinteractionasynch"><span class="std std-ref">unibo.supports.VrobotHLMovesInteractionAsynch</span></a>
+che affianca <a class="reference internal" href="Appl1-HTTPSprint3.html#unibo-supports-vrobothlmovesinteractionsynch"><span class="std std-ref">VrobotHLMovesInteractionSynch</span></a> nella realizzazione di
+supporti per le <a class="reference internal" href="Appl1-HTTPSprint1.html#comunicazioni-di-alto-livello-col-robot"><span class="std std-ref">Comunicazioni di alto livello col robot</span></a>.</p>
+<section id="unibo-supports-vrobothlmovesinteractionasynch">
+<h3>unibo.supports.VrobotHLMovesInteractionAsynch<a class="headerlink" href="#unibo-supports-vrobothlmovesinteractionasynch" title="Permalink to this headline">¶</a></h3>
+<p>Questa classe  realizza le mosse di alto livello
+del robot introdotte in <a class="reference internal" href="Appl1-HTTPSprint1.html#unibo-common-ivrobotmoves"><span class="std std-ref">unibo.common.IVrobotMoves</span></a>, avvalendosi delle comunicazioni di basso livello
+sulla <code class="docutils literal notranslate"><span class="pre">WS</span></code>, realizzate da <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-ws-wsconnection"><span class="std std-ref">WsConnection</span></a>.</p>
+<p>Le mosse hanno tutte una durata limitata, ma le interazioni sono di tipo asincrono e per sapere quando una mossa
+è terminata occorre gestire il <a class="reference internal" href="VirtualRobot23.html#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a> inviato sulla <code class="docutils literal notranslate"><span class="pre">WS</span></code> da WEnv.</p>
+<p>A tal fine, <em>VrobotHLMovesInteractionAsynch</em> estende <a class="reference internal" href="Appl1-HTTPSprint2.html#unibo-basicomm23-utils-applabstractobserver"><span class="std std-ref">ApplAbstractObserver</span></a>
+e si registra come osservatore sulla <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-ws-wsconnection"><span class="std std-ref">WsConnection</span></a>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">VrobotHLMovesInteractionAsynch</span>
+                <span class="kd">extends</span> <span class="n">ApplAbstractObserver</span> <span class="kd">implements</span>  <span class="n">IVrobotMoves</span><span class="p">{</span>
+  <span class="kd">private</span> <span class="n">Interaction</span> <span class="n">wsCommSupport</span><span class="p">;</span>
+  <span class="kd">protected</span> <span class="kt">int</span> <span class="n">elapsed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//modified by update</span>
+
+  <span class="kd">public</span> <span class="nf">VrobotHLMovesInteractionAsynch</span><span class="p">(</span> <span class="n">String</span> <span class="n">hostIp</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="n">wsCommSupport</span> <span class="o">=</span> <span class="k">new</span> <span class="n">VrobotWsComms</span><span class="p">(</span><span class="n">hostIp</span><span class="p">,</span> <span class="mi">8091</span><span class="p">,</span> <span class="n">obs</span> <span class="p">);</span>
+      <span class="n">wsCommSupport</span><span class="p">.</span><span class="na">addObserver</span><span class="p">(</span>  <span class="k">this</span>  <span class="p">);</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p>La mossa <span class="blue">halt</span> viene realizzata in modo asincrono, senza attendere alcun messaggio di terminazione
+(che non viene inviato) ma solo un tempo adeguato al completamento della mossa.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">halt</span><span class="p">(</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+   <span class="n">wsCommSupport</span><span class="p">.</span><span class="na">forward</span><span class="p">(</span><span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">haltcmd</span><span class="p">);</span>
+   <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">30</span><span class="p">);</span> <span class="c1">//wait for completion</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Le altre mosse ad alto livello del robot sono realizzate ancora in modo <strong>sincrono</strong>, usando
+una operazione locale <a class="reference internal" href="#vrobothlmovesinteractionasynch-request"><span class="std std-ref">request</span></a> bloccante.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnLeft</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+  <span class="n">request</span><span class="p">(</span><span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">turnleftcmd</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnRight</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+  <span class="n">request</span><span class="p">(</span>  <span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">turnrightcmd</span>  <span class="p">);</span>
+<span class="p">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span><span class="kt">int</span> <span class="n">time</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+   <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">request</span><span class="p">(</span><span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">forwardcmd</span><span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;TIME&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">time</span><span class="p">));</span>
+   <span class="k">if</span><span class="p">(</span> <span class="n">result</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;collision&quot;</span><span class="p">)</span> <span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="s">&quot;forward failed&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">backward</span><span class="p">(</span><span class="kt">int</span> <span class="n">time</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">request</span><span class="p">(</span><span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">backwardcmd</span><span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;TIME&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">time</span><span class="p">));</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">result</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;collision&quot;</span><span class="p">)</span> <span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="s">&quot;backward failed&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">step</span><span class="p">(</span><span class="kt">int</span> <span class="n">time</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">cmd</span> <span class="o">=</span>  <span class="n">VrobotMsgs</span><span class="p">.</span><span class="na">forwardcmd</span><span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;TIME&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">time</span><span class="p">);</span>
+    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">request</span><span class="p">(</span> <span class="n">cmd</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;true&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">Una request bloccante su WS</span></p>
+</section>
+<section id="vrobothlmovesinteractionasynch-request">
+<h3>VrobotHLMovesInteractionAsynch.request<a class="headerlink" href="#vrobothlmovesinteractionasynch-request" title="Permalink to this headline">¶</a></h3>
+<p>L’operazione <em>request</em> bloccante opera  in due fasi:</p>
+<ol class="arabic simple">
+<li><p>la prima fase invia il messaggio di richiesta su <code class="docutils literal notranslate"><span class="pre">WS</span></code>, invocando l’operazione <code class="docutils literal notranslate"><span class="pre">forward(String)</span></code> di
+<a class="reference internal" href="unibo.basicomm23.html#wsconnection-specializza-connection"><span class="std std-ref">WsConnection</span></a>;</p></li>
+<li><p>la seconda fase consiste nell’attesa di modifica della variabile locale <code class="docutils literal notranslate"><span class="pre">moveResult</span></code> dalla parte
+che realizza <a class="reference internal" href="#vrobothlmovesinteractionasynch-come-observer"><span class="std std-ref">VrobotHLMovesInteractionAsynch come observer</span></a>.</p></li>
+</ol>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span> <span class="n">String</span> <span class="n">moveResult</span>   <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">request</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="n">moveResult</span>   <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="n">startTimer</span><span class="p">();</span>
+    <span class="n">wsCommSupport</span><span class="p">.</span><span class="na">forward</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>  <span class="c1">//FASE1</span>
+    <span class="kd">synchronized</span><span class="p">(</span><span class="k">this</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">while</span><span class="p">(</span>  <span class="n">moveResult</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span> <span class="n">wait</span><span class="p">();</span> <span class="p">}</span> <span class="c1">//FASE2</span>
+        <span class="k">return</span> <span class="n">moveResult</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dunque <em>request</em> blocca il chiamante fino a che WEnv invia un <a class="reference internal" href="VirtualRobot23.html#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a>
+(gestito da <a class="reference internal" href="#vrobothlmovesinteractionasynch-update"><span class="std std-ref">VrobotHLMovesInteractionAsynch.update</span></a>)
+che segnala successo o fallimento (collisione).</p>
+<p>In questo modo una mossa di durata <code class="docutils literal notranslate"><span class="pre">T</span></code> che termina con successo ha un tempo di esecuzione <code class="docutils literal notranslate"><span class="pre">T</span></code>. Nel caso di
+fallimento, le mosse <code class="docutils literal notranslate"><span class="pre">forward</span></code> e <code class="docutils literal notranslate"><span class="pre">backward</span></code> generano una eccezione appena la collisione viene
+percepita, mentre <code class="docutils literal notranslate"><span class="pre">step</span></code> restituisce il valore <em>false</em> dopo il tempo  <code class="docutils literal notranslate"><span class="pre">T</span></code>.</p>
+</section>
+<section id="vrobothlmovesinteractionasynch-come-observer">
+<h3>VrobotHLMovesInteractionAsynch come observer<a class="headerlink" href="#vrobothlmovesinteractionasynch-come-observer" title="Permalink to this headline">¶</a></h3>
+<p>La parte che opera come osservatore è realizzata dal metodo <code class="docutils literal notranslate"><span class="pre">update(String)</span></code>, che viene invocato dal supporto
+<a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-ws-wsconnection"><span class="std std-ref">WsConnection</span></a> (in quanto <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-interfaces-iobservable"><span class="std std-ref">IObservable</span></a>)
+quando WEnv trasmette su <code class="docutils literal notranslate"><span class="pre">WS</span></code> l’esito del comando (o un   <a class="reference internal" href="VirtualRobot23.html#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a>).</p>
+<p>Questa parte di codice gestisce i messaggi di <span class="blue">fine movimento</span> del robot, aggiornando la variabile <code class="docutils literal notranslate"><span class="pre">moveResult</span></code>
+che sblocca la   <a class="reference internal" href="#vrobothlmovesinteractionasynch-request"><span class="std std-ref">VrobotHLMovesInteractionAsynch.request</span></a> in attesa.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="_images/forwardOk.png" src="_images/forwardOk.png" />
+</td>
+<td><p>mossa che termina con successo</p></td>
+</tr>
+<tr class="row-even"><td><img alt="_images/forwardCollision.png" src="_images/forwardCollision.png" />
+</td>
+<td><p>mossa che fallisce, provocando una collisione. Il messaggio <span class="blue">collision</span> viene ricevuto da <em>update</em>, ma non
+viene gestito a livello applicativo.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="vrobothlmovesinteractionasynch-update">
+<h4>VrobotHLMovesInteractionAsynch.update<a class="headerlink" href="#vrobothlmovesinteractionasynch-update" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span> <span class="nd">@Override</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span><span class="n">String</span> <span class="n">info</span><span class="p">)</span> <span class="p">{</span>
+     <span class="k">try</span> <span class="p">{</span>
+         <span class="n">elapsed</span> <span class="o">=</span> <span class="n">getDuration</span><span class="p">();</span>
+         <span class="n">JSONObject</span> <span class="n">jsonObj</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">parseForJson</span><span class="p">(</span><span class="n">info</span><span class="p">);</span>
+         <span class="k">if</span><span class="p">(</span> <span class="n">jsonObj</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">){</span>
+             <span class="n">CommUtils</span><span class="p">.</span><span class="na">outred</span><span class="p">(</span><span class="s">&quot;VrobotHLMovesInteractionAsynch | update ERROR Json:&quot;</span> <span class="o">+</span> <span class="n">info</span><span class="p">);</span>
+             <span class="k">return</span><span class="p">;</span>
+         <span class="p">}</span>
+         <span class="k">if</span><span class="p">(</span> <span class="n">info</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;_notallowed&quot;</span><span class="p">)</span> <span class="p">){</span>
+             <span class="n">CommUtils</span><span class="p">.</span><span class="na">outred</span><span class="p">(</span><span class="s">&quot;VrobotHLMovesInteractionAsynch |</span>
+<span class="s">                     update WARNING!!! _notallowed unexpected in &quot;</span> <span class="o">+</span> <span class="n">info</span><span class="p">);</span>
+             <span class="k">return</span><span class="p">;</span>
+         <span class="p">}</span>
+         <span class="k">if</span> <span class="p">(</span><span class="n">jsonObj</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;collision&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+             <span class="c1">//Non faccio nulla: attendo moveForward-collision</span>
+             <span class="k">return</span><span class="p">;</span>
+         <span class="p">}</span>
+         <span class="k">if</span> <span class="p">(</span><span class="n">jsonObj</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;endmove&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+             <span class="c1">//{&quot;endmove&quot;:&quot;true/false &quot;,&quot;move&quot;:&quot;...&quot;}</span>
+             <span class="kt">boolean</span> <span class="n">endmove</span> <span class="o">=</span> <span class="n">jsonObj</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;endmove&quot;</span><span class="p">).</span><span class="na">toString</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;true&quot;</span><span class="p">);</span>
+             <span class="n">String</span>  <span class="n">move</span>    <span class="o">=</span> <span class="n">jsonObj</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;move&quot;</span><span class="p">).</span><span class="na">toString</span><span class="p">();</span>
+             <span class="kd">synchronized</span><span class="p">(</span><span class="k">this</span><span class="p">)</span> <span class="p">{</span>
+                 <span class="n">moveResult</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> <span class="o">+</span> <span class="n">endmove</span><span class="p">;</span>
+                 <span class="n">notifyAll</span><span class="p">();</span>
+             <span class="p">}</span>
+             <span class="k">return</span><span class="p">;</span>
+         <span class="p">}</span>
+     <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span>  <span class="p">}</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">Appl1 per WS</span></p>
+<p>Basta rispecificare il campo <span class="brown">virtualrobotconn</span> nel file di configurazione
+<a class="reference internal" href="Appl1-HTTPSprint2.html#configurazione-definita-in-un-file"><span class="std std-ref">sprint3Config.json</span></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;virtualrobotip&quot;</span><span class="p">:</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;virtualrobotconn&quot;</span><span class="p">:</span><span class="s2">&quot;ws&quot;</span><span class="p">,</span> <span class="s2">&quot;steptime&quot;</span><span class="p">:</span><span class="s2">&quot;350&quot;</span><span class="p">,</span>
+                                 <span class="s2">&quot;pathobs&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;robotstateobs&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="appl1-wssprint3-testing">
+<h2>Appl1-WSSprint3 testing<a class="headerlink" href="#appl1-wssprint3-testing" title="Permalink to this headline">¶</a></h2>
+<p>Una volta modiciato il file di configurazione
+<a class="reference internal" href="Appl1-HTTPSprint2.html#configurazione-definita-in-un-file"><span class="std std-ref">sprint3Config.json</span></a>,
+il <em>TestAppl1WSSprint3</em> è del tutto simile a  <a class="reference internal" href="Appl1-HTTPSprint2.html#unibo-appl1-http-testappl1httpsprint2"><span class="std std-ref">TestAppl1HTTPSprint2</span></a>.</p>
+<p><span class="slide1">Un’importante ristrutturazione</span></p>
+<p>La interazione asincrona  induce
+a impostare il funnzionamento della operazione <a class="reference internal" href="Appl1-HTTPSprint1.html#step"><span class="std std-ref">step</span></a> e la struttura dell’applicazione
+in modo radicalmente diverso
+dall’attuale comportamento sincrono.</p>
+<p>Discutiamo questa importante riorganizzazione in <a class="reference internal" href="StepAsynch.html#id1"><span class="std std-ref">stepAsynch</span></a>.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Appl1-WSSprint3</a><ul>
+<li><a class="reference internal" href="#supporto-per-robot-via-ws">Supporto per robot via WS</a><ul>
+<li><a class="reference internal" href="#unibo-supports-vrobothlmovesinteractionasynch">unibo.supports.VrobotHLMovesInteractionAsynch</a></li>
+<li><a class="reference internal" href="#vrobothlmovesinteractionasynch-request">VrobotHLMovesInteractionAsynch.request</a></li>
+<li><a class="reference internal" href="#vrobothlmovesinteractionasynch-come-observer">VrobotHLMovesInteractionAsynch come observer</a><ul>
+<li><a class="reference internal" href="#vrobothlmovesinteractionasynch-update">VrobotHLMovesInteractionAsynch.update</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#appl1-wssprint3-testing">Appl1-WSSprint3 testing</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Appl1-HTTPSprint3.html"
+                          title="previous chapter">Appl1-HTTPSprint3</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="StepAsynch.html"
+                          title="next chapter">StepAsynch</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Appl1-WSSprint3.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="StepAsynch.html" title="StepAsynch"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Appl1-HTTPSprint3.html" title="Appl1-HTTPSprint3"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appl1-WSSprint3</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

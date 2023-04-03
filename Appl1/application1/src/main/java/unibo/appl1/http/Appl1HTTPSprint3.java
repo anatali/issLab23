@@ -2,7 +2,9 @@ package unibo.appl1.http;
 
 import unibo.appl1.common.IAppl1Core;
 import unibo.basicomm23.enablers.ServerFactory;
+import unibo.basicomm23.msg.ProtocolType;
 import unibo.basicomm23.utils.CommUtils;
+import unibo.console.gui.CmdConsoleRemote;
 
 /*
 Applicazione deployable con Docker
@@ -24,7 +26,7 @@ public class Appl1HTTPSprint3 {
 
         //Create the console
         //CmdConsoleRemote console =
-                //new CmdConsoleRemote("appl1Console", ProtocolType.tcp, "localhost", "8030");
+        //        new CmdConsoleRemote("appl1Console", ProtocolType.tcp, "localhost", "8030");
 
         //Activate
         appl.start();

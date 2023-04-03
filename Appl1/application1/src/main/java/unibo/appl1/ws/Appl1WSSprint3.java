@@ -22,12 +22,12 @@ public class Appl1WSSprint3 {
         //((Appl1Core)applCore).addAnObserverOnWsconn();  //MArch31 per osservare msgs su WS
 
         //Create the console
-        CmdConsoleRemote console =
-                new CmdConsoleRemote("appl1Console", ProtocolType.tcp, "localhost", "8030");
+       // CmdConsoleRemote console =
+       //         new CmdConsoleRemote("appl1Console", ProtocolType.tcp, "localhost", "8030");
 
         //Activate
         appl.start();
-        console.activate();
+        //console.activate();
 
         //CommUtils.delay(200000);
         CommUtils.aboutThreads("After start - ");

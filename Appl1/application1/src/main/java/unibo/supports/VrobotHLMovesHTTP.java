@@ -3,17 +3,14 @@ package unibo.supports;
 import unibo.appl1.common.CollisionException;
 import unibo.appl1.common.IVrobotMoves;
 import unibo.appl1.common.VrobotMsgs;
-import unibo.basicomm23.interfaces.Interaction2021;
+import unibo.basicomm23.interfaces.Interaction;
 import unibo.basicomm23.utils.CommUtils;
 
 public class VrobotHLMovesHTTP implements IVrobotMoves{
     //private HttpConnection httpSupport  ;
-    private Interaction2021 httpSupport  ;
-/*
-    public VrobotHLMovesHTTP(HttpConnection httpSupport) {
-        this.httpSupport = httpSupport;
-    }*/
-    public VrobotHLMovesHTTP(Interaction2021 httpSupport) {
+    private Interaction httpSupport  ;
+
+    public VrobotHLMovesHTTP(Interaction httpSupport) {
         this.httpSupport = httpSupport;
     }
 /*

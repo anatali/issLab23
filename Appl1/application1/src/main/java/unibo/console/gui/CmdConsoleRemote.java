@@ -26,12 +26,6 @@ private IApplMessage applRunningRequest, applGetPathRequest ;
 		this.myName       = name;
 		applRunningRequest = CommUtils.buildRequest("gui", "isrunning", "test", myName);
 		applGetPathRequest = CommUtils.buildRequest("gui", "getpath", "test", myName);
-		/*
-		try {
-			conn = ConnectionFactory.createClientSupport(protocol,"localhost", port);
-		} catch (Exception e) {
-			CommUtils.outred(" CmdConsoleRemote | ERROR:" + e.getMessage() );
-		}*/
  	}
 
 
@@ -39,7 +33,7 @@ private IApplMessage applRunningRequest, applGetPathRequest ;
 	public void update( Observable o , Object arg ) {
 		try {
 			if( connSupport == null ){
-				CommUtils.outred(" CmdConsoleRemote | Please start Appl1HTTPSprint3"   );
+				CommUtils.outred(" CmdConsoleRemote | Please start Appl1"   );
 				return;
 			}
 			String move = arg.toString();

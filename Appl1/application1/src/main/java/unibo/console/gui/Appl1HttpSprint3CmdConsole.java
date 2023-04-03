@@ -6,16 +6,10 @@ import unibo.basicomm23.msg.ApplMessage;
 import unibo.basicomm23.msg.ProtocolType;
 import unibo.basicomm23.utils.CommUtils;
 import unibo.basicomm23.utils.ConnectionFactory;
-
 import java.util.Observable;
 import java.util.Observer;
 
 /*
-- Assume che sia stato lanciato unibo.appl1.interaction.Application1SystemBuilder
-  (si veda Appl1MsgHandler e Application1CoreConn)
-- Crea connessione con Application1SystemBuilder.port usando Application1SystemBuilder.protocol
-- Su tale connessione invia messaggi della forma
-     msg(CMD,dispatch,gui,Appl1Gui,CMD,N)
  */
 
 public class Appl1HttpSprint3CmdConsole implements  Observer{

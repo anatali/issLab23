@@ -5,21 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="085de662-f8ac-42b8-95f4-57d2e983cf55" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/application1/src/main/java/unibo/appl1/http/Appl1HTTPSprint3.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/application1/src/main/java/unibo/appl1/http/Appl1HTTPSprint3.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/application1/src/main/java/unibo/appl1/ws/Appl1WSSprint3.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/application1/src/main/java/unibo/appl1/ws/Appl1WSSprint3.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/application1/src/main/java/unibo/console/gui/Appl1HttpSprint3CmdConsole.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/application1/src/main/java/unibo/console/gui/Appl1HttpSprint3CmdConsole.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/application1/src/main/java/unibo/console/gui/CmdConsoleRemote.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/application1/src/main/java/unibo/console/gui/CmdConsoleRemote.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/application1/src/main/java/unibo/supports/VrobotHLMovesHTTP.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/application1/src/main/java/unibo/supports/VrobotHLMovesHTTP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/sprint3Config.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/sprint3Config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/Consumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/MainProdCons1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/MainProdCons2.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/MainProdConsAll.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/ProdConsActor23_1.pl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/ProdConsActor23_2.pl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/ProdConsActor23_all.pl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/Producer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/sysRules.pl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/PingPongDispatch/MainPingPongAll.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/PingPongDispatch/Ping.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/PingPongDispatch/PingPongActor23_all.pl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/PingPongDispatch/Pong.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/PingPongDispatch/sysRules.pl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../iss23Material/LectureBologna2023.html" beforeDir="false" afterPath="$PROJECT_DIR$/../iss23Material/LectureBologna2023.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/app/.classpath" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" afterPath="$PROJECT_DIR$/app/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../unibolibs/unibo.basicomm23-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../unibolibs/unibo.basicomm23-1.0.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,6 +36,13 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -46,13 +58,38 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/java/PingPongDispatch" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\PingPongDispatch" />
+      <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\ApplsActor23" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="PingPongDispatch" />
+      <recent name="PingPongDisptach" />
+      <recent name="ApplsActor23" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.MainPingPongAll">
+    <configuration name="MainPingPongAll" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="PingPongDispatch.MainPingPongAll" />
+      <module name="ProducerConsumer.app.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="PingPongDispatch.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="MainProdCons" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ProducerConsumer.MainProdCons" />
       <module name="ProducerConsumer.app.main" />
@@ -66,8 +103,51 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="MainProdCons1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ApplsActor23.MainProdCons1" />
+      <module name="ProducerConsumer.app.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ApplsActor23.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainProdCons2" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ApplsActor23.MainProdCons2" />
+      <module name="ProducerConsumer.app.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ApplsActor23.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainProdConsAll" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ApplsActor23.MainProdConsAll" />
+      <module name="ProducerConsumer.app.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ApplsActor23.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.MainPingPongAll" />
+        <item itemvalue="Application.MainProdCons2" />
+        <item itemvalue="Application.MainProdCons1" />
+        <item itemvalue="Application.MainProdConsAll" />
         <item itemvalue="Application.MainProdCons" />
       </list>
     </recent_temporary>
@@ -93,5 +173,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

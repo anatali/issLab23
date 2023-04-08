@@ -5,27 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="085de662-f8ac-42b8-95f4-57d2e983cf55" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/Consumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/MainProdCons1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/MainProdCons2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/MainProdConsAll.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/ProdConsActor23_1.pl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/ProdConsActor23_2.pl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/ProdConsActor23_all.pl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/Producer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/sysRules.pl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/PingPongDispatch/MainPingPongAll.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/PingPongDispatch/Ping.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/PingPongDispatch/PingPongActor23_all.pl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/PingPongDispatch/Pong.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/PingPongDispatch/sysRules.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/app/.classpath" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" afterPath="$PROJECT_DIR$/app/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibolibs/unibo.basicomm23-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../unibolibs/unibo.basicomm23-1.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,26 +57,13 @@
       <recent name="ApplsActor23" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MainPingPongAll">
+  <component name="RunManager" selected="Application.MainProdConsAsynch">
     <configuration name="MainPingPongAll" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="PingPongDispatch.MainPingPongAll" />
       <module name="ProducerConsumer.app.main" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="PingPongDispatch.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MainProdCons" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ProducerConsumer.MainProdCons" />
-      <module name="ProducerConsumer.app.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ProducerConsumer.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -142,13 +110,26 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="MainProdConsAsynch" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ProdConsAsynch.MainProdConsAsynch" />
+      <module name="ProducerConsumer.app.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ProdConsAsynch.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.MainProdConsAsynch" />
         <item itemvalue="Application.MainPingPongAll" />
         <item itemvalue="Application.MainProdCons2" />
         <item itemvalue="Application.MainProdCons1" />
         <item itemvalue="Application.MainProdConsAll" />
-        <item itemvalue="Application.MainProdCons" />
       </list>
     </recent_temporary>
   </component>

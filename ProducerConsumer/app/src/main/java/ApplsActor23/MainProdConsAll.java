@@ -1,7 +1,7 @@
 package ApplsActor23;
 
-import unibo.basicomm23.actors23.Actor23Utils;
-import unibo.basicomm23.actors23.example.MainConfigActors23_all;
+
+import unibo.actors23.Actor23Utils;
 import unibo.basicomm23.utils.CommUtils;
 
 public class MainProdConsAll {

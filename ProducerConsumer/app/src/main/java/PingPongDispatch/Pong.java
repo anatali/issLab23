@@ -1,7 +1,7 @@
 package PingPongDispatch;
 
-import unibo.basicomm23.actors23.ActorBasic23;
-import unibo.basicomm23.actors23.ActorContext23;
+import unibo.actors23.ActorBasic23;
+import unibo.actors23.ActorContext23;
 import unibo.basicomm23.interfaces.IApplMessage;
 import unibo.basicomm23.utils.CommUtils;
 

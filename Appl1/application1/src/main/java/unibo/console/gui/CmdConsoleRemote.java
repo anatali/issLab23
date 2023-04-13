@@ -5,7 +5,6 @@ import unibo.basicomm23.interfaces.IApplMessage;
 import unibo.basicomm23.msg.ApplMessage;
 import unibo.basicomm23.msg.ProtocolType;
 import unibo.basicomm23.utils.CommUtils;
-
 import java.util.Observable;
 import java.util.Observer;
 
@@ -24,8 +23,8 @@ private IApplMessage applRunningRequest, applGetPathRequest ;
 		ButtonAsGui concreteButton = ButtonAsGui.createButtons( "", buttonLabels );
 		concreteButton.addObserver( this );
 		this.myName       = name;
-		applRunningRequest = CommUtils.buildRequest("gui", "isrunning", "test", myName);
-		applGetPathRequest = CommUtils.buildRequest("gui", "getpath", "test", myName);
+		applRunningRequest = CommUtils.buildRequest("gui", "isrunning", "isrunning", myName);
+		applGetPathRequest = CommUtils.buildRequest("gui", "getpath", "getpath", myName);
  	}
 
 
@@ -64,12 +63,15 @@ private IApplMessage applRunningRequest, applGetPathRequest ;
 
 	@Override
 	protected void body() throws Exception {
-		connect();
-	   CommUtils.outmagenta("CmdConsoleRemote simply reacts to buttons");
+		CommUtils.outmagenta("CmdConsoleRemote connected: " + connSupport);
+		//connect();
+	   //CommUtils.outmagenta("CmdConsoleRemote simply reacts to buttons");
 	}
 
 	public static void main( String[] args) {
-		new CmdConsoleRemote( "cmdconsole", ProtocolType.tcp, "localhost", "8030" );
+		CmdConsoleRemote console = new CmdConsoleRemote( "cmdconsole", ProtocolType.tcp, "localhost", "8030" );
+		//CommUtils.outmagenta("CmdConsoleRemote activate");
+		console.activate();
 	}
 
 }

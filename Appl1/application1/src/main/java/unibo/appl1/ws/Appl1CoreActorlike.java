@@ -89,7 +89,7 @@ public class Appl1CoreActorlike extends Appl1Core {
             return;
         }
         if( msg.equals("startBackground")) {
-            backgroundJob();
+            //backgroundJob();
             return;
         }
         CommUtils.outmagenta("%%% elab:" + msg + " " + Thread.currentThread().getName() );
@@ -114,18 +114,6 @@ public class Appl1CoreActorlike extends Appl1Core {
 
     }
 
-    /*
-    @Override
-    protected void walkAtBoundary() throws Exception {
-        if( ! robotMustBeAtHome("START") ) throw new Exception("Robot not in HOME");
-        //stepTime  = 350;
-        isRunning = true;
-        ((VrobotHLMovesInteractionAsynch)vr).setMsgQueue(this.msgQueue);
-        walkBySteppingAsynchWithStop( );
-        //ESPERiMENTO: lancio un ciclo (SENZA THREAD) come Job di backgorund
-        //backgroundJob();
-    }
-*/
 
     protected void doStepAsynch( ) throws Exception {
         CommUtils.outblue("walkBySteppingAsynchWithStop NEdges="+ NEdges + " NSteps="+NSteps);

@@ -54,6 +54,7 @@ dependencies {
 //CUSTOM unibo
     implementation name: 'unibo.basicomm23-1.0'
     implementation name: '2p301'
+    implementation name: 'actors23-1.0'
 }
 
 application {

@@ -171,6 +171,8 @@ realizzando i metodi che trattano messaggi di tipo <code class="docutils literal
 <section id="unibo-basicomm23-utils-connection">
 <h3>unibo.basicomm23.utils.Connection<a class="headerlink" href="#unibo-basicomm23-utils-connection" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">abstract</span> <span class="k">class</span> <span class="nc">Connection</span> <span class="n">implements</span> <span class="n">Interaction</span> <span class="p">{</span>
+<span class="n">public</span> <span class="n">static</span> <span class="n">boolean</span> <span class="n">trace</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+
     <span class="nd">@Override</span>
     <span class="n">public</span> <span class="n">void</span> <span class="n">forward</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
         <span class="n">forward</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">toString</span><span class="p">()</span> <span class="p">);</span>
@@ -202,6 +204,10 @@ realizzando i metodi che trattano messaggi di tipo <code class="docutils literal
 <span class="p">}</span>
 </pre></div>
 </div>
+<section id="connection-trace">
+<h4>Connection.trace<a class="headerlink" href="#connection-trace" title="Permalink to this headline">¶</a></h4>
+<p>Se la variabile <span class="blue">boolean trace</span> è posta <code class="docutils literal notranslate"><span class="pre">true</span></code>, i metodi visualizzano informazioni
+utili a meglio comprendere il funzionamento run-time del sistema.</p>
 <p><span class="slide">Abilitatori</span></p>
 <p>I componenti di un sistema distribuito devono, di norma, essere capaci di</p>
 <ol class="arabic simple">
@@ -211,6 +217,7 @@ facendo operare il componente come un <span class="blue">client</span> di un  se
 </ol>
 <p>Il progetto <a class="reference internal" href="#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a> fornisce supporti per entrambe queste esigenze, attraverso  classi che forniscono
 una sorta di ‘enti abilitatori’ alle comunicazioni.</p>
+</section>
 </section>
 </section>
 <section id="abilitatori-di-comunicazione">
@@ -681,7 +688,7 @@ aggiorna gli observer applicativi.</p>
 </section>
 <section id="wsconnection-specializza-connection">
 <h4>WsConnection specializza Connection<a class="headerlink" href="#wsconnection-specializza-connection" title="Permalink to this headline">¶</a></h4>
-<p>La realizzazione dei metodi di <a class="reference internal" href="#unibo-basicomm23-interfaces-interaction"><span class="std std-ref">Interaction</span></a> con aromenti <code class="docutils literal notranslate"><span class="pre">String</span></code>
+<p>La realizzazione dei metodi di <a class="reference internal" href="#unibo-basicomm23-interfaces-interaction"><span class="std std-ref">Interaction</span></a> con argomenti <code class="docutils literal notranslate"><span class="pre">String</span></code>
 è parziale, in quanto viene esclusa la possibilità di realizzare operazioni sincrone,
 che verranno, nel caso, ottenute a livello applicativo,
 con l’intervento di observer in grado di gestire i <a class="reference internal" href="VirtualRobot23.html#messaggio-di-stato"><span class="std std-ref">Messaggi di stato</span></a>.</p>
@@ -1016,7 +1023,10 @@ in grado di inviare/ricevere messaggi.</p>
 </li>
 <li><a class="reference internal" href="#unibo-basicomm23-msg-protocoltype">unibo.basicomm23.msg.ProtocolType</a><ul>
 <li><a class="reference internal" href="#unibo-basicomm23-utils-connectionfactory">unibo.basicomm23.utils.ConnectionFactory</a></li>
-<li><a class="reference internal" href="#unibo-basicomm23-utils-connection">unibo.basicomm23.utils.Connection</a></li>
+<li><a class="reference internal" href="#unibo-basicomm23-utils-connection">unibo.basicomm23.utils.Connection</a><ul>
+<li><a class="reference internal" href="#connection-trace">Connection.trace</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#abilitatori-di-comunicazione">Abilitatori di comunicazione</a><ul>

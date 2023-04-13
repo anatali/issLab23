@@ -2,6 +2,7 @@ package unibo.appl1.ws;
 
 import unibo.appl1.common.IAppl1Core;
 import unibo.appl1.http.Appl1;
+import unibo.appl1.http.Appl1Core;
 import unibo.basicomm23.msg.ProtocolType;
 import unibo.basicomm23.utils.CommUtils;
 import unibo.console.gui.CmdConsoleRemote;
@@ -14,13 +15,8 @@ public class Appl1WSSprint3 {
 
         //Create the application
         //IAppl1Core applCore  = new Appl1Core();
-        //IAppl1Core applCore  = new Appl1CoreStepAsynch();
-        //IAppl1Core applCore  = new Appl1CoreStepAsynchQueue();
         IAppl1Core applCore  = new Appl1CoreActorlike();
         Appl1 appl           = new Appl1(applCore);
-
-        //((Appl1Core)applCore).addAnObserverOnWsconn();  //MArch31 per osservare msgs su WS
-
         //Create the console
        // CmdConsoleRemote console =
        //         new CmdConsoleRemote("appl1Console", ProtocolType.tcp, "localhost", "8030");

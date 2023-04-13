@@ -20,7 +20,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Appunti su tecnologie" href="AppuntiTecnologie.html" />
+    <link rel="next" title="Actors23" href="Actors23.html" />
     <link rel="prev" title="Appl1-WSSprint3" href="Appl1-WSSprint3.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,7 +30,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="Actors23.html" title="Actors23"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="Appl1-WSSprint3.html" title="Appl1-WSSprint3"
@@ -50,6 +50,7 @@
 <p>Nella versione sincrona, il metodo <em>step</em> è stato definito nel supporto
 <a class="reference internal" href="Appl1-WSSprint3.html#unibo-supports-vrobothlmovesinteractionasynch"><span class="std std-ref">unibo.supports.VrobotHLMovesInteractionAsynch</span></a> in modo tale da eseguire una richiesta bloccante,
 pur avendo inviato sulla WebSocket un messaggio in modo asincrono.</p>
+<a class="reference internal image-reference" href="_images/Appl1WSFull.png"><img alt="_images/Appl1WSFull.png" class="align-center" src="_images/Appl1WSFull.png" style="width: 70%;" /></a>
 <section id="lo-step-sincrono">
 <h2>Lo step sincrono<a class="headerlink" href="#lo-step-sincrono" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
@@ -63,7 +64,7 @@ pur avendo inviato sulla WebSocket un messaggio in modo asincrono.</p>
 <section id="la-request-sincrona">
 <h3>La request sincrona<a class="headerlink" href="#la-request-sincrona" title="Permalink to this headline">¶</a></h3>
 <p>L’operazione request invia al robot un comando in modo <span class="blue">asincrono</span>, avvelendosi del supporto
-<code class="docutils literal notranslate"><span class="pre">wsCommSupport</span></code> per <a class="reference internal" href="Interaction2021-HTTP-WS.html#wsconnection"><span class="std std-ref">WsConnection</span></a>:</p>
+<code class="docutils literal notranslate"><span class="pre">wsCommSupport</span></code> per <span class="xref std std-ref">WSConnection</span>:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Interaction2021</span> <span class="n">wsCommSupport</span><span class="p">;</span>
 <span class="n">String</span> <span class="n">moveResult</span><span class="p">;</span>
@@ -80,7 +81,7 @@ pur avendo inviato sulla WebSocket un messaggio in modo asincrono.</p>
 </div></blockquote>
 <p>Dopo la FASE1,
 la <em>request</em>  si blocca (FASE2)  in attesa che <a class="reference internal" href="Appl1-WSSprint3.html#unibo-supports-vrobothlmovesinteractionasynch"><span class="std std-ref">VrobotHLMovesInteractionAsynch</span></a>, agendo
-come <span class="blue">osservatore</span> della <a class="reference internal" href="Interaction2021-HTTP-WS.html#wsconnection"><span class="std std-ref">WsConnection</span></a>, aggiorni la variabile <code class="docutils literal notranslate"><span class="pre">moveResult</span></code> alla
+come <span class="blue">osservatore</span> della <span class="xref std std-ref">WSConnection</span>, aggiorni la variabile <code class="docutils literal notranslate"><span class="pre">moveResult</span></code> alla
 ricezione del <a class="reference internal" href="VirtualRobot23.html#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a> relativo alla terminazione del comando inviato in FASE1.</p>
 <p>Questo aggiornamento veniva eseguito dal metodo <a class="reference internal" href="Appl1-WSSprint3.html#vrobothlmovesinteractionasynch-update"><span class="std std-ref">VrobotHLMovesInteractionAsynch.update</span></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
@@ -98,7 +99,7 @@ ricezione del <a class="reference internal" href="VirtualRobot23.html#messaggio-
 </pre></div>
 </div>
 <p><span class="slide1">Attenzione ai Thread</span></p>
-<p>Notiamo che:</p>
+<p>Poniamo <code class="docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">tracing</span> <span class="pre">=</span> <span class="pre">true</span></code> in <a class="reference internal" href="Appl1-WSSprint3.html#unibo-supports-vrobothlmovesinteractionasynch"><span class="std std-ref">unibo.supports.VrobotHLMovesInteractionAsynch</span></a> e notiamo che:</p>
 <ul class="simple">
 <li><p>il metodo <code class="docutils literal notranslate"><span class="pre">request</span></code> (invcato da <code class="docutils literal notranslate"><span class="pre">step</span></code>) viene chiamato dall’applicazione e quindi eseguito nel Thread applicativo;</p></li>
 <li><p>il metodo <code class="docutils literal notranslate"><span class="pre">update</span></code> viene eseguito nel Thread (di nome <em>Grizzly</em>) della libreria di supporto alle WebSocket.</p></li>
@@ -185,10 +186,10 @@ come un <a class="reference internal" href="unibo.basicomm23.html#verso-gli-atto
 </section>
 <section id="vrobothlmovesinteractionasynch-update-come-produttore">
 <h3>VrobotHLMovesInteractionAsynch.update come produttore<a class="headerlink" href="#vrobothlmovesinteractionasynch-update-come-produttore" title="Permalink to this headline">¶</a></h3>
-<p>La nuova forma del metodo <code class="docutils literal notranslate"><span class="pre">update</span></code> del supporto
+<p>La nuova forma del metodo <code class="docutils literal notranslate"><span class="pre">update</span></code> (che denominiamo <em>updateForAsynch</em>) del supporto
 depone un <a class="reference internal" href="#messaggio-esitocomando"><span class="std std-ref">messaggio-esitocomando</span></a> nella di comunicazione con l’applicazione.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
-<span class="n">public</span> <span class="n">void</span> <span class="n">update</span><span class="p">(</span><span class="n">String</span> <span class="n">info</span><span class="p">)</span> <span class="p">{</span>
+<span class="n">public</span> <span class="n">void</span> <span class="n">updateForAsynch</span><span class="p">(</span><span class="n">String</span> <span class="n">info</span><span class="p">)</span> <span class="p">{</span>
    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">getDuration</span><span class="p">();</span> <span class="o">//</span><span class="n">Tempo</span> <span class="n">trascorso</span> <span class="n">dalla</span> <span class="n">invocazione</span> <span class="n">di</span> <span class="n">stepAsynch</span>
    <span class="n">JSONObject</span> <span class="n">jsonObj</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">parseForJson</span><span class="p">(</span><span class="n">info</span><span class="p">);</span>
    <span class="k">if</span> <span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;_notallowed&quot;</span><span class="p">))</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
@@ -244,8 +245,8 @@ ovvimente messaggi che denotano una collisione e messaggi di rilevazione-dati de
 <h2>Applicazione come actor<a class="headerlink" href="#applicazione-come-actor" title="Permalink to this headline">¶</a></h2>
 <p>La versione che usa <a class="reference internal" href="#id1"><span class="std std-ref">stepAsynch</span></a> può essere ottenuta come specializzazione della
 <a class="reference internal" href="Appl1-HTTPSprint2.html#appl1core"><span class="std std-ref">Appl1Core</span></a> .</p>
-<section id="unibo-appl1-ws-appl1corestepasynch">
-<h3>unibo.appl1.ws.Appl1CoreStepAsynch<a class="headerlink" href="#unibo-appl1-ws-appl1corestepasynch" title="Permalink to this headline">¶</a></h3>
+<section id="unibo-appl1-ws-appl1coreactorlike">
+<h3>unibo.appl1.ws.Appl1CoreActorlike<a class="headerlink" href="#unibo-appl1-ws-appl1coreactorlike" title="Permalink to this headline">¶</a></h3>
 <p>Per impostare l’applicazione come un attore dotato di un proprio Thread, che esegue una azione alla volta
 in accordo al messaggio ricevuto sulla sua coda di ingresso,
 modifichiamo il metodo <code class="docutils literal notranslate"><span class="pre">start</span></code> aggiungendo alla configurazione</p>
@@ -283,8 +284,8 @@ attivare una uletriore azione locale;</p></li>
 </pre></div>
 </div>
 </section>
-<section id="mainloop">
-<h3>mainLoop<a class="headerlink" href="#mainloop" title="Permalink to this headline">¶</a></h3>
+<section id="appl1coreactorlike-mainloop">
+<h3>Appl1CoreActorlike mainLoop<a class="headerlink" href="#appl1coreactorlike-mainloop" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">mainLoop</span><span class="p">(){</span>
     <span class="k">try</span> <span class="p">{</span>
         <span class="k">while</span><span class="p">(</span> <span class="n">true</span> <span class="p">)</span> <span class="p">{</span>
@@ -326,9 +327,9 @@ attivare una uletriore azione locale;</p></li>
 </pre></div>
 </div>
 </section>
-<section id="dostepasynch">
-<h3>doStepAsynch<a class="headerlink" href="#dostepasynch" title="Permalink to this headline">¶</a></h3>
-<p>Alla ricezione del messaggio <code class="docutils literal notranslate"><span class="pre">activateAppl</span></code>, il <a class="reference internal" href="#mainloop"><span class="std std-ref">mainLoop</span></a> invoca l’operazione del (nuovo) supporto
+<section id="appl1coreactorlike-dostepasynch">
+<h3>Appl1CoreActorlike doStepAsynch<a class="headerlink" href="#appl1coreactorlike-dostepasynch" title="Permalink to this headline">¶</a></h3>
+<p>Alla ricezione del messaggio <code class="docutils literal notranslate"><span class="pre">activateAppl</span></code>, il <a class="reference internal" href="#appl1coreactorlike-mainloop"><span class="std std-ref">Appl1CoreActorlike mainLoop</span></a> invoca l’operazione del (nuovo) supporto
 che esegue uno step in modo asincrono.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doStepAsynch</span><span class="p">(</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
     <span class="n">checkStop</span><span class="p">();</span>
@@ -351,7 +352,7 @@ che esegue uno step in modo asincrono.</p>
 <section id="stepok">
 <h3>stepok<a class="headerlink" href="#stepok" title="Permalink to this headline">¶</a></h3>
 <p>L’azione che segue la ricezione di un messaggio di successo <em>stepdone</em> aggiorna in modo opportuno lo stato
-locale e gli osservatori e quindo invoca <a class="reference internal" href="#dostepasynch"><span class="std std-ref">doStepAsynch</span></a>.</p>
+locale e gli osservatori e quindo invoca <a class="reference internal" href="#appl1coreactorlike-dostepasynch"><span class="std std-ref">Appl1CoreActorlike doStepAsynch</span></a>.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="n">IApplAction</span> <span class="n">stepok</span>   <span class="o">=</span> <span class="p">(</span><span class="n">msg</span> <span class="o">-&gt;</span> <span class="p">{</span>
     <span class="k">try</span><span class="p">{</span>
         <span class="n">CommUtils</span><span class="p">.</span><span class="na">outblue</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
@@ -369,7 +370,7 @@ locale e gli osservatori e quindo invoca <a class="reference internal" href="#do
 <h3>stepfail<a class="headerlink" href="#stepfail" title="Permalink to this headline">¶</a></h3>
 <p>L’azione che segue la ricezione di un messaggio di successo <em>stepfailed</em> aggiorna in modo opportuno lo stato
 locale  e gli osservatori, esegue una rotazione a sinistra (sincrona) e poi,
-se il cammnino non è terminato, invoca ancora <a class="reference internal" href="#dostepasynch"><span class="std std-ref">doStepAsynch</span></a>.</p>
+se il cammnino non è terminato, invoca ancora <a class="reference internal" href="#appl1coreactorlike-dostepasynch"><span class="std std-ref">Appl1CoreActorlike doStepAsynch</span></a>.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span>  <span class="n">IApplAction</span> <span class="n">stepfail</span> <span class="o">=</span> <span class="p">(</span><span class="n">msg</span> <span class="o">-&gt;</span> <span class="p">{</span>
     <span class="k">try</span><span class="p">{</span>
          <span class="n">updateObservers</span><span class="p">(</span><span class="s">&quot;robot-collision&quot;</span><span class="p">);</span>
@@ -406,6 +407,97 @@ per presentare un esempio di interleaving di azioni message-driven.</p>
 </pre></div>
 </div>
 </section>
+<section id="appl1coreactorlike-condifurazione">
+<h3>Appl1CoreActorlike condifurazione<a class="headerlink" href="#appl1coreactorlike-condifurazione" title="Permalink to this headline">¶</a></h3>
+<p>La condifurazione della applicazione diventa:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">void</span> <span class="n">configureTheSystem</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+
+<span class="n">IAppl1Core</span> <span class="n">applCore</span>  <span class="o">=</span> <span class="n">new</span> <span class="n">Appl1CoreActorlike</span><span class="p">();</span>
+<span class="n">Appl1</span> <span class="n">appl</span>           <span class="o">=</span> <span class="n">new</span> <span class="n">Appl1</span><span class="p">(</span><span class="n">applCore</span><span class="p">);</span>
+<span class="o">//</span><span class="n">Create</span> <span class="n">the</span> <span class="n">console</span>
+<span class="o">//</span> <span class="n">CmdConsoleRemote</span> <span class="n">console</span> <span class="o">=</span> <span class="n">new</span> <span class="n">CmdConsoleRemote</span><span class="p">(</span><span class="s2">&quot;cmdConsole&quot;</span><span class="p">,</span>
+<span class="o">//</span>    <span class="n">ProtocolType</span><span class="o">.</span><span class="n">tcp</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;8030&quot;</span><span class="p">);</span>
+
+<span class="o">//</span><span class="n">Activate</span>
+<span class="n">appl</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
+<span class="o">//</span><span class="n">console</span><span class="o">.</span><span class="n">activate</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide">Componenti message driven</span></p>
+</section>
+</section>
+<section id="verso-componenti-message-driven">
+<h2>Verso componenti message-driven<a class="headerlink" href="#verso-componenti-message-driven" title="Permalink to this headline">¶</a></h2>
+<p>La interazione asincrona su WebSocket (WS) tra l’applicazione e il <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot</span></a>
+è resa possibile da una libreria (<em>tyrus-standalone-client</em>)
+che promuove l’uso del <span class="remark">metodo annotato onmessage</span> per la elaborazione di un <a class="reference internal" href="VirtualRobot23.html#messaggio-di-stato"><span class="std std-ref">Messaggio di stato</span></a>
+inviato sulla WS dal <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot</span></a>.</p>
+<p>In altre parole, la libreria non offre metodi bloccanti per la ricezione di messaggi, ma invoca direttamente metodi
+del livello applicativo.</p>
+<p>Noi abbiamo usato questa libreria nella classe <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-ws-wsconnection"><span class="std std-ref">WsConnection</span></a>
+che fornisce un supporto osservabile  alle WS,
+implementando il <a class="reference internal" href="unibo.basicomm23.html#wsconnection-gestione-degli-eventi"><span class="std std-ref">metodo annotato onmessage</span></a> in modo da invocare  il metodo
+<a class="reference internal" href="#vrobothlmovesinteractionasynch-update-come-produttore"><span class="std std-ref">update</span></a> di un observer sulla WS
+costituito dal nostro supporto <a class="reference internal" href="Appl1-WSSprint3.html#unibo-supports-vrobothlmovesinteractionasynch"><span class="std std-ref">unibo.supports.VrobotHLMovesInteractionAsynch</span></a>.</p>
+<p>Questo metodo <a class="reference internal" href="#vrobothlmovesinteractionasynch-update-come-produttore"><span class="std std-ref">update</span></a>
+(eseguito nel Thread - Grizzly - della libreria <em>tyrus</em>), a sua volta,
+non elabora direttamente il messaggio
+ma lo depone in una coda di un componente appplicativo modellato come un actor.</p>
+<a class="reference internal image-reference" href="_images/ActorInit.png"><img alt="_images/ActorInit.png" class="align-center" src="_images/ActorInit.png" style="width: 70%;" /></a>
+<p><span class="slide2">In conclusione:</span></p>
+<ul class="simple">
+<li><p>il componente applicativo opera come un consumatore di messaggi inviati dal supporto;</p></li>
+<li><p>il supporto alle comunicazioni su WS opera come produttore di messaggi per l’applicazione;</p></li>
+<li><p>la interazione supporto-applicazione (per ricezione) è realizzata usando una  <a class="reference external" href="https://www.baeldung.com/java-blocking-queue">BlokingQueue</a>  (actor <code class="docutils literal notranslate"><span class="pre">msgQueue</span></code>);</p></li>
+<li><p>l’invio di messaggi sulla WS da parte dell’applicazione utilizza il metodo <a class="reference internal" href="unibo.basicomm23.html#wsconnection-sendmessage"><span class="std std-ref">sendMessage</span></a>
+del supporto <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-ws-wsconnection"><span class="std std-ref">WsConnection</span></a>.</p></li>
+</ul>
+<p><span class="slide1">Oltre le connessioni</span></p>
+<ul class="simple">
+<li><p>Un  actor <code class="docutils literal notranslate"><span class="pre">R</span></code> potrebbe ricevere ed elaborare messaggi inviati da un alto actor locale <code class="docutils literal notranslate"><span class="pre">S</span></code> che li
+trasmettono depositandoli sulla <code class="docutils literal notranslate"><span class="pre">msgQueue</span></code> di <code class="docutils literal notranslate"><span class="pre">R</span></code>.</p></li>
+</ul>
+<blockquote>
+<div><table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 45%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">actor1</span></code>  inserisce messaggi nella <code class="docutils literal notranslate"><span class="pre">msgQueue</span></code> di  <code class="docutils literal notranslate"><span class="pre">actor2</span></code></p></td>
+<td><img alt="_images/ActorToActor.png" class="align-center" src="_images/ActorToActor.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<ul class="simple">
+<li><p>Un Server come quello creato da <a class="reference internal" href="unibo.basicomm23.html#serverfactory"><span class="std std-ref">ServerFactory</span></a>, potrebbe depositare i messaggi in coda all’attore denotato
+come <em>receiver</em> nel messaggio.</p></li>
+</ul>
+<blockquote>
+<div><table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Non più componente applicativo come POJO</p></td>
+<td><img alt="_images/AbilitatoreServer.png" class="align-center" src="_images/AbilitatoreServer.png" />
+</td>
+</tr>
+<tr class="row-even"><td><p>Ma componente applicativo come ACTOR</p></td>
+<td><img alt="_images/AbilitatoreServerContext.png" class="align-center" src="_images/AbilitatoreServerContext.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>La interazione tra due componenti applicativi si avvale di una connessione tra di essi.
+Si può introdurre un’idea di comunicazione basata solo sulla consoscenza
+dei <span class="remark">nomi degli attori</span>?</p>
+<p>Vediamo <a class="reference internal" href="Actors23.html#actors23"><span class="std std-ref">Actors23</span></a></p>
 </section>
 </section>
 
@@ -436,14 +528,16 @@ per presentare un esempio di interleaving di azioni message-driven.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#applicazione-come-actor">Applicazione come actor</a><ul>
-<li><a class="reference internal" href="#unibo-appl1-ws-appl1corestepasynch">unibo.appl1.ws.Appl1CoreStepAsynch</a></li>
-<li><a class="reference internal" href="#mainloop">mainLoop</a></li>
-<li><a class="reference internal" href="#dostepasynch">doStepAsynch</a></li>
+<li><a class="reference internal" href="#unibo-appl1-ws-appl1coreactorlike">unibo.appl1.ws.Appl1CoreActorlike</a></li>
+<li><a class="reference internal" href="#appl1coreactorlike-mainloop">Appl1CoreActorlike mainLoop</a></li>
+<li><a class="reference internal" href="#appl1coreactorlike-dostepasynch">Appl1CoreActorlike doStepAsynch</a></li>
 <li><a class="reference internal" href="#stepok">stepok</a></li>
 <li><a class="reference internal" href="#stepfail">stepfail</a></li>
 <li><a class="reference internal" href="#backgroundjob">backgroundJob</a></li>
+<li><a class="reference internal" href="#appl1coreactorlike-condifurazione">Appl1CoreActorlike condifurazione</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#verso-componenti-message-driven">Verso componenti message-driven</a></li>
 </ul>
 </li>
 </ul>
@@ -456,8 +550,8 @@ per presentare un esempio di interleaving di azioni message-driven.</p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="AppuntiTecnologie.html"
-                          title="next chapter">Appunti su tecnologie</a></p>
+    <p class="topless"><a href="Actors23.html"
+                          title="next chapter">Actors23</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -487,7 +581,7 @@ per presentare un esempio di interleaving di azioni message-driven.</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="Actors23.html" title="Actors23"
              >next</a> |</li>
         <li class="right" >
           <a href="Appl1-WSSprint3.html" title="Appl1-WSSprint3"

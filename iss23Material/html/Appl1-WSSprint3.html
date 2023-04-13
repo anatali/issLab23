@@ -209,6 +209,21 @@ viene gestito a livello applicativo.</p></td>
 </pre></div>
 </div>
 <p><span class="slide1">Appl1 per WS</span></p>
+<p>La condifurazione della applicazione non cambia:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">void</span> <span class="n">configureTheSystem</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+
+<span class="n">IAppl1Core</span> <span class="n">applCore</span>  <span class="o">=</span> <span class="n">new</span> <span class="n">Appl1Core</span><span class="p">();</span>
+<span class="n">Appl1</span> <span class="n">appl</span>           <span class="o">=</span> <span class="n">new</span> <span class="n">Appl1</span><span class="p">(</span><span class="n">applCore</span><span class="p">);</span>
+<span class="o">//</span><span class="n">Create</span> <span class="n">the</span> <span class="n">console</span>
+<span class="o">//</span> <span class="n">CmdConsoleRemote</span> <span class="n">console</span> <span class="o">=</span> <span class="n">new</span> <span class="n">CmdConsoleRemote</span><span class="p">(</span><span class="s2">&quot;cmdConsole&quot;</span><span class="p">,</span>
+<span class="o">//</span>    <span class="n">ProtocolType</span><span class="o">.</span><span class="n">tcp</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;8030&quot;</span><span class="p">);</span>
+
+<span class="o">//</span><span class="n">Activate</span>
+<span class="n">appl</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
+<span class="o">//</span><span class="n">console</span><span class="o">.</span><span class="n">activate</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Basta rispecificare il campo <span class="brown">virtualrobotconn</span> nel file di configurazione
 <a class="reference internal" href="Appl1-HTTPSprint2.html#configurazione-definita-in-un-file"><span class="std std-ref">sprint3Config.json</span></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;virtualrobotip&quot;</span><span class="p">:</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;virtualrobotconn&quot;</span><span class="p">:</span><span class="s2">&quot;ws&quot;</span><span class="p">,</span> <span class="s2">&quot;steptime&quot;</span><span class="p">:</span><span class="s2">&quot;350&quot;</span><span class="p">,</span>

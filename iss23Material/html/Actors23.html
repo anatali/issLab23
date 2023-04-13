@@ -1,0 +1,1217 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Actors23 &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Appunti su tecnologie" href="AppuntiTecnologie.html" />
+    <link rel="prev" title="StepAsynch" href="StepAsynch.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="StepAsynch.html" title="StepAsynch"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Actors23</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="actors23">
+<h1>Actors23<a class="headerlink" href="#actors23" title="Permalink to this headline">¶</a></h1>
+<p>Secondo Carl <a class="reference external" href="https://en.wikipedia.org/wiki/Carl_Hewitt">Hewitt</a>  (uno dei padri fondatori) il modello computazionale ad attori è stato ispirato,
+a differenza dei precedenti modelli di calcolo,
+dalla fisica, inclusa la relatività generale e la meccanica quantistica.</p>
+<p>Vi è oggi una ampia gamma di proposte di linguaggi / librerie ad attori, tra cui:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://akka.io/">Akka</a> : ispirato a <a class="reference external" href="https://en.wikipedia.org/wiki/Actor_model">Modello computazionale ad attori</a> di  Hewitt. Per le motivazioni si veda <a class="reference external" href="https://doc.akka.io//docs/akka/current/typed/guide/actors-motivation.html">Akka actors</a>.</p></li>
+<li><p><a class="reference external" href="https://go.dev/">GO</a> : ispirato a <a class="reference external" href="https://en.wikipedia.org/wiki/Communicating_sequential_processes">CSP</a> propone <em>goroutine</em> e <em>CanaliGO</em>. Per la documentazione si veda <a class="reference external" href="https://go.dev/doc/">GO doc</a>.</p></li>
+<li><p><a class="reference external" href="https://kotlinlang.org/docs/shared-mutable-state-and-concurrency.html#actors">Kotlin actors</a> : propone <em>croutines</em> e <em>channels</em> (si veda <a class="reference external" href="https://play.kotlinlang.org/hands-on/Introduction%20to%20Coroutines%20and%20Channels/08_Channels">Kotlin channel</a>)</p></li>
+</ul>
+<p>Un motto di riferimento alquanto significativo per questo modello è il seguente:</p>
+<p><span class="slide2">Do not communicate by sharing memory; instead, share memory by communicating.</span></p>
+<section id="actors23-problematiche-affrontate">
+<h2>Actors23: problematiche affrontate<a class="headerlink" href="#actors23-problematiche-affrontate" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Cosa intendiamo per <span class="blue">attore</span>? Si veda: <a class="reference internal" href="#il-quadro-generale"><span class="std std-ref">Il quadro generale</span></a>, <a class="reference internal" href="#actors23-l-attore"><span class="std std-ref">Actors23:l’attore</span></a>
+e <a class="reference internal" href="#unibo-basicomm23-actors23-actorbasic23"><span class="std std-ref">unibo.basicomm23.actors23.ActorBasic23</span></a>.</p></li>
+<li><p>Come può un attore inviare un messaggio ad un altro attore, conoscendone solo il nome?
+Si veda: <a class="reference internal" href="#actorbasic23-sendmsg"><span class="std std-ref">ActorBasic23.sendMsg</span></a>.</p></li>
+<li><p>Come fa un attore ad inviare una risposta in modo correlato alla richiesta?
+Si veda: <a class="reference internal" href="#actorbasic23-reply"><span class="std std-ref">ActorBasic23.reply</span></a>.</p></li>
+<li><p>Può un attore interagire con componenti estermi al sistema di cui fa parte? Si veda
+<a class="reference internal" href="#interazione-con-alieni"><span class="std std-ref">Interazione con alieni</span></a>.</p></li>
+<li><p>Qual’è il comportamento di un attore per poter essere sia proattivo sia capace di alaborare
+messaggi a lui inviati? Si veda: <a class="reference internal" href="#il-comportamento-di-un-attore"><span class="std std-ref">Il comportamento di un attore</span></a>.</p></li>
+<li><p>Come può un attore eleborare messaggi ignorando i dettagli sui supporti di comunicazione?
+Si veda: <a class="reference internal" href="#il-comportamento-di-un-attore"><span class="std std-ref">Il comportamento di un attore</span></a> e <a class="reference internal" href="#actor23-mainloop"><span class="std std-ref">Actor23 mainLoop</span></a>.</p></li>
+<li><p>Come si passa da una <em>collezione</em> di attori ad una <strong>sistema</strong> distribuito? Si veda
+<a class="reference internal" href="#descrizione-di-un-sistema-distribuito"><span class="std std-ref">Descrizione di un sistema distribuito</span></a>.</p></li>
+<li><p>Come si costruisce un sistema distribuito? Si veda: <a class="reference internal" href="#metodo-di-lavoro"><span class="std std-ref">Metodo di lavoro</span></a>.</p></li>
+</ol>
+<p><span class="slide">Il nostro quadro generale</span></p>
+<section id="il-quadro-generale">
+<h3>Il quadro generale<a class="headerlink" href="#il-quadro-generale" title="Permalink to this headline">¶</a></h3>
+<p>Nella nostra versione di questo modello computazionale, un attore presenta le seguenti proprietà:</p>
+<ul class="simple">
+<li><p>ha un <strong>nome univoco</strong> nell’ambito di tutto il sistema;</p></li>
+<li><p>è logicamente attivo, cioè dotato di flusso di controllo autonomo;</p></li>
+<li><p>è capace di inviare messaggi ad un altro attore, di cui conosce il <strong>nome</strong>, incluso sè stesso;</p></li>
+<li><p>è capace di eseguire elaborazioni autonome e/o elaborazioni di messaggi;</p></li>
+<li><p>è dotato di una sua <span class="remark">coda locale</span> (<a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a>) in cui sono depositati i messaggi
+a lui inviati, quando questi arrivano mentre l’attore è impegnato in una fase di elaborazione;</p></li>
+<li><p>elabora i messaggi ricevuti uno alla volta, prelevandoli dalla sua coda <a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a>) in modo <em>First-In-First-Out</em> (FIFO).
+Questo modo di operare vine denominato come <span class="remark">attore message-driven</span>.</p></li>
+<li><p>nasce, vive e muore in un <span class="xref std std-ref">contesto</span> che può essere comune a (molti) altri attori.</p></li>
+</ul>
+<p>Al momento realizzeremo questo modello in Java associando ad ogni attore un Thread e realizzando
+la <a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a> con una <a class="reference external" href="https://www.baeldung.com/java-blocking-queue">BlokingQueue</a> Java,
+ma motivi di efficienza ci porteranno, più avanti, ad utilizzare le <em>coroutines</em> e i <em>channel</em> di Kotlin.</p>
+<p><span class="slide">Il contesto</span></p>
+</section>
+</section>
+<section id="actors23-il-contesto">
+<h2>Actors23: il contesto<a class="headerlink" href="#actors23-il-contesto" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 45%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Un sistema ad attori è in composto da una collezioni di attori, attivati in uno o più contesti.</p></td>
+<td><img alt="_images/contesti.png" class="align-center" src="_images/contesti.png" />
+</td>
+</tr>
+<tr class="row-even"><td><p>Un contesto rappresenta un nodo  di elaborazione dotato di un server e di un porta di ingresso,
+su cui altri contesti possono stabilire una <a class="reference internal" href="Interaction.html#interconnessione"><span class="std std-ref">Interconnessione</span></a>, di solito basata sul protocollo <code class="docutils literal notranslate"><span class="pre">TCP</span></code>.</p>
+<p>Si veda <a class="reference internal" href="#unibo-basicomm23-actors23-actorcontext23"><span class="std std-ref">unibo.basicomm23.actors23.ActorContext23</span></a></p>
+</td>
+<td><a class="reference internal image-reference" href="_images/ActorContext.png"><img alt="_images/ActorContext.png" class="align-center" src="_images/ActorContext.png" style="width: 70%;" /></a>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Un contesto mantiene una tabella  (<span class="blue">ctxActorMap</span>)  con i riferimento agli attori locali e una tabella
+(<span class="blue">ctxProxyMap</span>) con i riferimenti ai Proxy che mantengono una <a class="reference internal" href="Interaction.html#interconnessione"><span class="std std-ref">Interconnessione</span></a> con gli altri contesti
+del sistema.</p>
+<p>Si veda <a class="reference internal" href="#unibo-basicomm23-actors23-actorbasic23"><span class="std std-ref">unibo.basicomm23.actors23.ActorBasic23</span></a> e   <a class="reference internal" href="#unibo-basicomm23-actors23-proxy"><span class="std std-ref">unibo.basicomm23.actors23.Proxy</span></a></p>
+</td>
+<td><a class="reference internal image-reference" href="_images/ActorContextMaps.png"><img alt="_images/ActorContextMaps.png" class="align-center" src="_images/ActorContextMaps.png" style="width: 70%;" /></a>
+</td>
+</tr>
+<tr class="row-even"><td><p>Il Server di contesto depone i messaggi <a class="reference internal" href="unibo.basicomm23.html#unibo-interaction-interfaces-iapplmessage"><span class="std std-ref">IApplMessage</span></a>
+ricevuti su una <a class="reference internal" href="Interaction.html#interconnessione"><span class="std std-ref">Interconnessione</span></a> sulla  <a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a>
+dell’attore destinatario.</p>
+<p>Per questo scopo, il Sever si avvale di un unico <span class="blue">gestore di messaggi di sistema</span>: il
+<a class="reference internal" href="#unibo-basicomm23-actors23-contextmsghandler"><span class="std std-ref">ContextMsgHandler</span></a>.</p>
+<p>La figura mostra il caso di attori locali ad un nodo di elaborazione che possono
+inviare/ricevere messaggi tra loro oppure elaborare messaggi inviati
+da componenti remoti.</p>
+</td>
+<td><img alt="_images/Actors23SingleNodeAndCtx.png" class="align-center" src="_images/Actors23SingleNodeAndCtx.png" />
+</td>
+</tr>
+<tr class="row-odd"><td><p>Un sistema ad attori è configurato in modo automatico a partire da una descrizione espressa in forma
+di <span class="blue">base di consoscenza</span>, in sintassi Prolog. Si veda <a class="reference internal" href="#descrizione-di-un-sistema-distribuito"><span class="std std-ref">Descrizione di un sistema distribuito</span></a>.</p></td>
+<td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">context</span><span class="p">(</span><span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8923&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8925&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx3</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8927&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">producer1</span><span class="p">,</span> <span class="n">ctx1</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">className</span><span class="o">&gt;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">consumer</span><span class="p">,</span>  <span class="n">ctx2</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">className</span><span class="o">&gt;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">producer2</span><span class="p">,</span> <span class="n">ctx3</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">className</span><span class="o">&gt;</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="slide1">Descrizioni: perchè Prolog?</span></p>
+<section id="rappresentazioni-in-prolog-perche">
+<h3>Rappresentazioni in Prolog: perchè?<a class="headerlink" href="#rappresentazioni-in-prolog-perche" title="Permalink to this headline">¶</a></h3>
+<p>La scelta di rappresentare il sistema e i <a class="reference internal" href="Interaction.html#sintassi-delle-stringhe-messaggio"><span class="std std-ref">messaggi</span></a>
+usando il Prolog, permette di sfruttare il meccanismo
+della <span class="blue">unificazione sintattica</span> per accedere alle informazioni.</p>
+<p>Ad esempio, consideriamo il seguente messaggio in forma di String:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">msg(</span> <span class="pre">cmd,</span> <span class="pre">dispatch,</span> <span class="pre">main,</span> <span class="pre">led,</span> <span class="pre">turn(off),</span> <span class="pre">1)</span></code></p>
+</div></blockquote>
+<p id="accesso-al-payload-usando-prolog">Volendo accedere al payload del messaggio, possiamo definire il seguente codice (come
+<em>TestUnit</em>, nel file <code class="docutils literal notranslate"><span class="pre">unibo.actors23/app/src/test/java/unibo/actors23/TestProlog.java</span></code>):</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestProlog</span> <span class="p">{</span>
+  <span class="kd">private</span> <span class="n">String</span> <span class="n">cmd</span><span class="p">;</span>
+  <span class="kd">private</span> <span class="n">Struct</span> <span class="n">cmdAsTerm</span><span class="p">;</span>
+
+<span class="nd">@Before</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="p">()</span> <span class="p">{</span>
+       <span class="n">cmd</span>       <span class="o">=</span> <span class="s">&quot;msg( cmd, dispatch, main, led, turn(off), 1)&quot;</span><span class="p">;</span>
+       <span class="n">cmdAsTerm</span> <span class="o">=</span> <span class="p">(</span><span class="n">Struct</span><span class="p">)</span> <span class="n">Term</span><span class="p">.</span><span class="na">createTerm</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
+<span class="p">}</span>
+      <span class="nd">@Test</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">test0</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">Struct</span> <span class="n">payload</span>   <span class="o">=</span> <span class="p">(</span><span class="n">Struct</span><span class="p">)</span> <span class="n">cmdAsTerm</span><span class="p">.</span><span class="na">getArg</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+          <span class="n">assertEquals</span><span class="p">(</span> <span class="n">payload</span><span class="p">.</span><span class="na">toString</span><span class="p">(),</span> <span class="s">&quot;turn(off)&quot;</span><span class="p">);</span>
+          <span class="n">Term</span> <span class="n">onOff</span>       <span class="o">=</span> <span class="n">payload</span><span class="p">.</span><span class="na">getArg</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+          <span class="k">assert</span><span class="p">(</span> <span class="n">onOff</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span> <span class="s">&quot;off&quot;</span> <span class="p">));</span>
+      <span class="p">}</span>
+</pre></div>
+</div>
+<p>Ma possiamo anche usare l’unificazione attivando la <a href="#id3"><span class="problematic" id="id4">tuProlog_</span></a>-engine:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testUnify</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Prolog</span> <span class="n">pengine</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Prolog</span><span class="p">();</span>
+  <span class="n">String</span> <span class="n">cmdTemplate</span> <span class="o">=</span> <span class="s">&quot;msg( cmd, MSGTYPE, main, led, turn(X), 1)&quot;</span><span class="p">;</span>
+  <span class="n">String</span> <span class="n">goal</span>      <span class="o">=</span> <span class="n">cmdAsTerm</span><span class="o">+</span><span class="s">&quot;=&quot;</span><span class="o">+</span><span class="n">cmdTemplate</span><span class="p">;</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="n">SolveInfo</span> <span class="n">sol</span> <span class="o">=</span> <span class="n">pengine</span><span class="p">.</span><span class="na">solve</span><span class="p">(</span> <span class="n">goal</span><span class="o">+</span><span class="s">&quot;.&quot;</span> <span class="p">);</span>
+    <span class="n">Term</span> <span class="n">msgType</span> <span class="o">=</span> <span class="n">sol</span><span class="p">.</span><span class="na">getVarValue</span><span class="p">(</span><span class="s">&quot;MSGTYPE&quot;</span><span class="p">);</span>
+    <span class="k">assert</span><span class="p">(</span> <span class="n">msgType</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span> <span class="s">&quot;dispatch&quot;</span> <span class="p">));</span>
+    <span class="n">Term</span> <span class="n">data</span> <span class="o">=</span> <span class="n">sol</span><span class="p">.</span><span class="na">getVarValue</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">);</span>
+    <span class="k">assert</span><span class="p">(</span> <span class="n">data</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span> <span class="s">&quot;off&quot;</span><span class="p">)</span> <span class="p">);</span>
+  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span> <span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">Regole di utilità</span></p>
+</section>
+<section id="sysrules-pl">
+<h3>sysRules.pl<a class="headerlink" href="#sysrules-pl" title="Permalink to this headline">¶</a></h3>
+<p>Il file contiene un Insieme di regole Prolog utili alla gestione della base di conoscenza che funge da
+descrizione del sistema.</p>
+<section id="descrizione-di-un-sistema-distribuito">
+<h4>Descrizione di un sistema distribuito<a class="headerlink" href="#descrizione-di-un-sistema-distribuito" title="Permalink to this headline">¶</a></h4>
+<p>La descrizione di un sistema distribuito aviene esprimendo i <span class="blue">fatti</span> che si conoscono in merito al sistema,
+quali:</p>
+<ul class="simple">
+<li><p>i contesti che rappresentano i diverso noi del sistema;</p></li>
+<li><p>i nomi degli attori che operano nei diversi contesti;</p></li>
+<li><p>le classi che realizzano gli attori.</p></li>
+</ul>
+<p>Questi fatti formano una <span class="blue">base di conoscenza</span>, che scriviamo ed elaboriamo con sintassi Prolog.
+Ad esempio (si veda l’esempio <a class="reference internal" href="#due-contesti"><span class="std std-ref">Due contesti</span></a>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">context</span><span class="p">(</span><span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>      <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8123&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;192.168.1.132&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8125&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">a1</span><span class="p">,</span> <span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.Actor1&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">a2</span><span class="p">,</span> <span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.Actor2&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">a3</span><span class="p">,</span> <span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.Actor2&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">console</span><span class="p">,</span> <span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.ActorConsole&quot;</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+<p><span class="slide2">Descrizione dei messaggi</span></p>
+<p>Altre importanti conoscenze che ancdrebbero descritte sono:</p>
+<ul class="simple">
+<li><p>la struttura dei messaggi con cui gli attori comunicano. Ad esempio:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Dispatch</span> <span class="n">cmd</span>       <span class="p">:</span> <span class="n">cmd</span><span class="p">(</span><span class="n">MOVE</span><span class="p">)</span>
+<span class="n">Request</span> <span class="n">step</span>       <span class="p">:</span> <span class="n">step</span><span class="p">(</span> <span class="n">TIME</span> <span class="p">)</span>
+<span class="n">Reply</span>   <span class="n">stepdone</span>   <span class="p">:</span> <span class="n">stepdone</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">Reply</span>   <span class="n">stepfail</span>   <span class="p">:</span> <span class="n">stepfail</span><span class="p">(</span><span class="n">DURATION</span><span class="p">,</span> <span class="n">CAUSE</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Al momento, non vi sono possibilità di descrizione di questo genere, che invece saranno
+introdotte <span class="remark">quando svilupperemo un opportuno DSL</span>.</p>
+</section>
+<section id="showsystemconfiguration">
+<h4>showSystemConfiguration<a class="headerlink" href="#showsystemconfiguration" title="Permalink to this headline">¶</a></h4>
+<p>Una regola Prolog di <a class="reference internal" href="#sysrules-pl"><span class="std std-ref">sysRules.pl</span></a> visualizza la composizione del sistema.
+Per un esempio, si veda: <a class="reference internal" href="#unibo-basicomm23-actors23-actor23utils"><span class="std std-ref">Actor23Utils</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">showSystemConfiguration</span> <span class="p">:</span><span class="o">-</span>
+    <span class="n">stdout</span> <span class="o">&lt;-</span> <span class="n">println</span><span class="p">(</span><span class="s2">&quot;&amp;&amp;&amp;&amp;&amp;&amp;&amp;SysRules&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&quot;</span><span class="p">),</span>
+    <span class="n">getTheContexts</span><span class="p">(</span><span class="n">CTXS</span><span class="p">),</span>
+    <span class="n">stdout</span> <span class="o">&lt;-</span> <span class="n">println</span><span class="p">(</span><span class="s1">&#39;CONTEXTS IN THE SYSTEM:&#39;</span><span class="p">),</span>
+    <span class="n">showElements</span><span class="p">(</span><span class="n">CTXS</span><span class="p">),</span>
+    <span class="n">stdout</span> <span class="o">&lt;-</span> <span class="n">println</span><span class="p">(</span><span class="s1">&#39;ACTORS   IN THE SYSTEM:&#39;</span><span class="p">),</span>
+    <span class="n">getTheActors</span><span class="p">(</span><span class="n">ACTORS</span><span class="p">),</span>
+    <span class="n">showElements</span><span class="p">(</span><span class="n">ACTORS</span><span class="p">),</span>
+    <span class="n">stdout</span> <span class="o">&lt;-</span> <span class="n">println</span><span class="p">(</span><span class="s2">&quot;&amp;&amp;&amp;&amp;&amp;&amp;&amp;SysRules&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&quot;</span><span class="p">)</span><span class="o">.</span>
+
+<span class="n">getTheContexts</span><span class="p">(</span><span class="n">CTXS</span><span class="p">)</span> <span class="p">:</span><span class="o">-</span>
+    <span class="n">findall</span><span class="p">(</span><span class="n">context</span><span class="p">(</span> <span class="n">CTX</span><span class="p">,</span> <span class="n">HOST</span><span class="p">,</span> <span class="n">PROTOCOL</span><span class="p">,</span> <span class="n">PORT</span> <span class="p">),</span>
+            <span class="n">context</span><span class="p">(</span> <span class="n">CTX</span><span class="p">,</span> <span class="n">HOST</span><span class="p">,</span> <span class="n">PROTOCOL</span><span class="p">,</span> <span class="n">PORT</span> <span class="p">),</span>
+            <span class="n">CTXS</span><span class="p">)</span><span class="o">.</span>
+<span class="n">getTheActors</span><span class="p">(</span><span class="n">ACTORS</span><span class="p">)</span> <span class="p">:</span><span class="o">-</span>
+    <span class="n">findall</span><span class="p">(</span><span class="n">qactor</span><span class="p">(</span> <span class="n">A</span><span class="p">,</span> <span class="n">CTX</span><span class="p">,</span> <span class="n">CLASS</span> <span class="p">),</span>
+            <span class="n">qactor</span><span class="p">(</span> <span class="n">A</span><span class="p">,</span> <span class="n">CTX</span><span class="p">,</span> <span class="n">CLASS</span> <span class="p">),</span>
+            <span class="n">ACTORS</span><span class="p">)</span><span class="o">.</span>
+
+<span class="n">showElements</span><span class="p">(</span><span class="n">ElementListString</span><span class="p">):</span><span class="o">-</span>
+    <span class="n">text_term</span><span class="p">(</span> <span class="n">ElementListString</span><span class="p">,</span> <span class="n">ElementList</span> <span class="p">),</span>
+    <span class="n">showListOfElements</span><span class="p">(</span><span class="n">ElementList</span><span class="p">)</span><span class="o">.</span>
+    <span class="n">showListOfElements</span><span class="p">([])</span><span class="o">.</span>
+<span class="n">showListOfElements</span><span class="p">([</span><span class="n">C</span><span class="o">|</span><span class="n">R</span><span class="p">]):</span><span class="o">-</span>
+        <span class="n">stdout</span> <span class="o">&lt;-</span> <span class="n">println</span><span class="p">(</span> <span class="n">C</span> <span class="p">),</span>
+        <span class="n">showElements</span><span class="p">(</span><span class="n">R</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+<p><span class="slide1">Actor23Utils</span></p>
+<p>E’ disponibile una  classe che fornisce un insieme di metodi static di utilità, alcuni dei quali
+‘nascondono’ all’application designer l’uso del Prolog.</p>
+</section>
+</section>
+</section>
+<section id="unibo-basicomm23-actors23-actor23utils">
+<h2>unibo.basicomm23.actors23.Actor23Utils<a class="headerlink" href="#unibo-basicomm23-actors23-actor23utils" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">Actor23Utils</span> <span class="p">{</span>
+<span class="n">protected</span> <span class="n">static</span> <span class="n">Prolog</span> <span class="n">pengine</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Prolog</span><span class="p">();</span>
+<span class="n">protected</span> <span class="n">static</span> <span class="n">Hashtable</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">ActorContext23</span><span class="o">&gt;</span> <span class="n">ctxsMap</span> <span class="o">=</span>
+                        <span class="n">new</span> <span class="n">Hashtable</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">ActorContext23</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">protected</span> <span class="n">static</span> <span class="n">String</span> <span class="n">pfx</span> <span class="o">=</span> <span class="s2">&quot;    </span><span class="si">%%</span><span class="s2">% &quot;</span><span class="p">;</span>
+<span class="n">public</span> <span class="n">static</span> <span class="n">boolean</span> <span class="n">trace</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">showSystemConfiguration</span><span class="p">(){</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">solve</span><span class="p">(</span><span class="s2">&quot;showSystemConfiguration&quot;</span><span class="p">);</span>
+    <span class="p">}</span><span class="n">catch</span><span class="p">(</span> <span class="ne">Exception</span> <span class="n">e</span> <span class="p">){</span> <span class="n">e</span><span class="o">.</span><span class="n">printStackTrace</span><span class="p">();}</span>
+    <span class="p">}</span>
+<span class="o">//</span><span class="n">Prolog</span><span class="o">-</span><span class="n">related</span>
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">loadTheory</span><span class="p">(</span> <span class="n">String</span> <span class="n">path</span> <span class="p">){</span> <span class="o">...</span> <span class="p">}</span>
+
+    <span class="n">public</span> <span class="n">static</span> <span class="n">String</span> <span class="n">solve</span><span class="p">(</span>
+            <span class="n">String</span> <span class="n">goal</span><span class="p">,</span> <span class="n">String</span> <span class="n">resVar</span> <span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+
+    <span class="n">public</span> <span class="n">static</span> <span class="n">boolean</span> <span class="n">solve</span><span class="p">(</span>
+            <span class="n">String</span> <span class="n">goal</span>  <span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>  <span class="o">...</span> <span class="p">}</span>
+
+<span class="o">//</span><span class="n">System</span><span class="o">-</span><span class="n">related</span>
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">createContexts</span><span class="p">(</span> <span class="o">...</span><span class="p">;</span> <span class="n">showSystemConfiguration</span><span class="p">();</span> <span class="p">}</span>
+
+    <span class="n">public</span> <span class="n">static</span> <span class="n">ActorContext23</span> <span class="n">createTheContext</span><span class="p">(</span>
+            <span class="n">String</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">String</span> <span class="n">hostName</span> <span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">setTheActorsRemote</span><span class="p">(</span><span class="n">ActorContext23</span> <span class="n">ctx</span><span class="p">){</span> <span class="o">...</span> <span class="p">}</span>
+
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">createActorsOfContext</span><span class="p">(</span><span class="n">ActorContext23</span> <span class="n">ctx</span><span class="p">){</span> <span class="o">...</span> <span class="p">}</span>
+
+    <span class="n">public</span> <span class="n">static</span> <span class="n">ActorBasic23</span> <span class="n">createTheActor</span><span class="p">(</span> <span class="n">ActorContext23</span> <span class="n">ctx</span><span class="p">,</span>
+        <span class="n">String</span> <span class="n">actorName</span><span class="p">,</span><span class="n">String</span> <span class="n">className</span> <span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span><span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="actor23utils-trace">
+<h3>Actor23Utils.trace<a class="headerlink" href="#actor23utils-trace" title="Permalink to this headline">¶</a></h3>
+<p>Se la variabile <span class="blue">boolean trace</span> è posta <code class="docutils literal notranslate"><span class="pre">true</span></code>, i metodi visualizzano informazioni
+utili a meglio comprendere il funzionamento run-time del sistema.</p>
+<p><span class="slide1">Il metodo-configuratore</span></p>
+</section>
+<section id="actorutils-createcontexts">
+<h3>ActorUtils.createContexts<a class="headerlink" href="#actorutils-createcontexts" title="Permalink to this headline">¶</a></h3>
+<p>Il metodo <span class="blue">createContexts</span> svolge tutto il lavoro necessario per la creazione di un sistema,
+avvalendosi degli altri metodi di utlilità e delle regole definite in <a class="reference internal" href="#sysrules-pl"><span class="std std-ref">sysRules.pl</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">createContexts</span><span class="p">(</span>
+        <span class="n">String</span> <span class="n">hostName</span><span class="p">,</span> <span class="n">String</span> <span class="n">desrFilePath</span> <span class="p">,</span> <span class="n">String</span> <span class="n">rulesFilePath</span> <span class="p">){</span>
+<span class="o">//</span><span class="n">CARICAMENTO</span> <span class="n">BASI</span> <span class="n">DI</span> <span class="n">CONOSCENZA</span>
+ <span class="n">loadTheory</span><span class="p">(</span> <span class="n">desrFilePath</span> <span class="p">);</span>
+ <span class="n">loadTheory</span><span class="p">(</span> <span class="n">rulesFilePath</span> <span class="p">);</span>
+ <span class="k">try</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">ctxs</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="s2">&quot;getCtxNames( X )&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">);</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">ctxsList</span> <span class="o">=</span> <span class="n">strRepToList</span><span class="p">(</span><span class="n">ctxs</span><span class="p">);</span>
+    <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nb">iter</span> <span class="o">=</span> <span class="n">ctxsList</span><span class="o">.</span><span class="n">iterator</span><span class="p">();</span>
+<span class="o">//</span><span class="n">CREAZIONE</span> <span class="n">DEI</span> <span class="n">CONTESTI</span>
+    <span class="k">while</span><span class="p">(</span> <span class="nb">iter</span><span class="o">.</span><span class="n">hasNext</span><span class="p">()</span> <span class="p">){</span>
+        <span class="n">String</span> <span class="n">ctx</span> <span class="o">=</span> <span class="nb">iter</span><span class="o">.</span><span class="n">next</span><span class="p">();</span>
+        <span class="n">String</span> <span class="n">goal</span> <span class="o">=</span> <span class="s2">&quot;context( &quot;</span><span class="o">+</span> <span class="n">ctx</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">+</span> <span class="n">hostName</span> <span class="o">+</span><span class="s2">&quot;, PROTOCOL, PORT )&quot;</span><span class="p">;</span>
+        <span class="n">boolean</span> <span class="n">res</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span> <span class="n">goal</span> <span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">res</span> <span class="p">)</span> <span class="n">createTheContext</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">hostName</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="o">//</span><span class="n">INIEZIONE</span> <span class="n">DEGLI</span> <span class="n">ATTORI</span> <span class="n">REMOTI</span>
+    <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">ActorContext23</span><span class="o">&gt;</span> <span class="n">allCtxs</span> <span class="o">=</span> <span class="n">ctxsMap</span><span class="o">.</span><span class="n">values</span><span class="p">()</span><span class="o">.</span><span class="n">iterator</span><span class="p">();</span>
+    <span class="k">while</span><span class="p">(</span> <span class="n">allCtxs</span><span class="o">.</span><span class="n">hasNext</span><span class="p">()</span> <span class="p">){</span>
+        <span class="n">setTheActorsRemote</span><span class="p">(</span> <span class="n">allCtxs</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="o">//</span><span class="n">CREAZIONE</span> <span class="n">DEGLI</span> <span class="n">ATTORI</span> <span class="n">LOCALI</span>
+    <span class="n">allCtxs</span> <span class="o">=</span> <span class="n">ctxsMap</span><span class="o">.</span><span class="n">values</span><span class="p">()</span><span class="o">.</span><span class="n">iterator</span><span class="p">();</span>
+    <span class="k">while</span><span class="p">(</span> <span class="n">allCtxs</span><span class="o">.</span><span class="n">hasNext</span><span class="p">()</span> <span class="p">){</span>
+        <span class="n">createActorsOfContext</span><span class="p">(</span> <span class="n">allCtxs</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">showSystemConfiguration</span><span class="p">();</span>
+ <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide">L’attore</span></p>
+</section>
+</section>
+<section id="actors23-l-attore">
+<h2>Actors23:l’attore<a class="headerlink" href="#actors23-l-attore" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 45%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Un attore è un componente attivo che:</p>
+<ul class="simple">
+<li><p>fa parte di un <a class="reference internal" href="#actors23-il-contesto"><span class="std std-ref">contesto</span></a></p></li>
+<li><p>specializza la classe <a class="reference internal" href="#unibo-basicomm23-actors23-actorbasic23"><span class="std std-ref">ActorBasic23</span></a></p></li>
+<li><p>opera in modo <span class="remark">message-driven</span>, elaborando i messaggi che il contesto pone nella sua <a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a></p></li>
+<li><p>è dotato di operazioni (<span class="xref std std-ref">sendMsg</span> e <span class="xref std std-ref">reply</span>) per inviare messaggi ad altri attori,
+locali al suo contesto o in contesti diversi</p></li>
+</ul>
+</td>
+<td><a class="reference internal image-reference" href="_images/actor23.png"><img alt="_images/actor23.png" class="align-center" src="_images/actor23.png" style="width: 60%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<section id="il-comportamento-di-un-attore">
+<h3>Il comportamento di un attore<a class="headerlink" href="#il-comportamento-di-un-attore" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Ogni attore possiede una coda dei messaggi a lui indirizzati.</p></li>
+<li><p>La coda viene popolata dal <span class="xref std std-ref">contesto</span> in cui l’attore opera.</p></li>
+<li><p>Il comportamento dell’attore viene
+detto <span class="remark">message-driven</span> in quanto consiste in un ciclo  (<a class="reference internal" href="#actor23-mainloop"><span class="std std-ref">Actor23 mainLoop</span></a>)
+<code class="docutils literal notranslate"><span class="pre">readFromQueue-elab</span></code>.</p></li>
+<li><p>Ogni azione di elaborazione di messaggio deve terminare, in modo da permettere il proseguimento
+del ciclo.</p></li>
+<li><p>Azioni proattive prolungate devono essere evitate. Una tecnica possibile è spezzare l’azione
+di lunga durata cedendo il controllo, dopo l’invio di un <a class="reference internal" href="#auto-massaggio"><span class="std std-ref">auto-massaggio</span></a>.</p></li>
+</ul>
+<section id="actor23-mainloop">
+<h4>Actor23 mainLoop<a class="headerlink" href="#actor23-mainloop" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">msgQueue</span> <span class="o">=</span>
+                     <span class="n">new</span> <span class="n">LinkedBlockingDeque</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="n">protected</span> <span class="n">void</span> <span class="n">mainLoop</span><span class="p">(){</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="k">while</span><span class="p">(</span> <span class="n">true</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">msgQueue</span><span class="o">.</span><span class="n">take</span><span class="p">();</span>
+            <span class="n">IApplMessage</span> <span class="n">inputMsg</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+            <span class="n">elabMsg</span><span class="p">(</span><span class="n">inputMsg</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span>  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="msgqueue">
+<h4>msgQueue<a class="headerlink" href="#msgqueue" title="Permalink to this headline">¶</a></h4>
+<p>La variabile <code class="docutils literal notranslate"><span class="pre">msgQueue</span></code> rappresenta la coda dei messaggi di ingresso all’attore.</p>
+<p><span class="slide2">Invio di messaggi</span></p>
+<p>Ogni attore è capace di inviare un messaggio ad
+un attore destinatario (locale o remoto) mediante il
+metodo <a class="reference internal" href="#actorbasic23-sendmsg"><span class="std std-ref">sendMsg</span></a>.</p>
+</section>
+<section id="auto-massaggio">
+<h4>auto-massaggio<a class="headerlink" href="#auto-massaggio" title="Permalink to this headline">¶</a></h4>
+<p>Per inviare un messaggio a è stesso, l’attore può costruire un messaggio (<em>dispatch</em>) che abbia
+il suo nome come destinatario e inviare il messaggio con una normale <a class="reference internal" href="#actorbasic23-sendmsg"><span class="std std-ref">sendMsg</span></a>.</p>
+<p>Si veda <span class="blue">autoStartMsg</span> in: <a class="reference internal" href="#unibo-basicomm23-actors23-actorbasic23"><span class="std std-ref">ActorBasic23</span></a> e in
+<a class="reference internal" href="#actor23-activation"><span class="std std-ref">Actor23 activation</span></a>.</p>
+</section>
+</section>
+<section id="actorbasic23-sendmsg">
+<h3>ActorBasic23.sendMsg<a class="headerlink" href="#actorbasic23-sendmsg" title="Permalink to this headline">¶</a></h3>
+<p>L’invio di un messaggio consiste:</p>
+<ul class="simple">
+<li><p>Se il destinatario è nello stesso contesto: si inserisce del messaggio nella  <a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a> del destinatario.</p></li>
+<li><p>Se il destinatario è in un altro contesto: si determina un <a class="reference internal" href="#actor23-proxy"><span class="std std-ref">proxy</span></a> al contesto del destinatorio e
+lo si usa per trasmettere il messaggio al server remoto.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">sendMsg</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="n">ActorContext23</span> <span class="n">ctx</span><span class="p">){</span>
+     <span class="k">try</span> <span class="p">{</span>
+        <span class="n">String</span> <span class="n">destActorName</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgReceiver</span><span class="p">();</span>
+        <span class="n">ActorBasic23</span> <span class="n">dest</span>    <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">getActor</span><span class="p">(</span><span class="n">destActorName</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">dest</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">dest</span><span class="o">.</span><span class="n">msgQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span> <span class="n">msg</span> <span class="p">);</span> <span class="o">//</span><span class="n">attore</span> <span class="n">locale</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">sendMsgToRemoteActor</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">ctx</span><span class="p">);</span>  <span class="o">//</span><span class="n">attoreremoto</span>
+        <span class="p">}</span>
+    <span class="p">}</span><span class="n">catch</span><span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">){</span><span class="o">...</span><span class="p">}</span>
+  <span class="p">}</span>
+<span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="actorbasic23-sendmsgtoremoteactor">
+<h3>ActorBasic23.sendMsgToRemoteActor<a class="headerlink" href="#actorbasic23-sendmsgtoremoteactor" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">protected</span> <span class="n">void</span> <span class="n">sendMsgToRemoteActor</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="n">ActorContext23</span> <span class="n">ctx</span><span class="p">){</span>
+     <span class="n">String</span> <span class="n">destActorName</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgReceiver</span><span class="p">();</span>
+     <span class="n">Proxy</span> <span class="n">pxy</span>    <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">getProxy</span><span class="p">(</span><span class="n">destActorName</span><span class="p">);</span>
+     <span class="k">if</span><span class="p">(</span> <span class="n">pxy</span> <span class="o">==</span> <span class="n">null</span> <span class="p">)</span> <span class="p">{</span>
+       <span class="n">CommUtils</span><span class="o">.</span><span class="n">outred</span><span class="p">(</span><span class="s2">&quot;Perhaps no setActorAsRemote for &quot;</span> <span class="o">+</span> <span class="n">destActorName</span> <span class="p">);</span>
+       <span class="k">return</span><span class="p">;</span>
+     <span class="p">}</span>
+     <span class="n">pxy</span><span class="o">.</span><span class="n">sendMsgOnConnection</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">toString</span><span class="p">());</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide2">Invio di risposte</span></p>
+</section>
+<section id="actorbasic23-reply">
+<h3>ActorBasic23.reply<a class="headerlink" href="#actorbasic23-reply" title="Permalink to this headline">¶</a></h3>
+<p>Replicare a una richiesta significa dare una risposta a un  messaggio ricevuto in precedenza.</p>
+<p><span class="slide1">La gestione delle richieste</span></p>
+<ul class="simple">
+<li><p>Il contesto che elabora un messaggio di richiesta, inserisce nel messaggio stesso un riferimento alla Interconnection
+su cui è stato ricevuto.</p></li>
+<li><p>Un attore che preleva dalla sua <a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a> un messaggio di richiesta, lo memorizza in
+una tabella <code class="docutils literal notranslate"><span class="pre">HashMap&lt;String,</span> <span class="pre">IApplMessage&gt;</span> <span class="pre">requestMap</span></code>.</p></li>
+</ul>
+<p><span class="slide1">La gestione delle risposte</span></p>
+<p>L’operazione reply riceve in ingresso sia un messaggio di risposta (<code class="docutils literal notranslate"><span class="pre">answer</span></code>)
+sia la richiesta originaria, da cui ricava la connessione su cui è stata ricevuta.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">reply</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">answer</span><span class="p">,</span> <span class="n">IApplMessage</span> <span class="n">request</span><span class="p">){</span>
+    <span class="n">String</span> <span class="n">reqId</span>        <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">msgId</span><span class="p">();</span>
+    <span class="n">String</span> <span class="n">caller</span>       <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">msgSender</span><span class="p">();</span>
+    <span class="n">IApplMessage</span> <span class="n">reqMsg</span> <span class="o">=</span> <span class="n">requestMap</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">reqId</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">reqMsg</span> <span class="o">==</span> <span class="n">null</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="n">CommUtils</span><span class="o">.</span><span class="n">outred</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;| answer NO request found&quot;</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">ActorBasic23</span> <span class="n">destactor</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">getActor</span><span class="p">(</span><span class="n">caller</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">destactor</span> <span class="o">!=</span> <span class="n">null</span> <span class="p">){</span> <span class="o">//</span><span class="n">Attore</span> <span class="n">caller</span> <span class="n">locale</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="n">destactor</span><span class="o">.</span><span class="n">msgQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span> <span class="n">answer</span> <span class="p">);</span>
+        <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="n">sendMessageOnConn</span><span class="p">(</span><span class="n">answer</span><span class="p">,</span><span class="n">reqMsg</span><span class="o">.</span><span class="n">getConn</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="sendmessageonconn">
+<h4>sendMessageOnConn<a class="headerlink" href="#sendmessageonconn" title="Permalink to this headline">¶</a></h4>
+<p>Se il richiedente è remoto, la risposta vine inviata usando la connessione su cui era giunta la richiesta.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">sendMessageOnConn</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">){</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">conn</span> <span class="o">!=</span> <span class="n">null</span> <span class="p">)</span> <span class="n">conn</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">toString</span><span class="p">()</span> <span class="p">);</span>
+        <span class="k">else</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">outred</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;| sendMessageOnConn conn is NULL&quot;</span> <span class="p">);</span>
+    <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="interazione-con-alieni">
+<h3>Interazione con alieni<a class="headerlink" href="#interazione-con-alieni" title="Permalink to this headline">¶</a></h3>
+<p>Detto <span class="blue">alieno</span> un componente software al di fuori di un dato sistema ad attori,</p>
+<ul class="simple">
+<li><p>l’invio di un messaggio ad un alieno remoto si realizza usando un abilitatore alla trasmissione
+come <a class="reference internal" href="unibo.basicomm23.html#actornaivecaller"><span class="std std-ref">ActorNaiveCaller</span></a> introdotto in <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a>.</p></li>
+</ul>
+<p><span class="slide2">Caller alieni</span></p>
+<p>Un attore può anche riceve un messaggio di tipo <em>request</em> da un <em>alieno remoto</em> che conosce l’indirizzo
+e la porta del contesto in cui l’attore opera e la <a class="reference internal" href="Interaction.html#struttura-dei-messaggi"><span class="std std-ref">Struttura dei messaggi</span></a>.</p>
+<ul class="simple">
+<li><p>La <a class="reference internal" href="#actorbasic23-reply"><span class="std std-ref">reply</span></a> realizzata sulla connessione su cui giunge la richiesta, permette
+di costruire sistemi ad attori che operano cone <span class="blue">servizi</span>. Per un esempio si veda l’esempio di
+<a class="reference internal" href="#console-esterna"><span class="std std-ref">Console esterna</span></a>.</p></li>
+</ul>
+<p><span class="slide">Un sistema di esempio</span></p>
+</section>
+</section>
+<section id="un-esempio-di-attori-e-contesti">
+<h2>Un esempio di attori e contesti<a class="headerlink" href="#un-esempio-di-attori-e-contesti" title="Permalink to this headline">¶</a></h2>
+<p>In questo esempio seguiremo un <span class="blue">metodo utile per costruire  sistemi
+distribuiti</span> in <span class="remark">modo graduale</span>.</p>
+<section id="metodo-di-lavoro">
+<h3>Metodo di lavoro<a class="headerlink" href="#metodo-di-lavoro" title="Permalink to this headline">¶</a></h3>
+<p>Prima impostaiamo (e testiamo) un sistema locale,
+in cui tutti gli attori operano in un unico contesto. Successivamente,
+distribuiamo gli attori in contesti diversi (in accordo ai requisiti e/o
+alle indicazioni dell’analista/progettista)
+allocati sullo stesso computer o su computer diversi:</p>
+<ol class="arabic simple">
+<li><p>Definzione degli attori che compongono il sistema e delle loro interazioni.</p></li>
+<li><p>Esecuzione del sistema in un unico contesto.</p></li>
+<li><p>Distribuzione degli attori in più contesti sullo stesso computer.</p></li>
+<li><p>Distribuzione degli attori in più contesti su diversi computer.</p></li>
+</ol>
+</section>
+<section id="esempio-attori-e-loro-interazioni">
+<h3>Esempio: attori e  loro interazioni<a class="headerlink" href="#esempio-attori-e-loro-interazioni" title="Permalink to this headline">¶</a></h3>
+<p><span class="slide2">Codice in:</span> <code class="docutils literal notranslate"><span class="pre">unibo.actors23/app/src/main/java/unibo/actors23/example0</span></code></p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 45%" />
+<col style="width: 55%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Introduciamo un sistema di 4 attori. Gli attori <code class="docutils literal notranslate"><span class="pre">a2</span></code> ed <code class="docutils literal notranslate"><span class="pre">a3</span></code> sono istanze della stessa classe
+(<span class="xref std std-ref">Actor2</span>).</p></td>
+<td><img alt="_images/esempio0.png" class="align-center" src="_images/esempio0.png" />
+</td>
+</tr>
+<tr class="row-even"><td><p>Poniamo in evidenza le interazioni.</p>
+<p>Qui usiamo diagrammi di sequenza UML, in cui le interazioni sono messaggi asincroni.
+Più avanti vedremo altre forme di rappresentazione.</p>
+</td>
+<td><img alt="_images/esempio0SeqDiagran.png" class="align-center" src="_images/esempio0SeqDiagran.png" />
+</td>
+</tr>
+</tbody>
+</table>
+<section id="actorconsole">
+<h4>ActorConsole<a class="headerlink" href="#actorconsole" title="Permalink to this headline">¶</a></h4>
+<p>La Console è un attore che:</p>
+<ol class="arabic simple">
+<li><p>si auto-attiva</p></li>
+<li><p>dopo <code class="docutils literal notranslate"><span class="pre">1sec</span></code> invia un dispatch con <code class="docutils literal notranslate"><span class="pre">id=cmd</span></code> con contenuto <code class="docutils literal notranslate"><span class="pre">start</span></code> all’attore <code class="docutils literal notranslate"><span class="pre">a1</span></code></p></li>
+<li><p>dopo altri <code class="docutils literal notranslate"><span class="pre">2sec</span></code> invia il dispatch <code class="docutils literal notranslate"><span class="pre">cmd</span></code> con contenuto <code class="docutils literal notranslate"><span class="pre">stop</span></code> all’attore <code class="docutils literal notranslate"><span class="pre">a1</span></code></p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">ActorConsole</span> <span class="n">extends</span> <span class="n">ActorBasic23</span> <span class="p">{</span>
+
+  <span class="n">public</span> <span class="n">ActorConsole</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">ActorContext23</span> <span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">ctx</span><span class="p">);</span>
+    <span class="n">autostart</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="n">protected</span> <span class="n">void</span> <span class="n">elabMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+    <span class="n">IApplMessage</span> <span class="n">startMsg</span> <span class="o">=</span><span class="n">CommUtils</span><span class="o">.</span><span class="n">buildDispatch</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="s2">&quot;cmd&quot;</span><span class="p">,</span><span class="s2">&quot;start&quot;</span><span class="p">,</span><span class="s2">&quot;a1&quot;</span><span class="p">);</span>
+    <span class="n">IApplMessage</span> <span class="n">stopMsg</span>  <span class="o">=</span><span class="n">CommUtils</span><span class="o">.</span><span class="n">buildDispatch</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="s2">&quot;cmd&quot;</span><span class="p">,</span><span class="s2">&quot;stop&quot;</span><span class="p">,</span><span class="s2">&quot;a1&quot;</span><span class="p">);</span>
+    <span class="n">CommUtils</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">1000</span> <span class="p">);</span>
+    <span class="n">sendMsg</span><span class="p">(</span><span class="n">startMsg</span><span class="p">);</span>
+    <span class="n">CommUtils</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">2000</span> <span class="p">);</span>
+    <span class="n">sendMsg</span><span class="p">(</span><span class="n">stopMsg</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="actor1-a1">
+<h4>Actor1 (a1)<a class="headerlink" href="#actor1-a1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>E’ attivato dal dispatch <code class="docutils literal notranslate"><span class="pre">cmd</span></code> con contenuto <code class="docutils literal notranslate"><span class="pre">start</span></code> inviato da  <a class="reference internal" href="#actorconsole"><span class="std std-ref">ActorConsole</span></a>.</p></li>
+<li><p>Invia, in modo <span class="blue">asincrono</span>, una richiesta con <code class="docutils literal notranslate"><span class="pre">id=info</span></code> ad <code class="docutils literal notranslate"><span class="pre">a2</span></code> ed <code class="docutils literal notranslate"><span class="pre">a3</span></code>.
+(Gli attori destinatari hanno tempi di risposta diversi).</p></li>
+<li><p>Quando riceve una risposta dall’attore <code class="docutils literal notranslate"><span class="pre">X</span></code>, invia ad <code class="docutils literal notranslate"><span class="pre">X</span></code> una nuova richiesta,
+se non ha in precedenza ricevuto un comando di <code class="docutils literal notranslate"><span class="pre">stop</span></code>.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>public class Actor1 extends ActorBasic23 {
+    protected int n = 1;
+    protected boolean stopped = false;
+
+    public Actor1(String name, ActorContext23 ctx) {
+        super(name, ctx);
+    }
+    @Override
+    protected void elabMsg( IApplMessage msg ) throws Exception{
+        if( msg.isDispatch() ) {
+            if (msg.msgId().equals(&quot;cmd&quot;) &amp;&amp;
+                    msg.msgContent().equals(&quot;start&quot;)) {
+                sendRequestTo(&quot;a2&quot;);
+                sendRequestTo(&quot;a3&quot;);
+            } else if (msg.msgId().equals(&quot;cmd&quot;) &amp;&amp;
+                        msg.msgContent().equals(&quot;stop&quot;)) {
+                stopped = true;
+            }
+            return;
+        }
+        if( msg.isReply() ){
+            CommUtils.delay(800); //Simulate some work ...
+            if (!stopped) sendRequestTo(msg.msgSender());
+            return;
+        }
+    }
+
+    protected void sendRequestTo(String dest){
+        IApplMessage m = CommUtils.buildRequest(name,&quot;info&quot;,&quot;hello&quot;+n,dest);
+        n++;
+        sendMsg(m);
+    }
+}
+</pre></div>
+</div>
+</section>
+<section id="actor2-a2-a3">
+<h4>Actor2 (a2,a3)<a class="headerlink" href="#actor2-a2-a3" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Entra in azione quando riceve una richiesta.</p></li>
+<li><p>Elabora la richiesta e invia la risposta, con un tempo di ritardo se il suo nome è <code class="docutils literal notranslate"><span class="pre">a2</span></code>.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">Actor2</span> <span class="n">extends</span> <span class="n">ActorBasic23</span> <span class="p">{</span>
+
+    <span class="n">public</span> <span class="n">Actor2</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">ActorContext23</span> <span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">ctx</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="n">protected</span> <span class="n">void</span> <span class="n">elabMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">IApplMessage</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">buildReply</span><span class="p">(</span>
+                    <span class="n">name</span><span class="p">,</span><span class="s2">&quot;answer&quot;</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span> <span class="o">+</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgContent</span><span class="p">(),</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgSender</span><span class="p">());</span>
+            <span class="k">if</span><span class="p">(</span> <span class="n">name</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;a2&quot;</span><span class="p">)){</span>
+                <span class="n">CommUtils</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span> <span class="o">//</span><span class="n">a2</span> <span class="n">ritarda</span> <span class="n">a</span> <span class="n">rispondere</span>
+            <span class="p">}</span>
+            <span class="o">//</span><span class="n">sendMsg</span><span class="p">(</span><span class="n">answer</span><span class="p">);</span> <span class="o">//</span><span class="n">Deve</span> <span class="n">avere</span> <span class="n">un</span> <span class="n">proxy</span> <span class="n">al</span> <span class="n">caller</span>
+            <span class="n">reply</span><span class="p">(</span> <span class="n">answer</span><span class="p">,</span><span class="n">msg</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">La costruzione del sistema-esempio</span></p>
+</section>
+</section>
+<section id="main-che-non-usa-descrizione">
+<h3>Main che non usa descrizione<a class="headerlink" href="#main-che-non-usa-descrizione" title="Permalink to this headline">¶</a></h3>
+<p>Il sistema può essere creato costruendo prima i contesti, poi gli attori e quindi
+‘iniettando’ nei contesti la conoscenza degli attori locali e remoti.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">MainActors23</span> <span class="p">{</span>
+
+    <span class="n">public</span> <span class="n">void</span> <span class="n">configureTheSystem</span><span class="p">(){</span>
+        <span class="o">//</span><span class="n">Actor23Utils</span><span class="o">.</span><span class="n">trace</span><span class="o">=</span><span class="n">true</span><span class="p">;</span>
+        <span class="nb">int</span> <span class="n">port1</span> <span class="o">=</span> <span class="mi">8123</span><span class="p">;</span>
+        <span class="nb">int</span> <span class="n">port2</span> <span class="o">=</span> <span class="mi">8125</span><span class="p">;</span>
+        <span class="n">CommUtils</span><span class="o">.</span><span class="n">outblue</span><span class="p">(</span><span class="s2">&quot;MainActors23 CREA I CONTESTI &quot;</span><span class="p">);</span>
+        <span class="n">ActorContext23</span> <span class="n">ctx1</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ActorContext23</span><span class="p">(</span><span class="s2">&quot;ctx1&quot;</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port1</span><span class="p">);</span>
+        <span class="n">ActorContext23</span> <span class="n">ctx2</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ActorContext23</span><span class="p">(</span><span class="s2">&quot;ctx2&quot;</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port2</span><span class="p">);</span>
+        <span class="n">CommUtils</span><span class="o">.</span><span class="n">outblue</span><span class="p">(</span><span class="s2">&quot;MainActors23 CREA GLI ATTORI &quot;</span><span class="p">);</span>
+
+        <span class="n">Actor1</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Actor1</span><span class="p">(</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span><span class="n">ctx1</span><span class="p">);</span>
+        <span class="n">Actor2</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Actor2</span><span class="p">(</span><span class="s2">&quot;a2&quot;</span><span class="p">,</span><span class="n">ctx2</span><span class="p">);</span>
+        <span class="n">Actor2</span> <span class="n">a3</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Actor2</span><span class="p">(</span><span class="s2">&quot;a3&quot;</span><span class="p">,</span><span class="n">ctx2</span><span class="p">);</span>
+        <span class="n">ActorConsole</span> <span class="n">console</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ActorConsole</span><span class="p">(</span><span class="s2">&quot;console&quot;</span><span class="p">,</span> <span class="n">ctx1</span><span class="p">);</span> <span class="o">//</span><span class="n">Autostart</span>
+
+        <span class="n">ctx1</span><span class="o">.</span><span class="n">addActor</span><span class="p">(</span><span class="n">a1</span><span class="p">);</span>
+        <span class="n">ctx1</span><span class="o">.</span><span class="n">addActor</span><span class="p">(</span><span class="n">console</span><span class="p">);</span>
+        <span class="n">ctx2</span><span class="o">.</span><span class="n">addActor</span><span class="p">(</span><span class="n">a2</span><span class="p">);</span>
+        <span class="n">ctx2</span><span class="o">.</span><span class="n">addActor</span><span class="p">(</span><span class="n">a3</span><span class="p">);</span>
+
+        <span class="n">CommUtils</span><span class="o">.</span><span class="n">outblue</span><span class="p">(</span><span class="s2">&quot;MainActors23 FISSA GLI ACTOR REMOTI&quot;</span><span class="p">);</span>
+        <span class="n">ctx1</span><span class="o">.</span><span class="n">setActorAsRemote</span><span class="p">(</span><span class="s2">&quot;a2&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="o">+</span><span class="n">port2</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">ProtocolType</span><span class="o">.</span><span class="n">tcp</span><span class="p">);</span>
+        <span class="n">ctx1</span><span class="o">.</span><span class="n">setActorAsRemote</span><span class="p">(</span><span class="s2">&quot;a3&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="o">+</span><span class="n">port2</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">ProtocolType</span><span class="o">.</span><span class="n">tcp</span><span class="p">);</span>
+        <span class="n">ctx2</span><span class="o">.</span><span class="n">setActorAsRemote</span><span class="p">(</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="o">+</span><span class="n">port1</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">ProtocolType</span><span class="o">.</span><span class="n">tcp</span><span class="p">);</span>
+
+        <span class="n">ctx1</span><span class="o">.</span><span class="n">showActorNames</span><span class="p">();</span>
+        <span class="n">ctx2</span><span class="o">.</span><span class="n">showActorNames</span><span class="p">();</span>
+
+    <span class="p">}</span>
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span> <span class="p">){</span>
+        <span class="n">new</span> <span class="n">MainActors23</span><span class="p">()</span><span class="o">.</span><span class="n">configureTheSystem</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="main-basato-su-descrizione">
+<h3>Main basato su descrizione<a class="headerlink" href="#main-basato-su-descrizione" title="Permalink to this headline">¶</a></h3>
+<p>Molto semplice  la creazione del sistema quando si usa una descrizione del sistema stesso
+come fatti Prolog: tutti i passi del main precedente sono ora eseguiti da <a class="reference internal" href="#actorutils-createcontexts"><span class="std std-ref">ActorUtils.createContexts</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">MainConfigActors23</span> <span class="p">{</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">configureTheSystem</span><span class="p">(){</span>
+      <span class="n">Actor23Utils</span><span class="o">.</span><span class="n">createContexts</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;app/src/main/java/unibo/actors23/example0/DESCRITTORE.pl&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;app/src/main/java/unibo/actors23/example0/sysRules.pl&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span> <span class="p">){</span>
+        <span class="n">new</span> <span class="n">MainProdConsAll</span><span class="p">()</span><span class="o">.</span><span class="n">configureTheSystem</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">DESCRITTORE.pl</span></code> denota il file di descrizione che può assumere una delle diverse forme descritte in seguito,
+come ad esempio <a class="reference internal" href="#unico-contesto"><span class="std std-ref">Unico contesto</span></a>.</p>
+<p><span class="slide1">Dal locale al distribuito</span></p>
+</section>
+<section id="attori-e-contesti">
+<h3>Attori e contesti<a class="headerlink" href="#attori-e-contesti" title="Permalink to this headline">¶</a></h3>
+<p>Procediamo come indicato in: <a class="reference internal" href="#metodo-di-lavoro"><span class="std std-ref">Metodo di lavoro</span></a>.</p>
+<section id="unico-contesto">
+<h4>Unico contesto<a class="headerlink" href="#unico-contesto" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Esecuzione in un unico contesto.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%=============================================</span>
+<span class="o">%</span> <span class="n">exampleActor23_1</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
+<span class="o">%=============================================</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8120&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">a1</span><span class="p">,</span> <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.Actor1&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">a2</span><span class="p">,</span> <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.Actor2&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">a3</span><span class="p">,</span> <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.Actor2&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">console</span><span class="p">,</span> <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.ActorConsole&quot;</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+</td>
+<td><img alt="_images/esempio0Ctx0.png" class="align-center" src="_images/esempio0Ctx0.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="due-contesti">
+<h4>Due contesti<a class="headerlink" href="#due-contesti" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Esecuzione in due contesti.</p>
+<p>Nello stesso computer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%=============================================</span>
+<span class="o">%</span> <span class="n">exampleActor23_2a</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
+<span class="o">%=============================================</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8123&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8125&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">a1</span><span class="p">,</span> <span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.Actor1&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">a2</span><span class="p">,</span> <span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.Actor2&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">a3</span><span class="p">,</span> <span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.Actor2&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">console</span><span class="p">,</span> <span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.ActorConsole&quot;</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Su due computer diversi:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%=============================================</span>
+<span class="o">%</span> <span class="n">exampleActor23_2b</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
+<span class="o">%=============================================</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>     <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8123&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;192.168.1.18&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8125&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</td>
+<td><img alt="_images/esempio0Ctx2Loc.png" class="align-center" src="_images/esempio0Ctx2Loc.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="tre-contesti">
+<h4>Tre contesti<a class="headerlink" href="#tre-contesti" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Esecuzione in tre contesti nello stesso computer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%=============================================</span>
+<span class="o">%</span> <span class="n">exampleActor23_3</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
+<span class="o">%=============================================</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx0</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8123&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8123&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8125&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">a1</span><span class="p">,</span> <span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.Actor1&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">a2</span><span class="p">,</span> <span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.Actor2&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">a3</span><span class="p">,</span> <span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.Actor2&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">console</span><span class="p">,</span> <span class="n">ctx0</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.ActorConsole&quot;</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+</td>
+<td><img alt="_images/esempio0Ctx3.png" class="align-center" src="_images/esempio0Ctx3.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="console-esterna">
+<h4>Console esterna<a class="headerlink" href="#console-esterna" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic">
+<li><p>Attiviamo il sistema (in uno o più contesti) escludendo la console.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%=============================================</span>
+<span class="o">%</span> <span class="n">exampleActor23_1</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
+<span class="o">%=============================================</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8123&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">a1</span><span class="p">,</span> <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.Actor1&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">a2</span><span class="p">,</span> <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0..Actor2&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">a3</span><span class="p">,</span> <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.Actor2&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="o">%%</span> <span class="n">qactor</span><span class="p">(</span> <span class="n">console</span><span class="p">,</span> <span class="n">ctx0</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.ActorConsole&quot;</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><p>Attiviamo una console aliena in Python. Si veda
+<code class="docutils literal notranslate"><span class="pre">app\src\main\java\unibo\actors23\example0\ConsoleTCP.ipynb</span></code> che invia
+via <code class="docutils literal notranslate"><span class="pre">TCP</span></code> sulla porta <code class="docutils literal notranslate"><span class="pre">8120</span></code> messaggi quali:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">startToa1</span> <span class="o">=</span> <span class="s2">&quot;msg(cmd,dispatch,python,a1,start,3)&quot;</span>
+<span class="n">stopToa1</span>  <span class="o">=</span> <span class="s2">&quot;msg(cmd,dispatch,python,a1,stop,1)&quot;</span>
+<span class="n">reqtoa2</span>   <span class="o">=</span> <span class="s2">&quot;msg(cmd,request,python,a2,cmd(python),2)&quot;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p><span class="slide">Actors23: l’implementazione</span></p>
+</section>
+</section>
+<section id="unibo-basicomm23-interfaces-icontext23">
+<h3>unibo.basicomm23.interfaces.IContext23<a class="headerlink" href="#unibo-basicomm23-interfaces-icontext23" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">interface</span> <span class="n">IContext23</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">getName</span><span class="p">();</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">getLocalActorNames</span><span class="p">(</span> <span class="p">);</span>
+    <span class="n">ActorBasic23</span> <span class="n">getActor</span><span class="p">(</span><span class="n">String</span> <span class="n">actorName</span><span class="p">);</span>
+    <span class="n">void</span> <span class="n">addActor</span><span class="p">(</span> <span class="n">ActorBasic23</span> <span class="n">a</span> <span class="p">);</span>
+    <span class="n">void</span> <span class="n">removeActor</span><span class="p">(</span><span class="n">ActorBasic23</span> <span class="n">a</span><span class="p">);</span>
+     <span class="n">void</span> <span class="n">showActorNames</span><span class="p">(</span> <span class="p">);</span>
+    <span class="n">void</span> <span class="n">setActorAsRemote</span><span class="p">(</span><span class="n">String</span> <span class="n">actorName</span><span class="p">,</span>
+        <span class="n">String</span> <span class="n">entry</span><span class="p">,</span> <span class="n">String</span> <span class="n">host</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span> <span class="p">);</span>
+    <span class="n">Proxy</span> <span class="n">getProxy</span><span class="p">(</span><span class="n">String</span> <span class="n">actorName</span><span class="p">);</span>
+    <span class="n">void</span> <span class="n">showProxies</span><span class="p">(</span> <span class="p">);</span>
+    <span class="n">void</span> <span class="n">showActorNames</span><span class="p">(</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unibo-basicomm23-actors23-actorcontext23">
+<h3>unibo.basicomm23.actors23.ActorContext23<a class="headerlink" href="#unibo-basicomm23-actors23-actorcontext23" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ActorContext23</span> <span class="n">implements</span> <span class="n">IContext23</span> <span class="p">{</span>
+  <span class="n">static</span> <span class="n">final</span> <span class="n">String</span> <span class="n">actorReplyPrefix</span> <span class="o">=</span> <span class="s2">&quot;arply_&quot;</span><span class="p">;</span>
+  <span class="n">protected</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">ActorBasic23</span><span class="o">&gt;</span> <span class="n">ctxActorMap</span> <span class="o">=</span> <span class="n">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">ActorBasic23</span><span class="o">&gt;</span><span class="p">();</span>
+  <span class="n">protected</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Proxy</span><span class="o">&gt;</span> <span class="n">ctxProxyMap</span> <span class="o">=</span> <span class="n">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Proxy</span><span class="o">&gt;</span><span class="p">();</span>
+
+  <span class="n">protected</span> <span class="n">ServerFactory</span> <span class="n">server</span><span class="p">;</span>
+  <span class="n">protected</span> <span class="n">String</span> <span class="n">hostName</span><span class="p">;</span>
+  <span class="n">protected</span> <span class="nb">int</span> <span class="n">port</span><span class="p">;</span>
+
+  <span class="n">ActorContext23</span><span class="p">(</span> <span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">String</span> <span class="n">hostName</span><span class="p">,</span> <span class="nb">int</span> <span class="n">port</span> <span class="p">){</span>
+      <span class="n">this</span><span class="o">.</span><span class="n">name</span>     <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+      <span class="n">this</span><span class="o">.</span><span class="n">hostName</span> <span class="o">=</span> <span class="n">hostName</span><span class="p">;</span>
+      <span class="n">this</span><span class="o">.</span><span class="n">port</span>     <span class="o">=</span> <span class="n">port</span><span class="p">;</span>
+      <span class="n">IApplMsgHandler</span> <span class="n">ctxMsgHandler</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ContextMsgHandler</span><span class="p">(</span><span class="n">name</span><span class="o">+</span><span class="s2">&quot;CtxMsgHandler&quot;</span><span class="p">,</span> <span class="n">this</span><span class="p">);</span>
+      <span class="n">server</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ServerFactory</span><span class="p">(</span><span class="s2">&quot;appl1Server&quot;</span><span class="p">,</span><span class="n">port</span><span class="p">,</span> <span class="n">ProtocolType</span><span class="o">.</span><span class="n">tcp</span><span class="p">,</span> <span class="n">ctxMsgHandler</span><span class="p">);</span>
+      <span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="o">//</span><span class="n">Implementazione</span> <span class="n">dei</span> <span class="n">metodi</span> <span class="n">di</span> <span class="n">IContext23</span>
+  <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unibo-basicomm23-actors23-contextmsghandler">
+<h3>unibo.basicomm23.actors23.ContextMsgHandler<a class="headerlink" href="#unibo-basicomm23-actors23-contextmsghandler" title="Permalink to this headline">¶</a></h3>
+<p><span class="remark">il ContextMsgHandler deve sapere a quale componente è destinato un messaggio</span></p>
+<p>Lo <a class="reference internal" href="unibo.basicomm23.html#unibo-interaction-interfaces-iapplmessage"><span class="std std-ref">standard interno</span></a> sulla struttura
+dei messaggi permette all’handler di contesto di svolgere il ruolo
+di un <span class="blue">interprete di sistema</span>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ContextMsgHandler</span> <span class="n">extends</span> <span class="n">ApplMsgHandler</span> <span class="n">implements</span> <span class="n">IApplMsgHandler</span><span class="p">{</span>
+
+    <span class="o">...</span>
+    <span class="nd">@Override</span>
+    <span class="n">void</span> <span class="n">elaborate</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="n">Interaction</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">isRequest</span><span class="p">())</span> <span class="n">elabRequest</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">conn</span><span class="p">);</span>
+            <span class="k">else</span> <span class="n">elabNonRequest</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">conn</span><span class="p">);</span>
+        <span class="p">}</span><span class="n">catch</span><span class="p">(</span> <span class="ne">Exception</span> <span class="n">e</span><span class="p">){</span><span class="o">...</span><span class="p">}</span>
+    <span class="p">}</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">elaborate(String</span> <span class="pre">message)</span></code> effettua il reindirizzamento del messaggio
+all’attore destinatario,  il quale interpreterà i contenuto del messaggio.</p>
+<section id="elaborazione-di-richieste">
+<h4>Elaborazione di richieste<a class="headerlink" href="#elaborazione-di-richieste" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">elabRequest</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="n">Interaction</span> <span class="n">conn</span> <span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">senderName</span>    <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgSender</span><span class="p">();</span>
+    <span class="n">String</span> <span class="n">actorRepyName</span> <span class="o">=</span> <span class="n">ActorContext23</span><span class="o">.</span><span class="n">actorReplyPrefix</span><span class="o">+</span><span class="n">senderName</span><span class="p">;</span>
+    <span class="n">elabNonRequest</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="n">conn</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="elaborazione-di-altri-messaggi">
+<h4>Elaborazione di altri messaggi<a class="headerlink" href="#elaborazione-di-altri-messaggi" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">elabNonRequest</span><span class="p">(</span>
+        <span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="n">Interaction</span> <span class="n">conn</span> <span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+    <span class="n">ActorBasic23</span> <span class="n">a</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">getActor</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgReceiver</span><span class="p">())</span> <span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">a</span> <span class="o">!=</span> <span class="n">null</span> <span class="p">)</span> <span class="p">{</span>   <span class="o">//</span><span class="n">Il</span> <span class="n">rdestinarario</span> <span class="n">è</span> <span class="n">locale</span> <span class="n">al</span> <span class="n">contesto</span>
+            <span class="n">a</span><span class="o">.</span><span class="n">msgQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">toString</span><span class="p">());</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+        <span class="n">String</span> <span class="n">errorMsg</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; | actor unknown:&quot;</span><span class="o">+</span><span class="n">msg</span><span class="o">.</span><span class="n">msgReceiver</span><span class="p">();</span>
+        <span class="n">CommUtils</span><span class="o">.</span><span class="n">outred</span><span class="p">(</span><span class="n">errorMsg</span><span class="p">);</span>
+        <span class="n">throw</span> <span class="n">new</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errorMsg</span><span class="p">);</span>            <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="actorbasic23">
+<h2>ActorBasic23<a class="headerlink" href="#actorbasic23" title="Permalink to this headline">¶</a></h2>
+<section id="unibo-basicomm23-interfaces-iactor23">
+<h3>unibo.basicomm23.interfaces.IActor23<a class="headerlink" href="#unibo-basicomm23-interfaces-iactor23" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">interface</span> <span class="n">IActor23</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">getName</span><span class="p">();</span>
+    <span class="n">String</span> <span class="n">getContextName</span><span class="p">();</span>
+    <span class="n">void</span> <span class="n">activate</span><span class="p">();</span>
+    <span class="n">void</span> <span class="n">activateAndStart</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unibo-basicomm23-actors23-actorbasic23">
+<h3>unibo.basicomm23.actors23.ActorBasic23<a class="headerlink" href="#unibo-basicomm23-actors23-actorbasic23" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">abstract</span> <span class="k">class</span> <span class="nc">ActorBasic23</span> <span class="n">implements</span> <span class="n">IActor23</span> <span class="p">{</span>
+    <span class="n">protected</span> <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">msgQueue</span> <span class="o">=</span> <span class="n">new</span> <span class="n">LinkedBlockingDeque</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+    <span class="n">protected</span> <span class="n">String</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;dummy&quot;</span><span class="p">;</span>
+    <span class="n">protected</span> <span class="n">boolean</span> <span class="n">autostart</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+    <span class="n">protected</span> <span class="n">ActorContext23</span> <span class="n">ctx</span><span class="p">;</span>
+    <span class="n">protected</span> <span class="n">IApplMessage</span> <span class="n">autoStartMsg</span> <span class="p">;</span>
+
+    <span class="n">ActorBasic23</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">ActorContext23</span> <span class="n">ctx</span> <span class="p">){</span>
+        <span class="n">this</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+        <span class="n">this</span><span class="o">.</span><span class="n">ctx</span>  <span class="o">=</span> <span class="n">ctx</span><span class="p">;</span>
+        <span class="n">autoStartMsg</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">buildDispatch</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;cmd&quot;</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="o">//</span><span class="n">A</span> <span class="n">message</span> <span class="k">as</span> <span class="n">a</span> <span class="n">String</span> <span class="n">must</span> <span class="n">be</span> <span class="n">well</span><span class="o">-</span><span class="n">formed</span>
+    <span class="n">protected</span> <span class="n">void</span> <span class="n">elabMsg</span><span class="p">(</span> <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span><span class="p">{</span>
+        <span class="n">IApplMessage</span> <span class="n">m</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+        <span class="n">elabMsg</span><span class="p">(</span><span class="n">m</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="o">//</span><span class="n">The</span> <span class="n">elaboration</span> <span class="n">of</span> <span class="n">a</span> <span class="n">IApplMessage</span> <span class="n">must</span> <span class="n">be</span> <span class="n">definied</span> <span class="n">by</span> <span class="n">specilizations</span>
+    <span class="n">protected</span> <span class="n">abstract</span> <span class="n">void</span> <span class="n">elabMsg</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span><span class="p">;</span>
+<span class="o">//</span><span class="n">Communication</span> <span class="n">methods</span>
+    <span class="n">protected</span> <span class="n">void</span> <span class="n">sendMsg</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span>  <span class="p">)</span>   <span class="p">{</span>
+        <span class="o">...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Si veda <a class="reference internal" href="#actorbasic23-sendmsg"><span class="std std-ref">ActorBasic23.sendMsg</span></a> e <a class="reference internal" href="#auto-massaggio"><span class="std std-ref">auto-massaggio</span></a>.</p>
+<section id="actor23-activation">
+<h4>Actor23 activation<a class="headerlink" href="#actor23-activation" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">activate</span><span class="p">(){</span>
+  <span class="n">new</span> <span class="n">Thread</span><span class="p">(){</span> <span class="n">void</span> <span class="n">run</span><span class="p">(){</span> <span class="n">mainLoop</span><span class="p">();</span> <span class="p">}</span> <span class="p">}</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="n">void</span> <span class="n">activateAndStart</span><span class="p">(){</span>
+  <span class="n">new</span> <span class="n">Thread</span><span class="p">(){</span>
+   <span class="n">void</span> <span class="n">run</span><span class="p">(){</span> <span class="n">sendMsg</span><span class="p">(</span> <span class="n">autoStartMsg</span> <span class="p">);</span> <span class="n">mainLoop</span><span class="p">();}</span>
+  <span class="p">}</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="actor23-proxy">
+<h2>Actor23 Proxy<a class="headerlink" href="#actor23-proxy" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/Actors23WithProxy.png"><img alt="_images/Actors23WithProxy.png" class="align-center" src="_images/Actors23WithProxy.png" style="width: 80%;" /></a>
+<section id="unibo-basicomm23-actors23-proxy">
+<h3>unibo.basicomm23.actors23.Proxy<a class="headerlink" href="#unibo-basicomm23-actors23-proxy" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Proxy</span><span class="p">{</span>
+    <span class="n">public</span> <span class="n">Proxy</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">String</span> <span class="n">host</span><span class="p">,</span> <span class="n">String</span> <span class="n">entry</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="n">this</span><span class="o">.</span><span class="n">name</span>     <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+            <span class="n">this</span><span class="o">.</span><span class="n">entry</span>    <span class="o">=</span> <span class="n">entry</span><span class="p">;</span>
+            <span class="n">this</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="n">protocol</span><span class="p">;</span>
+            <span class="n">setConnection</span><span class="p">(</span><span class="n">host</span><span class="p">,</span>  <span class="n">entry</span><span class="p">,</span>  <span class="n">protocol</span><span class="p">);</span>
+            <span class="n">activateReceiver</span><span class="p">(</span><span class="n">conn</span><span class="p">);</span>
+         <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">protected</span> <span class="n">void</span> <span class="n">setConnection</span><span class="p">(</span>
+        <span class="n">String</span> <span class="n">host</span><span class="p">,</span> <span class="n">String</span> <span class="n">entry</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span>  <span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="o">//</span><span class="n">Stabilisce</span> <span class="n">una</span> <span class="n">connessione</span> <span class="n">usando</span> <span class="n">il</span> <span class="n">protocollo</span> <span class="n">indicato</span>
+        <span class="o">...</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<section id="proxy-sendmsgonconnection">
+<h4>Proxy sendMsgOnConnection<a class="headerlink" href="#proxy-sendmsgonconnection" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">public</span>  <span class="n">void</span> <span class="n">sendMsgOnConnection</span><span class="p">(</span> <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span>  <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+    <span class="n">protected</span> <span class="n">void</span> <span class="n">activateReceiver</span><span class="p">(</span> <span class="n">Interaction</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">new</span> <span class="n">Thread</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">try</span> <span class="p">{</span>
+                    <span class="k">while</span><span class="p">(</span><span class="n">true</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">String</span> <span class="n">msgStr</span>    <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">receiveMsg</span><span class="p">();</span>
+                        <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">msgStr</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span> <span class="p">}</span>
+                <span class="p">}</span>
+        <span class="p">}</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="proxy-activatereceiver">
+<h4>Proxy activateReceiver<a class="headerlink" href="#proxy-activatereceiver" title="Permalink to this headline">¶</a></h4>
+<p>Ogni Proxy attiva anche un ricevitore sulla connessione,  per ricevere informazioni
+(di fatto messaggi di tio :ref:<a href="#id1"><span class="problematic" id="id2">`</span></a>reply&lt;ActorBasic23.reply&gt;) inviate dal server remoto.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">activateReceiver</span><span class="p">(</span> <span class="n">Interaction</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">new</span> <span class="n">Thread</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">()</span> <span class="p">{</span>
+                        <span class="k">try</span> <span class="p">{</span>
+                                <span class="k">while</span><span class="p">(</span><span class="n">true</span><span class="p">)</span> <span class="p">{</span>
+                                        <span class="n">String</span> <span class="n">msgStr</span>    <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">receiveMsg</span><span class="p">();</span>
+                                        <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">msgStr</span><span class="p">);</span>
+                                        <span class="n">ActorBasic23</span> <span class="n">dest</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">getActor</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">msgReceiver</span><span class="p">());</span>
+                                        <span class="k">if</span><span class="p">(</span> <span class="n">dest</span> <span class="o">!=</span> <span class="n">null</span> <span class="p">)</span> <span class="n">dest</span><span class="o">.</span><span class="n">msgQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+                                        <span class="k">else</span>  <span class="n">CommUtils</span><span class="o">.</span><span class="n">outred</span><span class="p">(</span> <span class="n">pfx</span> <span class="o">+</span> <span class="n">name</span><span class="o">+</span><span class="s2">&quot;  | activateReceiver INCOSISTENCE for &quot;</span> <span class="o">+</span> <span class="n">dest</span>  <span class="p">);</span>
+                                <span class="p">}</span>
+                        <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+                        <span class="p">}</span>
+        <span class="p">}</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Actors23</a><ul>
+<li><a class="reference internal" href="#actors23-problematiche-affrontate">Actors23: problematiche affrontate</a><ul>
+<li><a class="reference internal" href="#il-quadro-generale">Il quadro generale</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#actors23-il-contesto">Actors23: il contesto</a><ul>
+<li><a class="reference internal" href="#rappresentazioni-in-prolog-perche">Rappresentazioni in Prolog: perchè?</a></li>
+<li><a class="reference internal" href="#sysrules-pl">sysRules.pl</a><ul>
+<li><a class="reference internal" href="#descrizione-di-un-sistema-distribuito">Descrizione di un sistema distribuito</a></li>
+<li><a class="reference internal" href="#showsystemconfiguration">showSystemConfiguration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unibo-basicomm23-actors23-actor23utils">unibo.basicomm23.actors23.Actor23Utils</a><ul>
+<li><a class="reference internal" href="#actor23utils-trace">Actor23Utils.trace</a></li>
+<li><a class="reference internal" href="#actorutils-createcontexts">ActorUtils.createContexts</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#actors23-l-attore">Actors23:l’attore</a><ul>
+<li><a class="reference internal" href="#il-comportamento-di-un-attore">Il comportamento di un attore</a><ul>
+<li><a class="reference internal" href="#actor23-mainloop">Actor23 mainLoop</a></li>
+<li><a class="reference internal" href="#msgqueue">msgQueue</a></li>
+<li><a class="reference internal" href="#auto-massaggio">auto-massaggio</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#actorbasic23-sendmsg">ActorBasic23.sendMsg</a></li>
+<li><a class="reference internal" href="#actorbasic23-sendmsgtoremoteactor">ActorBasic23.sendMsgToRemoteActor</a></li>
+<li><a class="reference internal" href="#actorbasic23-reply">ActorBasic23.reply</a><ul>
+<li><a class="reference internal" href="#sendmessageonconn">sendMessageOnConn</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#interazione-con-alieni">Interazione con alieni</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#un-esempio-di-attori-e-contesti">Un esempio di attori e contesti</a><ul>
+<li><a class="reference internal" href="#metodo-di-lavoro">Metodo di lavoro</a></li>
+<li><a class="reference internal" href="#esempio-attori-e-loro-interazioni">Esempio: attori e  loro interazioni</a><ul>
+<li><a class="reference internal" href="#actorconsole">ActorConsole</a></li>
+<li><a class="reference internal" href="#actor1-a1">Actor1 (a1)</a></li>
+<li><a class="reference internal" href="#actor2-a2-a3">Actor2 (a2,a3)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#main-che-non-usa-descrizione">Main che non usa descrizione</a></li>
+<li><a class="reference internal" href="#main-basato-su-descrizione">Main basato su descrizione</a></li>
+<li><a class="reference internal" href="#attori-e-contesti">Attori e contesti</a><ul>
+<li><a class="reference internal" href="#unico-contesto">Unico contesto</a></li>
+<li><a class="reference internal" href="#due-contesti">Due contesti</a></li>
+<li><a class="reference internal" href="#tre-contesti">Tre contesti</a></li>
+<li><a class="reference internal" href="#console-esterna">Console esterna</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unibo-basicomm23-interfaces-icontext23">unibo.basicomm23.interfaces.IContext23</a></li>
+<li><a class="reference internal" href="#unibo-basicomm23-actors23-actorcontext23">unibo.basicomm23.actors23.ActorContext23</a></li>
+<li><a class="reference internal" href="#unibo-basicomm23-actors23-contextmsghandler">unibo.basicomm23.actors23.ContextMsgHandler</a><ul>
+<li><a class="reference internal" href="#elaborazione-di-richieste">Elaborazione di richieste</a></li>
+<li><a class="reference internal" href="#elaborazione-di-altri-messaggi">Elaborazione di altri messaggi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#actorbasic23">ActorBasic23</a><ul>
+<li><a class="reference internal" href="#unibo-basicomm23-interfaces-iactor23">unibo.basicomm23.interfaces.IActor23</a></li>
+<li><a class="reference internal" href="#unibo-basicomm23-actors23-actorbasic23">unibo.basicomm23.actors23.ActorBasic23</a><ul>
+<li><a class="reference internal" href="#actor23-activation">Actor23 activation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#actor23-proxy">Actor23 Proxy</a><ul>
+<li><a class="reference internal" href="#unibo-basicomm23-actors23-proxy">unibo.basicomm23.actors23.Proxy</a><ul>
+<li><a class="reference internal" href="#proxy-sendmsgonconnection">Proxy sendMsgOnConnection</a></li>
+<li><a class="reference internal" href="#proxy-activatereceiver">Proxy activateReceiver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="StepAsynch.html"
+                          title="previous chapter">StepAsynch</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="AppuntiTecnologie.html"
+                          title="next chapter">Appunti su tecnologie</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Actors23.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="StepAsynch.html" title="StepAsynch"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Actors23</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

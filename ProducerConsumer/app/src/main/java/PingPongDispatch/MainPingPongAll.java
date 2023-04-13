@@ -1,7 +1,6 @@
 package PingPongDispatch;
 
-import ApplsActor23.MainProdConsAll;
-import unibo.basicomm23.actors23.Actor23Utils;
+import unibo.actors23.Actor23Utils;
 import unibo.basicomm23.utils.CommUtils;
 
 public class MainPingPongAll {

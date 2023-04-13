@@ -1,13 +1,7 @@
 package PingPongDispatch;
-
-import unibo.basicomm23.actors23.ActorBasic23;
-import unibo.basicomm23.actors23.ActorContext23;
-import unibo.basicomm23.enablers.ServerFactory;
-import unibo.basicomm23.examples.pingpong_dispatch.BatsmanCaller;
-import unibo.basicomm23.examples.pingpong_dispatch.PlayerReceiverMsgHandler;
+import unibo.actors23.ActorBasic23;
+import unibo.actors23.ActorContext23;
 import unibo.basicomm23.interfaces.IApplMessage;
-import unibo.basicomm23.interfaces.IApplMsgHandler;
-import unibo.basicomm23.msg.ProtocolType;
 import unibo.basicomm23.utils.CommUtils;
 
 public class Ping extends ActorBasic23 {

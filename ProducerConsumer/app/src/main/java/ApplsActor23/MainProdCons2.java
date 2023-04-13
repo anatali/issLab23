@@ -1,6 +1,5 @@
 package ApplsActor23;
-
-import unibo.basicomm23.actors23.Actor23Utils;
+import unibo.actors23.Actor23Utils;
 import unibo.basicomm23.utils.CommUtils;
 import unibo.basicomm23.utils.Connection;
 

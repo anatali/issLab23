@@ -14,8 +14,8 @@ public class Appl1WSSprint3 {
         //CommUtils.waitTheUser("Modify sprint3Config.json");
 
         //Create the application
-        //IAppl1Core applCore  = new Appl1Core();
-        IAppl1Core applCore  = new Appl1CoreActorlike();
+        IAppl1Core applCore  = new Appl1Core();
+        //IAppl1Core applCore  = new Appl1CoreActorlike();
         Appl1 appl           = new Appl1(applCore);
         //Create the console
        // CmdConsoleRemote console =

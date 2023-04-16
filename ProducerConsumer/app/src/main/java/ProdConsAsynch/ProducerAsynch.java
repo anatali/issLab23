@@ -1,8 +1,7 @@
 package ProdConsAsynch;
 
-import ProducerConsumer.ProdConsConfig;
-import ProducerConsumer.ProducerCaller;
-import ProducerConsumer.ProducerLogic;
+import ProdConsInteraction.ProdConsConfig;
+import ProdConsInteraction.ProducerLogic;
 
 public class ProducerAsynch {
     private ProducerCallerAsynch prodCaller;

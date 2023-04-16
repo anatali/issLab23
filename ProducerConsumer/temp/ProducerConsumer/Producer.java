@@ -1,4 +1,4 @@
-package ProducerConsumer;
+package ProdConsInteraction;
 
 public class Producer {
     private ProducerCaller prodCaller;
@@ -7,7 +7,7 @@ public class Producer {
 
         ProducerLogic prodLogic = new ProducerLogic();
         prodCaller = new ProducerCaller(name, prodLogic,
-                ProducerConsumer.ProdConsConfig.protocol, ProducerConsumer.ProdConsConfig.hostAddr, ProducerConsumer.ProdConsConfig.entry);
+                ProdConsInteraction.ProdConsConfig.protocol, ProdConsInteraction.ProdConsConfig.hostAddr, ProdConsInteraction.ProdConsConfig.entry);
     }
 
     public void start(){

@@ -1,4 +1,4 @@
-package ProducerConsumer;
+package ProdConsInteraction;
 
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP;

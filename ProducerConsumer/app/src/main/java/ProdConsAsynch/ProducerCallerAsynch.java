@@ -1,8 +1,8 @@
 package ProdConsAsynch;
 
 
-import ProducerConsumer.ActorNaiveCaller;
-import ProducerConsumer.ProducerLogic;
+import ProdConsInteraction.ActorNaiveCaller;
+import ProdConsInteraction.ProducerLogic;
 import unibo.basicomm23.interfaces.IApplMessage;
 import unibo.basicomm23.msg.ProtocolType;
 import unibo.basicomm23.utils.CommUtils;

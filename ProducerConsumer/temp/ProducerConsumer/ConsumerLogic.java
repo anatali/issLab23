@@ -1,4 +1,4 @@
-package ProducerConsumer;
+package ProdConsInteraction;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;

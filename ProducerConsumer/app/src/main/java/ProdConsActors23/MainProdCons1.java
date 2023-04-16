@@ -1,9 +1,8 @@
-package ApplsActor23;
+package ProdConsActors23;
 
 
 import unibo.actors23.Actor23Utils;
 import unibo.basicomm23.utils.CommUtils;
-import unibo.basicomm23.utils.Connection;
 
 public class MainProdCons1 {
     public void configureTheSystem(){

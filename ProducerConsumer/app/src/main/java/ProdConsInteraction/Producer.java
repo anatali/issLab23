@@ -1,4 +1,4 @@
-package ProducerConsumer;
+package ProdConsInteraction;
 
 public class Producer {
     private ProducerCaller prodCaller;

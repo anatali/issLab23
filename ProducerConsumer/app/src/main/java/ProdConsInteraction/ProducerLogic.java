@@ -1,4 +1,4 @@
-package ProducerConsumer;
+package ProdConsInteraction;
 
 public class ProducerLogic  {
     private int distance = 0;

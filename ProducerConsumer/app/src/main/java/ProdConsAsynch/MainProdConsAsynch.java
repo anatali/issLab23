@@ -1,7 +1,5 @@
 package ProdConsAsynch;
-import ProducerConsumer.*;
-import unibo.basicomm23.enablers.ServerFactory;
-import unibo.basicomm23.interfaces.IApplMsgHandler;
+import ProdConsInteraction.*;
 import unibo.basicomm23.msg.ProtocolType;
 
 /*

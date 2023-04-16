@@ -34,6 +34,9 @@ dependencies {
 
 //HTTP
     implementation 'org.apache.httpcomponents:httpclient:4.5'
+//LOGGING
+    //implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
 //JSON
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 //SOCKET.IO (for WEnv)

@@ -1,4 +1,4 @@
-package ProducerConsumer;
+package ProdConsInteraction;
 
 
 import unibo.basicomm23.interfaces.IApplMessage;

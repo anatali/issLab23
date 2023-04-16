@@ -1,4 +1,4 @@
-package ApplsActor23;
+package ProdConsEvents;
 
 import unibo.actors23.ActorBasic23;
 import unibo.actors23.ActorContext23;

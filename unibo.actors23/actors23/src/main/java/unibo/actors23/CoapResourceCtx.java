@@ -11,10 +11,7 @@ import unibo.basicomm23.utils.CommUtils;
 
 
 public class CoapResourceCtx extends CoapResource  {
-//    private var counter = 0
-    //private val actorResources =  mutableMapOf<String, ActorBasic23>()
-    //private val logo    = "       CoapResourceCtx $name "
-    //private var applRep = "$logo | created  "
+
 protected String actorResourceRep = "unknown";
     protected String name       = "dummycoapresource";
 
@@ -63,17 +60,8 @@ protected String actorResourceRep = "unknown";
 	
     public void addActorResource( ActorBasic23 actor){
         this.add( actor );
-        //actorResources.put( owner.name , owner )
-        CommUtils.outblue(name + "  | CoapResourceCtx | addActorResource " + actor.name);
+        CommUtils.outgray(name + "  | CoapResourceCtx root addActorResource " + actor.name);
     }
-/*
-    public ActorBasic23 getActorResource(String name)  {
-        //val r = actorResources.get( name )
-        if( r != null ){
-            CommUtils.outblue("  | CoapResourceCtx $name | getActorResource " + (r as CoapResource).name )
-        }
-        return r
-    }
-*/
+
 
  }

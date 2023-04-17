@@ -14,7 +14,6 @@ public class ProducerFsm23 extends ActorBasicFsm23 {
 
     public ProducerFsm23(String name, ActorContext23 ctx) {
         super(name, ctx);
-        //autostart = true;  //already done
     }
 
     protected  final IApplMessage prodMsg( String msgId, String content, String receiver )   {
@@ -33,13 +32,16 @@ public class ProducerFsm23 extends ActorBasicFsm23 {
     @Transition( state = "endWork" , msgId = continueId, guard="completed" )
     protected void produce( IApplMessage inputmsg ) {
         CommUtils.outyellow(name + " | produce "+ inputmsg  );
-        item = item+"a";
-        IApplMessage msg = prodMsg("prodinfo", item, "consumer");
-        CommUtils.outblue(name + " | produce "+ item  );
-        this.forward(msg);
-        CommUtils.delay(1000);
-        IApplMessage msg1 = prodMsg(continueId, item, name); //automsg
-        this.forward(msg1);
+        //for( int i=1; i<= 3; i++ ) {  //CICLO => autoMsg
+            item = item + "a";
+            IApplMessage msg = prodMsg("prodinfo", item, "consumer");
+            CommUtils.outblue(name + " | produce " + item);
+            this.forward(msg);
+            CommUtils.delay(1000);
+            //CICLO => tranzione con guardia
+            IApplMessage msg1 = prodMsg(continueId, "ok", name); //automsg
+            this.forward(msg1);
+
     }
 
     @State( name = "endWork" )

@@ -9,10 +9,7 @@ import unibo.basicomm23.msg.ProtocolType;
 import unibo.basicomm23.utils.CommUtils;
 import java.io.FileInputStream;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Actor23Utils {
     protected static Prolog pengine = new Prolog();
@@ -76,6 +73,7 @@ public class Actor23Utils {
         loadTheory(rulesFilePath);
 
         try {
+            //Crea tutti i contesti
             String ctxs = solve("getCtxNames( X )", "X");
             List<String> ctxsList = strRepToList(ctxs);
             Iterator<String> iter = ctxsList.iterator();
@@ -86,15 +84,22 @@ public class Actor23Utils {
                 boolean res = solve(goal);
                 if (res) createTheContext(ctx, hostName);
             }
+            //Per ognoi contesto, fissa gli attori remoti
             Iterator<ActorContext23> allCtxs = ctxsMap.values().iterator();
             while (allCtxs.hasNext()) {
                 ActorContext23 ctx = allCtxs.next();
                 setTheActorsRemote(ctx);
             }
+            //Per ognoi contesto, crea gli attori locali
             allCtxs = ctxsMap.values().iterator(); //reset the iterator
             while (allCtxs.hasNext()) {
                 ActorContext23 ctx = allCtxs.next();
                 createActorsOfContext(ctx);
+            }
+            //Per ognoi contesto, attiva gli attori locali
+            allCtxs = ctxsMap.values().iterator(); //reset the iterator
+            while (allCtxs.hasNext()) {
+                activateActorsInContext(allCtxs.next());
             }
             //showSystemConfiguration();
             CommUtils.aboutThreads(pfx + "Actor23Utils | At START ");
@@ -102,6 +107,8 @@ public class Actor23Utils {
             CommUtils.outred(pfx + "Actor23Utils | createContexts ERROR " + e.getMessage());
         }
     }
+
+
 
     public static ActorContext23 createTheContext(String ctx, String hostName) throws Exception {
         String ctxHost = solve("getCtxHost(" + ctx + ",H)", "H");
@@ -112,8 +119,6 @@ public class Actor23Utils {
             if (trace) CommUtils.outgray(pfx + "Actor23Utils | createTheContext  ctx=" + ctx + " host=" + hostName);
             newctx = new ActorContext23(ctx, ctxHost, portNum);
             ctxsMap.put(newctx.name, newctx);
-            //createActorsOfContext( newctx );
-            //setTheActorsRemote(newctx);
         } else {
             CommUtils.outred(pfx + "Actor23Utils | createContext for different ");
         }
@@ -161,7 +166,15 @@ public class Actor23Utils {
         } catch (Exception e) {
             CommUtils.outred(pfx + "Actor23Utils | createActorsOfContext ERROR " + e.getMessage());
         }
+    }
 
+    public static void activateActorsInContext(ActorContext23 ctx){
+        Vector<String> actors = ctx.getLocalActorNames();
+        Iterator<String> iter = actors.iterator();
+        while (iter.hasNext()) {
+            ActorBasic23 a = ctx.getActor(iter.next());
+            if( a.autostart ) a.activateAndStart(); else a.activate();
+        }
     }
 
     public static ActorBasic23 createTheActor(
@@ -177,20 +190,7 @@ public class Actor23Utils {
     }
 
     public static void sendMsg(IApplMessage msg, ActorBasic23 dest) throws Exception {
-        //try {
-        //String destActorName = msg.msgReceiver();
-        //CommUtils.outyellow(  name + " | sendMsg to " + dest.name );
-        dest.msgQueue.put(msg); //attore locale
-            /*
-            if (dest != null) {
-                //CommUtils.outyellow( name + " | sendMsg to " + dest.name);
-                dest.msgQueue.put( msg ); //attore locale
-            } else {
-                throw new Exception("Actor23Utils | sendMsg unknown " + dest);
-            }*/
-        //}catch(Exception e){
-        //CommUtils.outred(  "Actor23Utils | sendMsg ERROR  " + e.getMessage() );
-        //}
+          dest.msgQueue.put(msg); //attore locale
     }
 
 }

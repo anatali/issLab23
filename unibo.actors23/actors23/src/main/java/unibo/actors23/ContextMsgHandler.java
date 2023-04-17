@@ -19,7 +19,8 @@ public class ContextMsgHandler  extends ApplMsgHandler implements IApplMsgHandle
     @Override
     public void elaborate(IApplMessage msg, Interaction conn) {
         try {
-            if( Actor23Utils.trace) CommUtils.outblack(pfx+ name + " | elaborate " + msg);
+            //if( Actor23Utils.trace)
+                CommUtils.outblack(pfx+ name + " | elaborate " + msg);
             if (msg.isRequest()) elabRequest(msg, conn);
             else  elabNonRequest(msg, conn);
         }catch( Exception e){

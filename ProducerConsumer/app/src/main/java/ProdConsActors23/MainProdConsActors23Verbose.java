@@ -1,5 +1,6 @@
 package ProdConsActors23;
 
+import unibo.actors23.Actor23Utils;
 import unibo.actors23.ActorContext23;
 import unibo.basicomm23.msg.ProtocolType;
 import unibo.basicomm23.utils.CommUtils;
@@ -10,6 +11,8 @@ import unibo.basicomm23.utils.CommUtils;
 public class MainProdConsActors23Verbose {
     public void configureTheSystem(){
         //Actor23Utils.trace=true;
+        CommUtils.aboutThreads(  "MainProdConsActors23Verbose | At START ");
+
         int port1 = 8123;
         int port2 = 8125;
         CommUtils.outmagenta("MainActors23 CREA I CONTESTI ");
@@ -34,9 +37,14 @@ public class MainProdConsActors23Verbose {
 
         ctx1.showActorNames();
         ctx2.showActorNames();
+        CommUtils.aboutThreads(  "MainProdConsActors23Verbose | BEFORE ACTIVATE ");
+        Actor23Utils.activateActorsInContext(ctx1);
+        ctx2.activateLocalActors();
+        CommUtils.aboutThreads(  "MainProdConsActors23Verbose | AFTER ACTIVATE ");
 
     }
     public static void main(String[] args ){
+        System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "ERROR");
         new MainProdConsActors23Verbose().configureTheSystem();
     }
 }

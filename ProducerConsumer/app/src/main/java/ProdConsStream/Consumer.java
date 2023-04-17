@@ -14,7 +14,7 @@ public class Consumer extends ActorBasic23 {
 
     @Override
     protected void elabMsg(IApplMessage msg) throws Exception {
-        CommUtils.outgreen(name + " | elabMsg " + msg + " in:" + Thread.currentThread().getName());
+        CommUtils.outmagenta(name + " | elabMsg " + msg + " in:" + Thread.currentThread().getName());
 
     }
 }

@@ -9,9 +9,9 @@ import unibo.basicomm23.interfaces.IApplMessage;
 import unibo.basicomm23.utils.CommUtils;
 
 public class ConsumerFsm23 extends ActorBasicFsm23 {
+    String data = "";
     public ConsumerFsm23(String name, ActorContext23 ctx) {
         super(name, ctx);
-        this.autostart = true;
     }
 
     @State( name = "s0", initial=true)
@@ -24,7 +24,9 @@ public class ConsumerFsm23 extends ActorBasicFsm23 {
     @State( name = "consume" )
     @Transition( state = "consume", msgId = "prodinfo"   )
     protected void consume( IApplMessage msg ) {
-        CommUtils.outgreen(name + " | consume "+msg  );
+        CommUtils.outgray(name + " | consume "+msg  );
+        data = data + "|" + msg.msgContent();
+        CommUtils.outgreen(name + " | data="+data  );
     }
 
 }

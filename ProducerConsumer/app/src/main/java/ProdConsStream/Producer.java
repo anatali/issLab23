@@ -19,7 +19,7 @@ public class Producer extends ActorBasic23 {
 
     protected void emitValue(int v){
         IApplMessage event = CommUtils.buildEvent(name,"data", ""+v);
-        CommUtils.outblue(name + "emitLocalStreamEvent " + event);
+        CommUtils.outblue(name + " emitLocalStreamEvent: " + event);
         emitLocalStreamEvent(event);
         CommUtils.delay(1000);
     }

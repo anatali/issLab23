@@ -12,6 +12,7 @@ import unibo.basicomm23.utils.CommUtils;
 import unibo.basicomm23.utils.Connection;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Vector;
 
 public  class ActorContext23 implements IContext23 {
@@ -54,13 +55,22 @@ public  class ActorContext23 implements IContext23 {
     }
     //public HashMap<String, IApplMessage> getRequestMap(){ return requestMap;};
 
+    public void activateLocalActors(){
+        Vector<String> actors = getLocalActorNames();
+        Iterator<String> iter = actors.iterator();
+        while (iter.hasNext()) {
+            ActorBasic23 a =  getActor(iter.next());
+            if( a.autostart ) a.activateAndStart(); else a.activate();
+        }
+    }
+
     @Override
     public   void addActor( ActorBasic23 a ) {
         if(Actor23Utils.trace) CommUtils.outyellow(name + " | added CoapResource " + a.name );
         root.addActorResource(a);
         ctxActorMap.put(a.getName(), a );
-        if( a.autostart ) a.activateAndStart();
-        else a.activate();
+        //La attivazione degli attori deve essere fatta quando sono stati creati tutti
+        //if( a.autostart ) a.activateAndStart(); else a.activate();
     }
     @Override
     public  void removeActor(ActorBasic23 a) {
@@ -91,14 +101,14 @@ public  class ActorContext23 implements IContext23 {
 
     @Override
     public  void showActorNames( ) {
-        CommUtils.outmagenta("CURRENT ACTORS in context:" + name );
+        CommUtils.outyellow("CURRENT ACTORS in context:" + name );
         ctxActorMap.forEach( (v, x) ->
-                CommUtils.outmagenta(name + ":" + v + " in " + x.getContextName() )
+                CommUtils.outyellow(name + ":" + v + " in " + x.getContextName() )
         );
     }
     @Override
     public  void showProxies( ) {
-        CommUtils.outmagenta("CURRENT PROXY in context:" + name );
+        CommUtils.outyellow("CURRENT PROXY in context:" + name );
         proxiesMap.forEach( (v, x) ->
                 CommUtils.outmagenta(name + ":" + v + " in " + x )
         );

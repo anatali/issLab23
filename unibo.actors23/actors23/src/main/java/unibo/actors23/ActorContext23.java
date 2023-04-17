@@ -74,7 +74,7 @@ public  class ActorContext23 implements IContext23 {
     public void setActorAsRemote(
             String actorName, String entry, String host, ProtocolType protocol ) {
         String PxyName = "Pxy_"+host+"_"+entry;
-        if(Connection.trace) CommUtils.outgray(name + " setActorAsRemote:" + actorName + " on " + host + ":" + entry);
+        if(Actor23Utils.trace) CommUtils.outgray(name + " setActorAsRemote:" + actorName + " on " + PxyName);
         Proxy pxy = ctxProxyMap.get(PxyName);
         if( pxy == null ) { //un solo proxy per contesto remoto
             pxy = new Proxy(  PxyName, host, entry, protocol,this);

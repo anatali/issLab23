@@ -135,8 +135,6 @@ public class Actor23Utils {
                         CommUtils.outgray(pfx + "Actor23Utils | setTheActorsRemote in " + ctx.name + " found: " + actorName);
                     //Trovo la porta del contesto di actorName
                     String remoteActorCtx = solve("qactor( " + actorName + ",CTX, _ )", "CTX");
-                    //if(trace) CommUtils.outgray(pfx+"Actor23Utils | setTheActorsRemote "+ actorName + " in remoteActorCtx:" + remoteActorCtx );
-
                     String query = "context( CTX,HOST,PROTOCOL,PORT )".replace("CTX", remoteActorCtx);
                     String remoteHost = solve(query, "HOST");
                     String remotePort = solve(query, "PORT");

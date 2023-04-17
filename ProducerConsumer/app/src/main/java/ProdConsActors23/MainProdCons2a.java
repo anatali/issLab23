@@ -6,7 +6,7 @@ import unibo.basicomm23.utils.CommUtils;
 
 public class MainProdCons2a {
     public void configureTheSystem(){
-        String userDir = System.getProperty("user.dir"); //C:\Didattica2023\issLab23\ProducerConsumer
+        String userDir = System.getProperty("user.dir");
         CommUtils.outblue("Working Directory = " + userDir);
         //Actor23Utils.trace = true;
         //Connection.trace   = true;

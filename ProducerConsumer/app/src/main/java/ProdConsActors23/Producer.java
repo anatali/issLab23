@@ -22,6 +22,7 @@ public class Producer extends ActorBasic23 {
             IApplMessage infoMsg  = CommUtils.buildDispatch(name, "info", d, "consumer");
             CommUtils.outblue(name + " | SENDS " + infoMsg + " in:" + Thread.currentThread().getName());
             forward(infoMsg);*/
+            CommUtils.delay(3000); //wait before producing ..
             IApplMessage infoMsg  = CommUtils.buildRequest(name, "info", d, "consumer");
             CommUtils.outblue(name + " | SENDS " + infoMsg + " in:" + Thread.currentThread().getName());
             request(infoMsg);
@@ -29,6 +30,7 @@ public class Producer extends ActorBasic23 {
         }
         if( msg.isReply()){
             CommUtils.outblue(name + " | RECEIVES answer=" + msg.msgContent());
+
         }
     }
 }

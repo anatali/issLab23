@@ -45,10 +45,14 @@ public class ContextMsgHandler  extends ApplMsgHandler implements IApplMsgHandle
 
     protected void elabRequest( IApplMessage msg, Interaction conn ) throws Exception {
         String senderName    = msg.msgSender();
-        ((ApplMessage)msg).setConn(conn);
-        //CommUtils.outred(name + "| elabMsg " + ((ApplMessage)inputMsg).getConn());
-        //ctx.requestMap.put(msg.msgId(), msg);
-        //CommUtils.outred(name + "| elabRequest " + msg + " " + ((ApplMessage) msg).getConn());
-        elabNonRequest(msg,conn);
+        msg.setConn(conn);
+        ActorBasic23 a       = ctx.getActor(msg.msgReceiver());
+        if (a != null) {  //Qak22Util.sendAMsg( msg );
+            a.msgQueue.put(msg);
+        } else {
+            String errorMsg = name + " | actor unknown:" + msg.msgReceiver();
+            CommUtils.outred(errorMsg);
+            throw new Exception(errorMsg);
+        }
     }
 }

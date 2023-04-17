@@ -4,15 +4,18 @@ import unibo.actors23.ActorContext23;
 import unibo.basicomm23.msg.ProtocolType;
 import unibo.basicomm23.utils.CommUtils;
 
+//ctx1-8123 : prod1, consumer
+//ctx2-8125 : prod2, prod3
+
 public class MainProdConsActors23Verbose {
     public void configureTheSystem(){
         //Actor23Utils.trace=true;
         int port1 = 8123;
         int port2 = 8125;
-        CommUtils.outblue("MainActors23 CREA I CONTESTI ");
+        CommUtils.outmagenta("MainActors23 CREA I CONTESTI ");
         ActorContext23 ctx1 = new ActorContext23("ctx1", "localhost", port1);
         ActorContext23 ctx2 = new ActorContext23("ctx2", "localhost", port2);
-        CommUtils.outblue("MainActors23 CREA GLI ATTORI ");
+        CommUtils.outmagenta("MainActors23 CREA GLI ATTORI ");
 
         Producer prod1 = new Producer("prod1",ctx1);
         Consumer consumer = new Consumer("consumer", ctx1); //Autostart
@@ -24,10 +27,10 @@ public class MainProdConsActors23Verbose {
         ctx2.addActor(prod2);
         ctx2.addActor(prod3);
 
-        CommUtils.outblue("MainActors23 FISSA GLI ACTOR REMOTI");
-        //ctx1.setActorAsRemote("a2",""+port2, "localhost", ProtocolType.tcp);
-        //ctx1.setActorAsRemote("a3",""+port2, "localhost", ProtocolType.tcp);
+        CommUtils.outmagenta("MainActors23 FISSA GLI ACTOR REMOTI");
+        ctx1.setActorAsRemote("prod2",""+port2, "localhost", ProtocolType.tcp);
         ctx2.setActorAsRemote("consumer",""+port1, "localhost", ProtocolType.tcp);
+        ctx1.setActorAsRemote("prod3",""+port2, "localhost", ProtocolType.tcp);
 
         ctx1.showActorNames();
         ctx2.showActorNames();

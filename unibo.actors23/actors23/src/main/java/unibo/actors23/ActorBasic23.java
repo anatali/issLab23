@@ -218,7 +218,7 @@ public abstract class ActorBasic23 extends CoapResource implements IActor23 {
 
     protected  void sendMsgToRemoteActor( IApplMessage msg  ) {
         String destActorName = msg.msgReceiver();
-        if(Connection.trace) CommUtils.outyellow( name + " | sendMsg " + msg + " to REMOTE " + destActorName );
+        if(Actor23Utils.trace) CommUtils.outyellow( name + " | sendMsg " + msg + " to REMOTE " + destActorName );
         //Chiedo al contesto un proxy per l'attore
         Proxy pxy    = ctx.getProxy(destActorName);
         if( pxy == null ) {

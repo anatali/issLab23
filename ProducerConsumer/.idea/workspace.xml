@@ -4,23 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="085de662-f8ac-42b8-95f4-57d2e983cf55" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdConsActors23Verbose.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdConsActors23Verbose.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/Producer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/Producer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsEvents/ProdConsEvents_1.pl" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsEvents/ProdConsEvents_1.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsEvents/Producer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsEvents/Producer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsFsm23/ConsumerFsm23.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsFsm23/ConsumerFsm23.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsFsm23/ProdConsActor23_1.pl" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsFsm23/ProdConsActor23_1.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsFsm23/ProducerFsm23.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsFsm23/ProducerFsm23.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsStream/Consumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsStream/Consumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsStream/Producer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsStream/Producer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/Actor23Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/Actor23Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/ActorContext23.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/ActorContext23.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/CoapResourceCtx.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/CoapResourceCtx.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/ContextMsgHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/ContextMsgHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibolibs/actors23-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../unibolibs/actors23-1.0.jar" afterDir="false" />
-    </list>
+    <list default="true" id="085de662-f8ac-42b8-95f4-57d2e983cf55" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -81,9 +65,9 @@
       <recent name="PingPongDisptach" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MainProdConsFsm23All">
-    <configuration name="MainProdCons2a" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ProdConsActors23.MainProdCons2a" />
+  <component name="RunManager" selected="Application.MainProdConsAsynch">
+    <configuration name="MainProdConsActors23Verbose" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ProdConsActors23.MainProdConsActors23Verbose" />
       <module name="ProducerConsumer.app.main" />
       <extension name="coverage">
         <pattern>
@@ -95,12 +79,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainProdConsActors23Verbose" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ProdConsActors23.MainProdConsActors23Verbose" />
+    <configuration name="MainProdConsAsynch" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ProdConsAsynch.MainProdConsAsynch" />
       <module name="ProducerConsumer.app.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ProdConsActors23.*" />
+          <option name="PATTERN" value="ProdConsAsynch.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -149,11 +133,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.MainProdConsAsynch" />
         <item itemvalue="Application.MainProdConsFsm23All" />
         <item itemvalue="Application.MainProdConsStream" />
         <item itemvalue="Application.MainProdConsEvents1" />
         <item itemvalue="Application.MainProdConsActors23Verbose" />
-        <item itemvalue="Application.MainProdCons2a" />
       </list>
     </recent_temporary>
   </component>

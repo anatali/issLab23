@@ -12,13 +12,13 @@ public class MainProdConsAsynch {
         ProdConsConfig.setProtocol(ProtocolType.tcp);  //tcp udp coap
         //Create the producers
         ProducerAsynch producer1 = new ProducerAsynch("prod1");
-        //ProducerAsynch producer2 = new ProducerAsynch("prod2");
+        ProducerAsynch producer2 = new ProducerAsynch("prod2");
         //Create the consumer
         Consumer consumer  = new Consumer("consumer");
         //Activate
         consumer.start();
         producer1.start();
-        //producer2.start();
+        producer2.start();
     }
 
      public static void main( String[] args ){

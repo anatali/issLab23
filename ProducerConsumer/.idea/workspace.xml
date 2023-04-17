@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="085de662-f8ac-42b8-95f4-57d2e983cf55" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/ConsoleTCP.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/ConsoleTCP.ipynb" afterDir="false" />
-    </list>
+    <list default="true" id="085de662-f8ac-42b8-95f4-57d2e983cf55" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,7 +65,7 @@
       <recent name="PingPongDisptach" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MainProdConsActors23Verbose">
+  <component name="RunManager" selected="Application.MainProdConsEvents1">
     <configuration name="MainProdConsActors23Verbose" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ProdConsActors23.MainProdConsActors23Verbose" />
       <module name="ProducerConsumer.app.main" />

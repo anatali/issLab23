@@ -1,12 +1,13 @@
 package ProdConsActors23;
 
-
 import unibo.actors23.ActorBasic23;
 import unibo.actors23.ActorContext23;
 import unibo.basicomm23.interfaces.IApplMessage;
 import unibo.basicomm23.utils.CommUtils;
 
 public class Producer extends ActorBasic23 {
+    ProducerLogic prodLogic = new ProducerLogic();
+
     public Producer(String name, ActorContext23 ctx) {
         super(name, ctx);
         autostart = true;
@@ -14,11 +15,20 @@ public class Producer extends ActorBasic23 {
 
     @Override
     protected void elabMsg(IApplMessage msg) throws Exception {
-        CommUtils.outblue(name + " | elabMsg " + msg + " in:" + Thread.currentThread().getName());
-        if( msg.msgId().equals("cmd") && msg.msgContent().equals("start")){
-            IApplMessage infoMsg  = CommUtils.buildDispatch(name, "info", "hello", "consumer");
+        //CommUtils.outgray(name + " | elabMsg " + msg + " in:" + Thread.currentThread().getName());
+        if( msg.msgId().equals("startcmd") && msg.msgContent().equals("start")){
+            String d = prodLogic.getDistance();
+            /*
+            IApplMessage infoMsg  = CommUtils.buildDispatch(name, "info", d, "consumer");
             CommUtils.outblue(name + " | SENDS " + infoMsg + " in:" + Thread.currentThread().getName());
-            sendMsg(infoMsg);
+            forward(infoMsg);*/
+            IApplMessage infoMsg  = CommUtils.buildRequest(name, "info", d, "consumer");
+            CommUtils.outblue(name + " | SENDS " + infoMsg + " in:" + Thread.currentThread().getName());
+            request(infoMsg);
+            return;
+        }
+        if( msg.isReply()){
+            CommUtils.outblue(name + " | RECEIVES answer=" + msg.msgContent());
         }
     }
 }

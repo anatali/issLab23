@@ -9,7 +9,6 @@ import unibo.basicomm23.interfaces.IApplMsgHandler;
 import unibo.basicomm23.interfaces.Interaction;
 import unibo.basicomm23.msg.ApplMessage;
 import unibo.basicomm23.utils.CommUtils;
-
 import java.text.SimpleDateFormat;
 
 public class ConsumerCoapResource  extends CoapResource implements IApplMsgHandler {
@@ -23,14 +22,14 @@ public class ConsumerCoapResource  extends CoapResource implements IApplMsgHandl
     }
     @Override
     public void handleGET(CoapExchange exchange) {
-        CommUtils.outmagenta(getName() + " | handleGET " + exchange.getRequestText());
+        CommUtils.outgray(getName() + " | ConsumerCoapResource handleGET " + exchange.getRequestText());
         IApplMessage message = new ApplMessage(exchange.getRequestText());
         //buildAnswer(exchange);
         elaborate( message, new CoapInteraction(exchange));
     }
 
     public void handlePOST(CoapExchange exchange) {
-        CommUtils.outmagenta(getName() + " | handlePOST " + exchange.getRequestText());
+        CommUtils.outgray(getName() + " | ConsumerCoapResource handlePOST " + exchange.getRequestText());
         exchange.accept();
 
         //List<String> queries = exchange.getRequestOptions().getURIQueries();
@@ -40,7 +39,7 @@ public class ConsumerCoapResource  extends CoapResource implements IApplMsgHandl
 
     public void handlePUT(CoapExchange exchange) {
         // ...
-        CommUtils.outmagenta(getName() + " | handlePUT " + exchange.getRequestText()); //.getRequestText()
+        CommUtils.outgray(getName() + " | ConsumerCoapResource handlePUT " + exchange.getRequestText()); //.getRequestText()
         //exchange.respond(CoAP.ResponseCode.CHANGED);
         //changed(); // notify all observers
         //buildAnswer(exchange);
@@ -53,9 +52,9 @@ public class ConsumerCoapResource  extends CoapResource implements IApplMsgHandl
         try {
             IApplMessage message = new ApplMessage(exchange.getRequestText());
             String m             = consunerLogic.evalDistance(message.msgContent());
-            //CommUtils.outgreen(m);
+            //CommUtils.outgray(m);
             IApplMessage reply = CommUtils.buildReply("consumer", "outdata", m, message.msgSender());
-            CommUtils.outgreen(getName() + " | build reply: " + reply.toString());
+            CommUtils.outgray(getName() + " | ConsumerCoapResource build reply: " + reply.toString());
             exchange.respond( reply.toString() );
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,34 +67,13 @@ public class ConsumerCoapResource  extends CoapResource implements IApplMsgHandl
     public void elaborate(IApplMessage message, Interaction conn) {
         try {
             String m             = consunerLogic.evalDistance(message.msgContent());
-            //CommUtils.outgreen(m);
+            //CommUtils.outgray(m);
             IApplMessage reply = CommUtils.buildReply("consumer", "outdata", m, message.msgSender());
-            CommUtils.outgreen(getName() + " | build reply: " + reply.toString());
+            CommUtils.outgray(getName() + " | ConsumerCoapResource build reply: " + reply.toString());
             conn.reply( reply.toString() );
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-/*
-    @Override
-    public void body() throws Exception {
-        CommUtils.outgreen("Consumer starts");
-         configure();
-    }
-
-    @Override
-    public void elaborate(IApplMessage message, Interaction conn) {
-        try {
-            CommUtils.outgreen(name + " elaborate " + message );
-            Date date    = new Date();
-            Timestamp ts = new Timestamp(date.getTime());
-            String m     = "'"+sdf3.format(ts)+"'";
-            //CommUtils.outgreen(m);
-            IApplMessage reply = CommUtils.buildReply("consumer", "date", m, message.msgSender());
-            conn.reply( reply );
-        } catch (Exception e) {
-             e.printStackTrace();
-        }
-    }*/
 }

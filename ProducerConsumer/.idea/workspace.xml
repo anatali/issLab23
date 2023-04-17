@@ -5,61 +5,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="085de662-f8ac-42b8-95f4-57d2e983cf55" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdConsActors23NoDescr.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsEvents/Consumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsEvents/MainProdConsEvents1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsEvents/ProdConsEvents_1.pl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsEvents/Producer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsFsm23/ConsumerFsm23.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsFsm23/MainProdConsFsm23All.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsFsm23/ProdConsActor23_1.pl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsFsm23/ProducerFsm23.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/shared/sysRules.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1/application1/src/main/java/unibo/appl1/ws/Appl1WSSprint3.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1/application1/src/main/java/unibo/appl1/ws/Appl1WSSprint3.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/ConsumerLogic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/ProducerLogic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsNaive/MainProdConsNaive.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsStream/Consumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsStream/DataCleaner.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsStream/MainProdConsStream.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsStream/ProdConsStream.pl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsStream/Producer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/Consumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/Consumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/MainProdCons1.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdCons1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/MainProdCons2.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdCons2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/MainProdConsAll.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdConsAll.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/ProdConsActor23_1.pl" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/ProdConsActor23_1.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/ProdConsActor23_2.pl" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/ProdConsActor23_2.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/ProdConsActor23_all.pl" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/ProdConsActor23_all.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/Producer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/Producer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ApplsActor23/sysRules.pl" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/sysRules.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsAsynch/MainProdConsAsynch.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsAsynch/MainProdConsAsynch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsAsynch/ProducerAsynch.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsAsynch/ProducerAsynch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsAsynch/ProducerCallerAsynch.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsAsynch/ProducerCallerAsynch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ActorNaiveCaller.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/ActorNaiveCaller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ActorNaiveReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/ActorNaiveReceiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/Consumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/Consumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ConsumerCoapResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/ConsumerCoapResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ConsumerLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/ConsumerLogic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ConsumerMsgHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/ConsumerMsgHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/MainProdCons.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/MainProdCons.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ProdConsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/ProdConsConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/Producer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/Producer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ProducerCaller.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/ProducerCaller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProducerConsumer/ProducerLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/ProducerLogic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/ProducerConsumer/ActorNaiveCaller.java" beforeDir="false" afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ActorNaiveCaller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/ProducerConsumer/ActorNaiveReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ActorNaiveReceiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/ProducerConsumer/Consumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/temp/ProducerConsumer/Consumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/ProducerConsumer/ConsumerCoapResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ConsumerCoapResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/ProducerConsumer/ConsumerLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ConsumerLogic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/ProducerConsumer/ConsumerMsgHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ConsumerMsgHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/ProducerConsumer/MainProdCons.java" beforeDir="false" afterPath="$PROJECT_DIR$/temp/ProducerConsumer/MainProdCons.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/ProducerConsumer/ProdConsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ProdConsConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/ProducerConsumer/Producer.java" beforeDir="false" afterPath="$PROJECT_DIR$/temp/ProducerConsumer/Producer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/ProducerConsumer/ProducerCaller.java" beforeDir="false" afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ProducerCaller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/ProducerConsumer/ProducerLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/temp/ProducerConsumer/ProducerLogic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../iss23Material/LectureBologna2023.html" beforeDir="false" afterPath="$PROJECT_DIR$/../iss23Material/LectureBologna2023.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/Consumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/Consumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdCons1.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdCons2a.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdCons2.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdCons2b.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdConsActors23NoDescr.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdConsActors23Verbose.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdConsAll.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdConsAll.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/ProdConsActor23_1.pl" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/ProdConsActor23_2a.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/ProdConsActor23_2.pl" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/ProdConsActor23_2b.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/ProdConsActor23_all.pl" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/ProdConsActor23_all.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/Producer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/Producer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/Consumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/Consumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/ConsumerCoapResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/ConsumerCoapResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/ConsumerMsgHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/ConsumerMsgHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/MainProdCons.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/MainProdCons.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/example0/Actor1.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/Actor1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/example0/Actor2.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/Actor2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/example0/ActorConsole.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/ActorConsole.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/example0/MainActors23.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/MainActors23.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/example0/MainConfigActors23_3.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/MainConfigActors23_3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/example0/exampleActor23_3.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/exampleActor23_3.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/example0/sysRules.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/sysRules.pl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../unibolibs/actors23-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../unibolibs/actors23-1.0.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../unibolibs/unibo.basicomm23-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../unibolibs/unibo.basicomm23-1.0.jar" afterDir="false" />
     </list>
@@ -67,6 +41,9 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -83,6 +60,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
   <component name="ProjectId" id="2NdUuUOb7kQZzx9fhZAfcc0LDnr" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -95,7 +75,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/java/ProdConsEvents" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../unibo.actors23" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -103,26 +83,53 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\ProdConsStream" />
       <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\ProdConsEvents" />
       <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\shared" />
       <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\ProdConsFsm23" />
       <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\example0" />
-      <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ProdConsActors23" />
+      <recent name="ProdConsStream" />
       <recent name="example0" />
       <recent name="PingPongDispatch" />
       <recent name="PingPongDisptach" />
-      <recent name="ApplsActor23" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MainProdConsEvents1">
-    <configuration name="MainConfigActors23_3" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="example0.MainConfigActors23_3" />
+  <component name="RunManager" selected="Application.MainProdCons2a">
+    <configuration name="MainProdCons" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ProdConsInteraction.MainProdCons" />
       <module name="ProducerConsumer.app.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="example0.*" />
+          <option name="PATTERN" value="ProdConsInteraction.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainProdCons2a" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ProdConsActors23.MainProdCons2a" />
+      <module name="ProducerConsumer.app.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ProdConsActors23.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainProdCons2b" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ProdConsActors23.MainProdCons2b" />
+      <module name="ProducerConsumer.app.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ProdConsActors23.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -143,38 +150,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainProdConsAsynch" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ProdConsAsynch.MainProdConsAsynch" />
+    <configuration name="MainProdConsNaive" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ProdConsNaive.MainProdConsNaive" />
       <module name="ProducerConsumer.app.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ProdConsAsynch.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MainProdConsEvents1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ProdConsEvents.MainProdConsEvents1" />
-      <module name="ProducerConsumer.app.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ProdConsEvents.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MainProdConsFsm23All" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ProdConsFsm23.MainProdConsFsm23All" />
-      <module name="ProducerConsumer.app.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ProdConsFsm23.*" />
+          <option name="PATTERN" value="ProdConsNaive.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -184,11 +165,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MainProdConsEvents1" />
-        <item itemvalue="Application.MainProdConsFsm23All" />
+        <item itemvalue="Application.MainProdCons2a" />
+        <item itemvalue="Application.MainProdCons2b" />
         <item itemvalue="Application.MainProdConsAll" />
-        <item itemvalue="Application.MainConfigActors23_3" />
-        <item itemvalue="Application.MainProdConsAsynch" />
+        <item itemvalue="Application.MainProdCons" />
+        <item itemvalue="Application.MainProdConsNaive" />
       </list>
     </recent_temporary>
   </component>

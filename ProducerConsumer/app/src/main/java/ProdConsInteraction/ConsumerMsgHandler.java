@@ -19,7 +19,7 @@ private ConsumerLogic consunerLogic;
     @Override
     public void elaborate(IApplMessage message, Interaction conn) {
         try {
-            CommUtils.outgreen(name + " elaborate " + message );
+            CommUtils.outgreen(name + " ConsumerMsgHandler | elaborate " + message );
             String d = message.msgContent();
             String m = consunerLogic.evalDistance( d ) ;
             //CommUtils.outgreen(m);
@@ -27,7 +27,7 @@ private ConsumerLogic consunerLogic;
                 IApplMessage reply = CommUtils.buildReply(
                         "consumer", "outdata", m, message.msgSender());
                 conn.reply( reply );
-            }  else CommUtils.outred(name + "elaborate ERROR: not a request");
+            }  else CommUtils.outred(name + " ConsumerMsgHandler | elaborate ERROR: not a request");
         } catch (Exception e) {
              e.printStackTrace();
         }

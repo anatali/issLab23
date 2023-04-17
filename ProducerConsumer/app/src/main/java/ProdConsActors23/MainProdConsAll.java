@@ -11,8 +11,8 @@ public class MainProdConsAll {
         //Actor23Utils.trace = true;
         //Connection.trace   = true;
         Actor23Utils.createContexts("localhost",
-                "app/src/main/java/ApplsActor23/ProdConsActor23_all.pl",
-                "app/src/main/java/ApplsActor23/sysRules.pl");
+                "app/src/main/java/ProdConsActors23/ProdConsActor23_all.pl",
+                "app/src/main/java/shared/sysRules.pl");
     }
     public static void main(String[] args ){
         new MainProdConsAll().configureTheSystem();

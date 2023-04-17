@@ -20,7 +20,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Appunti su tecnologie" href="AppuntiTecnologie.html" />
+    <link rel="next" title="Producers-Consumer" href="Producers-Consumer.html" />
     <link rel="prev" title="StepAsynch" href="StepAsynch.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,7 +30,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="Producers-Consumer.html" title="Producers-Consumer"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="StepAsynch.html" title="StepAsynch"
@@ -390,7 +390,7 @@ detto <span class="remark">message-driven</span> in quanto consiste in un ciclo 
 <li><p>Ogni azione di elaborazione di messaggio deve terminare, in modo da permettere il proseguimento
 del ciclo.</p></li>
 <li><p>Azioni proattive prolungate devono essere evitate. Una tecnica possibile è spezzare l’azione
-di lunga durata cedendo il controllo, dopo l’invio di un <a class="reference internal" href="#auto-massaggio"><span class="std std-ref">auto-massaggio</span></a>.</p></li>
+di lunga durata cedendo il controllo, dopo l’invio di un <span class="xref std std-ref">auto-massaggio</span>.</p></li>
 </ul>
 <section id="actor23-mainloop">
 <h4>Actor23 mainLoop<a class="headerlink" href="#actor23-mainloop" title="Permalink to this headline">¶</a></h4>
@@ -411,18 +411,22 @@ di lunga durata cedendo il controllo, dopo l’invio di un <a class="reference i
 <section id="msgqueue">
 <h4>msgQueue<a class="headerlink" href="#msgqueue" title="Permalink to this headline">¶</a></h4>
 <p>La variabile <code class="docutils literal notranslate"><span class="pre">msgQueue</span></code> rappresenta la coda dei messaggi di ingresso all’attore.</p>
-<p><span class="slide2">Invio di messaggi</span></p>
-<p>Ogni attore è capace di inviare un messaggio ad
-un attore destinatario (locale o remoto) mediante il
-metodo <a class="reference internal" href="#actorbasic23-sendmsg"><span class="std std-ref">sendMsg</span></a>.</p>
+<p><span class="slide1">Invio di messaggi</span></p>
 </section>
-<section id="auto-massaggio">
-<h4>auto-massaggio<a class="headerlink" href="#auto-massaggio" title="Permalink to this headline">¶</a></h4>
-<p>Per inviare un messaggio a è stesso, l’attore può costruire un messaggio (<em>dispatch</em>) che abbia
-il suo nome come destinatario e inviare il messaggio con una normale <a class="reference internal" href="#actorbasic23-sendmsg"><span class="std std-ref">sendMsg</span></a>.</p>
-<p>Si veda <span class="blue">autoStartMsg</span> in: <a class="reference internal" href="#unibo-basicomm23-actors23-actorbasic23"><span class="std std-ref">ActorBasic23</span></a> e in
-<a class="reference internal" href="#actor23-activation"><span class="std std-ref">Actor23 activation</span></a>.</p>
 </section>
+<section id="actorbasic23-invio-di-messaggi">
+<h3>ActorBasic23: invio di messaggi<a class="headerlink" href="#actorbasic23-invio-di-messaggi" title="Permalink to this headline">¶</a></h3>
+<p>La claase di implementazione <a class="reference internal" href="#actorbasic23"><span class="std std-ref">ActorBasic23</span></a> definisce metodi per l’invio asincrono di messaggi:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">forward</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span>
+<span class="n">protected</span> <span class="n">void</span> <span class="n">request</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span>
+<span class="n">protected</span> <span class="n">void</span> <span class="n">emit</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span>
+<span class="n">protected</span> <span class="n">void</span> <span class="n">reply</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">answer</span><span class="p">,</span><span class="n">IApplMessage</span> <span class="n">request</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Questi metodi sono realizzati mediante il
+metodo <a class="reference internal" href="#actorbasic23-sendmsg"><span class="std std-ref">sendMsg</span></a>,
+che invia un messaggio ad
+un attore destinatario distinguendo tra attore locale e attore remoto.</p>
 </section>
 <section id="actorbasic23-sendmsg">
 <h3>ActorBasic23.sendMsg<a class="headerlink" href="#actorbasic23-sendmsg" title="Permalink to this headline">¶</a></h3>
@@ -462,19 +466,33 @@ lo si usa per trasmettere il messaggio al server remoto.</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><span class="slide2">Invio di risposte</span></p>
+</section>
+<section id="actorbasic23-automsg">
+<h3>ActorBasic23.autoMsg<a class="headerlink" href="#actorbasic23-automsg" title="Permalink to this headline">¶</a></h3>
+<p>Per inviare un messaggio a è stesso, l’attore può costruire un messaggio (<em>dispatch</em>) che abbia
+il suo nome come destinatario e inviare il messaggio con una normale <a class="reference internal" href="#actorbasic23-sendmsg"><span class="std std-ref">sendMsg</span></a>.</p>
+<p>Si veda <span class="blue">autoStartMsg</span> in: <a class="reference internal" href="#unibo-basicomm23-actors23-actorbasic23"><span class="std std-ref">ActorBasic23</span></a> e in
+<a class="reference internal" href="#actor23-activation"><span class="std std-ref">Actor23 activation</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">void</span> <span class="n">autoMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">){</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">msgQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+    <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">Invio di risposte</span></p>
 </section>
 <section id="actorbasic23-reply">
 <h3>ActorBasic23.reply<a class="headerlink" href="#actorbasic23-reply" title="Permalink to this headline">¶</a></h3>
 <p>Replicare a una richiesta significa dare una risposta a un  messaggio ricevuto in precedenza.</p>
-<p><span class="slide1">La gestione delle richieste</span></p>
+<p><span class="slide2">La gestione delle richieste</span></p>
 <ul class="simple">
 <li><p>Il contesto che elabora un messaggio di richiesta, inserisce nel messaggio stesso un riferimento alla Interconnection
 su cui è stato ricevuto.</p></li>
 <li><p>Un attore che preleva dalla sua <a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a> un messaggio di richiesta, lo memorizza in
 una tabella <code class="docutils literal notranslate"><span class="pre">HashMap&lt;String,</span> <span class="pre">IApplMessage&gt;</span> <span class="pre">requestMap</span></code>.</p></li>
 </ul>
-<p><span class="slide1">La gestione delle risposte</span></p>
+<p><span class="slide2">La gestione delle risposte</span></p>
 <p>L’operazione reply riceve in ingresso sia un messaggio di risposta (<code class="docutils literal notranslate"><span class="pre">answer</span></code>)
 sia la richiesta originaria, da cui ricava la connessione su cui è stata ricevuta.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">reply</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">answer</span><span class="p">,</span> <span class="n">IApplMessage</span> <span class="n">request</span><span class="p">){</span>
@@ -506,6 +524,7 @@ sia la richiesta originaria, da cui ricava la connessione su cui è stata ricevu
 <span class="p">}</span>
 </pre></div>
 </div>
+<p><span class="slide1">Ricezione di messaggi da non-attori</span></p>
 </section>
 </section>
 <section id="interazione-con-alieni">
@@ -674,9 +693,10 @@ se non ha in precedenza ricevuto un comando di <code class="docutils literal not
 <h3>Main che non usa descrizione<a class="headerlink" href="#main-che-non-usa-descrizione" title="Permalink to this headline">¶</a></h3>
 <p>Il sistema può essere creato costruendo prima i contesti, poi gli attori e quindi
 ‘iniettando’ nei contesti la conoscenza degli attori locali e remoti.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">MainActors23</span> <span class="p">{</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">MainActors23Verbose</span> <span class="p">{</span>
 
     <span class="n">public</span> <span class="n">void</span> <span class="n">configureTheSystem</span><span class="p">(){</span>
+         <span class="n">System</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">slf4j</span><span class="o">.</span><span class="n">impl</span><span class="o">.</span><span class="n">SimpleLogger</span><span class="o">.</span><span class="n">DEFAULT_LOG_LEVEL_KEY</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">);</span>
         <span class="o">//</span><span class="n">Actor23Utils</span><span class="o">.</span><span class="n">trace</span><span class="o">=</span><span class="n">true</span><span class="p">;</span>
         <span class="nb">int</span> <span class="n">port1</span> <span class="o">=</span> <span class="mi">8123</span><span class="p">;</span>
         <span class="nb">int</span> <span class="n">port2</span> <span class="o">=</span> <span class="mi">8125</span><span class="p">;</span>
@@ -743,8 +763,9 @@ come ad esempio <a class="reference internal" href="#unico-contesto"><span class
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Esecuzione in un unico contesto.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%=============================================</span>
-<span class="o">%</span> <span class="n">exampleActor23_1</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">src</span>\<span class="n">main</span>\<span class="n">java</span>\<span class="n">unibo</span>\<span class="n">actors23</span>\<span class="n">example0</span>\<span class="n">onectx</span>
+<span class="o">%=============================================</span>
+<span class="o">%</span> <span class="n">exampleActor23_all</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
 <span class="o">%=============================================</span>
 <span class="n">context</span><span class="p">(</span><span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8120&quot;</span><span class="p">)</span><span class="o">.</span>
 <span class="n">qactor</span><span class="p">(</span> <span class="n">a1</span><span class="p">,</span> <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;unibo.actors23.example0.Actor1&quot;</span><span class="p">)</span><span class="o">.</span>
@@ -770,7 +791,8 @@ come ad esempio <a class="reference internal" href="#unico-contesto"><span class
 <tbody>
 <tr class="row-odd"><td><p>Esecuzione in due contesti.</p>
 <p>Nello stesso computer:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%=============================================</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">src</span>\<span class="n">main</span>\<span class="n">java</span>\<span class="n">unibo</span>\<span class="n">actors23</span>\<span class="n">example0</span>\<span class="n">twoctxonenode</span>
+<span class="o">%=============================================</span>
 <span class="o">%</span> <span class="n">exampleActor23_2a</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
 <span class="o">%=============================================</span>
 <span class="n">context</span><span class="p">(</span><span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8123&quot;</span><span class="p">)</span><span class="o">.</span>
@@ -782,11 +804,12 @@ come ad esempio <a class="reference internal" href="#unico-contesto"><span class
 </pre></div>
 </div>
 <p>Su due computer diversi:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%=============================================</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">src</span>\<span class="n">main</span>\<span class="n">java</span>\<span class="n">unibo</span>\<span class="n">actors23</span>\<span class="n">example0</span>\<span class="n">twoctxtwonodes</span>
+<span class="o">%=============================================</span>
 <span class="o">%</span> <span class="n">exampleActor23_2b</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
 <span class="o">%=============================================</span>
 <span class="n">context</span><span class="p">(</span><span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>     <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8123&quot;</span><span class="p">)</span><span class="o">.</span>
-<span class="n">context</span><span class="p">(</span><span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;192.168.1.18&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8125&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8125&quot;</span><span class="p">)</span><span class="o">.</span>
 <span class="o">...</span>
 </pre></div>
 </div>
@@ -806,7 +829,8 @@ come ad esempio <a class="reference internal" href="#unico-contesto"><span class
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Esecuzione in tre contesti nello stesso computer:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%=============================================</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">src</span>\<span class="n">main</span>\<span class="n">java</span>\<span class="n">unibo</span>\<span class="n">actors23</span>\<span class="n">example0</span>\<span class="n">threectx</span>
+<span class="o">%=============================================</span>
 <span class="o">%</span> <span class="n">exampleActor23_3</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
 <span class="o">%=============================================</span>
 <span class="n">context</span><span class="p">(</span><span class="n">ctx0</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8123&quot;</span><span class="p">)</span><span class="o">.</span>
@@ -829,7 +853,8 @@ come ad esempio <a class="reference internal" href="#unico-contesto"><span class
 <h4>Console esterna<a class="headerlink" href="#console-esterna" title="Permalink to this headline">¶</a></h4>
 <ol class="arabic">
 <li><p>Attiviamo il sistema (in uno o più contesti) escludendo la console.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%=============================================</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">src</span><span class="o">/</span><span class="n">main</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">unibo</span><span class="o">/</span><span class="n">actors23</span><span class="o">/</span><span class="n">example0</span><span class="o">/</span><span class="n">pythonconsole</span>
+<span class="o">%=============================================</span>
 <span class="o">%</span> <span class="n">exampleActor23_1</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
 <span class="o">%=============================================</span>
 <span class="n">context</span><span class="p">(</span><span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8123&quot;</span><span class="p">)</span><span class="o">.</span>
@@ -852,6 +877,12 @@ via <code class="docutils literal notranslate"><span class="pre">TCP</span></cod
 </ol>
 <p><span class="slide">Actors23: l’implementazione</span></p>
 </section>
+</section>
+<section id="actors23-la-libreria">
+<h3>Actors23: la libreria<a class="headerlink" href="#actors23-la-libreria" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actors23</span><span class="o">-</span><span class="mf">1.0</span><span class="o">.</span><span class="n">jar</span>
+</pre></div>
+</div>
 </section>
 <section id="unibo-basicomm23-interfaces-icontext23">
 <h3>unibo.basicomm23.interfaces.IContext23<a class="headerlink" href="#unibo-basicomm23-interfaces-icontext23" title="Permalink to this headline">¶</a></h3>
@@ -987,7 +1018,7 @@ all’attore destinatario,  il quale interpreterà i contenuto del messaggio.</p
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Si veda <a class="reference internal" href="#actorbasic23-sendmsg"><span class="std std-ref">ActorBasic23.sendMsg</span></a> e <a class="reference internal" href="#auto-massaggio"><span class="std std-ref">auto-massaggio</span></a>.</p>
+<p>Si veda <a class="reference internal" href="#actorbasic23-sendmsg"><span class="std std-ref">ActorBasic23.sendMsg</span></a> e <span class="xref std std-ref">auto-massaggio</span>.</p>
 <section id="actor23-activation">
 <h4>Actor23 activation<a class="headerlink" href="#actor23-activation" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">activate</span><span class="p">(){</span>
@@ -1048,23 +1079,34 @@ all’attore destinatario,  il quale interpreterà i contenuto del messaggio.</p
 <h4>Proxy activateReceiver<a class="headerlink" href="#proxy-activatereceiver" title="Permalink to this headline">¶</a></h4>
 <p>Ogni Proxy attiva anche un ricevitore sulla connessione,  per ricevere informazioni
 (di fatto messaggi di tio :ref:<a href="#id1"><span class="problematic" id="id2">`</span></a>reply&lt;ActorBasic23.reply&gt;) inviate dal server remoto.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">activateReceiver</span><span class="p">(</span> <span class="n">Interaction</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">new</span> <span class="n">Thread</span><span class="p">()</span> <span class="p">{</span>
-                <span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">()</span> <span class="p">{</span>
-                        <span class="k">try</span> <span class="p">{</span>
-                                <span class="k">while</span><span class="p">(</span><span class="n">true</span><span class="p">)</span> <span class="p">{</span>
-                                        <span class="n">String</span> <span class="n">msgStr</span>    <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">receiveMsg</span><span class="p">();</span>
-                                        <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">msgStr</span><span class="p">);</span>
-                                        <span class="n">ActorBasic23</span> <span class="n">dest</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">getActor</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">msgReceiver</span><span class="p">());</span>
-                                        <span class="k">if</span><span class="p">(</span> <span class="n">dest</span> <span class="o">!=</span> <span class="n">null</span> <span class="p">)</span> <span class="n">dest</span><span class="o">.</span><span class="n">msgQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
-                                        <span class="k">else</span>  <span class="n">CommUtils</span><span class="o">.</span><span class="n">outred</span><span class="p">(</span> <span class="n">pfx</span> <span class="o">+</span> <span class="n">name</span><span class="o">+</span><span class="s2">&quot;  | activateReceiver INCOSISTENCE for &quot;</span> <span class="o">+</span> <span class="n">dest</span>  <span class="p">);</span>
-                                <span class="p">}</span>
-                        <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
-                        <span class="p">}</span>
-        <span class="p">}</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
-<span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">protected</span> <span class="n">void</span> <span class="n">activateReceiver</span><span class="p">(</span> <span class="n">Interaction</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
+<span class="n">new</span> <span class="n">Thread</span><span class="p">()</span> <span class="p">{</span>
+     <span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">()</span> <span class="p">{</span>
+           <span class="k">try</span> <span class="p">{</span>
+                   <span class="k">while</span><span class="p">(</span><span class="n">true</span><span class="p">)</span> <span class="p">{</span>
+                           <span class="n">String</span> <span class="n">msgStr</span>    <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">receiveMsg</span><span class="p">();</span>
+                           <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">msgStr</span><span class="p">);</span>
+                           <span class="n">ActorBasic23</span> <span class="n">dest</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">getActor</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">msgReceiver</span><span class="p">());</span>
+                           <span class="k">if</span><span class="p">(</span> <span class="n">dest</span> <span class="o">!=</span> <span class="n">null</span> <span class="p">)</span> <span class="n">dest</span><span class="o">.</span><span class="n">msgQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+                           <span class="k">else</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">outred</span><span class="p">(</span> <span class="n">pfx</span> <span class="o">+</span> <span class="n">name</span>
+                               <span class="o">+</span><span class="s2">&quot;  | activateReceiver INCOSISTENCE for &quot;</span><span class="o">+</span><span class="n">dest</span><span class="p">);</span>
+                   <span class="p">}</span>
+           <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+ <span class="p">}</span>
+<span class="p">}</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
+   <span class="p">}</span>
 </pre></div>
 </div>
+<p><span class="slide">Importanti estensioni</span></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="Actirs23FSM.html#actors23fsm"><span class="std std-ref">Actors23FSM</span></a>: attori come automi a stati finiti basati su annotazioni Java</p></li>
+<li><p><a class="reference internal" href="Actors23Coap.html#actors23coap"><span class="std std-ref">Actors23Coap</span></a>: attori come risorse</p></li>
+</ul>
+<p><span class="slide1">Applicazioni</span></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="Producers-Consumer.html#producers-consumer"><span class="std std-ref">Producers-Consumer</span></a></p></li>
+<li><p><a class="reference internal" href="SistemiActors23.html#sistemiactors23"><span class="std std-ref">SistemiActors23</span></a>: sviluppo di sistemi ad attori</p></li>
+</ul>
 </section>
 </section>
 </section>
@@ -1103,11 +1145,12 @@ all’attore destinatario,  il quale interpreterà i contenuto del messaggio.</p
 <li><a class="reference internal" href="#il-comportamento-di-un-attore">Il comportamento di un attore</a><ul>
 <li><a class="reference internal" href="#actor23-mainloop">Actor23 mainLoop</a></li>
 <li><a class="reference internal" href="#msgqueue">msgQueue</a></li>
-<li><a class="reference internal" href="#auto-massaggio">auto-massaggio</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#actorbasic23-invio-di-messaggi">ActorBasic23: invio di messaggi</a></li>
 <li><a class="reference internal" href="#actorbasic23-sendmsg">ActorBasic23.sendMsg</a></li>
 <li><a class="reference internal" href="#actorbasic23-sendmsgtoremoteactor">ActorBasic23.sendMsgToRemoteActor</a></li>
+<li><a class="reference internal" href="#actorbasic23-automsg">ActorBasic23.autoMsg</a></li>
 <li><a class="reference internal" href="#actorbasic23-reply">ActorBasic23.reply</a><ul>
 <li><a class="reference internal" href="#sendmessageonconn">sendMessageOnConn</a></li>
 </ul>
@@ -1132,6 +1175,7 @@ all’attore destinatario,  il quale interpreterà i contenuto del messaggio.</p
 <li><a class="reference internal" href="#console-esterna">Console esterna</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#actors23-la-libreria">Actors23: la libreria</a></li>
 <li><a class="reference internal" href="#unibo-basicomm23-interfaces-icontext23">unibo.basicomm23.interfaces.IContext23</a></li>
 <li><a class="reference internal" href="#unibo-basicomm23-actors23-actorcontext23">unibo.basicomm23.actors23.ActorContext23</a></li>
 <li><a class="reference internal" href="#unibo-basicomm23-actors23-contextmsghandler">unibo.basicomm23.actors23.ContextMsgHandler</a><ul>
@@ -1169,8 +1213,8 @@ all’attore destinatario,  il quale interpreterà i contenuto del messaggio.</p
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="AppuntiTecnologie.html"
-                          title="next chapter">Appunti su tecnologie</a></p>
+    <p class="topless"><a href="Producers-Consumer.html"
+                          title="next chapter">Producers-Consumer</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -1200,7 +1244,7 @@ all’attore destinatario,  il quale interpreterà i contenuto del messaggio.</p
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="Producers-Consumer.html" title="Producers-Consumer"
              >next</a> |</li>
         <li class="right" >
           <a href="StepAsynch.html" title="StepAsynch"

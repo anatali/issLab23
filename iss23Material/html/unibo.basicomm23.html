@@ -238,6 +238,13 @@ in <a class="reference internal" href="#unibo-basicomm23-msg-protocoltype"><span
 <p>Realizza un server che riceve messaggi, delegandone la gestione a un oggetto che
 implementa <a class="reference internal" href="#unibo-interaction-interfaces-iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a>.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SeverFactory</span>   <span class="p">{</span>
+
+  <span class="c1">//Factory Method</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">IServer</span> <span class="nf">create</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">,</span>
+             <span class="n">ProtocolType</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">IApplMsgHandler</span> <span class="n">handler</span><span class="p">){</span>
+          <span class="k">return</span> <span class="k">new</span> <span class="n">ServerFactory</span><span class="p">(</span><span class="n">name</span><span class="p">,</span>   <span class="n">port</span><span class="p">,</span>   <span class="n">protocol</span><span class="p">,</span> <span class="n">handler</span><span class="p">);</span>
+  <span class="p">}</span>
+
   <span class="kd">public</span> <span class="nf">SeverFactory</span><span class="p">(</span>
       <span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">IApplMsgHandler</span> <span class="n">handler</span> <span class="p">){</span>
         <span class="p">...</span>
@@ -250,6 +257,17 @@ implementa <a class="reference internal" href="#unibo-interaction-interfaces-iap
 <span class="cm">    Attiva un server per lo specifico protocol</span>
 <span class="cm">    */</span>
   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unibo-basicomm23-interfaces-iserver">
+<h4>unibo.basicomm23.interfaces.IServer<a class="headerlink" href="#unibo-basicomm23-interfaces-iserver" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IServer</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="p">();</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isActive</span><span class="p">();</span>
+    <span class="kd">public</span> <span class="kt">void</span>  <span class="nf">start</span><span class="p">();</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">stop</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -1032,6 +1050,7 @@ in grado di inviare/ricevere messaggi.</p>
 <li><a class="reference internal" href="#abilitatori-di-comunicazione">Abilitatori di comunicazione</a><ul>
 <li><a class="reference internal" href="#serverfactory">ServerFactory</a><ul>
 <li><a class="reference internal" href="#unibo-basicomm23-enablers-severfactory">unibo.basicomm23.enablers.SeverFactory</a></li>
+<li><a class="reference internal" href="#unibo-basicomm23-interfaces-iserver">unibo.basicomm23.interfaces.IServer</a></li>
 <li><a class="reference internal" href="#unibo-basicomm23-enablers-connectionhandler">unibo.basicomm23.enablers.ConnectionHandler</a></li>
 <li><a class="reference internal" href="#esempio-di-creazione-di-un-server">Esempio di creazione di un server</a><ul>
 <li><a class="reference internal" href="#unibo-basicomm23-examples-prodcons-consumermsghandler">unibo.basicomm23.examples.prodcons.ConsumerMsgHandler</a></li>

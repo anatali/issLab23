@@ -21,7 +21,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Annotazioni" href="Annotazioni.html" />
-    <link rel="prev" title="Applicazione1" href="Applicazione1.html" /> 
+    <link rel="prev" title="Producers-Consumer" href="Producers-Consumer.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -33,7 +33,7 @@
           <a href="Annotazioni.html" title="Annotazioni"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="Applicazione1.html" title="Applicazione1"
+          <a href="Producers-Consumer.html" title="Producers-Consumer"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Appunti su tecnologie</a></li> 
@@ -49,6 +49,7 @@
 <h1>Appunti su tecnologie<a class="headerlink" href="#appunti-su-tecnologie" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="#annotazioni-java"><span class="std std-ref">Annotazioni Java</span></a></p></li>
+<li><p><a class="reference internal" href="#coap"><span class="std std-ref">Coap</span></a></p></li>
 <li><p><a class="reference internal" href="#docker"><span class="std std-ref">Docker</span></a></p></li>
 <li><p><a class="reference internal" href="#gradle"><span class="std std-ref">Gradle</span></a></p></li>
 <li><p><a class="reference internal" href="#id1"><span class="std std-ref">jQuery</span></a></p></li>
@@ -62,8 +63,48 @@ influenzarne direttamente la semantica.</p>
 <p>Si veda: <a class="reference internal" href="Annotazioni.html#annotazioni"><span class="std std-ref">Annotazioni</span></a></p>
 <p>Usato in:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="Applicazione1-WS.html#application1wsannot"><span class="std std-ref">Application1WsAnnot</span></a> di <a class="reference internal" href="Applicazione1-WS.html#applicazione1-ws"><span class="std std-ref">Applicazione1-WS</span></a></p></li>
+<li><p><span class="xref std std-ref">Application1WsAnnot</span> di <span class="xref std std-ref">Applicazione1-WS</span></p></li>
 </ul>
+</section>
+<section id="coap">
+<h2>Coap<a class="headerlink" href="#coap" title="Permalink to this headline">¶</a></h2>
+<p>Il protocollo <a class="reference internal" href="#coap">CoAP</a> considera le interazioni (client/server) tra componenti come uno scambio di rappresentazioni
+di <strong>risorse</strong> e si pone l’obiettivo di realizzare una infrastruttura di gestione delle risorse  tramite alcune semplici
+funzioni di accesso e interazione come quelle di <code class="docutils literal notranslate"><span class="pre">HTTP</span></code>: <code class="docutils literal notranslate"><span class="pre">PUT,</span> <span class="pre">POST,</span> <span class="pre">GET,</span> <span class="pre">DELETE</span></code>.</p>
+<ul>
+<li><p>Per interagire con una risorsa CoAP si può usare un oggetto di classe <code class="docutils literal notranslate"><span class="pre">org.eclipse.californium.core.CoapClient</span></code>
+che invia richieste all’<code class="docutils literal notranslate"><span class="pre">URI</span></code> speficato come argomento del costruttore, come ad esempio:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;coap://&quot;</span><span class="o">+</span><span class="n">hostaddress</span> <span class="o">+</span> <span class="s2">&quot;:5683/&quot;</span><span class="o">+</span> <span class="n">resourcePath</span>
+</pre></div>
+</div>
+</li>
+<li><p>le risorse allocate su un nodo sono istanze della classe <code class="docutils literal notranslate"><span class="pre">org.eclipse.californium.core.CoapResource</span></code>
+e sono gestite da un server di classe <code class="docutils literal notranslate"><span class="pre">org.eclipse.californium.core.CoapServer</span></code>. Questo server realizza già
+funzioni analoghe a quelle da <span class="xref std std-ref">IContext</span>.</p></li>
+<li><p>La classe <span class="xref std std-ref">CoapConnection</span>   implementa <span class="xref std std-ref">Interaction2021</span>
+e quindi realizza il nostro concetto genrale di connessione, tenendo conto delle caratteristiche del protocollo
+CoAP e della libreria <a href="#id3"><span class="problematic" id="id4">`californium`_</span></a>.</p></li>
+<li><p>CoAP fornisce un modello di interazione ancora punto-a-punto ma, essendo di tipo <a href="#id5"><span class="problematic" id="id6">`REST`_</span></a>, il suo utilizzo
+implica schemi di comunicazione simili a quelli di applicazioni Web basate su <code class="docutils literal notranslate"><span class="pre">HTTP</span></code>, ma schemi organizzativi
+basati su <strong>gerarchie di risorse</strong>;</p></li>
+<li><p>l’uso di CoAP <strong>modifica il modello concettuale</strong> di riferimento per le interazioni, in quanto propone
+l’idea di accesso in lettura (<code class="docutils literal notranslate"><span class="pre">GET</span></code>) o modifica (<code class="docutils literal notranslate"><span class="pre">PUT</span></code>) a <span class="blue">risorse</span> identificate da <code class="docutils literal notranslate"><span class="pre">URI</span></code> attraverso un
+unico server (che <a href="#id7"><span class="problematic" id="id8">`californium`_</span></a> offre nella classe <span class="blue">org.eclipse.californium.core.CoapServer</span>).</p>
+<a class="reference internal image-reference" href="_images/CoapResources.png"><img alt="_images/CoapResources.png" class="align-center" src="_images/CoapResources.png" style="width: 40%;" /></a>
+</li>
+<li><p>le risorse CoAP sono organizzate in una gerarchia ad albero, come nell’esempio della figura che segue:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/CoapRadarResources.PNG"><img alt="_images/CoapRadarResources.PNG" class="align-center" src="_images/CoapRadarResources.PNG" style="width: 70%;" /></a>
+</div></blockquote>
+<p>La definizione di una risorsa applicativa può essere definita come specializzazione della classe
+<span class="blue">org.eclipse.californium.core.CoapResource</span> di <a href="#id9"><span class="problematic" id="id10">`californium`_</span></a>.</p>
+</li>
+</ul>
+<p>Siamo dunque di fronte a un  modello simile a quanto introdotto in  <span class="xref std std-ref">schemaFramework</span>, ma con
+una forte forma di <span class="blue">standardizzazione</span> sia a livello di ‘verbi’ di interazione (<code class="docutils literal notranslate"><span class="pre">GET/PUT/...</span></code>) sia a livello di
+organizzazione del codice applicativo (come gerarchia di risorse).</p>
+<p>Per utilizzare il <span class="xref std std-ref">framework iniziale</span> con protocollo CoAP non dovremo quindi scrivere molto
+altro codice: si veda <span class="xref std std-ref">CoapContextServer</span>.</p>
 </section>
 <section id="docker">
 <h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
@@ -86,7 +127,7 @@ ma anche perchè applica i principi del Domain Driven Design (DDD) per modellare
 </section>
 <section id="mps">
 <h2>MPS<a class="headerlink" href="#mps" title="Permalink to this headline">¶</a></h2>
-<p>Il <a href="#id3"><span class="problematic" id="id4">`Meta Programming System`_</span></a> (<strong>MPS</strong>) di IntelliJ  offre un editor (si veda  <a href="#id5"><span class="problematic" id="id6">`Projectional editing`_</span></a>)
+<p>Il <a class="reference external" href="https://www.jetbrains.com/opensource/mps/">MetaProgrammingSystem</a> (<strong>MPS</strong>) di IntelliJ  offre un editor (si veda  <a class="reference external" href="https://martinfowler.com/bliki/ProjectionalEditing.html">ProjectionalEditing</a>)
 che costituisce una <em>proiezione della sintassi astratta</em> (<strong>AST</strong>) di un meta-linguaggio per la definizione di
 <a class="reference internal" href="Principi.html#domain-specific-languages"><span class="std std-ref">Domain Specific Languages</span></a> (<strong>DSL</strong>).</p>
 <p>Si veda:</p>
@@ -143,7 +184,7 @@ questa venga messo dentro un tag “p” che ha come id “paragrafo”.</p>
         parametro1: “valoreParametro”;
     },
     success: function( result ) {
-        $( &quot;#paragrafo&quot; ).html( result );
+        $( &quot;#paragrafo&quot; ).htWebSocketml( result );
     }
 });
 </pre></div>
@@ -201,6 +242,7 @@ che definisce un <em>handshake</em> di connessione e un <em>frame</em> di messag
     <ul>
 <li><a class="reference internal" href="#">Appunti su tecnologie</a><ul>
 <li><a class="reference internal" href="#annotazioni-java">Annotazioni Java</a></li>
+<li><a class="reference internal" href="#coap">Coap</a></li>
 <li><a class="reference internal" href="#docker">Docker</a></li>
 <li><a class="reference internal" href="#gradle">Gradle</a></li>
 <li><a class="reference internal" href="#mps">MPS</a></li>
@@ -216,8 +258,8 @@ che definisce un <em>handshake</em> di connessione e un <em>frame</em> di messag
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="Applicazione1.html"
-                          title="previous chapter">Applicazione1</a></p>
+    <p class="topless"><a href="Producers-Consumer.html"
+                          title="previous chapter">Producers-Consumer</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -255,7 +297,7 @@ che definisce un <em>handshake</em> di connessione e un <em>frame</em> di messag
           <a href="Annotazioni.html" title="Annotazioni"
              >next</a> |</li>
         <li class="right" >
-          <a href="Applicazione1.html" title="Applicazione1"
+          <a href="Producers-Consumer.html" title="Producers-Consumer"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Appunti su tecnologie</a></li> 

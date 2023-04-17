@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Producers-Consumer &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Appunti su tecnologie" href="AppuntiTecnologie.html" />
+    <link rel="prev" title="Actors23Coap" href="Actors23Coap.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Actors23Coap.html" title="Actors23Coap"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Producers-Consumer</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="producers-consumer">
+<h1>Producers-Consumer<a class="headerlink" href="#producers-consumer" title="Permalink to this headline">¶</a></h1>
+<p>L’uso dei concetti e dei supporti introdotti in <a class="reference internal" href="Actors23.html#actors23"><span class="std std-ref">Actors23</span></a> permette di sperimentare in
+tempi brevi diverse impostazioni di un sistema distribuito a <code class="docutils literal notranslate"><span class="pre">N</span></code> produttori e <code class="docutils literal notranslate"><span class="pre">1</span></code> Consumatore,
+che forma un <span class="blue">primo passo verso architetture software a</span> <a class="reference external" href="https://microservices.io/">microservizi</a>.</p>
+<section id="prods-cons-requisiti">
+<h2>Prods-Cons: requisiti<a class="headerlink" href="#prods-cons-requisiti" title="Permalink to this headline">¶</a></h2>
+<p>Costruire un sistema software distribuito costituio da <code class="docutils literal notranslate"><span class="pre">N</span></code> (<code class="docutils literal notranslate"><span class="pre">N&gt;=1</span></code>) Produttori che
+inviano informazione a  <code class="docutils literal notranslate"><span class="pre">1</span></code> Consumatore, il quale elabora tale informazione, inviando un messaggio
+(con un risultato) al produttore mittente.</p>
+<p>La dislocazione dei componenti sui nodi di elaborazione può essere:</p>
+<ul class="simple">
+<li><p><span class="brown">OneNode</span>: tutti i componenti operano nello stesso nodo;</p></li>
+<li><p><span class="brown">2Nodes</span>: gli <code class="docutils literal notranslate"><span class="pre">N</span></code> <em>Produttori</em> operano in uno stesso nodo, mentre il <em>Consumatore</em> opera in un diverso nodo;</p></li>
+<li><p><span class="brown">ManyNodes</span>: il <em>Consumatore</em> opera in suo proprio nodo, mentre i <em>Produttori</em> operano su <code class="docutils literal notranslate"><span class="pre">K</span></code>  nodi diversi (<code class="docutils literal notranslate"><span class="pre">1&lt;K&lt;=N</span></code>).</p></li>
+</ul>
+</section>
+<section id="prods-cons-i-diversi-sistemi">
+<h2>Prods-Cons: i diversi sistemi<a class="headerlink" href="#prods-cons-i-diversi-sistemi" title="Permalink to this headline">¶</a></h2>
+<p>Progetti in: <span class="slide2">ProducerConsumer/app/src/main/java/</span></p>
+<ol class="arabic">
+<li><p><span class="blue">ProdsConsNaive</span>: usa Java come linguaggio di programmazione, senza nessuna libreria di supporto tranne
+quelle relative ai protocolli di rete.</p></li>
+<li><p><span class="blue">ProdsConsInteraction</span>: usa Java come linguaggio di programmazione e i supporti legati alla astrazione
+<a class="reference internal" href="Interaction.html#interaction"><span class="std std-ref">Interaction</span></a>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ProdConsInteraction/MainProdCons.java</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ProdConsAsynch/MainProdConsAsynch.java</span></code> usa <em>ProdConsConfig</em></p></li>
+</ul>
+<p>I tempi si allungano per il caso <span class="brown">ManyNodes</span>.</p>
+</li>
+<li><p><span class="blue">ProdsConsActors23Base</span>: <code class="docutils literal notranslate"><span class="pre">ProdConsActors23/MainProdConsActors23NoDescr</span></code></p>
+<p>Configurazione macchinosa</p>
+</li>
+<li><p><span class="blue">ProdsConsActors23</span>: <code class="docutils literal notranslate"><span class="pre">ProdConsActors23/MainProdConsAll.java</span></code></p></li>
+<li><p><span class="blue">ProdsConsActors23FSM</span>:  <code class="docutils literal notranslate"><span class="pre">ProdConsFSm23/MainProdConsFsm23All.java</span></code></p></li>
+<li><p><span class="blue">ProdsConsActors23FCoap</span>:  <code class="docutils literal notranslate"><span class="pre">ProdConsFSm23/MainProdConsAll.java</span></code></p></li>
+</ol>
+<section id="prodsconsnaive">
+<h3>ProdsConsNaive<a class="headerlink" href="#prodsconsnaive" title="Permalink to this headline">¶</a></h3>
+<p>Usa Java come linguaggio di programmazione, senza nessuna libreria di supporto tranne
+quelle relative ai protocolli di rete.</p>
+<p>La mancanza di ogni concetto legato alla distribuzione rende il progetto complicato e richiede
+notevoli tempi di sviluppo.</p>
+</section>
+<section id="prodsconsinteraction">
+<h3>ProdsConsInteraction<a class="headerlink" href="#prodsconsinteraction" title="Permalink to this headline">¶</a></h3>
+<p>Usa Java come linguaggio di programmazione e i supporti legati alla astrazione <a class="reference internal" href="Interaction.html#interaction"><span class="std std-ref">Interaction</span></a>.</p>
+<p>Consumer usa <span class="xref std std-ref">ServerFactory</span> per creare un server cui passa un handler
+applicativo di messaggi, che nel caso di protocollo Coap è una <em>ConsumerCoapResource</em>.</p>
+<p>Il progetto si fonda sull’invio di  <em>request</em> e si realizza in tempi brevi per i casi <span class="brown">OneNode</span> e
+<span class="brown">2Nodes</span>.</p>
+<p>L’astrazione <a class="reference internal" href="Interaction.html#interaction"><span class="std std-ref">Interaction</span></a> non aiuta nel caso <span class="brown">ManyNodes</span>, che deve essere affrontato ad-hoc.</p>
+<section id="prodconsasynch">
+<h4>ProdConsAsynch<a class="headerlink" href="#prodconsasynch" title="Permalink to this headline">¶</a></h4>
+<p>Versione in cui il Producer invia una richiesta in modo asincrono sulla connessione e attiva un Thread
+per ricevere la risposta del Consumer.</p>
+</section>
+</section>
+<section id="prodsconsactors23verbose">
+<h3>ProdsConsActors23Verbose<a class="headerlink" href="#prodsconsactors23verbose" title="Permalink to this headline">¶</a></h3>
+<p>Usa componenti concepiti come attori <a class="reference internal" href="Actors23.html#actorbasic23"><span class="std std-ref">ActorBasic23</span></a> e i supporti della libreria <a class="reference internal" href="Actors23.html#actors23-la-libreria"><span class="std std-ref">Actors23</span></a>.</p>
+<p>La logica applicativa dei componenti è  nel metodo <code class="docutils literal notranslate"><span class="pre">elabMsg(IApplMessage</span> <span class="pre">msg)</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ctx1</span><span class="o">-</span><span class="mi">8123</span> <span class="p">:</span> <span class="n">prod1</span><span class="p">,</span> <span class="n">consumer</span>
+<span class="n">ctx2</span><span class="o">-</span><span class="mi">8125</span> <span class="p">:</span> <span class="n">prod2</span><span class="p">,</span> <span class="n">prod3</span>
+</pre></div>
+</div>
+<p>Risulta facile passare da interazione fire-and-forget a request-response.</p>
+<p>Richiede attenzione e tempo per la fase di configurazione del sistema, che risulta  macchinosa in quanto
+‘technology-dependent’.</p>
+</section>
+<section id="prodsconsactors23">
+<h3>ProdsConsActors23<a class="headerlink" href="#prodsconsactors23" title="Permalink to this headline">¶</a></h3>
+<p>Usa componenti sono concepiti come attori <a class="reference internal" href="Actors23.html#actorbasic23"><span class="std std-ref">ActorBasic23</span></a>, i supporti della libreria
+<a class="reference internal" href="Actors23.html#actors23-la-libreria"><span class="std std-ref">Actors23</span></a> e una descrizione in Prolog
+del sistema.</p>
+<p>I diversi scenari relatici alla dislocazione dei componenti si affronta definendo diversi files di
+descrizione del sistema e diversi main con una stessa, semplice struttura</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">MainProdCons1</span> <span class="p">{</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">configureTheSystem</span><span class="p">(){</span>
+        <span class="n">Actor23Utils</span><span class="o">.</span><span class="n">createContexts</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;app/src/main/java/ApplsActor23/ProdConsActor23_1.pl&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;app/src/main/java/ApplsActor23/sysRules.pl&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span> <span class="p">){</span>
+        <span class="n">new</span> <span class="n">MainProdCons1</span><span class="p">()</span><span class="o">.</span><span class="n">configureTheSystem</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ctx1</span><span class="o">-</span><span class="mi">8123</span> <span class="p">:</span> <span class="n">prod1</span><span class="p">,</span> <span class="n">consumer</span>
+<span class="n">ctx2</span><span class="o">-</span><span class="mi">8125</span> <span class="p">:</span> <span class="n">prod2</span><span class="p">,</span> <span class="n">prod3</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Facendo partire prima ctx2 e poi ctx1, tutto ok.</p></li>
+<li><p>Facendo partire prima ctx1 e poi ctx2, il sistema non funziona perchè prod1 produce prima che
+ctx1 sia pienamente configurato. Occorre fare iniziare la produzione dopo un delay.</p></li>
+</ul>
+</section>
+<section id="prodsconsactors23events">
+<h3>ProdsConsActors23Events<a class="headerlink" href="#prodsconsactors23events" title="Permalink to this headline">¶</a></h3>
+<p>Usa componenti concepiti come attori <a class="reference internal" href="Actors23.html#actorbasic23"><span class="std std-ref">ActorBasic23</span></a> che emettono ed elaborano eventi.</p>
+<p>L’uso degli eventi aumenta il traffico di rete e complica <code class="docutils literal notranslate"><span class="pre">elabMsg(IApplMessage</span> <span class="pre">msg)</span></code>.</p>
+</section>
+<section id="prodconsstream">
+<h3>ProdConsStream<a class="headerlink" href="#prodconsstream" title="Permalink to this headline">¶</a></h3>
+<p>Usa <code class="docutils literal notranslate"><span class="pre">emitLocalStreamEvent</span></code> e <code class="docutils literal notranslate"><span class="pre">subscribeLocalActor</span></code> per formare una pipe.</p>
+</section>
+<section id="prodsconsfsm23">
+<h3>ProdsConsFSM23<a class="headerlink" href="#prodsconsfsm23" title="Permalink to this headline">¶</a></h3>
+<p>Usa componenti concepiti come attori <span class="xref std std-ref">ActorBasicFsm23</span>, i supporti della libreria
+<a class="reference internal" href="Actors23.html#actors23-la-libreria"><span class="std std-ref">Actors23</span></a>, una descrizione in Prolog
+del sistema e le annotazioni Java.</p>
+<p>Nella struttura del codice scompare <code class="docutils literal notranslate"><span class="pre">elabMsg(IApplMessage</span> <span class="pre">msg)</span></code> come espressione del funzionamento
+message-driven, a favore di una struttura del comportamento dei componenti come automa a stati finiti
+che decidono, in ogini stato, a quali messaggi sono interessati.</p>
+</section>
+<section id="prodsconsactors23fcoap">
+<h3>ProdsConsActors23FCoap<a class="headerlink" href="#prodsconsactors23fcoap" title="Permalink to this headline">¶</a></h3>
+<p>Usa componenti concepiti come attori <span class="xref std std-ref">ActorBasicFsm23</span> che sono anche risorse Coap.</p>
+<p>I componenti sono Coap-observable.</p>
+<p><span class="worktodo">NUOVI REQUISITI per BoundaryWalker</span></p>
+</section>
+</section>
+<section id="boundarywalker-nuovi-requisiti">
+<h2>BoundaryWalker: nuovi requisiti<a class="headerlink" href="#boundarywalker-nuovi-requisiti" title="Permalink to this headline">¶</a></h2>
+<p>Impostare un attore che:</p>
+<ul class="simple">
+<li><p>invia comandi a <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot</span></a> in modo che percorra il bordo perimetrale della stanza
+rappresentata ne <a class="reference internal" href="VirtualRobot23.html#la-scena-di-wenv"><span class="std std-ref">La scena di WEnv</span></a></p></li>
+<li><p>blocca il robot se riceve un comando <strong>stop</strong>  (da una console remota)</p></li>
+<li><p>blocca il robot per un tempo prefissato ( <code class="docutils literal notranslate"><span class="pre">2sec</span></code> ) se questi passa davanti a un sonar</p></li>
+<li><p>riattiva un robot in <em>stop</em>, se riceve un comando <strong>resume</strong>  (da una console remota)</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Producers-Consumer</a><ul>
+<li><a class="reference internal" href="#prods-cons-requisiti">Prods-Cons: requisiti</a></li>
+<li><a class="reference internal" href="#prods-cons-i-diversi-sistemi">Prods-Cons: i diversi sistemi</a><ul>
+<li><a class="reference internal" href="#prodsconsnaive">ProdsConsNaive</a></li>
+<li><a class="reference internal" href="#prodsconsinteraction">ProdsConsInteraction</a><ul>
+<li><a class="reference internal" href="#prodconsasynch">ProdConsAsynch</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#prodsconsactors23verbose">ProdsConsActors23Verbose</a></li>
+<li><a class="reference internal" href="#prodsconsactors23">ProdsConsActors23</a></li>
+<li><a class="reference internal" href="#prodsconsactors23events">ProdsConsActors23Events</a></li>
+<li><a class="reference internal" href="#prodconsstream">ProdConsStream</a></li>
+<li><a class="reference internal" href="#prodsconsfsm23">ProdsConsFSM23</a></li>
+<li><a class="reference internal" href="#prodsconsactors23fcoap">ProdsConsActors23FCoap</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#boundarywalker-nuovi-requisiti">BoundaryWalker: nuovi requisiti</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Actors23Coap.html"
+                          title="previous chapter">Actors23Coap</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="AppuntiTecnologie.html"
+                          title="next chapter">Appunti su tecnologie</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Producers-Consumer.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Actors23Coap.html" title="Actors23Coap"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Producers-Consumer</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

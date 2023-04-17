@@ -13,15 +13,15 @@ public class Actor2 extends ActorBasic23 {
 
     @Override
     protected void elabMsg(IApplMessage msg) throws Exception {
-        CommUtils.outcyan(name + " | elab " + msg + " in:" + Thread.currentThread().getName());
+        //CommUtils.outgrayn(name + " | elab " + msg + " in:" + Thread.currentThread().getName());
         if( msg.isRequest() ) {
-            IApplMessage reply = CommUtils.buildReply(
+            IApplMessage replyMsg = CommUtils.buildReply(
                     name,"answer", "ok" + msg.msgContent(), msg.msgSender());
             if( name.equals("a2")){
                 CommUtils.delay(1000);  //a2 ritarda a rispondere
             }
-            CommUtils.outcyan(name + " | sendRepy " + reply + " " + Thread.currentThread().getName());
-            sendMsg(reply);  //invio la reply come un msg a dest (remoto)
+            CommUtils.outgreen(name + " | sendRepy " + replyMsg + " " + Thread.currentThread().getName());
+            reply(replyMsg, msg);  //invio la reply come un msg a dest (remoto)
         }
     }
 }

@@ -5,16 +5,17 @@ import unibo.actors23.ActorContext23;
 import unibo.basicomm23.msg.ProtocolType;
 import unibo.basicomm23.utils.CommUtils;
 
-public class MainActors23 {
+public class MainActors23Verbose {
 
     public void configureTheSystem(){
-        Actor23Utils.trace=true;
+        System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "ERROR");
+        //Actor23Utils.trace=true;
         int port1 = 8123;
         int port2 = 8125;
-        CommUtils.outblue("MainActors23 CREA I CONTESTI ");
+        CommUtils.outblue("MainActors23Verbose CREA I CONTESTI ");
         ActorContext23 ctx1 = new ActorContext23("ctx1", "localhost", port1);
         ActorContext23 ctx2 = new ActorContext23("ctx2", "localhost", port2);
-        CommUtils.outblue("MainActors23 CREA GLI ATTORI ");
+        CommUtils.outblue("MainActors23Verbose CREA GLI ATTORI ");
 
         Actor1 a1 = new Actor1("a1",ctx1);
         Actor2 a2 = new Actor2("a2",ctx2);
@@ -26,20 +27,19 @@ public class MainActors23 {
         ctx2.addActor(a2);
         ctx2.addActor(a3);
 
-        CommUtils.outblue("MainActors23 FISSA GLI ACTOR REMOTI");
+        CommUtils.outblue("MainActors23Verbose FISSA GLI ACTOR REMOTI");
         ctx1.setActorAsRemote("a2",""+port2, "localhost", ProtocolType.tcp);
         ctx1.setActorAsRemote("a3",""+port2, "localhost", ProtocolType.tcp);
         ctx2.setActorAsRemote("a1",""+port1, "localhost", ProtocolType.tcp);
         ctx1.showActorNames();
         ctx2.showActorNames();
         //Actor23Utils.showSystemConfiguration();  //funziona solo con la descr Prolog
-/*
-        CommUtils.outblue("MainActors23 ATTIVA CONSOLE che invia cmd start/stopad a1");
-        CmdConsoleRemote myconsole = new CmdConsoleRemote(
-                "cmdconsole", ProtocolType.tcp, "localhost", ""+port1 );
-        console.activate();*/
+
+        ctx1.activateLocalActors();
+        ctx2.activateLocalActors();
+
     }
     public static void main(String[] args ){
-        new MainActors23().configureTheSystem();
+        new MainActors23Verbose().configureTheSystem();
     }
 }

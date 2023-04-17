@@ -4,6 +4,7 @@ import unibo.actors23.ActorBasic23;
 import unibo.actors23.ActorContext23;
 import unibo.basicomm23.interfaces.IApplMessage;
 import unibo.basicomm23.utils.CommUtils;
+import unibo.basicomm23.utils.Connection;
 
 public class Actor1 extends ActorBasic23 {
     protected int n = 1;
@@ -16,15 +17,17 @@ public class Actor1 extends ActorBasic23 {
 
     @Override
     protected void elabMsg( IApplMessage msg ) throws Exception{
-        CommUtils.outblue(name + " | elabMsg " + msg + " in " + Thread.currentThread().getName());
+        //CommUtils.outgrayn(name + " | elabMsg " + msg + " in " + Thread.currentThread().getName());
         if( msg.isReply() ){ //a2 è più lento a rispondere
-            //CommUtils.outmagenta(name + " | elabMsg ENDS " + Thread.currentThread().getName());
+            CommUtils.outcyan(name + " | elabMsg answer: " + " " + msg  + Thread.currentThread().getName());
             CommUtils.delay(800); //Simulate some work ...
             if (!stopped) sendRequestTo(msg.msgSender());
+            //CommUtils.aboutThreads(name + " | after the reply ");
             return;
         }
         if( msg.isDispatch() ) {
             if (msg.msgId().equals("cmd") && msg.msgContent().equals("start")) {
+                CommUtils.outmagenta(name + " | elabMsg start in " + Thread.currentThread().getName());
                 sendRequestTo("a2");
                 sendRequestTo("a3");
             } else if (msg.msgId().equals("cmd") && msg.msgContent().equals("stop")) {

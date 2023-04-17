@@ -4,7 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="085de662-f8ac-42b8-95f4-57d2e983cf55" name="Default Changelist" comment="" />
+    <list default="true" id="085de662-f8ac-42b8-95f4-57d2e983cf55" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/ConsoleTCP.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/onectx/MainConfigActors23_all.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/onectx/exampleActor23_all.pl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/twoctxonenode/MainConfigActors23_2a.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/twoctxonenode/MainConfigActors23_2b.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/twoctxonenode/exampleActor23_2a.pl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/twoctxonenode/exampleActor23_2b.pl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/twoctxtwonodes/MainConfigActors23_2a.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/twoctxtwonodes/MainConfigActors23_2b.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/twoctxtwonodes/exampleActor23_2a.pl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/twoctxtwonodes/exampleActor23_2b.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdConsActors23Verbose.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdConsActors23Verbose.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/Actor1.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/Actor1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/Actor2.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/Actor2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/MainActors23.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/MainActors23Verbose.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/MainConfigActors23_3.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/threectx/MainConfigActors23_3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/exampleActor23_3.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/example0/threectx/exampleActor23_3.pl" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -65,7 +84,7 @@
       <recent name="PingPongDisptach" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MainProdConsAsynch">
+  <component name="RunManager" selected="Application.MainProdConsActors23Verbose">
     <configuration name="MainProdConsActors23Verbose" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ProdConsActors23.MainProdConsActors23Verbose" />
       <module name="ProducerConsumer.app.main" />

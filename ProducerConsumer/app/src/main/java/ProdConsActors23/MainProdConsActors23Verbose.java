@@ -10,6 +10,7 @@ import unibo.basicomm23.utils.CommUtils;
 
 public class MainProdConsActors23Verbose {
     public void configureTheSystem(){
+        System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "ERROR");
         //Actor23Utils.trace=true;
         CommUtils.aboutThreads(  "MainProdConsActors23Verbose | At START ");
 
@@ -44,7 +45,6 @@ public class MainProdConsActors23Verbose {
 
     }
     public static void main(String[] args ){
-        System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "ERROR");
         new MainProdConsActors23Verbose().configureTheSystem();
     }
 }

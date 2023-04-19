@@ -5,9 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="085de662-f8ac-42b8-95f4-57d2e983cf55" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsCoap/ProdConsCoap.pl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsCoap/ProducerCoap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsNaive/MainProdConsNaive.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsNaive/MainProdConsNaive.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/Actor23Utils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/ActorBasic23.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/ActorContext23.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/ContextMsgHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/IActor23.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/IContext23.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/Proxy.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/example0/.ipynb_checkpoints/ConsoleTCP-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/example0/Actor1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/example0/Actor2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/example0/ActorConsole.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/example0/ConsoleTCP.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/example0/exampleActor23_1.pl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/example0/exampleActor23_2a.pl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/example0/exampleActor23_2b.pl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/example0/exampleActor23_3.pl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/example0/mainProgs/MainActors23.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/example0/mainProgs/MainConfigActors23_1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/example0/mainProgs/MainConfigActors23_2a.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsCoap/MainProdConsCoap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/example0/mainProgs/MainConfigActors23_2b.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/example0/mainProgs/MainConfigActors23_3.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/main/java/unibo/actors23/example0/sysRules.pl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actors23/app/src/test/java/unibo/actors23/TestProlog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibolibs/unibo.basicomm23-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../unibolibs/unibo.basicomm23-1.0.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +72,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../unibo.actors23" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/java" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -55,11 +80,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java" />
       <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\ProdConsStream" />
       <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\ProdConsEvents" />
       <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\shared" />
       <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\ProdConsFsm23" />
-      <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\example0" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="ProdConsActors23" />
@@ -69,13 +94,13 @@
       <recent name="PingPongDisptach" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MainProdConsEvents1">
-    <configuration name="MainProdConsActors23Verbose" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ProdConsActors23.MainProdConsActors23Verbose" />
+  <component name="RunManager" selected="Application.MainProdConsCoap">
+    <configuration name="MainProdConsAsynch" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ProdConsAsynch.MainProdConsAsynch" />
       <module name="ProducerConsumer.app.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ProdConsActors23.*" />
+          <option name="PATTERN" value="ProdConsAsynch.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -83,12 +108,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainProdConsAsynch" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ProdConsAsynch.MainProdConsAsynch" />
+    <configuration name="MainProdConsCoap" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ProdConsCoap.MainProdConsCoap" />
       <module name="ProducerConsumer.app.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ProdConsAsynch.*" />
+          <option name="PATTERN" value="ProdConsCoap.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -137,11 +162,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.MainProdConsCoap" />
         <item itemvalue="Application.MainProdConsAsynch" />
         <item itemvalue="Application.MainProdConsFsm23All" />
         <item itemvalue="Application.MainProdConsStream" />
         <item itemvalue="Application.MainProdConsEvents1" />
-        <item itemvalue="Application.MainProdConsActors23Verbose" />
       </list>
     </recent_temporary>
   </component>

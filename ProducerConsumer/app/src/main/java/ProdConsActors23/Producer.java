@@ -27,7 +27,6 @@ public class Producer extends ActorBasic23 {
         if( msg.isReply()){
             CommUtils.outblue(name + " | RECEIVES answer=" + msg.msgContent());
             CommUtils.aboutThreads(  name + "  | AFTER ANSWER ");
-
         }
     }
 }

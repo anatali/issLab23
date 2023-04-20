@@ -20,8 +20,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Appunti su tecnologie" href="AppuntiTecnologie.html" />
-    <link rel="prev" title="Actors23Coap" href="Actors23Coap.html" /> 
+    <link rel="next" title="SistemiActors23" href="SistemiActors23.html" />
+    <link rel="prev" title="Actors23" href="Actors23.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,10 +30,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="SistemiActors23.html" title="SistemiActors23"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="Actors23Coap.html" title="Actors23Coap"
+          <a href="Actors23.html" title="Actors23"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Producers-Consumer</a></li> 
@@ -65,24 +65,6 @@ inviano informazione a  <code class="docutils literal notranslate"><span class="
 <section id="prods-cons-i-diversi-sistemi">
 <h2>Prods-Cons: i diversi sistemi<a class="headerlink" href="#prods-cons-i-diversi-sistemi" title="Permalink to this headline">¶</a></h2>
 <p>Progetti in: <span class="slide2">ProducerConsumer/app/src/main/java/</span></p>
-<ol class="arabic">
-<li><p><span class="blue">ProdsConsNaive</span>: usa Java come linguaggio di programmazione, senza nessuna libreria di supporto tranne
-quelle relative ai protocolli di rete.</p></li>
-<li><p><span class="blue">ProdsConsInteraction</span>: usa Java come linguaggio di programmazione e i supporti legati alla astrazione
-<a class="reference internal" href="Interaction.html#interaction"><span class="std std-ref">Interaction</span></a>.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ProdConsInteraction/MainProdCons.java</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ProdConsAsynch/MainProdConsAsynch.java</span></code> usa <em>ProdConsConfig</em></p></li>
-</ul>
-<p>I tempi si allungano per il caso <span class="brown">ManyNodes</span>.</p>
-</li>
-<li><p><span class="blue">ProdsConsActors23Base</span>: <code class="docutils literal notranslate"><span class="pre">ProdConsActors23/MainProdConsActors23NoDescr</span></code></p>
-<p>Configurazione macchinosa</p>
-</li>
-<li><p><span class="blue">ProdsConsActors23</span>: <code class="docutils literal notranslate"><span class="pre">ProdConsActors23/MainProdConsAll.java</span></code></p></li>
-<li><p><span class="blue">ProdsConsActors23FSM</span>:  <code class="docutils literal notranslate"><span class="pre">ProdConsFSm23/MainProdConsFsm23All.java</span></code></p></li>
-<li><p><span class="blue">ProdsConsActors23FCoap</span>:  <code class="docutils literal notranslate"><span class="pre">ProdConsFSm23/MainProdConsAll.java</span></code></p></li>
-</ol>
 <section id="prodsconsnaive">
 <h3>ProdsConsNaive<a class="headerlink" href="#prodsconsnaive" title="Permalink to this headline">¶</a></h3>
 <p>Usa Java come linguaggio di programmazione, senza nessuna libreria di supporto tranne
@@ -90,43 +72,93 @@ quelle relative ai protocolli di rete.</p>
 <p>La mancanza di ogni concetto legato alla distribuzione rende il progetto complicato e richiede
 notevoli tempi di sviluppo.</p>
 </section>
-<section id="prodsconsinteraction">
-<h3>ProdsConsInteraction<a class="headerlink" href="#prodsconsinteraction" title="Permalink to this headline">¶</a></h3>
+<section id="prodconsinteraction">
+<h3>ProdConsInteraction<a class="headerlink" href="#prodconsinteraction" title="Permalink to this headline">¶</a></h3>
 <p>Usa Java come linguaggio di programmazione e i supporti legati alla astrazione <a class="reference internal" href="Interaction.html#interaction"><span class="std std-ref">Interaction</span></a>.</p>
 <p>Consumer usa <span class="xref std std-ref">ServerFactory</span> per creare un server cui passa un handler
 applicativo di messaggi, che nel caso di protocollo Coap è una <em>ConsumerCoapResource</em>.</p>
 <p>Il progetto si fonda sull’invio di  <em>request</em> e si realizza in tempi brevi per i casi <span class="brown">OneNode</span> e
 <span class="brown">2Nodes</span>.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/ProdCons.png"><img alt="_images/ProdCons.png" class="align-center" src="_images/ProdCons.png" style="width: 100%;" /></a>
+</td>
+<td><a class="reference internal image-reference" href="_images/ProdConsEspansa.png"><img alt="_images/ProdConsEspansa.png" class="align-center" src="_images/ProdConsEspansa.png" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
 <p>L’astrazione <a class="reference internal" href="Interaction.html#interaction"><span class="std std-ref">Interaction</span></a> non aiuta nel caso <span class="brown">ManyNodes</span>, che deve essere affrontato ad-hoc.</p>
 <section id="prodconsasynch">
 <h4>ProdConsAsynch<a class="headerlink" href="#prodconsasynch" title="Permalink to this headline">¶</a></h4>
 <p>Versione in cui il Producer invia una richiesta in modo asincrono sulla connessione e attiva un Thread
 per ricevere la risposta del Consumer.</p>
+<p><span class="slide">Usiamo Actors23</span></p>
 </section>
+</section>
+</section>
+<section id="prodcons-con-actors23">
+<h2>ProdCons con Actors23<a class="headerlink" href="#prodcons-con-actors23" title="Permalink to this headline">¶</a></h2>
+<p>La logica applicativa dei componenti è  nel metodo <code class="docutils literal notranslate"><span class="pre">elabMsg(IApplMessage</span> <span class="pre">msg)</span></code>.</p>
+<section id="elabmsg-del-produttore">
+<h3>elabMsg del Produttore<a class="headerlink" href="#elabmsg-del-produttore" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="n">protected</span> <span class="n">void</span> <span class="n">elabMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgId</span><span class="p">()</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;startcmd&quot;</span><span class="p">)</span>
+          <span class="o">&amp;&amp;</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgContent</span><span class="p">()</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)){</span>
+        <span class="n">String</span> <span class="n">d</span> <span class="o">=</span> <span class="n">prodLogic</span><span class="o">.</span><span class="n">getDistance</span><span class="p">();</span>
+        <span class="n">IApplMessage</span> <span class="n">infoMsg</span>  <span class="o">=</span>
+         <span class="n">CommUtils</span><span class="o">.</span><span class="n">buildRequest</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="s2">&quot;consumer&quot;</span><span class="p">);</span>
+        <span class="n">request</span><span class="p">(</span><span class="n">infoMsg</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">isReply</span><span class="p">()){</span>
+        <span class="n">CommUtils</span><span class="o">.</span><span class="n">outblue</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; | RECEIVES &quot;</span> <span class="o">+</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgContent</span><span class="p">());</span>
+        <span class="n">CommUtils</span><span class="o">.</span><span class="n">aboutThreads</span><span class="p">(</span>  <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;  | AFTER ANSWER &quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="elabmsg-del-consumatore">
+<h3>elabMsg del Consumatore<a class="headerlink" href="#elabmsg-del-consumatore" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="n">protected</span> <span class="n">void</span> <span class="n">elabMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">isRequest</span><span class="p">()){</span>
+        <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">consLogic</span><span class="o">.</span><span class="n">evalDistance</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgContent</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">IApplMessage</span> <span class="n">replyMsg</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">buildReply</span><span class="p">(</span>
+                <span class="s2">&quot;consumer&quot;</span><span class="p">,</span> <span class="s2">&quot;outdata&quot;</span><span class="p">,</span> <span class="n">answer</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgSender</span><span class="p">());</span>
+        <span class="n">reply</span><span class="p">(</span> <span class="n">replyMsg</span><span class="p">,</span> <span class="n">msg</span> <span class="p">);</span>
+    <span class="p">}</span>  <span class="k">else</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">outred</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; | elaborate ERROR: not a request&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Risulta facile modificare la interazione nel caso il consumer non debba inivare risposte.</p>
 </section>
 <section id="prodsconsactors23verbose">
 <h3>ProdsConsActors23Verbose<a class="headerlink" href="#prodsconsactors23verbose" title="Permalink to this headline">¶</a></h3>
-<p>Usa componenti concepiti come attori <a class="reference internal" href="Actors23.html#actorbasic23"><span class="std std-ref">ActorBasic23</span></a> e i supporti della libreria <a class="reference internal" href="Actors23.html#actors23-la-libreria"><span class="std std-ref">Actors23</span></a>.</p>
-<p>La logica applicativa dei componenti è  nel metodo <code class="docutils literal notranslate"><span class="pre">elabMsg(IApplMessage</span> <span class="pre">msg)</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ctx1</span><span class="o">-</span><span class="mi">8123</span> <span class="p">:</span> <span class="n">prod1</span><span class="p">,</span> <span class="n">consumer</span>
-<span class="n">ctx2</span><span class="o">-</span><span class="mi">8125</span> <span class="p">:</span> <span class="n">prod2</span><span class="p">,</span> <span class="n">prod3</span>
-</pre></div>
-</div>
-<p>Risulta facile passare da interazione fire-and-forget a request-response.</p>
-<p>Richiede attenzione e tempo per la fase di configurazione del sistema, che risulta  macchinosa in quanto
-‘technology-dependent’.</p>
+<ul class="simple">
+<li><p>Usa componenti concepiti come attori <a class="reference internal" href="Actors23.html#actorbasic23"><span class="std std-ref">ActorBasic23</span></a> e i supporti della libreria <a class="reference internal" href="Actors23.html#actors23-la-libreria"><span class="std std-ref">Actors23</span></a>.</p></li>
+<li><p>Richiede attenzione e tempo per la fase di configurazione del sistema, che risulta  macchinosa in quanto
+‘technology-dependent’.</p></li>
+</ul>
+<p><span class="slide1">Usiamo Actors23 con descrizione del sistema</span></p>
 </section>
-<section id="prodsconsactors23">
-<h3>ProdsConsActors23<a class="headerlink" href="#prodsconsactors23" title="Permalink to this headline">¶</a></h3>
+<section id="prodscons-con-descrizione-del-sistema">
+<h3>ProdsCons con descrizione del sistema<a class="headerlink" href="#prodscons-con-descrizione-del-sistema" title="Permalink to this headline">¶</a></h3>
 <p>Usa componenti sono concepiti come attori <a class="reference internal" href="Actors23.html#actorbasic23"><span class="std std-ref">ActorBasic23</span></a>, i supporti della libreria
 <a class="reference internal" href="Actors23.html#actors23-la-libreria"><span class="std std-ref">Actors23</span></a> e una descrizione in Prolog
 del sistema.</p>
-<p>I diversi scenari relatici alla dislocazione dei componenti si affronta definendo diversi files di
-descrizione del sistema e diversi main con una stessa, semplice struttura</p>
+<p>I diversi scenari relativi alla dislocazione dei componenti si affrontano definendo diversi files di
+descrizione del sistema e diversi <code class="docutils literal notranslate"><span class="pre">main</span></code> con una stessa, semplice struttura, quale, ad eempio:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">MainProdCons1</span> <span class="p">{</span>
     <span class="n">public</span> <span class="n">void</span> <span class="n">configureTheSystem</span><span class="p">(){</span>
         <span class="n">Actor23Utils</span><span class="o">.</span><span class="n">createContexts</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;app/src/main/java/ApplsActor23/ProdConsActor23_1.pl&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;app/src/main/java/ApplsActor23/ProdConsActor23_all.pl&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;app/src/main/java/ApplsActor23/sysRules.pl&quot;</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span> <span class="p">){</span>
@@ -135,18 +167,101 @@ descrizione del sistema e diversi main con una stessa, semplice struttura</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ctx1</span><span class="o">-</span><span class="mi">8123</span> <span class="p">:</span> <span class="n">prod1</span><span class="p">,</span> <span class="n">consumer</span>
-<span class="n">ctx2</span><span class="o">-</span><span class="mi">8125</span> <span class="p">:</span> <span class="n">prod2</span><span class="p">,</span> <span class="n">prod3</span>
+<section id="prodcons-onectx">
+<h4>ProdCons onectx<a class="headerlink" href="#prodcons-onectx" title="Permalink to this headline">¶</a></h4>
+<p>In accordo a quanto detto in <a class="reference internal" href="Actors23.html#metodo-di-lavoro"><span class="std std-ref">Metodo di lavoro</span></a>,
+definiamo il sistema dal punto di vista logico, ponendo tutti i componenti in un unico contesto.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/ProdCons1.png"><img alt="_images/ProdCons1.png" class="align-center" src="_images/ProdCons1.png" style="width: 100%;" /></a>
+</td>
+<td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%=======================================</span>
+<span class="o">%</span> <span class="n">ProdConsActor23_all</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
+<span class="o">%=======================================</span>
+
+<span class="n">context</span><span class="p">(</span><span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8823&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">consumer</span><span class="p">,</span>  <span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;ProdConsActors23.Consumer&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">producer1</span><span class="p">,</span> <span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;ProdConsActors23.Producer&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">producer2</span><span class="p">,</span> <span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;ProdConsActors23.Producer&quot;</span><span class="p">)</span><span class="o">.</span>
 </pre></div>
 </div>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="prodcons-twoctxmixed">
+<h4>ProdCons twoctxmixed<a class="headerlink" href="#prodcons-twoctxmixed" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/ProdConsTwoctxMixed.png"><img alt="_images/ProdConsTwoctxMixed.png" class="align-center" src="_images/ProdConsTwoctxMixed.png" style="width: 100%;" /></a>
+</td>
+<td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%============================================</span>
+<span class="o">%</span> <span class="n">ProdConsActor23_2a</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
+<span class="o">%============================================</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8823&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8825&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">producer1</span><span class="p">,</span> <span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;ProdConsActors23.Producer&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">consumer</span><span class="p">,</span>  <span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;ProdConsActors23.Consumer&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">producer2</span><span class="p">,</span> <span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;ProdConsActors23.Producer&quot;</span><span class="p">)</span><span class="o">.</span>
+
+<span class="o">%=========================================</span>
+<span class="o">%</span> <span class="n">ProdConsActor23_2b</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
+<span class="o">%=========================================</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8823&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8825&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">producer1</span><span class="p">,</span> <span class="n">ctx1</span><span class="p">,</span> <span class="s2">&quot;ProdConsActors23.Producer&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">consumer</span><span class="p">,</span> <span class="n">ctx1</span><span class="p">,</span>  <span class="s2">&quot;ProdConsActors23.Consumer&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">producer2</span><span class="p">,</span> <span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;ProdConsActors23.Producer&quot;</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
 <ul class="simple">
-<li><p>Facendo partire prima ctx2 e poi ctx1, tutto ok.</p></li>
-<li><p>Facendo partire prima ctx1 e poi ctx2, il sistema non funziona perchè prod1 produce prima che
+<li><p>Facendo partire prima ctx1 e poi ctx2, tutto ok.</p></li>
+<li><p>Facendo partire prima ctx2 e poi ctx1,  prod2 potrebbe produrre prima che
 ctx1 sia pienamente configurato. Occorre fare iniziare la produzione dopo un delay.</p></li>
 </ul>
 </section>
-<section id="prodsconsactors23events">
-<h3>ProdsConsActors23Events<a class="headerlink" href="#prodsconsactors23events" title="Permalink to this headline">¶</a></h3>
+<section id="prodcons-twoctxclean">
+<h4>ProdCons twoctxclean<a class="headerlink" href="#prodcons-twoctxclean" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/ProdCons2ConsAlone.png"><img alt="_images/ProdCons2ConsAlone.png" class="align-center" src="_images/ProdCons2ConsAlone.png" style="width: 100%;" /></a>
+</td>
+<td><p>In questa configurazione, <code class="docutils literal notranslate"><span class="pre">consumer</span></code> si presenta come un primo possibile esempio (molto semplificato) di
+<span class="remark">microservice</span>, distrbuibile con docker.</p>
+<p>E’ del tutto naturale attivare per primo il contesto <code class="docutils literal notranslate"><span class="pre">ctx2</span></code>, che potrebbe NON conoscere l’altro nodo.
+Le risposte vengono inviate sulla connessione stabilita dal caller.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%=========================================</span>
+<span class="o">%</span> <span class="n">ProdConsActor23_2b</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
+<span class="o">%=========================================</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8825&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">consumer</span><span class="p">,</span>  <span class="n">ctx2</span><span class="p">,</span> <span class="s2">&quot;ProdConsActors23.Consumer&quot;</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="prodconsactors23events">
+<h3>ProdConsActors23Events<a class="headerlink" href="#prodconsactors23events" title="Permalink to this headline">¶</a></h3>
 <p>Usa componenti concepiti come attori <a class="reference internal" href="Actors23.html#actorbasic23"><span class="std std-ref">ActorBasic23</span></a> che emettono ed elaborano eventi.</p>
 <p>L’uso degli eventi aumenta il traffico di rete e complica <code class="docutils literal notranslate"><span class="pre">elabMsg(IApplMessage</span> <span class="pre">msg)</span></code>.</p>
 </section>
@@ -154,8 +269,8 @@ ctx1 sia pienamente configurato. Occorre fare iniziare la produzione dopo un del
 <h3>ProdConsStream<a class="headerlink" href="#prodconsstream" title="Permalink to this headline">¶</a></h3>
 <p>Usa <code class="docutils literal notranslate"><span class="pre">emitLocalStreamEvent</span></code> e <code class="docutils literal notranslate"><span class="pre">subscribeLocalActor</span></code> per formare una pipe.</p>
 </section>
-<section id="prodsconsfsm23">
-<h3>ProdsConsFSM23<a class="headerlink" href="#prodsconsfsm23" title="Permalink to this headline">¶</a></h3>
+<section id="prodconsfsm23">
+<h3>ProdConsFSM23<a class="headerlink" href="#prodconsfsm23" title="Permalink to this headline">¶</a></h3>
 <p>Usa componenti concepiti come attori <span class="xref std std-ref">ActorBasicFsm23</span>, i supporti della libreria
 <a class="reference internal" href="Actors23.html#actors23-la-libreria"><span class="std std-ref">Actors23</span></a>, una descrizione in Prolog
 del sistema e le annotazioni Java.</p>
@@ -163,8 +278,8 @@ del sistema e le annotazioni Java.</p>
 message-driven, a favore di una struttura del comportamento dei componenti come automa a stati finiti
 che decidono, in ogini stato, a quali messaggi sono interessati.</p>
 </section>
-<section id="prodsconsactors23fcoap">
-<h3>ProdsConsActors23FCoap<a class="headerlink" href="#prodsconsactors23fcoap" title="Permalink to this headline">¶</a></h3>
+<section id="prodconscoap">
+<h3>ProdConsCoap<a class="headerlink" href="#prodconscoap" title="Permalink to this headline">¶</a></h3>
 <p>Usa componenti concepiti come attori <span class="xref std std-ref">ActorBasicFsm23</span> che sono anche risorse Coap.</p>
 <p>I componenti sono Coap-observable.</p>
 <p><span class="worktodo">NUOVI REQUISITI per BoundaryWalker</span></p>
@@ -172,14 +287,24 @@ che decidono, in ogini stato, a quali messaggi sono interessati.</p>
 </section>
 <section id="boundarywalker-nuovi-requisiti">
 <h2>BoundaryWalker: nuovi requisiti<a class="headerlink" href="#boundarywalker-nuovi-requisiti" title="Permalink to this headline">¶</a></h2>
-<p>Impostare un attore che:</p>
+<p>Impostare un sistema software che permette ad un utente umano di inviare, mediante una Console, comandi:</p>
 <ul class="simple">
-<li><p>invia comandi a <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot</span></a> in modo che percorra il bordo perimetrale della stanza
-rappresentata ne <a class="reference internal" href="VirtualRobot23.html#la-scena-di-wenv"><span class="std std-ref">La scena di WEnv</span></a></p></li>
-<li><p>blocca il robot se riceve un comando <strong>stop</strong>  (da una console remota)</p></li>
-<li><p>blocca il robot per un tempo prefissato ( <code class="docutils literal notranslate"><span class="pre">2sec</span></code> ) se questi passa davanti a un sonar</p></li>
-<li><p>riattiva un robot in <em>stop</em>, se riceve un comando <strong>resume</strong>  (da una console remota)</p></li>
+<li><p><span class="blue">start</span>: per indurre a <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot</span></a> a percorrare il bordo perimetrale (libero da ostacoli)
+della stanza rappresentata ne <a class="reference internal" href="VirtualRobot23.html#la-scena-di-wenv"><span class="std std-ref">La scena di WEnv</span></a></p></li>
+<li><p><span class="blue">stop</span>: per bloccare il robot</p></li>
+<li><p><span class="blue">resume</span>: per riattivare il robot</p></li>
+<li><p><span class="blue">getPath</span>: per ottenere dal robot informazioni sul cammino percorso</p></li>
 </ul>
+<p>Inoltre è richiesto di:</p>
+<ul class="simple">
+<li><p>fare in modo che il robot <span class="blue">si fermi per un tempo prefissato</span> ( <code class="docutils literal notranslate"><span class="pre">2sec</span></code> ) ogni volta che esso viene
+rilevato da uno dei <span class="brown">Sonar</span> cablati nelle pareti della stanza;</p></li>
+<li><p>prefigurare il tempi previsti per lo sviluppo e i tempi
+effettivi necessari per il completamento del sistema;</p></li>
+<li><p>indicare il modo con cui si ritiene opportuno distribuire il prodotto finale.</p></li>
+</ul>
+<p>Inviare un file relativo alla soluzione proposta, con nome <span class="remark">Appl1SonarStopCognomeNomeVN.pdf</span>
+entro le h24 del 26 Aprile 2023.</p>
 </section>
 </section>
 
@@ -197,16 +322,26 @@ rappresentata ne <a class="reference internal" href="VirtualRobot23.html#la-scen
 <li><a class="reference internal" href="#prods-cons-requisiti">Prods-Cons: requisiti</a></li>
 <li><a class="reference internal" href="#prods-cons-i-diversi-sistemi">Prods-Cons: i diversi sistemi</a><ul>
 <li><a class="reference internal" href="#prodsconsnaive">ProdsConsNaive</a></li>
-<li><a class="reference internal" href="#prodsconsinteraction">ProdsConsInteraction</a><ul>
+<li><a class="reference internal" href="#prodconsinteraction">ProdConsInteraction</a><ul>
 <li><a class="reference internal" href="#prodconsasynch">ProdConsAsynch</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a class="reference internal" href="#prodcons-con-actors23">ProdCons con Actors23</a><ul>
+<li><a class="reference internal" href="#elabmsg-del-produttore">elabMsg del Produttore</a></li>
+<li><a class="reference internal" href="#elabmsg-del-consumatore">elabMsg del Consumatore</a></li>
 <li><a class="reference internal" href="#prodsconsactors23verbose">ProdsConsActors23Verbose</a></li>
-<li><a class="reference internal" href="#prodsconsactors23">ProdsConsActors23</a></li>
-<li><a class="reference internal" href="#prodsconsactors23events">ProdsConsActors23Events</a></li>
+<li><a class="reference internal" href="#prodscons-con-descrizione-del-sistema">ProdsCons con descrizione del sistema</a><ul>
+<li><a class="reference internal" href="#prodcons-onectx">ProdCons onectx</a></li>
+<li><a class="reference internal" href="#prodcons-twoctxmixed">ProdCons twoctxmixed</a></li>
+<li><a class="reference internal" href="#prodcons-twoctxclean">ProdCons twoctxclean</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#prodconsactors23events">ProdConsActors23Events</a></li>
 <li><a class="reference internal" href="#prodconsstream">ProdConsStream</a></li>
-<li><a class="reference internal" href="#prodsconsfsm23">ProdsConsFSM23</a></li>
-<li><a class="reference internal" href="#prodsconsactors23fcoap">ProdsConsActors23FCoap</a></li>
+<li><a class="reference internal" href="#prodconsfsm23">ProdConsFSM23</a></li>
+<li><a class="reference internal" href="#prodconscoap">ProdConsCoap</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#boundarywalker-nuovi-requisiti">BoundaryWalker: nuovi requisiti</a></li>
@@ -217,13 +352,13 @@ rappresentata ne <a class="reference internal" href="VirtualRobot23.html#la-scen
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="Actors23Coap.html"
-                          title="previous chapter">Actors23Coap</a></p>
+    <p class="topless"><a href="Actors23.html"
+                          title="previous chapter">Actors23</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="AppuntiTecnologie.html"
-                          title="next chapter">Appunti su tecnologie</a></p>
+    <p class="topless"><a href="SistemiActors23.html"
+                          title="next chapter">SistemiActors23</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -253,10 +388,10 @@ rappresentata ne <a class="reference internal" href="VirtualRobot23.html#la-scen
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="SistemiActors23.html" title="SistemiActors23"
              >next</a> |</li>
         <li class="right" >
-          <a href="Actors23Coap.html" title="Actors23Coap"
+          <a href="Actors23.html" title="Actors23"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Producers-Consumer</a></li> 

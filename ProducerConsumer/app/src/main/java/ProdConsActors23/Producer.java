@@ -14,12 +14,13 @@ public class Producer extends ActorBasic23 {
     }
 
     @Override
-    protected void elabMsg(IApplMessage msg) throws Exception {
-        //CommUtils.outgray(name + " | elabMsg " + msg + " in:" + Thread.currentThread().getName());
+    protected void elabMsg(IApplMessage msg)   {
+        //CommUtils.outmagenta(name + " | elabMsg " + msg + " in:" + Thread.currentThread().getName());
         if( msg.msgId().equals("startcmd") && msg.msgContent().equals("start")){
             String d = prodLogic.getDistance();
             //CommUtils.delay(3000); //wait before producing ..
-            IApplMessage infoMsg  = CommUtils.buildRequest(name, "info", d, "consumer");
+            IApplMessage infoMsg  =
+                    CommUtils.buildRequest(name, "info", d, "consumer");
             CommUtils.outblue(name + " | SENDS " + infoMsg + " in:" + Thread.currentThread().getName());
             request(infoMsg);
             return;

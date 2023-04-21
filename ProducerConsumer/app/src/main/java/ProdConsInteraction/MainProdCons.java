@@ -13,7 +13,7 @@ public class MainProdCons {
 
     public void configureTheSystemFinal(){
         //Connection.trace   = true;
-        ProdConsConfig.setProtocol(ProtocolType.coap);  //tcp udp coap
+        ProdConsConfig.setProtocol(ProtocolType.tcp);  //tcp udp coap
         //Create the producers
         Producer producer1 = new Producer("prod1");
         Producer producer2 = new Producer("prod2");

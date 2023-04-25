@@ -192,5 +192,19 @@ public class Actor23Utils {
     public static void sendMsg(IApplMessage msg, ActorBasic23 dest) throws Exception {
           dest.msgQueue.put(msg); //attore locale
     }
+    public static void sendMsg(IApplMessage msg, ActorContext23 ctx, String dest) throws Exception {
+        ActorBasic23 destactor = ctx.getActor(dest);
+        if( destactor != null ) sendMsg(msg,destactor);
+        else throw new Exception("sendMsg to non local actor:" + dest);
+    }
 
+    public static void emitLocalEvent(IApplMessage ev, ActorContext23 ctx){
+        ctx.propagateEventToActors(ev);
+    }
+    public static void emitLocalEvent(IApplMessage ev, ActorBasic23 actor){
+        actor.emitLocal(ev);  //escluso actor
+    }
+    public static void emitEvent(IApplMessage ev, ActorBasic23 actor){
+        actor.emit(ev); //invia anche a contesti remoti
+    }
 }

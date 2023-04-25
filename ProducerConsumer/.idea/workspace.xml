@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="085de662-f8ac-42b8-95f4-57d2e983cf55" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdConsActors23Verbose.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/MainProdConsActors23Verbose.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/Producer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/Producer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/onectx/MainProdConsAll.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/onectx/MainProdConsAll.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/MainProdCons.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsInteraction/MainProdCons.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

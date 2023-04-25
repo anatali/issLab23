@@ -12,19 +12,23 @@ import java.util.*;
 
 public   class ActorBasicFsm23 extends ActorBasic23 {
     public static final String emptyMoveId   = "emptyMove";
-    public static final String startSysCmdId = "startcmd";
+    public static final String startSysCmdId = "sysstartcmd";
+
 
     public static final IApplMessage emptyMoveCmd(String sender, String receiver)   {
         return CommUtils.buildDispatch(sender, emptyMoveId, "do", receiver );
     }
 
     protected String initialState = null;
-    protected HashMap<String, StateActionFun> stateMap = new HashMap<String,StateActionFun>();
-    protected HashMap<String,String> nextMsgMap     = new HashMap<String,String>();
-    protected Vector<IApplMessage> OldMsgQueue      = new Vector< IApplMessage>();
+    protected HashMap<String, ActorBasic23> delegated = new HashMap<String,ActorBasic23>();
+    protected boolean memoNonHandledMessages          = true;
+
+    protected HashMap<String, StateActionFun> stateMap  = new HashMap<String,StateActionFun>();
+    protected HashMap<String,String> nextMsgMap         = new HashMap<String,String>();
+    protected Vector<IApplMessage> OldMsgQueue          = new Vector< IApplMessage>();
     protected Vector<Pair<String, String>> transTab     = new Vector< Pair<String, String> >();
-    protected Vector<Pair<String, Boolean> >interruptTab = new Vector< Pair<String, Boolean> >();
-    protected String curState = "";
+    protected Vector<Pair<String, Boolean> >interruptTab= new Vector< Pair<String, Boolean> >();
+    protected String curState         = "";
     protected IApplMessage currentMsg = null;
 
     protected String stateWithInterrupt = "";
@@ -38,7 +42,20 @@ public   class ActorBasicFsm23 extends ActorBasic23 {
            addExpectedMsg(curState,  startSysCmdId );
         autostart = true;
     }
-    
+
+    protected void delegate( String msgId, String actorName){
+        ActorBasic23 actor = ctx.getActor(actorName);
+        delegate(msgId,actor);
+    }
+    protected void delegate( String msgId, ActorBasic23 actor){
+        //CommUtils.outred(getName() + " | ActorBasicFsm23 delegates " + msgId + " to " + actor.getName() );
+        delegated.put( msgId, actor );
+    }
+    protected ActorBasic23 getDelegatedActor(IApplMessage msg){
+        ActorBasic23 a = delegated.get(msg.msgId());
+        return a ;
+    }
+
     protected void elabStateMethod(Method m, String stateName, Method[] allguards) { //Guards by Lenzi
         if( ! m.getName().equals(stateName)) {
             CommUtils.outred(getName() + " | ActorBasicFsm23  Method name must be the same as state name" );
@@ -270,9 +287,14 @@ public   class ActorBasicFsm23 extends ActorBasic23 {
     @Override
     protected void elabMsg(IApplMessage msg) throws Exception {
         if(Actor23Utils.trace) CommUtils.outgray(getName() + " | ActorBasicFsm23 in " + this.curState + " elabMsg:" +  msg);
+        //Check for delegated
+        ActorBasic23 a= getDelegatedActor(msg);
+        //CommUtils.outred(getName() + " | ActorBasicFsm23 delegating " + msg.msgId() + " to " + a);
+        if( a  != null ) {  a.autoMsg(msg);  return; }
+        //Check if expected
         String state = checkIfExpected(msg);
         if ( state != null ) stateTransition(state,msg);
-        else memoTheMessage(msg);
+        else if( ! msg.isEvent() && memoNonHandledMessages ) memoTheMessage(msg); //NON memorizzo gli eventi ...
     }
     protected void memoTheMessage(IApplMessage msg) {
         CommUtils.outgray(getName() + " | ActorBasicFsm23 in " + this.curState + " memoTheMessage not yet:" +  msg);

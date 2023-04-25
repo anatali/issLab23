@@ -13,8 +13,6 @@ import java.util.*;
 public   class ActorBasicFsm23 extends ActorBasic23 {
     public static final String emptyMoveId   = "emptyMove";
     public static final String startSysCmdId = "sysstartcmd";
-
-
     public static final IApplMessage emptyMoveCmd(String sender, String receiver)   {
         return CommUtils.buildDispatch(sender, emptyMoveId, "do", receiver );
     }
@@ -30,7 +28,6 @@ public   class ActorBasicFsm23 extends ActorBasic23 {
     protected Vector<Pair<String, Boolean> >interruptTab= new Vector< Pair<String, Boolean> >();
     protected String curState         = "";
     protected IApplMessage currentMsg = null;
-
     protected String stateWithInterrupt = "";
     protected Vector< Pair<String, String> >  memoTransTab     = null;
     protected Vector< Pair<String, Boolean> > memoInterruptTab = null;
@@ -38,23 +35,64 @@ public   class ActorBasicFsm23 extends ActorBasic23 {
 
     public ActorBasicFsm23(String name, ActorContext23 ctx) {
         super(name, ctx);
-        declareTheStates( );
-           addExpectedMsg(curState,  startSysCmdId );
-        autostart = true;
+        prepareTheStates( );
+        addExpectedMsg(curState,  startSysCmdId );  //Per far partire l'attore
+        autostart = true;   //Inherited
+    }
+/*
+------------------------------------------------
+FASE DI PREPARAZIONE DEGLI STATI
+------------------------------------------------
+ */
+    protected void prepareTheStates( ) {
+        try {
+            Method[] methods  = this.getClass().getDeclaredMethods( );
+            CommUtils.outgray("declareTheStates: "+ methods.length   );
+
+            Method[] guards = Arrays.stream(methods)
+                    .filter(m -> m.isAnnotationPresent(TransitionGuard.class))
+                    .toArray(Method[]::new);
+
+
+            List<Method> annotatedMethods = new ArrayList<>( methods.length  ); //  /2 ???
+
+            for (Method method : methods) {
+                method.setAccessible(true);	//anche per ogni guardia-Lenzi
+                if (method.isAnnotationPresent(State.class)) annotatedMethods.add(method);
+                //if( methods [i].isAnnotationPresent(State.class)) elabAnnotatedMethod(methods [i]);
+            }
+            for (Method method : annotatedMethods) elabAnnotatedMethod(method, guards);
+
+        } catch (Exception e) {
+            CommUtils.outred("readAnnots ERROR:" + e.getMessage() )   ;
+        }
     }
 
-    protected void delegate( String msgId, String actorName){
-        ActorBasic23 actor = ctx.getActor(actorName);
-        delegate(msgId,actor);
+    protected void elabAnnotatedMethod(Method m, Method[] guards) { //guards by Lenzi
+        String functor =  m.getName();
+        Class<?>[] p   =  m.getParameterTypes();
+//    		  CommUtils.outgray("state ANNOT functor="+ functor + " p.length=" + p.length , ColorsOut.CYAN);
+        if( p.length==0 || p.length>1 ||
+                ! p[0].getCanonicalName().equals("unibo.basicomm23.interfaces.IApplMessage") ) {
+            CommUtils.outred("wrong arguments for state:"+ functor);
+        }else {
+            State stateAnnot=m.getAnnotation(State.class);
+            if( stateAnnot.initial() )  setTheInitialState(stateAnnot.name());
+            elabStateMethod( m, stateAnnot.name(), guards);
+        }
     }
-    protected void delegate( String msgId, ActorBasic23 actor){
-        //CommUtils.outred(getName() + " | ActorBasicFsm23 delegates " + msgId + " to " + actor.getName() );
-        delegated.put( msgId, actor );
+
+    protected void setTheInitialState( String stateName ) {
+        if( initialState == null  ) {
+            initialState= stateName;
+            declareAsInitialState( initialState );
+        } else CommUtils.outred("Multiple intial states not allowed" );
     }
-    protected ActorBasic23 getDelegatedActor(IApplMessage msg){
-        ActorBasic23 a = delegated.get(msg.msgId());
-        return a ;
-    }
+    protected void declareAsInitialState( String stateName ) {
+        if(Actor23Utils.trace)  CommUtils.outgray( getName() + " ActorBasicFsm23 | declareAsInitialState " + stateName );
+        curState = stateName;
+    };
+
 
     protected void elabStateMethod(Method m, String stateName, Method[] allguards) { //Guards by Lenzi
         if( ! m.getName().equals(stateName)) {
@@ -85,8 +123,7 @@ public   class ActorBasicFsm23 extends ActorBasic23 {
                 guards.add( guard );
             }
         }
-        doDeclareState(this, m,stateName,nextStates,msgIds,guards,interrupts );
-
+        doPrepareState(this, m,stateName,nextStates,msgIds,guards,interrupts );
     }
 
     protected Method getGuard(Method[] guards, String guardName) { //From Lenzi
@@ -96,35 +133,58 @@ public   class ActorBasicFsm23 extends ActorBasic23 {
                 .orElse(null);
     }
 
-    protected boolean guardForTransition(String stateName, String transName ) {
-        return false;
+    protected void doPrepareState(ActorBasicFsm23 castMyself,    //Since Lenzi guards as methods
+                                  Method curMethod, String stateName, Vector<String> nextStates,
+                                  Vector<String> msgIds, Vector<Method> guards, Vector<Boolean> interrupts) {
+        declareState( stateName, new StateActionFun() {
+            @Override
+            public void run( IApplMessage msg ) {
+                try {
+                    //Esegue il body
+                    curMethod.invoke(  castMyself, msg   );  //I metodi hanno this come arg implicito
+
+                    boolean stateWithInterrupt=false;
+
+                    for( int j=0; j<nextStates.size();j++ ) {
+                        Method  g            =  guards.elementAt(j);
+                        boolean hasInterrupt = interrupts.elementAt(j);
+                        if( hasInterrupt  ) {
+                            if( ! stateWithInterrupt  ) stateWithInterrupt = true;
+                            else {CommUtils.outred(stateName + ": multiple interrupt not allowed");}
+                        }
+                        //Object og = g.newInstance();  //Guard as class: deprecated
+                        //Boolean result = (Boolean) g.getMethod("eval").invoke( og );
+                        Boolean result = (g != null) ? (Boolean) g.invoke(castMyself) : true;
+
+                        if( result ) {
+                            //CommUtils.outgray("g:"+ g + " result=" + result.getClass().getName(), ColorsOut.GREEN);
+                            addTransition( nextStates.elementAt(j), msgIds.elementAt(j), stateWithInterrupt );
+                        }
+                    }
+                    nextState(stateName );
+                } catch ( Exception e) {
+                    CommUtils.outred("wrong execution for:"+ stateName + " - " + e.getMessage());
+                }
+            }
+        });
     }
-    protected void stateTransition(String stateName, IApplMessage msg ) {
-        curState   = stateName;
-        currentMsg = msg;
-        transTab.removeAllElements();
-        interruptTab.removeAllElements();
-        stateWithInterrupt = null;
-        StateActionFun a = stateMap.get(curState);
-        if( a != null ) {
-            a.run( msg );
-        }
-        else CommUtils.outred(getName() + " | ActorBasicFsm23 TERMINATED since no body");
+
+    protected void declareState(String stateName, StateActionFun action) {
+        if(Actor23Utils.trace) CommUtils.outblue( getName() + " ActorBasicFsm23 | declareState " + stateName + " action=" + action );
+        if( action == null ) CommUtils.outred(getName() + " ActorBasicFsm23 | action null");
+        else stateMap.put( stateName, action );
     }
+
+ /*
+-----------------------------------------------------------------
+FASE (DI PREPARAZIONE) DELLE AZIONI DI UNO STATO StateActionFun
+-----------------------------------------------------------------
+ */
 
     protected void addTransition(String state, String msgId, boolean withInterrupt) {
         if(Actor23Utils.trace)  CommUtils.outgray( getName() + " ActorBasicFsm23 | in " + curState + ": transition to " + state + " for " +  msgId );
         transTab.add(     new Pair<>(state, msgId) );
         interruptTab.add( new Pair<>(state, withInterrupt) );
-    }
-    protected void addExpectedMsg(String state, String msgId) {
-        nextMsgMap.put(msgId, state);
-    }
-    protected void clearExpectedMsgs( ) {
-        nextMsgMap.clear();
-    }
-    protected String checkIfExpected(IApplMessage msg) {
-        return nextMsgMap.get( msg.msgId() );
     }
 
     protected void nextState(String currentState ) {
@@ -159,64 +219,20 @@ public   class ActorBasicFsm23 extends ActorBasic23 {
         }
     }
 
-    protected void doDeclareState( ActorBasicFsm23 castMyself,	//Since Lenzi guards as methods
-                                   Method curMethod, String stateName, Vector<String> nextStates,
-                                   Vector<String> msgIds, Vector<Method> guards, Vector<Boolean> interrupts) {
-        declareState( stateName, new StateActionFun() {
-            @Override
-            public void run( IApplMessage msg ) {
-                try {
-                    //Esegue il body  					
-                    curMethod.invoke(  castMyself, msg   );  //I metodi hanno this come arg implicito
-
-                    boolean stateWithInterrupt=false;
-
-                    for( int j=0; j<nextStates.size();j++ ) {
-                        Method  g   =  guards.elementAt(j);
-                        boolean hasInterrupt = interrupts.elementAt(j);
-                        if( hasInterrupt  ) {
-                            if( ! stateWithInterrupt  ) stateWithInterrupt = true;
-                            else {CommUtils.outred(stateName + ": multiple interrupt not allowed");}
-                        }
-                        //Object og = g.newInstance();  //Guard as class: deprecated
-                        //Boolean result = (Boolean) g.getMethod("eval").invoke( og );
-                        Boolean result = (g != null) ? (Boolean) g.invoke(castMyself) : true;
-
-                        if( result ) {
-                            //CommUtils.outgray("g:"+ g + " result=" + result.getClass().getName(), ColorsOut.GREEN);
-                            addTransition( nextStates.elementAt(j), msgIds.elementAt(j), stateWithInterrupt );
-                        }
-                    }
-                    nextState(stateName );
-                } catch ( Exception e) {
-                    CommUtils.outred("wrong execution for:"+ stateName + " - " + e.getMessage());
-                }
-            }
-        });//declareState		
+    protected void clearExpectedMsgs( ) {
+        nextMsgMap.clear();
     }
 
-    protected void declareTheStates( ) {
-        try {
-            Method[] methods  = this.getClass().getDeclaredMethods( );
-            CommUtils.outgray("declareTheStates: "+ methods.length   );
-
-            Method[] guards = Arrays.stream(methods)
-                    .filter(m -> m.isAnnotationPresent(TransitionGuard.class))
-                    .toArray(Method[]::new);
-
-
-            List<Method> annotatedMethods = new ArrayList<>( methods.length  ); //  /2 ???
-
-            for (Method method : methods) {
-                method.setAccessible(true);	//anche per ogni guardia-Lenzi
-                if (method.isAnnotationPresent(State.class)) annotatedMethods.add(method);
-                //if( methods [i].isAnnotationPresent(State.class)) elabAnnotatedMethod(methods [i]);
+    protected IApplMessage searchInOldMsgQueue(String msgId) {
+        Iterator<IApplMessage> iter = OldMsgQueue.iterator();
+        while( iter.hasNext() ) {
+            IApplMessage msg = iter.next();
+            if( msg.msgId().equals(msgId)) {
+                OldMsgQueue.remove(msg);
+                return msg;
             }
-            for (Method method : annotatedMethods) elabAnnotatedMethod(method, guards);
-
-        } catch (Exception e) {
-            CommUtils.outred("readAnnots ERROR:" + e.getMessage() )   ;
         }
+        return null;
     }
 
     protected void memoTheState(String currentState) {
@@ -225,31 +241,7 @@ public   class ActorBasicFsm23 extends ActorBasic23 {
         memoTransTab     = transTabCopy(transTab);
         memoInterruptTab = interruptTabCopy(interruptTab);
     }
-    protected void elabAnnotatedMethod(Method m, Method[] guards) { //guards by Lenzi
-        String functor =  m.getName();
-        Class<?>[] p   =  m.getParameterTypes();
-//    		  CommUtils.outgray("state ANNOT functor="+ functor + " p.length=" + p.length , ColorsOut.CYAN);
-        if( p.length==0 || p.length>1 ||
-                ! p[0].getCanonicalName().equals("unibo.basicomm23.interfaces.IApplMessage") ) {
-            CommUtils.outred("wrong arguments for state:"+ functor);
-        }else {
-            State stateAnnot=m.getAnnotation(State.class);
-            if( stateAnnot.initial() )  setTheInitialState(stateAnnot.name());
-            elabStateMethod( m, stateAnnot.name(), guards);
-        }
-    }
-    
-    
-    protected void setTheInitialState( String stateName ) {
-        if( initialState == null  ) {
-            initialState= stateName;
-            declareAsInitialState( initialState );
-        } else CommUtils.outred("Multiple intial states not allowed" );
-    }
-    protected void declareAsInitialState( String stateName ) {
-        if(Actor23Utils.trace)  CommUtils.outgray( getName() + " ActorBasicFsm23 | declareAsInitialState " + stateName );
-        curState = stateName;
-    };
+
     protected Vector<Pair<String,String>> transTabCopy( Vector<Pair<String,String>> tab){
         Vector< Pair<String, String> > copied = new Vector<Pair<String,String>>();
         Iterator< Pair<String, String> >  iter  = tab.iterator();
@@ -266,24 +258,29 @@ public   class ActorBasicFsm23 extends ActorBasic23 {
         }
         return copied;
     }
-    protected void declareState(String stateName, StateActionFun action) {
-        if(Actor23Utils.trace) CommUtils.outblue( getName() + " ActorBasicFsm23 | declareState " + stateName + " action=" + action );
-        if( action == null ) CommUtils.outred(getName() + " ActorBasicFsm23 | action null");
-        else stateMap.put( stateName, action );
-    }
-    protected IApplMessage searchInOldMsgQueue(String msgId) {
-        Iterator<IApplMessage> iter = OldMsgQueue.iterator();
-        while( iter.hasNext() ) {
-            IApplMessage msg = iter.next();
-            if( msg.msgId().equals(msgId)) {
-                OldMsgQueue.remove(msg);
-                return msg;
-            }
+
+    protected void stateTransition(String stateName, IApplMessage msg ) {
+        curState   = stateName;
+        currentMsg = msg;
+        transTab.removeAllElements();
+        interruptTab.removeAllElements();
+        stateWithInterrupt = null;
+        StateActionFun a = stateMap.get(curState);
+        if( a != null ) {
+            a.run( msg );
         }
-        return null;
+        else CommUtils.outred(getName() + " | ActorBasicFsm23 TERMINATED since no body");
     }
 
+    protected void addExpectedMsg(String state, String msgId) {
+        nextMsgMap.put(msgId, state);
+    }
 
+/*
+------------------------------------------------
+FASE DI ESECUZIONE
+------------------------------------------------
+*/
     @Override
     protected void elabMsg(IApplMessage msg) throws Exception {
         if(Actor23Utils.trace) CommUtils.outgray(getName() + " | ActorBasicFsm23 in " + this.curState + " elabMsg:" +  msg);
@@ -296,9 +293,36 @@ public   class ActorBasicFsm23 extends ActorBasic23 {
         if ( state != null ) stateTransition(state,msg);
         else if( ! msg.isEvent() && memoNonHandledMessages ) memoTheMessage(msg); //NON memorizzo gli eventi ...
     }
+
+    protected String checkIfExpected(IApplMessage msg) {
+        return nextMsgMap.get( msg.msgId() );
+        //nextMsgMap popolata da addExpectedMsg (nextState, declareState( stateName, new StateActionFun())
+    }
+
     protected void memoTheMessage(IApplMessage msg) {
         CommUtils.outgray(getName() + " | ActorBasicFsm23 in " + this.curState + " memoTheMessage not yet:" +  msg);
         OldMsgQueue.add(msg);
         currentMsg=null;
     }
+
+/*
+------------------------------------------------
+DELEGAZIONE
+------------------------------------------------
+*/
+
+    protected void delegate( String msgId, String actorName){
+        ActorBasic23 actor = ctx.getActor(actorName);
+        delegate(msgId,actor);
+    }
+    protected void delegate( String msgId, ActorBasic23 actor){
+        //CommUtils.outred(getName() + " | ActorBasicFsm23 delegates " + msgId + " to " + actor.getName() );
+        delegated.put( msgId, actor );
+    }
+    protected ActorBasic23 getDelegatedActor(IApplMessage msg){
+        ActorBasic23 a = delegated.get(msg.msgId());
+        return a ;
+    }
+
+   // protected boolean guardForTransition(String stateName, String transName ) {  return false; }
 }

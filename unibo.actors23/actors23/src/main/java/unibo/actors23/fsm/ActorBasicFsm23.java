@@ -236,7 +236,7 @@ FASE (DI PREPARAZIONE) DELLE AZIONI DI UNO STATO StateActionFun
     }
 
     protected void memoTheState(String currentState) {
-        CommUtils.outgray(getName() + " | ActorBasicFsm23 memoTheState " +  currentState );
+        //if(Actor23Utils.trace)  CommUtils.outgray(getName() + " | ActorBasicFsm23 memoTheState " +  currentState );
         stateWithInterrupt = currentState;
         memoTransTab     = transTabCopy(transTab);
         memoInterruptTab = interruptTabCopy(interruptTab);
@@ -302,7 +302,7 @@ FASE DI ESECUZIONE
     }
 
     protected void memoTheMessage(IApplMessage msg) {
-        CommUtils.outgray(getName() + " | ActorBasicFsm23 in " + this.curState + " memoTheMessage not yet:" +  msg);
+        if(Actor23Utils.trace)  CommUtils.outgray(getName() + " | ActorBasicFsm23 in " + this.curState + " memoTheMessage not yet:" +  msg);
         OldMsgQueue.add(msg);
         currentMsg=null;
     }
@@ -310,7 +310,7 @@ FASE DI ESECUZIONE
     Interrupt-related
      */
     protected void resume() {
-        CommUtils.outgray(getName() + " | QakActor22Fsm in " + curState + " resume:" + memoTransTab.size() );
+        if(Actor23Utils.trace) CommUtils.outgray(getName() + " | ActorBasicFsm23 in " + curState + " resume:" + memoTransTab.size() );
         transTab           = tabRestore(memoTransTab);
         interruptTab       = interruptTabRestore(memoInterruptTab);
         curState           = "resuming";

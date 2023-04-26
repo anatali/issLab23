@@ -41,7 +41,7 @@ public class ConsumerFsm23 extends ActorBasicFsm23 {
     @TransitionGuard
     protected boolean sizeinlimit() {
         CommUtils.outblack("sizeinlimit data.length()=" + data.length());
-        if( data.length() > 5){
+        if( data.length() == 4){
             CommUtils.outred(name+ " emit: " + alarm);
             emit(alarm);
         }

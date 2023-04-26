@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="99989e2c-357a-4783-9ad9-184bdd8e35cc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/annotations/example/AccessSpec.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/annotations/example/AnnotationUsageDemo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/Producer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/Producer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsEvents/Producer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsEvents/Producer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsFsm23/ConsumerFsm23.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsFsm23/ConsumerFsm23.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ProdConsStream/Producer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ProdConsStream/Producer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/fsm/ActorBasicFsm23.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/fsm/ActorBasicFsm23.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/fsm/ActorBasicFsm23Old.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

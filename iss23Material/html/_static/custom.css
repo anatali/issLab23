@@ -61,3 +61,11 @@ body {
     line-height: 1.5;
     padding: 3px
   }
+
+  .slidekp{
+    background-color: hsl(332, 77%, 86%);
+    border-radius: 25px;
+    font-size: 18px; 
+    line-height: 1.5;
+    padding: 3px
+  }  

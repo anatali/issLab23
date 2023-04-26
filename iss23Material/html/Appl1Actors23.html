@@ -1,0 +1,585 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Appl1Actors23 &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Appl1ActorsFsm23" href="Appl1ActorsFsm23.html" />
+    <link rel="prev" title="SistemiActors23" href="SistemiActors23.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Appl1ActorsFsm23.html" title="Appl1ActorsFsm23"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="SistemiActors23.html" title="SistemiActors23"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appl1Actors23</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="appl1actors23">
+<h1>Appl1Actors23<a class="headerlink" href="#appl1actors23" title="Permalink to this headline">¶</a></h1>
+<p>Il viaggio iniziato enunciando i requisiti dell’<a class="reference internal" href="Applicazione1.html#applicazione1"><span class="std std-ref">Applicazione1</span></a> si è svolto in una sequenza di  tappe:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="Appl1-HTTPSprint1.html#appl1-httpsprint1"><span class="std std-ref">Appl1-HTTPSprint1</span></a></p></li>
+<li><p><a class="reference internal" href="Appl1-HTTPSprint2.html#appl1-httpsprint2"><span class="std std-ref">Appl1-HTTPSprint2</span></a></p></li>
+<li><p><a class="reference internal" href="Appl1-HTTPSprint3.html#appl1-httpsprint3"><span class="std std-ref">Appl1-HTTPSprint3</span></a></p></li>
+<li><p><a class="reference internal" href="Appl1-WSSprint3.html#appl1-wssprint3"><span class="std std-ref">Appl1-WSSprint3</span></a></p></li>
+</ol>
+<p>Questi passi incrementali ci hanno indotto a una graduale transizione da un approccio alla progettazione
+e allo sviluppo di tipo <strong>bottom-up</strong>,
+che partiva dalle tecnologie disponibili,
+ad un approccio di tipo <strong>top-down</strong>, che parte dal problema, con l’obiettivo di
+individuare/selezionare/costruire le tecnologie più opportune per risolverlo.</p>
+<p>In questa transizione, abbiamo introdotto nuovi concetti e nuove librerie di supporto:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="Interaction.html#interaction"><span class="std std-ref">Interaction</span></a> e <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a></p></li>
+<li><p><a class="reference internal" href="StepAsynch.html#appl1coreactorlike"><span class="std std-ref">Attori</span></a> e <a class="reference internal" href="Actors23.html#actors23"><span class="std std-ref">Actors23</span></a></p></li>
+</ol>
+<p>Affrontiamo ora di nuovo gli stessi requisiti, con una estensione legata alla presenza di uno o più <span class="brown">Sonar</span>
+nella stanza in cui si muove il <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot</span></a>.</p>
+<p><span class="slide">Requisiti</span></p>
+<section id="boundarywalker-nuovi-requisiti">
+<h2>BoundaryWalker: nuovi requisiti<a class="headerlink" href="#boundarywalker-nuovi-requisiti" title="Permalink to this headline">¶</a></h2>
+<p>Impostare un sistema software che permette ad un utente umano di inviare, mediante una Console, comandi:</p>
+<ul class="simple">
+<li><p><span class="blue">start</span>: per indurre il <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot</span></a> a percorrare il bordo perimetrale (libero da ostacoli)
+della stanza rappresentata ne <a class="reference internal" href="VirtualRobot23.html#la-scena-di-wenv"><span class="std std-ref">La scena di WEnv</span></a></p></li>
+<li><p><span class="blue">stop</span>: per bloccare il robot</p></li>
+<li><p><span class="blue">resume</span>: per riattivare il robot</p></li>
+<li><p><span class="blue">getPath</span>: per ottenere dal robot informazioni sul cammino percorso</p></li>
+</ul>
+<p>Inoltre è richiesto di:</p>
+<ul class="simple">
+<li><p>fare in modo che il robot <span class="blue">si fermi per un tempo prefissato</span> ( <code class="docutils literal notranslate"><span class="pre">2sec</span></code> ) ogni volta che esso viene
+rilevato da uno dei <span class="brown">Sonar</span> cablati nelle pareti della stanza.</p></li>
+<li><p>il <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot</span></a> possa essere sostituito da un robot fisico</p></li>
+</ul>
+<p><span class="slide">Analisi</span></p>
+</section>
+<section id="appl1actors23-analisi-del-problema">
+<h2>Appl1Actors23 - Analisi del problema<a class="headerlink" href="#appl1actors23-analisi-del-problema" title="Permalink to this headline">¶</a></h2>
+<section id="analisi-struttura">
+<h3>Analisi: struttura<a class="headerlink" href="#analisi-struttura" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><span class="slide2">Struttura</span></p>
+<p>Il sistema è distribuito e ciascun macro-componente del sistema può essere modellato
+come un <a class="reference internal" href="Actors23.html#actors23"><span class="std std-ref">attore</span></a>.</p>
+<p>L’attore <span class="blue">basicrobot</span> rappresenta un <strong>robot generico</strong>, che nasconde i dettagli relativi
+all’uso del <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot</span></a> o di un robot fisico.</p>
+<p>L’attore <span class="blue">sonar</span> rappresenta un dispositivo capace di enettere informazioni sulla distanza
+di un ostacolo posto di fornte ad esseo.</p>
+</td>
+<td><a class="reference internal image-reference" href="_images/Appl1-actors.png"><img alt="_images/Appl1-actors.png" class="align-center" src="_images/Appl1-actors.png" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<p>In aggiunta all’analisi già condotta negli Sprint precedenti, evidenziamo un nuovo</p>
+<p><span class="slidekp">KP-requisiti: Sonar Data</span></p>
+<ul class="simple">
+<li><p>l’applicazione <span class="blue">appl</span> deve poter ricevere dati dai <span class="blue">sonar</span> presenti, quando essi rilevano un passaggio del
+<span class="blue">basicrobot</span>;</p></li>
+<li><p>i dati emessi dai <span class="blue">sonar</span> devono essere interpretati come un comando di <span class="brown">stop</span>, con
+<span class="brown">resume</span> automatica, dopo il tempo prefissato.</p></li>
+</ul>
+</section>
+<section id="analisi-interazione">
+<h3>Analisi - interazione<a class="headerlink" href="#analisi-interazione" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><span class="slide2">Interazione</span></p>
+<ul class="simple">
+<li><p><span class="blue">console</span> invia ad <span class="blue">appl</span> <em>comandi-dispatch</em> e  <em>getPath-request</em></p></li>
+<li><p><span class="blue">appl</span> invia a <span class="blue">basicrobot</span> <em>comandi-dispatch</em> e riceve dispatch informativi
+sull’esito del comando</p></li>
+<li><p>un <span class="blue">sonar</span> emette <a class="reference internal" href="Principi.html#terminologia-di-riferimento"><span class="std std-ref">eventi</span></a> che includono la distanza rilevata</p></li>
+</ul>
+</td>
+<td><a class="reference internal image-reference" href="_images/Appl1-interaction0.png"><img alt="_images/Appl1-interaction0.png" class="align-center" src="_images/Appl1-interaction0.png" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="slidekp">KP-analisi: Gestione dei Sonar Data</span></p>
+<ul class="simple">
+<li><p>Dal punto di vista logico deve esistere un componente capace di trasformare un evento del Sonar in un comando
+<span class="brown">stop</span> verso <span class="blue">appl</span>, seguito poi da un comando <span class="brown">resume</span></p></li>
+<li><p>La responsabilità di gestione degli eventi emessi dai <span class="blue">sonar</span> non può essere assegnata a nessuno degli
+altri componenti. Introduciamo un nuovo componente applicativo, cui assegnare questa responsabilità</p></li>
+</ul>
+<p><span class="slide2">Interazione con Sonar</span></p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Il nuovo componente <span class="blue">sonarobserver</span> percepisce gli eventi emessi dai <span class="blue">sonar</span>
+e genera i comandi  <span class="brown">stop/resume</span>.</p></td>
+<td><a class="reference internal image-reference" href="_images/Appl1-interactionSonar.png"><img alt="_images/Appl1-interactionSonar.png" class="align-center" src="_images/Appl1-interactionSonar.png" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Poichè il <span class="blue">sonar</span> potrebbe emettere una sequenza di più eventi in serie, occorre</p>
+<p><span class="slidekp">KP-analisi: Evitare più stop/resume</span></p>
+<p>Osserviamo inoltre che un utente umano ptrebbe premere i pulsanti della <span class="blue">console</span> in una sequenza errata.</p>
+<p><span class="slidekp">KP-analisi: Click fuori fase sui pulsanti</span></p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/CmdConsole.png"><img alt="_images/CmdConsole.png" class="align-center" src="_images/CmdConsole.png" style="width: 100%;" /></a>
+</td>
+<td><p>Possibili errori:</p>
+<ul class="simple">
+<li><p>premere <em>resume</em> prima di <em>stop</em></p></li>
+<li><p>premere <em>start</em> ad applicazione già avviata</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="analisi-comportamento">
+<h3>Analisi - comportamento<a class="headerlink" href="#analisi-comportamento" title="Permalink to this headline">¶</a></h3>
+<p>Ogni attore opera in modo message-driven. Tuttavia, risulta spesso più opportuno impostare il comportamento
+di un <a class="reference internal" href="Actors23FSM.html#actors23fsm"><span class="std std-ref">Attore come un Automa a Stati Finiti</span></a> che decide in ogni stato quali messaggi elaborare.</p>
+<p><span class="slidekp">KP-analisi: message-driven o FSM?</span></p>
+<p>Al momento proseguiano con lo schema message-driven. La versione FSM verrà costruita più avanti
+(si veda <a class="reference internal" href="Appl1ActorsFsm23.html#appl1actorsfsm23"><span class="std std-ref">Appl1ActorsFsm23</span></a>).</p>
+<p><span class="slide">Progetto</span></p>
+</section>
+</section>
+<section id="appl1actors23-progetto">
+<h2>Appl1Actors23 - Progetto<a class="headerlink" href="#appl1actors23-progetto" title="Permalink to this headline">¶</a></h2>
+<p>Rispetto a quanto già sviluppato in <a class="reference internal" href="Appl1-WSSprint3.html#appl1-wssprint3"><span class="std std-ref">Appl1-WSSprint3</span></a>, osserviamo che:
+<span class="blue">appl</span> non è più un POJO Observable.</p>
+<p><span class="slidekp">KP-project: chi costruisce il path?</span></p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>La responsabilità di costruire una rappresentazione del path del robot può essere ancora
+affidata a un observer (<span class="xref std std-ref">ObserverActorForPath</span>).</p>
+<p>Questo observer è ora concepito come un attore <span class="remark">nello stesso contesto di appl</span>,
+che fa una <a class="reference internal" href="Actors23.html#subscribelocalactor"><span class="std std-ref">subscribeLocalActor</span></a> a <span class="blue">appl</span> per acquisire
+le informazione emesse mediante <a class="reference internal" href="Actors23.html#emitlocalstreamevent"><span class="std std-ref">emitLocalStreamEvent</span></a>.</p>
+</td>
+<td><a class="reference internal image-reference" href="_images/Appl1-interactionObsforpath.png"><img alt="_images/Appl1-interactionObsforpath.png" class="align-center" src="_images/Appl1-interactionObsforpath.png" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<section id="appl1state">
+<h3>Appl1State<a class="headerlink" href="#appl1state" title="Permalink to this headline">¶</a></h3>
+<p>In questa prima versione del progetto, si suppone che le informazioni sullo stato dell’applicazione,
+incluso il path corrente del robot,
+siano mantenute in <span class="blue">Appl1State</span>, che rappresenta una sorta di base di conoscenza locale,
+che il componente <span class="blue">appl1</span> può consultare quando deve dare un risposta a <span class="brown">getpath</span>.</p>
+</section>
+<section id="unibo-appl1-observer-observeractorforpath">
+<h3>unibo.appl1.observer.ObserverActorForPath<a class="headerlink" href="#unibo-appl1-observer-observeractorforpath" title="Permalink to this headline">¶</a></h3>
+<p>La classe che implementa l’attore <span class="blue">obsforpath</span> può essere così definita:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>public class ObserverActorForPath extends ActorBasic23 {
+  public ObserverActorForPath(String name, ActorContext23 ctx) {
+      super(name, ctx);
+      ...
+      subscribeLocalActor(&quot;appl&quot;);
+  }
+  ...
+
+  protected void updatePath(String newMOve){
+      moveHistory.add(newMOve);
+      Appl1State.setPath(getCurrentPath());
+  }
+  @Override
+  protected void elabMsg(IApplMessage inputmsg) throws Exception {
+    ...
+    if( ! inputmsg.isEvent() ) return;
+    String msg = inputmsg.msgContent();
+    ...
+      if( msg.contains(&quot;robot-stepdone&quot;)){
+        updatePath(&quot;w&quot;);
+      }else if( msg.contains(&quot;robot-turnLeft&quot;)){
+          updatePath(&quot;l&quot;);
+      }
+      else if( msg.contains(&quot;robot-collision&quot;)){
+          updatePath(&quot;|&quot;);
+      }
+   }
+}
+</pre></div>
+</div>
+<p><span class="slidekp">KP-project: chi risponde a getpath?</span></p>
+<p>Supponiamo che, per costruire la risposta alla richiesta <span class="brown">getpath</span>, l’attore <span class="blue">appl</span>
+necessiti di molto tempo di elaborazione.</p>
+<p>Per evitare di rendere <span class="blue">appl</span> incapace di elaborare altri messaggi mentre sta eleborando
+la risposta , si potrebbe incapsulare l’esecuzione di <span class="brown">getpath</span> a un Thread.</p>
+<p>Ma allora, un soluzione più elegante, ispirata al principuo <span class="remark">divide et impera</span>, può essere quella
+di delegare ad un altro attore la responsabilità di rispondere a questa richiesta.</p>
+<p>Tenendo conto anche del principio del <span class="remark">Rasoio di Occam</span>, possiamo pensare che <span class="blue">appl</span> deleghi
+la gestione della richiesta <span class="brown">getpath</span> al componente <span class="blue">obsforpath</span>, che ha tutte le informazioni
+necessarie.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">ObserverActorForPath</span> <span class="n">extends</span> <span class="n">ActorBasic23</span> <span class="p">{</span>
+ <span class="o">...</span>
+ <span class="nd">@Override</span>
+ <span class="n">protected</span> <span class="n">void</span> <span class="n">elabMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">inputmsg</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">/</span><span class="n">GESTRIONE</span> <span class="n">DELEGATA</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">inputmsg</span><span class="o">.</span><span class="n">isRequest</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">inputmsg</span><span class="o">.</span><span class="n">msgId</span><span class="p">()</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;getpath&quot;</span><span class="p">)){</span><span class="o">/</span>
+    <span class="n">IApplMessage</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">buildReply</span><span class="p">(</span> <span class="n">name</span><span class="p">,</span><span class="s2">&quot;getpathanswer&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;&#39;&quot;</span><span class="o">+</span><span class="n">getCurrentPath</span><span class="p">()</span><span class="o">+</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="n">inputmsg</span><span class="o">.</span><span class="n">msgSender</span><span class="p">());</span>
+    <span class="n">reply</span><span class="p">(</span><span class="n">answer</span><span class="p">,</span> <span class="n">inputmsg</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+ <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Un punto rilevante è che il componente <span class="blue">console</span> non debba modificare il suo codice (cioè
+la sua interazione con <span class="blue">appl</span>).</p>
+<p><span class="slidekp">KP-project: chi aggiorna ObserverActorForPath?</span></p>
+<p>In modo analogo a quanto fatto negli Sprint precedenti,
+definiamo un supporto che interagisca con il robot utilizzando una connessione di rete.
+Limitadonci per ora al caso del <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot</span></a>, definiamo un supporto che
+utilizza interazioni asincrone su WS.</p>
+<p>Tenendo conto del supporto ‘orientato agli attori’ introdotto in
+<a class="reference internal" href="StepAsynch.html#vrobothlmovesinteractionasynch-update-come-produttore"><span class="std std-ref">VrobotHLMovesInteractionAsynch.update come produttore</span></a>
+definiamo una nuova versione che elabora le informazioni emesse dai Sonar generando
+un evento.</p>
+<p><span class="slide1">Un nuovo supporto</span></p>
+</section>
+<section id="appl1actors23-support-vrobothlmovesactors23">
+<h3>appl1Actors23.support.VrobotHLMovesActors23<a class="headerlink" href="#appl1actors23-support-vrobothlmovesactors23" title="Permalink to this headline">¶</a></h3>
+<p><span class="slidekp">KP-project: è bene generare messaggi con msgId diversi?</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">VrobotHLMovesActors23</span> <span class="n">extends</span> <span class="n">ApplAbstractObserver</span>
+                                   <span class="n">implements</span> <span class="n">IVrobotMovesAsynch</span> <span class="p">{</span>
+  <span class="n">protected</span> <span class="n">ActorBasic23</span> <span class="n">appl</span><span class="p">;</span>
+  <span class="o">...</span>
+  <span class="n">public</span> <span class="n">VrobotHLMovesActors23</span><span class="p">(</span><span class="n">Interaction</span> <span class="n">wsCommSupport</span><span class="p">,</span> <span class="n">ActorBasic23</span> <span class="n">appl</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">//</span><span class="n">pone</span> <span class="n">sè</span> <span class="n">stesso</span> <span class="n">come</span> <span class="n">observer</span> <span class="n">di</span> <span class="n">wsCommSupport</span>
+    <span class="o">...</span>
+    <span class="nd">@Override</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">update</span><span class="p">(</span><span class="n">String</span> <span class="n">info</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">jsonObj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sonarName&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">long</span> <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">long</span><span class="p">)</span> <span class="n">jsonObj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;distance&quot;</span><span class="p">)</span> <span class="p">;</span>
+        <span class="n">IApplMessage</span> <span class="n">sonarEvent</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">buildEvent</span><span class="p">(</span>
+              <span class="s2">&quot;vrhlsprt&quot;</span><span class="p">,</span><span class="s2">&quot;sonardata&quot;</span><span class="p">,</span><span class="s2">&quot;&#39;&quot;</span><span class="o">+</span><span class="s2">&quot;sonar(&quot;</span> <span class="o">+</span><span class="n">d</span> <span class="o">+</span> <span class="s2">&quot; )&quot;</span><span class="o">+</span><span class="s2">&quot;&#39;&quot;</span><span class="p">);</span>
+        <span class="o">//</span><span class="n">msg</span><span class="p">(</span><span class="n">sonardata</span><span class="p">,</span><span class="n">event</span><span class="p">,</span><span class="n">vrhlsprt</span><span class="p">,</span><span class="n">ANY</span><span class="p">,</span><span class="s1">&#39;sonar( D )&#39;</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
+        <span class="n">Actor23Utils</span><span class="o">.</span><span class="n">emitLocalEvent</span><span class="p">(</span> <span class="n">sonarEvent</span><span class="p">,</span><span class="n">appl</span> <span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">jsonObj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;endmove&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
+       <span class="o">...</span>
+      <span class="o">//</span><span class="n">genera</span><span class="p">:</span>
+      <span class="o">//</span>  <span class="n">msg</span><span class="p">(</span><span class="n">stepdone</span><span class="p">,</span><span class="n">dispatch</span><span class="p">,</span><span class="n">support</span><span class="p">,</span><span class="n">appl</span><span class="p">,</span><span class="n">stepdone</span><span class="p">(</span><span class="n">DT</span><span class="p">),</span><span class="n">N</span><span class="p">)</span>
+      <span class="o">//</span>  <span class="n">msg</span><span class="p">(</span><span class="n">stepfailed</span><span class="p">,</span><span class="n">dispatch</span><span class="p">,</span><span class="n">support</span><span class="p">,</span><span class="n">appl</span><span class="p">,</span><span class="n">stepfailed</span><span class="p">(</span><span class="n">DT</span><span class="p">,</span><span class="n">CAUSE</span><span class="p">),</span><span class="n">N</span><span class="p">)</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">Il problema dello stato</span></p>
+<p><span class="slidekp">KP-project: chi mantiene lo stato?</span></p>
+<p>La presenza dell’oggetto <span class="blue">Appl1State</span> evidenzia che :</p>
+<ul class="simple">
+<li><p>il progettista ha optato per una rappresentazione concentrata dello stato;</p></li>
+<li><p>il componente  <span class="blue">obsforpath</span> deve aggiornare <span class="blue">Appl1State</span> per ogni mossa osservata.</p></li>
+</ul>
+<p>Se optiamo per  una rappresentazione distribuita dello stato, allora il valore corrente del path
+può rimanere confinato entro <span class="blue">obsforpath</span> e l’idea di delega delle richieste <span class="brown">getpath</span> permette di
+renedere visibile questo stato alla <span class="blue">console</span>, senza influire sulla reattività di  <span class="blue">appl</span> ai nuovi messaggi.</p>
+</section>
+<section id="sonarobserveractor23">
+<h3>SonarObserverActor23<a class="headerlink" href="#sonarobserveractor23" title="Permalink to this headline">¶</a></h3>
+<p>Il componente che percepisce gli eventi emessi dai sonar e genera i comandi <em>stop/resume</em>
+evita la emissione di molteplici stop/resume controllando il nome del sonar.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>public class SonarObserverActor23 extends ActorBasic23 {
+protected String sonarName   = null;
+...
+  @Override
+  protected void elabMsg(IApplMessage message) throws Exception {
+      //Evita gestione multipla
+      if( sonarName != null &amp;&amp; message.msgSender().equals(sonarName) ) {
+        return;
+      }
+      sonarName = message.msgSender();
+      //Evita gestione di altri messaggi
+      if( ! message.isEvent() || ! message.msgId().equals(&quot;sonardata&quot;) ) return;
+
+      String data  = message.msgContent().replaceAll(&quot;&#39;&quot;,&quot;&quot;);
+      String value = ((Struct)Term.createTerm(data)).getArg(0).toString();
+      int v       = Integer.parseInt(value);
+      //Realizza stop/resume
+      forward( stopMsg );
+      CommUtils.delay(2000);  //DA SPECIFICA
+      forward(resumeMsg);
+  }
+}
+</pre></div>
+</div>
+</section>
+<section id="appl1systems-actorbasic-appl1actors23">
+<h3>appl1Systems.actorBasic.Appl1Actors23<a class="headerlink" href="#appl1systems-actorbasic-appl1actors23" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>public class Appl1CoreActor23 extends ActorBasic23 {
+  ...
+  @Override
+  protected void elabMsg(IApplMessage message) throws Exception {
+      String payload = message.msgContent();
+
+       if( message.msgId().equals(&quot;startcmd&quot;)){
+           if( Appl1StateObject.getStarted() ){
+               CommUtils.outred(name + &quot; |  ALREADY STARTED &quot; + Thread.currentThread().getName() );
+               return;
+           }
+           Appl1StateObject.readConfigFromFile(this);
+           Appl1StateObject.reset();
+
+           Appl1StateObject.setIsRunning(true);
+           Appl1StateObject.setStarted(true);
+
+           IApplMessage event = CommUtils.buildEvent(name,&quot;startobs&quot;, &quot;ok&quot;);
+           emitLocalStreamEvent(event);
+          if( ! Appl1StateObject.robotMustBeAtHome(&quot;START&quot;,this) ){
+              CommUtils.outred(name + &quot; | elabMsg: NOT AT HOME &quot; );
+              throw new Exception(&quot;Robot must be at home&quot;);
+          };
+           Appl1StateObject.doStepAsynch();
+          return;
+      }
+      if( message.msgId().equals(&quot;stopcmd&quot;)){
+          Appl1StateObject.setStopped(true);
+          return;
+      }
+      if( message.msgId().equals(&quot;resumecmd&quot;)){
+          Appl1StateObject.setStopped(false);
+          Appl1StateObject.doStepAsynch();
+          return;
+      }
+      if( message.msgId().equals(&quot;getpath&quot;)){
+          //ELABORAZIONE DELEGATA
+          Actor23Utils.sendMsg(message, ctx, &quot;obsforpath&quot;);
+          return;
+      }
+      if( message.msgId().equals(&quot;isrunning&quot;)){
+          //ELABORAZIONE DELEGATA
+          Actor23Utils.sendMsg(message, ctx, &quot;obsforpath&quot;);
+          return;
+      }
+      if( payload.startsWith(&quot;stepdone&quot;)){
+        if( sonarEvent ){
+          //tolgo il robot dal sonar
+          Appl1StateObject.getVr().step( Appl1StateObject.getStepTime() );
+          CommUtils.delay(2000);  //Da REQUISITO
+          sonarEvent = false;
+        }
+          if( Appl1StateObject.getIsRunning() &amp;&amp; ! Appl1StateObject.getStopped()  )
+            stepok.handle(payload);
+          return;
+      }
+      if( payload.startsWith(&quot;stepfailed&quot;) ){
+          if( Appl1StateObject.getIsRunning() &amp;&amp; ! Appl1StateObject.getStopped() )
+            stepfail.handle(payload);
+          return;
+      }
+      if( payload.startsWith(&quot;collision&quot;)){
+          CommUtils.outred(name + &quot; | elab COLLISION&quot;);
+          return;
+      }
+      if( payload.contains(&quot;sonar&quot;)){ //&#39;sonar(-21)&#39;
+          return;
+      }
+  }
+</pre></div>
+</div>
+<section id="iapplaction-stepok">
+<h4>IApplAction stepok<a class="headerlink" href="#iapplaction-stepok" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">IApplAction</span> <span class="n">stepok</span>   <span class="o">=</span> <span class="p">(</span><span class="n">msg</span> <span class="o">-&gt;</span> <span class="p">{</span>
+    <span class="k">try</span><span class="p">{</span>
+        <span class="n">CommUtils</span><span class="o">.</span><span class="n">outmagenta</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%%% s</span><span class="s2">tepok:&quot;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">Thread</span><span class="o">.</span><span class="n">currentThread</span><span class="p">()</span><span class="o">.</span><span class="n">getName</span><span class="p">());</span>
+        <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">updateObservers</span><span class="p">(</span><span class="s2">&quot;robot-stepdone&quot;</span><span class="p">,</span><span class="n">this</span><span class="p">);</span>
+        <span class="o">//</span><span class="n">checkStop</span><span class="p">();</span>
+        <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">incNSteps</span><span class="p">();</span>
+        <span class="n">CommUtils</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span> <span class="o">//</span><span class="n">to</span> <span class="n">view</span> <span class="n">steps</span> <span class="n">better</span>
+        <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">doStepAsynch</span><span class="p">();</span>
+    <span class="p">}</span><span class="n">catch</span><span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">){</span> <span class="o">...</span> <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="iapplaction-stepfail">
+<h4>IApplAction stepfail<a class="headerlink" href="#iapplaction-stepfail" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">protected</span> <span class="n">IApplAction</span> <span class="n">stepfail</span> <span class="o">=</span> <span class="p">(</span><span class="n">msg</span> <span class="o">-&gt;</span> <span class="p">{</span>
+      <span class="k">try</span><span class="p">{</span>
+          <span class="n">Struct</span> <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">Struct</span><span class="p">)</span><span class="n">Term</span><span class="o">.</span><span class="n">createTerm</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+          <span class="n">String</span> <span class="n">cause</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">getArg</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+          <span class="k">if</span><span class="p">(</span> <span class="n">cause</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;collision&quot;</span><span class="p">))</span> <span class="p">{</span>
+              <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">updateObservers</span><span class="p">(</span><span class="s2">&quot;robot-collision&quot;</span><span class="p">,</span><span class="n">this</span><span class="p">);</span>
+              <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">incNEdges</span><span class="p">();</span>
+              <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">getVr</span><span class="p">()</span><span class="o">.</span><span class="n">turnLeft</span><span class="p">();</span>
+              <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">updateObservers</span><span class="p">(</span><span class="s2">&quot;robot-turnLeft&quot;</span><span class="p">,</span><span class="n">this</span><span class="p">);</span>
+              <span class="k">if</span> <span class="p">(</span><span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">getNEdges</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">doStepAsynch</span><span class="p">();</span>
+              <span class="k">else</span> <span class="p">{</span>
+                  <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">reset</span><span class="p">();</span>
+                  <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">robotMustBeAtHome</span><span class="p">(</span><span class="s2">&quot;END&quot;</span><span class="p">,</span><span class="n">this</span><span class="p">);</span>
+              <span class="p">}</span>
+          <span class="p">}</span>
+      <span class="p">}</span><span class="n">catch</span><span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">){</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="p">});</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide">Deployment</span></p>
+</section>
+</section>
+</section>
+<section id="appl1actors23-distribuzione">
+<h2>Appl1Actors23 - Distribuzione<a class="headerlink" href="#appl1actors23-distribuzione" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/Appl1-Contesti.PNG"><img alt="_images/Appl1-Contesti.PNG" class="align-center" src="_images/Appl1-Contesti.PNG" style="width: 80%;" /></a>
+<p>Il <span class="brown">Core Applicativo</span> può essere descritto come segue:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%================================================================================</span>
+<span class="o">%</span> <span class="n">appl1CoreActor23</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
+<span class="o">%================================================================================</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8720&quot;</span><span class="p">)</span><span class="o">.</span>
+  <span class="n">qactor</span><span class="p">(</span> <span class="n">appl</span><span class="p">,</span> <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;appl1Systems.actorBasic.Appl1CoreActor23&quot;</span><span class="p">)</span><span class="o">.</span>
+  <span class="n">qactor</span><span class="p">(</span> <span class="n">sonarobserver</span><span class="p">,</span>  <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;appl1Actors23.SonarObserverActor23&quot;</span><span class="p">)</span><span class="o">.</span>
+  <span class="n">qactor</span><span class="p">(</span> <span class="n">obsforpath</span><span class="p">,</span>  <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;appl1Actors23.observeractor.ObserverActorForPath&quot;</span><span class="p">)</span><span class="o">.</span>
+  <span class="o">%%</span><span class="n">qactor</span><span class="p">(</span> <span class="n">console</span><span class="p">,</span> <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;appl1Actors23.CmdConsoleActor23&quot;</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Appl1Actors23</a><ul>
+<li><a class="reference internal" href="#boundarywalker-nuovi-requisiti">BoundaryWalker: nuovi requisiti</a></li>
+<li><a class="reference internal" href="#appl1actors23-analisi-del-problema">Appl1Actors23 - Analisi del problema</a><ul>
+<li><a class="reference internal" href="#analisi-struttura">Analisi: struttura</a></li>
+<li><a class="reference internal" href="#analisi-interazione">Analisi - interazione</a></li>
+<li><a class="reference internal" href="#analisi-comportamento">Analisi - comportamento</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#appl1actors23-progetto">Appl1Actors23 - Progetto</a><ul>
+<li><a class="reference internal" href="#appl1state">Appl1State</a></li>
+<li><a class="reference internal" href="#unibo-appl1-observer-observeractorforpath">unibo.appl1.observer.ObserverActorForPath</a></li>
+<li><a class="reference internal" href="#appl1actors23-support-vrobothlmovesactors23">appl1Actors23.support.VrobotHLMovesActors23</a></li>
+<li><a class="reference internal" href="#sonarobserveractor23">SonarObserverActor23</a></li>
+<li><a class="reference internal" href="#appl1systems-actorbasic-appl1actors23">appl1Systems.actorBasic.Appl1Actors23</a><ul>
+<li><a class="reference internal" href="#iapplaction-stepok">IApplAction stepok</a></li>
+<li><a class="reference internal" href="#iapplaction-stepfail">IApplAction stepfail</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#appl1actors23-distribuzione">Appl1Actors23 - Distribuzione</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="SistemiActors23.html"
+                          title="previous chapter">SistemiActors23</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="Appl1ActorsFsm23.html"
+                          title="next chapter">Appl1ActorsFsm23</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Appl1Actors23.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Appl1ActorsFsm23.html" title="Appl1ActorsFsm23"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="SistemiActors23.html" title="SistemiActors23"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appl1Actors23</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

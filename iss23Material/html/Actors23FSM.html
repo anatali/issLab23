@@ -1,0 +1,688 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Actors23FSM &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Producers-Consumer" href="Producers-Consumer.html" />
+    <link rel="prev" title="Actors23" href="Actors23.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Producers-Consumer.html" title="Producers-Consumer"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Actors23.html" title="Actors23"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Actors23FSM</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="actors23fsm">
+<h1>Actors23FSM<a class="headerlink" href="#actors23fsm" title="Permalink to this headline">¶</a></h1>
+<p>In questa sezione, vediamo come realizzare gli attori come <a class="reference internal" href="Principi.html#automi-a-stati-finiti"><span class="std std-ref">Automi a stati finiti</span></a> (FSM: Finite State Machines)
+avvalendoci delle <a class="reference internal" href="Annotazioni.html#annotazioni"><span class="std std-ref">annotazioni Java</span></a>.</p>
+<p>Attualmente, un attore <a class="reference internal" href="Actors23.html#actorbasic23"><span class="std std-ref">ActorBasic23</span></a> ha un
+<a class="reference internal" href="Actors23.html#il-comportamento-di-un-attore"><span class="std std-ref">comportamento message-driven</span></a> in quanto
+elabora i messaggi in modo FIFO, senza specificare a-priori
+a quali messaggi è interessato in un certo stato della sua attività.</p>
+<p><span class="slide1">Oltre il message-driven</span></p>
+<p>Il modello computazionale degli <a class="reference internal" href="Principi.html#automi-a-stati-finiti"><span class="std std-ref">Automi a stati finiti</span></a> permette di definire,
+per ogni stato dell’attore, quali messaggi provocano una transizione a stati successivi.
+Ciò significa che il primo messaggi nella <a class="reference internal" href="Actors23.html#msgqueue"><span class="std std-ref">msgQueue</span></a> dell’attore potrebbe essere ignorato nel caso in cui lo stato
+corrente dell’automa non specifichi alcuna trasnsizione per quel (tipo di) messaggio.</p>
+<section id="struttura-del-codice-applicativo">
+<h2>Struttura del codice applicativo<a class="headerlink" href="#struttura-del-codice-applicativo" title="Permalink to this headline">¶</a></h2>
+<p>Consideriamo come esempio la forma che assume un consumatore-FSM usando le annotazioni.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>public class ConsumerFsm23 extends ActorBasicFsm23 {
+String data = &quot;&quot;;
+
+    public ConsumerFsm23(String name, ActorContext23 ctx) {
+        super(name, ctx);
+    }
+
+    @State( name = &quot;s0&quot;, initial=true)
+    @Transition( state = &quot;startwork&quot;  )  //emptyMove
+    protected void s0( IApplMessage msg ) {
+        CommUtils.outgreen(name + &quot; | s0 initial &quot;+ msg  );
+        Actor23Utils.showSystemConfiguration();
+    }
+
+    @State( name = &quot;startwork&quot; )
+    @Transition( state = &quot;consume&quot;, msgId = &quot;prodinfo&quot;   )
+    protected void startwork( IApplMessage msg ) {
+        CommUtils.outgreen(name + &quot; | startwork &quot;+msg  );
+    }
+
+    @State( name = &quot;consume&quot; )
+    @Transition( state = &quot;consume&quot;, msgId = &quot;prodinfo&quot;, guard = &quot;sizeinlimit&quot;)
+    protected void consume( IApplMessage msg ) {
+        CommUtils.outgray(name + &quot; | consume &quot;+msg  );
+        data = data + &quot;|&quot; + msg.msgContent();
+        CommUtils.outgreen(name + &quot; | data=&quot;+data  );
+    }
+
+    @TransitionGuard
+    protected boolean sizeinlimit() {
+        boolean sizeok = data.length() &lt; 10;
+        if( ! sizeok ) CommUtils.outred(&quot;limite raggiunto: &quot; + data.length());
+        return sizeok ;
+    }
+</pre></div>
+</div>
+<p>}</p>
+<p><span class="slide1">&#64;State, &#64;Transition, &#64;TransitionGuard</span></p>
+</section>
+<section id="actors23fsm-annotazioni">
+<h2>Actors23FSM: Annotazioni<a class="headerlink" href="#actors23fsm-annotazioni" title="Permalink to this headline">¶</a></h2>
+<p>Gli <strong>stati</strong> dell’automa sono <strong>rappresentati da metodi annotati</strong> della forma che segue:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;xyz&quot;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">initial</span><span class="o">&gt;</span> <span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">NextStateName</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">msgId</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">guard</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">MethodGuardName</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="n">protected</span> <span class="n">void</span> <span class="n">xyz</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span> <span class="o">&lt;</span><span class="n">Body</span><span class="o">&gt;</span> <span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ul class="simple">
+<li><p>L’attributo <span class="remark">name</span> dell’annotazione <span class="slide2">&#64;State</span> rappresenta il nome del metodo-stato e deve coincidere
+con il nome del metodo.</p></li>
+<li><p>L’attributo opzionale <span class="remark">initial</span>  dell’annotazione <span class="slide2">&#64;State</span> fissato a <em>true</em>, denota quello stato come lo
+(<span class="brown">unico</span>) stato iniziale.</p></li>
+<li><p>Il <strong>&lt;Body&gt;</strong> del metodo-stato rappresenta l’insieme delle attività applicative che l’automa svolge,
+in quanto <a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">Moore machine</a>.</p></li>
+<li><p>L’attributo  <span class="remark">state</span> dell’annotazione <span class="slide2">&#64;Transition</span> specifica il nome dello stato in cui  l’automa
+deve transitare nel caso in cui  vi sia un <a class="reference internal" href="#messaggio-disponibile"><span class="std std-ref">Messaggio disponibile</span></a>.
+Nel caso in cui l’attributo <code class="docutils literal notranslate"><span class="pre">msgId</span></code> sia assente, si ha una transizione immediata
+(<span class="math notranslate nohighlight">\(\epsilon\)</span>-mossa). allo stato <code class="docutils literal notranslate"><span class="pre">&lt;NextStateName&gt;</span></code>.</p></li>
+<li><p>L’attributo <span class="remark">guard</span> di <span class="slide2">&#64;Transition</span> denota il nome di un <span class="remark">metodo-guardia</span>, che inibisce la transizione nel caso in cui
+la sua valutazione restituisca <span class="brown">false</span>. Nel caso in cui l’attributo sia assente, tutto va come
+se si valutasse un metodo-guardia che restituisce sempre <span class="brown">true</span>.</p></li>
+<li><p>L’annotazione <span class="slide2">&#64;TransitionGuard</span> denota un <span class="blue">metodo-guardia</span>.</p></li>
+</ul>
+</section>
+<section id="unibo-actors23-fsm-actorbasicfsm23">
+<h2>unibo.actors23.fsm.ActorBasicFsm23<a class="headerlink" href="#unibo-actors23-fsm-actorbasicfsm23" title="Permalink to this headline">¶</a></h2>
+<p>La  classe <code class="docutils literal notranslate"><span class="pre">ActorBasicFsm23</span></code> estende <a class="reference internal" href="Actors23.html#actorbasic23"><span class="std std-ref">ActorBasic23</span></a> e articola il suo funzionamento in due fasi:</p>
+<ol class="arabic simple">
+<li><p>Fase di preparazione di  strutture dati utili a realizzare il  voluto comportamento run-time come <a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">Moore machine</a>.</p></li>
+<li><p>Fase di esecuzione dell’attore come come <a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">Moore machine</a></p></li>
+</ol>
+<p><span class="slide1">La fase di esecuzione</span></p>
+<section id="actorbasicfsm23-fase-di-esecuzione">
+<h3>ActorBasicFsm23 - Fase di esecuzione<a class="headerlink" href="#actorbasicfsm23-fase-di-esecuzione" title="Permalink to this headline">¶</a></h3>
+<p>La fase di esecuzione consiste in una definizione del metodo abstract <a class="reference internal" href="Actors23.html#actor23-elabmsg"><span class="std std-ref">elabMsg</span></a> che:</p>
+<ol class="arabic simple">
+<li><p>verifica se il il primo messaggio in <a class="reference internal" href="Actors23.html#msgqueue"><span class="std std-ref">msgQueue</span></a> debba essere delegato ad altro attore;</p></li>
+<li><p>in assenza di delegazione, verifica (metodo <a class="reference internal" href="#actorbasicfsm23-checkifexpected"><span class="std std-ref">checkIfExpected</span></a>)
+che il primo messaggio in <a class="reference internal" href="Actors23.html#msgqueue"><span class="std std-ref">msgQueue</span></a> sia tra quelli attesi dall’attore nello stato corrente;</p></li>
+<li><p>se il messaggio è atteso, effettua la transizione (metodo <a class="reference internal" href="#statetransition"><span class="std std-ref">stateTransition</span></a>) allo stato associato  al <code class="docutils literal notranslate"><span class="pre">msgId</span></code> del messaggio;</p></li>
+<li><p>se il messaggio non è atteso, trascura il messaggio, se questo è un event. Se il messaggio non è un evento, allora memorizza
+il messaggio in una coda (<a class="reference internal" href="#oldmsgqueue"><span class="std std-ref">OldMsgQueue</span></a>), nel caso la varaibile <em>memoNonHandledMessages</em> sia <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p></li>
+</ol>
+<p>La coda <a class="reference internal" href="#oldmsgqueue"><span class="std std-ref">OldMsgQueue</span></a> (inzialmente vuota) viene esplorata nel momento in cui l’attore deve decidere in quale
+nuovo stato futuro transitare: si veda il metodo <a class="reference internal" href="#nextstate"><span class="std std-ref">nextState</span></a>.</p>
+<section id="actorbasicfsm23-elabmsg">
+<h4>ActorBasicFsm23 elabMsg<a class="headerlink" href="#actorbasicfsm23-elabmsg" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>@Override
+protected void elabMsg(IApplMessage msg) throws Exception {
+    //Check for delegated
+    ActorBasic23 a = getDelegatedActor(msg);
+    if( a  != null ) {  a.autoMsg(msg);  return; }
+    //Check if expected
+    String state = checkIfExpected(msg);
+    if ( state != null ) stateTransition(state,msg);
+    else if( ! msg.isEvent() &amp;&amp; memoNonHandledMessages ) memoTheMessage(msg);
+}
+</pre></div>
+</div>
+<section id="actorbasicfsm23-checkifexpected">
+<h5>ActorBasicFsm23 checkIfExpected<a class="headerlink" href="#actorbasicfsm23-checkifexpected" title="Permalink to this headline">¶</a></h5>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><em>checkIfExpected</em> consulta la tabella  <span class="blue">nextMsgMap</span> popolata nella fase di ricerca dello stato futuro
+(metodo <a class="reference internal" href="#addexpectedmsg"><span class="std std-ref">addExpectedMsg</span></a> invocato in <a class="reference internal" href="#nextstate"><span class="std std-ref">nextState</span></a> al termine
+della preparazione del codice di uno stato da parte di <a class="reference internal" href="#dopreparestate"><span class="std std-ref">doPrepareState</span></a> e <a class="reference internal" href="#declarestate"><span class="std std-ref">declareState</span></a>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">String</span> <span class="n">checkIfExpected</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">nextMsgMap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgId</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</td>
+<td><p>Il metodo <a class="reference internal" href="#statetransition"><span class="std std-ref">stateTransition</span></a> effettua una transizione allo stato specificato, dovuta al
+messaggio corrente.</p></td>
+</tr>
+</tbody>
+</table>
+<p><span class="slide1">Rappresentazione dei metodi-stato</span></p>
+</section>
+</section>
+<section id="rappresentazione-dei-metodi-stato">
+<h4>Rappresentazione dei metodi-stato<a class="headerlink" href="#rappresentazione-dei-metodi-stato" title="Permalink to this headline">¶</a></h4>
+<p>La classe <code class="docutils literal notranslate"><span class="pre">ActorBasicFsm23</span></code> è alquanto  <a href="#id1"><span class="problematic" id="id2">`opinionated`_</span></a> …, in quanto impone un precisa struttura al
+comportamento di uno stato in relazione alla ricezione di un messaggio
+<a class="reference internal" href="unibo.basicomm23.html#unibo-interaction-interfaces-iapplmessage"><span class="std std-ref">IApplMessage</span></a>.</p>
+<p>La sequenza delle azioni eseguite in uno stato, deve essere specificato da oggetti che implementano
+l’interfaccia  <code class="docutils literal notranslate"><span class="pre">StateActionFun</span></code>.</p>
+</section>
+</section>
+<section id="stateactionfun">
+<h3>StateActionFun<a class="headerlink" href="#stateactionfun" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">interface</span> <span class="n">StateActionFun</span> <span class="p">{</span>
+        <span class="n">void</span> <span class="n">run</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Ogni metodo-stato viene rappresentato da una coppia <code class="docutils literal notranslate"><span class="pre">&lt;StateName,StateActionFun&gt;</span></code>  inserita, durante la fase di
+preparazione (metodo <a class="reference internal" href="#declarestate"><span class="std std-ref">declareState</span></a>),  nella  <em>tabella degli stati stateMap</em> .</p>
+<section id="actorbasicfsm23-statemap">
+<h4>ActorBasicFsm23: stateMap<a class="headerlink" href="#actorbasicfsm23-statemap" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">StateActionFun</span><span class="o">&gt;</span> <span class="n">stateMap</span><span class="o">=</span><span class="n">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">StateActionFun</span><span class="o">&gt;</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="declarestate">
+<h4>declareState<a class="headerlink" href="#declarestate" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <em>declareState</em> inserisce lo stato nella <em>tabella degli stati</em>  <code class="docutils literal notranslate"><span class="pre">stateMap</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">declareState</span><span class="p">(</span><span class="n">String</span> <span class="n">stateName</span><span class="p">,</span> <span class="n">StateActionFun</span> <span class="n">action</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">action</span> <span class="o">==</span> <span class="n">null</span> <span class="p">)</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">outred</span><span class="p">(</span><span class="n">getName</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; ActorBasicFsm23 | action null&quot;</span><span class="p">);</span>
+    <span class="k">else</span> <span class="n">stateMap</span><span class="o">.</span><span class="n">put</span><span class="p">(</span> <span class="n">stateName</span><span class="p">,</span> <span class="n">action</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Questo metodo viene invocato, nella fase di preparazione, dal metodo <a class="reference internal" href="#dopreparestate"><span class="std std-ref">doPrepareState</span></a>, secondo
+la catena:
+<a class="reference internal" href="#preparethestates"><span class="std std-ref">prepareTheStates</span></a> -&gt; <a class="reference internal" href="#elabannotatedmethod"><span class="std std-ref">elabAnnotatedMethod</span></a> -&gt; <a class="reference internal" href="#elabstatemethod"><span class="std std-ref">elabStateMethod</span></a> -&gt; <a class="reference internal" href="#dopreparestate"><span class="std std-ref">doPrepareState</span></a> -&gt; <a class="reference internal" href="#declarestate"><span class="std std-ref">declareState</span></a>.</p>
+<p><span class="slide1">Struttura del codice di uno stato</span></p>
+<p>Anticipiamo qui il metodo <em>doPrepareState</em>, per meglio comprendere come viene definito il comportamento di uno stato.</p>
+</section>
+<section id="dopreparestate">
+<h4>doPrepareState<a class="headerlink" href="#dopreparestate" title="Permalink to this headline">¶</a></h4>
+<p>Il comportamento di uno stato viene organizzato in modo che esso esegua, nell’ordine:</p>
+<ol class="arabic simple">
+<li><p>il body definito dal codice applicativo</p></li>
+<li><p>per <strong>ciascuno dei possibili stati futuri</strong>, effettua:</p>
+<ul class="simple">
+<li><p>un check per transizioni-interrupt</p></li>
+<li><p>la valutazione della guardia</p></li>
+<li><p><a class="reference internal" href="#addtransition"><span class="std std-ref">addTransition</span></a>, per aggiornare una tabella con le possibili transizioni di stato</p></li>
+</ul>
+</li>
+<li><p>al termine invoca <a class="reference internal" href="#nextstate"><span class="std std-ref">nextState</span></a> per effettuare la transizione allo stato futuro determinato
+dal primo <a class="reference internal" href="#messaggio-disponibile"><span class="std std-ref">Messaggio disponibile</span></a>.</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>protected void doPrepareState(ActorBasicFsm23 castMyself,
+                              Method curMethod, String stateName, Vector&lt;String&gt; nextStates,
+                              Vector&lt;String&gt; msgIds, Vector&lt;Method&gt; guards, Vector&lt;Boolean&gt; interrupts) {
+ declareState( stateName, new StateActionFun() {
+  @Override
+    public void run( IApplMessage msg ) {
+     try {
+        //Esegue il body
+        curMethod.invoke(  castMyself, msg  );  //I metodi hanno this come arg implicito
+
+        boolean stateWithInterrupt=false;
+
+        for( int j=0; j&lt;nextStates.size();j++ ) {
+            Method  g            =  guards.elementAt(j);
+            boolean hasInterrupt = interrupts.elementAt(j);
+            if( hasInterrupt  ) {
+                if( ! stateWithInterrupt  ) stateWithInterrupt = true;
+                else {CommUtils.outred(stateName + &quot;: multiple interrupt not allowed&quot;);}
+            }
+            Boolean result = (g != null) ? (Boolean) g.invoke(castMyself) : true;
+            if( result ) {
+                addTransition( nextStates.elementAt(j), msgIds.elementAt(j), stateWithInterrupt );
+            }
+        }
+        nextState(stateName );
+     } catch ( Exception e) {
+       CommUtils.outred(&quot;wrong execution for:&quot;+ stateName + &quot; - &quot; + e.getMessage());
+     }
+  }
+});
+</pre></div>
+</div>
+</section>
+<section id="addtransition">
+<h4>addTransition<a class="headerlink" href="#addtransition" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">addTransition</span></code> aggiunge una transizione alla <em>tabella delle transizioni correnti</em> (<code class="docutils literal notranslate"><span class="pre">transTab</span></code>).</p>
+<section id="transtab">
+<h5>transTab<a class="headerlink" href="#transtab" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">Pair</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">String</span><span class="o">&gt;&gt;</span> <span class="n">transTab</span>     <span class="o">=</span> <span class="n">new</span> <span class="n">Vector</span><span class="o">&lt;</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="o">&gt;</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><em>addTransition</em> aggiunge alla tabella una coppia <span class="blue">(nextstate,msgId)</span> col seguente significato:</p>
+<ul class="simple">
+<li><p>se il prossimo <a class="reference internal" href="#messaggio-disponibile"><span class="std std-ref">Messaggio disponibile</span></a> ha identificatore <span class="blue">msgId</span>, transita allo stato <span class="blue">nextstate</span></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">addTransition</span><span class="p">(</span><span class="n">String</span> <span class="n">state</span><span class="p">,</span> <span class="n">String</span> <span class="n">msgId</span><span class="p">,</span> <span class="n">boolean</span> <span class="n">withInterrupt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">transTab</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>     <span class="n">new</span> <span class="n">Pair</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">msgId</span><span class="p">)</span> <span class="p">);</span>
+    <span class="n">interruptTab</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">new</span> <span class="n">Pair</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">withInterrupt</span><span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il concetto di <strong>Messaggio disponibile</strong> è definito da <a class="reference internal" href="#nextstate"><span class="std std-ref">nextState</span></a>, che ne effettua la ricerca.</p>
+</section>
+</section>
+<section id="nextstate">
+<h4>nextState<a class="headerlink" href="#nextstate" title="Permalink to this headline">¶</a></h4>
+<p>La operazione <code class="docutils literal notranslate"><span class="pre">nextState</span></code> effettua una transione di stato sulla base del
+<code class="docutils literal notranslate"><span class="pre">msgId</span></code> del <em>primo Messaggio disponibile</em>, che viene determinato come segue.</p>
+<section id="messaggio-disponibile">
+<h5>Messaggio disponibile<a class="headerlink" href="#messaggio-disponibile" title="Permalink to this headline">¶</a></h5>
+<p>Per ogni elemento della tabella <a class="reference internal" href="#transtab"><span class="std std-ref">transTab</span></a>:</p>
+<ol class="arabic simple">
+<li><p>cerca se il <code class="docutils literal notranslate"><span class="pre">msgId</span></code> si trova nella <a class="reference internal" href="#oldmsgqueue"><span class="std std-ref">OldMsgQueue</span></a>. In caso positivo, invoca <a class="reference internal" href="#statetransition"><span class="std std-ref">stateTransition</span></a> per effettuare la
+transizione di stato relativa a questo messaggio memorizzato in precedenza;</p></li>
+<li><p>in caso negativo,invoca <a class="reference internal" href="#addexpectedmsg"><span class="std std-ref">addExpectedMsg</span></a>, per inserire il <code class="docutils literal notranslate"><span class="pre">msgId</span></code> tra quelli attesi.
+Ricordando il funzionamento di <a class="reference internal" href="#actorbasicfsm23-elabmsg"><span class="std std-ref">elabMsg</span></a>, l’automa al momento di ferma.</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>protected void nextState(String currentState ) {
+     clearExpectedMsgs();
+     Iterator&lt; Pair&lt;String, String&gt; &gt;  iterOnTrans  = transTab.iterator();
+     Iterator&lt; Pair&lt;String, Boolean&gt; &gt; iterOnIntrpt = interruptTab.iterator();
+     boolean hasInterruptTransition = false;
+
+     while( iterOnTrans.hasNext() ) {
+         Pair&lt;String, String&gt; curTrans   = iterOnTrans.next();
+         Pair&lt;String, Boolean&gt; curIntrpt = iterOnIntrpt.next();
+
+         String nextState                    = curTrans.getFirst();
+         String msgId                        = curTrans.getSecond();
+         boolean withInterrupt               = curIntrpt.getSecond();
+
+         if( msgId.equals( emptyMoveId) ) {
+             stateTransition(nextState,  emptyMoveCmd(getName(),getName() ));
+             return;
+         }
+         if( withInterrupt &amp;&amp; ! hasInterruptTransition &amp;&amp; ! curState.equals(&quot;resuming&quot;)  ) {
+             memoTheState(currentState);
+             hasInterruptTransition = true;
+         }
+
+         IApplMessage oldMsg = searchInOldMsgQueue( msgId );
+         if( oldMsg != null ) {
+             stateTransition(nextState,oldMsg);
+             break;
+         }
+         else addExpectedMsg(nextState, msgId);
+     }
+ }
+</pre></div>
+</div>
+</section>
+</section>
+<section id="oldmsgqueue">
+<h4>OldMsgQueue<a class="headerlink" href="#oldmsgqueue" title="Permalink to this headline">¶</a></h4>
+<p><em>OldMsgQueue</em> è la coda in cui sono memorizzati i messaggi della <a class="reference internal" href="Actors23.html#msgqueue"><span class="std std-ref">msgQueue</span></a> elaborati  da
+<a class="reference internal" href="#actorbasicfsm23-elabmsg"><span class="std std-ref">elabMsg</span></a>
+quando l’attore è in uno stato che non prevede transizioni per quel messaggio.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">IApplMessage</span><span class="o">&gt;</span> <span class="n">OldMsgQueue</span>  <span class="o">=</span> <span class="n">new</span> <span class="n">Vector</span><span class="o">&lt;</span> <span class="n">IApplMessage</span><span class="o">&gt;</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="addexpectedmsg">
+<h3>addExpectedMsg<a class="headerlink" href="#addexpectedmsg" title="Permalink to this headline">¶</a></h3>
+<p>In un <a class="reference external" href="https://it.wikipedia.org/wiki/Automa_a_stati_finiti">Automa a stati finiti</a>,ogni stato risulta ‘essere interessato’ a ricevere un preciso insieme di messaggi,
+effettuando una transizione di stato quando uno di questi si manifesta.</p>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">addExpectedMsg</span></code> inserisce l’identificatore di un messaggio tra quelli attesi, usando una
+tabella  <code class="docutils literal notranslate"><span class="pre">nextMsgMap</span></code> che ha come chiave il nome dello stato.
+Questa tabella viene aggiornata dal metodo <a class="reference internal" href="#nextstate"><span class="std std-ref">nextState</span></a>,
+che effettua le transizioni di stato e consultata dal metodo <a class="reference internal" href="#actorbasicfsm23-checkifexpected"><span class="std std-ref">checkIfExpected</span></a>
+invocato da <a class="reference internal" href="#actorbasicfsm23-elabmsg"><span class="std std-ref">elabMsg</span></a>.</p>
+<section id="statetransition">
+<h4>stateTransition<a class="headerlink" href="#statetransition" title="Permalink to this headline">¶</a></h4>
+<p><span class="slide2">curState e currentMsg</span></p>
+<p>Una transizione di stato opera come segue:</p>
+<ol class="arabic simple">
+<li><p>aggiorna il valore dello stato corrente (variabile <code class="docutils literal notranslate"><span class="pre">curState</span></code>) e del messaggio corrente  (variabile <code class="docutils literal notranslate"><span class="pre">currentMsg</span></code>)</p></li>
+<li><p>pulisce la  <em>tabella delle transizioni correnti</em> <code class="docutils literal notranslate"><span class="pre">transTab</span></code></p></li>
+<li><p>recupera dalla <em>tabella degli stati</em> <code class="docutils literal notranslate"><span class="pre">stateMap</span></code> il riferimento al codice dello stato</p></li>
+<li><p>esegue il codice dello stato eseguendo il metodo <code class="docutils literal notranslate"><span class="pre">run</span></code> della <a class="reference internal" href="#stateactionfun"><span class="std std-ref">StateActionFun</span></a> dello stato.</p></li>
+</ol>
+<section id="curstate-e-currentmsg">
+<h5>curState e currentMsg<a class="headerlink" href="#curstate-e-currentmsg" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">stateTransition</span><span class="p">(</span><span class="n">String</span> <span class="n">stateName</span><span class="p">,</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">curState</span>   <span class="o">=</span> <span class="n">stateName</span><span class="p">;</span>
+        <span class="n">currentMsg</span> <span class="o">=</span> <span class="n">msg</span><span class="p">;</span>
+        <span class="n">transTab</span><span class="o">.</span><span class="n">removeAllElements</span><span class="p">();</span>
+        <span class="n">StateActionFun</span> <span class="n">a</span> <span class="o">=</span> <span class="n">stateMap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">stateName</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">a</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="n">a</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+        <span class="k">else</span> <span class="n">ColorsOut</span><span class="o">.</span><span class="n">outerr</span><span class="p">(</span><span class="n">getName</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; | ActorBasicFsm23 TERMINATED&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide1">La fase di preparazione</span></p>
+</section>
+</section>
+</section>
+<section id="actorbasicfsm23-fase-di-preparazione">
+<h3>ActorBasicFsm23 - Fase di preparazione<a class="headerlink" href="#actorbasicfsm23-fase-di-preparazione" title="Permalink to this headline">¶</a></h3>
+<p>Il costruttore della classe  esplora il codice applicativo per organizzare strutture-dati utili a realizzare il
+voluto comportamento run-time come <a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">Moore machine</a>.</p>
+<section id="actorbasicfsm23-costruttore">
+<h4>ActorBasicFsm23: costruttore<a class="headerlink" href="#actorbasicfsm23-costruttore" title="Permalink to this headline">¶</a></h4>
+<p>Il costruttore dell’automa opera come segue:</p>
+<ol class="arabic simple">
+<li><p>invoca un metodo <a class="reference internal" href="#preparethestates"><span class="std std-ref">prepareTheStates</span></a> che individua gli stati
+dell’automa, tra cui quello iniziale. Questi stati sono inseriti nella <a class="reference internal" href="#actorbasicfsm23-statemap"><span class="std std-ref">stateMap</span></a>, usando come
+chiave il nome dello stato;</p></li>
+<li><p>fissa il valore della variabile <code class="docutils literal notranslate"><span class="pre">curState</span></code> che denota il nome dello stato corrente al valore restituito dal metodo
+annotato con <span class="remark">initial=true</span>;</p></li>
+<li><p>attiva l’automa, che si posiziona sullo stato iniziale (unico).</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">ActorBasicFsm23</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nb">super</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+  <span class="n">prepareTheStates</span><span class="p">();</span>
+  <span class="n">addExpectedMsg</span><span class="p">(</span><span class="n">curState</span><span class="p">,</span><span class="n">ApplData</span><span class="o">.</span><span class="n">startSysCmdId</span><span class="p">);</span>
+  <span class="o">//</span><span class="n">Si</span> <span class="n">auto</span><span class="o">-</span><span class="n">invia</span> <span class="n">il</span> <span class="n">messaggio</span> <span class="n">di</span> <span class="n">inizio</span> <span class="n">che</span> <span class="n">porta</span> <span class="n">nello</span> <span class="n">stato</span> <span class="n">iniziale</span>
+  <span class="n">autostart</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+      <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="preparethestates">
+<h4>prepareTheStates<a class="headerlink" href="#preparethestates" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">prepareTheStates</span></code> usa la reflection Java per esplorare il codice applicativo, e:</p>
+<ul class="simple">
+<li><p>popola l’array <code class="docutils literal notranslate"><span class="pre">Method[]</span> <span class="pre">guards</span></code> con i metodi-guardia;</p></li>
+<li><p>per ogni metodo annotato, invoca il metodo <a class="reference internal" href="#elabannotatedmethod"><span class="std std-ref">elabAnnotatedMethod</span></a>.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">prepareTheStates</span><span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">Method</span><span class="p">[]</span> <span class="n">methods</span>  <span class="o">=</span> <span class="n">this</span><span class="o">.</span><span class="n">getClass</span><span class="p">()</span><span class="o">.</span><span class="n">getDeclaredMethods</span><span class="p">(</span> <span class="p">);</span>
+        <span class="n">Method</span><span class="p">[]</span> <span class="n">guards</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">methods</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">m</span> <span class="o">-&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">isAnnotationPresent</span><span class="p">(</span><span class="n">TransitionGuard</span><span class="o">.</span><span class="n">class</span><span class="p">))</span>
+                <span class="o">.</span><span class="n">toArray</span><span class="p">(</span><span class="n">Method</span><span class="p">[]::</span><span class="n">new</span><span class="p">);</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Method</span><span class="o">&gt;</span> <span class="n">annotatedMethods</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">(</span> <span class="n">methods</span><span class="o">.</span><span class="n">length</span>  <span class="p">);</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">Method</span> <span class="n">method</span> <span class="p">:</span> <span class="n">methods</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">method</span><span class="o">.</span><span class="n">setAccessible</span><span class="p">(</span><span class="n">true</span><span class="p">);</span>      <span class="o">//</span><span class="n">IMPORTANTE</span> <span class="n">per</span> <span class="n">reflection</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">method</span><span class="o">.</span><span class="n">isAnnotationPresent</span><span class="p">(</span><span class="n">State</span><span class="o">.</span><span class="n">class</span><span class="p">))</span> <span class="n">annotatedMethods</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">method</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">Method</span> <span class="n">method</span> <span class="p">:</span> <span class="n">annotatedMethods</span><span class="p">)</span> <span class="n">elabAnnotatedMethod</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">guards</span><span class="p">);</span>
+
+    <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="elabannotatedmethod">
+<h4>elabAnnotatedMethod<a class="headerlink" href="#elabannotatedmethod" title="Permalink to this headline">¶</a></h4>
+<p><em>elabAnnotatedMethod</em>  provvede a:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>controllare che vi sia un solo parametro, di tipo <a class="reference internal" href="unibo.basicomm23.html#unibo-interaction-interfaces-iapplmessage"><span class="std std-ref">IApplMessage</span></a>;</p></li>
+<li><p>definire lo stato iniziale;</p></li>
+<li><p>invocare <a class="reference internal" href="#elabstatemethod"><span class="std std-ref">elabStateMethod</span></a>.</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>protected void elabAnnotatedMethod(Method m, Method[] guards) {
+    String functor =  m.getName();
+    Class&lt;?&gt;[] p   =  m.getParameterTypes();
+    if( p.length==0 || p.length&gt;1 ||
+            ! p[0].getCanonicalName().equals(&quot;unibo.basicomm23.interfaces.IApplMessage&quot;) ) {
+        CommUtils.outred(&quot;wrong arguments for state:&quot;+ functor);
+    }else {
+        State stateAnnot=m.getAnnotation(State.class);
+        if( stateAnnot.initial() )  setTheInitialState(stateAnnot.name());
+        elabStateMethod( m, stateAnnot.name(), guards);
+    }
+}
+</pre></div>
+</div>
+</section>
+<section id="elabstatemethod">
+<h4>elabStateMethod<a class="headerlink" href="#elabstatemethod" title="Permalink to this headline">¶</a></h4>
+<p><em>elabStateMethod</em>  provvede a:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>impostare strutture-dati per rappresentare le informazioni sulle transazioni e relative guardie;</p></li>
+<li><p>inovcare <a class="reference internal" href="#dopreparestate"><span class="std std-ref">doPrepareState</span></a>.</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>protected void elabStateMethod(Method m, String stateName, Method[] allguards) {
+    if( ! m.getName().equals(stateName)) {
+        CommUtils.outred(getName() + &quot; | ActorBasicFsm23  Method name must be = state name&quot;);
+    }
+    Vector&lt;String&gt; nextStates = new Vector&lt;String&gt;();
+    Vector&lt;String&gt; msgIds     = new Vector&lt;String&gt;();
+    Vector&lt;Boolean&gt; interrupts= new Vector&lt;Boolean&gt;();
+    Vector&lt;Method&gt; guards     = new Vector&lt;Method&gt;();
+
+    Transition[] ta        = m.getAnnotationsByType(Transition.class);
+
+    for ( Transition t : ta ) {
+        nextStates.add(t.state());
+        msgIds.add(t.msgId());
+        interrupts.add(t.interrupt());
+
+        String guardName = t.guard();
+        if ( guardName.isEmpty() ) guards.add(null);
+        else {
+            Method guard = getGuard(allguards, guardName);
+            if (guard == null) {
+                throw new IllegalArgumentException(&quot;Non existent guard:&quot; + guardName);
+            }
+            guards.add( guard );
+        }
+    }
+    doPrepareState(this, m,stateName,nextStates,msgIds,guards,interrupts );
+}
+
+protected Method getGuard(Method[] guards, String guardName) {
+    return Arrays.stream(guards)
+            .filter(m -&gt; m.getName().equals(guardName))
+            .findFirst()
+            .orElse(null);
+}
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="actorbasicfsm23-le-annotazioni">
+<h2>ActorBasicFsm23: le annotazioni<a class="headerlink" href="#actorbasicfsm23-le-annotazioni" title="Permalink to this headline">¶</a></h2>
+<section id="unibo-actors23-annotations-state">
+<h3>unibo.actors23.annotations.State<a class="headerlink" href="#unibo-actors23-annotations-state" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Target</span> <span class="p">(</span><span class="n">ElementType</span><span class="o">.</span><span class="n">METHOD</span><span class="p">)</span>
+<span class="nd">@Retention</span><span class="p">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="n">RUNTIME</span><span class="p">)</span>
+<span class="nd">@Inherited</span>
+<span class="n">public</span> <span class="nd">@interface</span> <span class="n">State</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">name</span><span class="p">()</span> <span class="n">default</span> <span class="s2">&quot;s0&quot;</span><span class="p">;</span>
+    <span class="n">boolean</span> <span class="n">initial</span><span class="p">()</span> <span class="n">default</span>  <span class="n">false</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unibo-actors23-annotations-transition">
+<h3>unibo.actors23.annotations.Transition<a class="headerlink" href="#unibo-actors23-annotations-transition" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Target</span> <span class="p">(</span><span class="n">ElementType</span><span class="o">.</span><span class="n">METHOD</span><span class="p">)</span>
+<span class="nd">@Retention</span><span class="p">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="n">RUNTIME</span><span class="p">)</span>
+<span class="nd">@Repeatable</span><span class="p">(</span><span class="n">Transitions</span><span class="o">.</span><span class="n">class</span><span class="p">)</span>
+<span class="n">public</span> <span class="nd">@interface</span> <span class="n">Transition</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">name</span><span class="p">()</span> <span class="n">default</span> <span class="s2">&quot;t0&quot;</span><span class="p">;</span>
+    <span class="n">String</span> <span class="n">state</span><span class="p">()</span>  <span class="p">;</span>
+    <span class="n">String</span> <span class="n">msgId</span><span class="p">()</span> <span class="n">default</span> <span class="s2">&quot;emptyMove&quot;</span> <span class="p">;</span>
+    <span class="n">String</span> <span class="n">guard</span><span class="p">()</span> <span class="n">default</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+    <span class="n">boolean</span> <span class="n">interrupt</span><span class="p">()</span> <span class="n">default</span> <span class="n">false</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unibo-actors23-annotations-transitionguard">
+<h3>unibo.actors23.annotations.TransitionGuard<a class="headerlink" href="#unibo-actors23-annotations-transitionguard" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Target</span><span class="p">(</span><span class="n">ElementType</span><span class="o">.</span><span class="n">METHOD</span><span class="p">)</span>
+<span class="nd">@Retention</span><span class="p">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="n">RUNTIME</span><span class="p">)</span>
+<span class="n">public</span> <span class="nd">@interface</span> <span class="n">TransitionGuard</span> <span class="p">{</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="slide">Problematiche ancora aperte</span></p>
+<p><span class="slidekp">Messaggi che non arrivano</span></p>
+<p><span class="slidekp">Elaborazione a interrupt</span></p>
+</section>
+</section>
+<section id="interrupt">
+<h2>Interrupt<a class="headerlink" href="#interrupt" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="actorbasicfsm23-un-esempio">
+<h2>ActorBasicFsm23: un esempio<a class="headerlink" href="#actorbasicfsm23-un-esempio" title="Permalink to this headline">¶</a></h2>
+<p>Per un esempio più completo,  veda <a class="reference internal" href="Producers-Consumer.html#prodconsfsm23"><span class="std std-ref">ProdConsFSM23</span></a></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Actors23FSM</a><ul>
+<li><a class="reference internal" href="#struttura-del-codice-applicativo">Struttura del codice applicativo</a></li>
+<li><a class="reference internal" href="#actors23fsm-annotazioni">Actors23FSM: Annotazioni</a></li>
+<li><a class="reference internal" href="#unibo-actors23-fsm-actorbasicfsm23">unibo.actors23.fsm.ActorBasicFsm23</a><ul>
+<li><a class="reference internal" href="#actorbasicfsm23-fase-di-esecuzione">ActorBasicFsm23 - Fase di esecuzione</a><ul>
+<li><a class="reference internal" href="#actorbasicfsm23-elabmsg">ActorBasicFsm23 elabMsg</a><ul>
+<li><a class="reference internal" href="#actorbasicfsm23-checkifexpected">ActorBasicFsm23 checkIfExpected</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rappresentazione-dei-metodi-stato">Rappresentazione dei metodi-stato</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stateactionfun">StateActionFun</a><ul>
+<li><a class="reference internal" href="#actorbasicfsm23-statemap">ActorBasicFsm23: stateMap</a></li>
+<li><a class="reference internal" href="#declarestate">declareState</a></li>
+<li><a class="reference internal" href="#dopreparestate">doPrepareState</a></li>
+<li><a class="reference internal" href="#addtransition">addTransition</a><ul>
+<li><a class="reference internal" href="#transtab">transTab</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nextstate">nextState</a><ul>
+<li><a class="reference internal" href="#messaggio-disponibile">Messaggio disponibile</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#oldmsgqueue">OldMsgQueue</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#addexpectedmsg">addExpectedMsg</a><ul>
+<li><a class="reference internal" href="#statetransition">stateTransition</a><ul>
+<li><a class="reference internal" href="#curstate-e-currentmsg">curState e currentMsg</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#actorbasicfsm23-fase-di-preparazione">ActorBasicFsm23 - Fase di preparazione</a><ul>
+<li><a class="reference internal" href="#actorbasicfsm23-costruttore">ActorBasicFsm23: costruttore</a></li>
+<li><a class="reference internal" href="#preparethestates">prepareTheStates</a></li>
+<li><a class="reference internal" href="#elabannotatedmethod">elabAnnotatedMethod</a></li>
+<li><a class="reference internal" href="#elabstatemethod">elabStateMethod</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#actorbasicfsm23-le-annotazioni">ActorBasicFsm23: le annotazioni</a><ul>
+<li><a class="reference internal" href="#unibo-actors23-annotations-state">unibo.actors23.annotations.State</a></li>
+<li><a class="reference internal" href="#unibo-actors23-annotations-transition">unibo.actors23.annotations.Transition</a></li>
+<li><a class="reference internal" href="#unibo-actors23-annotations-transitionguard">unibo.actors23.annotations.TransitionGuard</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#interrupt">Interrupt</a></li>
+<li><a class="reference internal" href="#actorbasicfsm23-un-esempio">ActorBasicFsm23: un esempio</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Actors23.html"
+                          title="previous chapter">Actors23</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="Producers-Consumer.html"
+                          title="next chapter">Producers-Consumer</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Actors23FSM.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Producers-Consumer.html" title="Producers-Consumer"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Actors23.html" title="Actors23"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Actors23FSM</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

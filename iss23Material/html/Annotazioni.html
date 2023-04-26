@@ -21,7 +21,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Books" href="Books.html" />
-    <link rel="prev" title="Appunti su tecnologie" href="AppuntiTecnologie.html" /> 
+    <link rel="prev" title="Actors23Facade" href="Actors23Facade.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -33,7 +33,7 @@
           <a href="Books.html" title="Books"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="Actors23Facade.html" title="Actors23Facade"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Annotazioni</a></li> 
@@ -57,11 +57,13 @@ A partire dalla versione Java SE 8, le annotazioni possono essere applicate non 
 (come accadeva prima) ma in ogni situazione in cui sia un tipo
 (si veda <a class="reference external" href="https://docs.oracle.com/javase/tutorial/java/annotations/type_annotations.html">Java Type Annotations</a>)
 allo scopo di realizzare uno più forte controllo di tipo (si pensi ad esempio a <span class="blue">&#64;NonNull</span> ).</p>
+<p><span class="slide1">Scopo delle annotazioni</span></p>
 <p>Oggi le annotazioni si trovano quasi ovunque nei programmi e sono introdotte per diversi scopi:</p>
 <ul class="simple">
 <li><p>per aiutare a meglio comprenderne l’intento a vari elementi di una classe;</p></li>
 <li><p>per permettere ulteriori controlli in fase di compilazione che garantiscono il rispetto di vari vincoli;</p></li>
-<li><p>per dare supporto ad analisi aggiuntiva del codice  tramite strumenti sensibili alle annotazioni.</p></li>
+<li><p>per dare supporto ad analisi aggiuntiva del codice  tramite strumenti sensibili alle annotazioni;</p></li>
+<li><p>per arricchire lo spazio concettuale del linguaggio (in ottica Declarative Programming)</p></li>
 </ul>
 <p>Le annotazioni possono essere elaborate  in fase di compilazione e/o in fase di esecuzione,
 sfruttando in questo caso le API di <a class="reference external" href="https://www.oracle.com/technical-resources/articles/java/javareflection.html">Java Reflection</a>, con possibile impatto sulle prestazioni, se non usate con attenzione.</p>
@@ -125,12 +127,40 @@ vengono definite <strong>Meta-Annotation</strong>.</p>
 </tr>
 </tbody>
 </table>
+<section id="retention">
+<h3>Retention<a class="headerlink" href="#retention" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><span class="slide2">&#64;Retention(RetentionPolicy.SOURCE)</span> : Annotation non viene letta dal compilatore e
+non memorizzata nel bytecode (.class file). Sarà quindi  ignorata dalla JVM</p></li>
+<li><p><span class="slide2">&#64;Retention(RetentionPolicy.CLASS)</span>: è il default.  Annotation viene registrata nel bytecode dal compilatore,
+ma verrà ignorata dalla JVM quando la classe verrà caricata (a runtime)</p></li>
+<li><p><span class="slide2">&#64;Retention(RetentionPolicy.RUNTIME)</span>:  Annotation viene registrata nel bytecode e potrà esser letta a
+runtime (mediante reflection) quando la JVM caricherà la classe.</p></li>
+</ul>
+</section>
 </section>
 <section id="annotazioni-esempio">
 <h2>Annotazioni: esempio<a class="headerlink" href="#annotazioni-esempio" title="Permalink to this headline">¶</a></h2>
+<p><span class="slide1">Definizione di annotazioni custom</span></p>
 <section id="annotation-definizione">
 <h3>Annotation: definizione<a class="headerlink" href="#annotation-definizione" title="Permalink to this headline">¶</a></h3>
-<p>Come esempio, definiamo una annotazione per descrivere il modo di accedere ad una applicazione</p>
+<p>È possibile utilizzare l’annotazione <span class="blue">&#64;Interface</span> per descrivere la propria definizione di annotazione.</p>
+<p>Le annotazioni prendono la forma di una dichiarazione di interfaccia con un <span class="remark">&#64;</span> che le precede e
+opzionalmente marcate con una meta-annotazione.</p>
+<ul class="simple">
+<li><p>Ogni nuovo tipo estende automaticamente l’interfaccia <span class="blue">java.lang.annotation.Annotation</span>.</p></li>
+<li><p>La dichiarazione di un metodo corrisponde a un elemento dell’annotazione.</p></li>
+<li><p>I tipi di ritorno dei metodi devono essere: tipi primitivi oppure
+<code class="docutils literal notranslate"><span class="pre">String,</span> <span class="pre">Class,</span> <span class="pre">enum</span></code>, tipi di annotation o array dei tipi elencati.</p></li>
+</ul>
+</section>
+<section id="annotation-esempio-di-definizione">
+<h3>Annotation: esempio di definizione<a class="headerlink" href="#annotation-esempio-di-definizione" title="Permalink to this headline">¶</a></h3>
+<p><span class="slide1">Uso di annotazioni custom</span></p>
+<p>Una annotazione precede la classe, il metodo o l’attributo che si vuole annotare ed
+strutturata come un insieme di coppie <em>nome=valore</em>.</p>
+<p>Come esempio, definiamo una annotazione per descrivere il modo di accedere ad una applicazione
+(il codice si trova in <code class="docutils literal notranslate"><span class="pre">unibo.actors23.annotations.example</span></code> del progetto <code class="docutils literal notranslate"><span class="pre">unibo.actors23</span></code>):</p>
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Retention</span><span class="p">(</span><span class="n">RetentionPolicy</span><span class="p">.</span><span class="na">RUNTIME</span><span class="p">)</span>
 <span class="nd">@Inherited</span>
 <span class="kd">public</span> <span class="nd">@interface</span> <span class="n">AccessSpec</span> <span class="p">{</span>
@@ -147,30 +177,39 @@ vengono definite <strong>Meta-Annotation</strong>.</p>
 <li><p>un URL, come ad esempio <code class="docutils literal notranslate"><span class="pre">&quot;http://localHost:8090/api/move&quot;</span></code></p></li>
 </ul>
 </section>
-<section id="annotation-uso">
-<h3>Annotation: uso<a class="headerlink" href="#annotation-uso" title="Permalink to this headline">¶</a></h3>
-<p>Introduciamo una classe che introduce l’annotazione <code class="docutils literal notranslate"><span class="pre">&#64;AccessSpec</span></code> e accede dinamicamente ad essa, per visualizzarla.</p>
+<section id="annotation-esempio-di-uso">
+<h3>Annotation: esempio di uso<a class="headerlink" href="#annotation-esempio-di-uso" title="Permalink to this headline">¶</a></h3>
+<p>Introduciamo una classe che introduce l’annotazione <code class="docutils literal notranslate"><span class="pre">&#64;AccessSpec</span></code>.</p>
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@AccessSpec</span><span class="p">(</span>
-    <span class="n">protocol</span> <span class="o">=</span> <span class="n">AccessSpec</span><span class="p">.</span><span class="na">issProtocol</span><span class="p">.</span><span class="na">HTTP</span><span class="p">,</span>
-    <span class="n">url</span>      <span class="o">=</span> <span class="s">&quot;http://localHost:8090/api/move&quot;</span>
+    <span class="n">protocol</span>   <span class="o">=</span> <span class="n">AccessSpec</span><span class="p">.</span><span class="na">issProtocol</span><span class="p">.</span><span class="na">HTTP</span><span class="p">,</span>
+    <span class="n">url</span>        <span class="o">=</span> <span class="s">&quot;http://localHost:8090/api/move&quot;</span>
+    <span class="c1">//, configFile =&quot;myfile.txt&quot;</span>
 <span class="p">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">AnnotationUsageDemo</span> <span class="p">{</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">readProtocolAnnotation</span><span class="p">(</span><span class="n">Object</span> <span class="n">element</span><span class="p">)</span> <span class="p">{</span> <span class="p">...}</span>
-
-    <span class="kd">public</span> <span class="nf">AnnotationUsageDemo</span><span class="p">()</span> <span class="p">{</span>
-        <span class="n">readProtocolAnnotation</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
-    <span class="p">}</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span> <span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">new</span> <span class="n">AnnotationUsageDemo</span><span class="p">();</span>
-    <span class="p">}</span>
+      <span class="p">...</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span> <span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span><span class="k">new</span> <span class="n">AnnotationUsageDemo</span><span class="p">();}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Definiamo ora il metodo <code class="docutils literal notranslate"><span class="pre">readProtocolAnnotation</span></code> in modo da
-recuperare (usando le API di <a class="reference external" href="https://www.oracle.com/technical-resources/articles/java/javareflection.html">Java Reflection</a>) le informazioni che abbiamo inserito tramite
-l’annotazione:
-.</p>
+<p><span class="slide1">Elaborazione di annotazioni custom</span></p>
+<p>Le API di <a class="reference external" href="https://www.oracle.com/technical-resources/articles/java/javareflection.html">Java Reflection</a> permettono di recuperare a le informazioni che abbiamo inserito tramite
+l’annotazione meta-annotata con <span class="remark">&#64;Retention(RetentionPolicy.RUNTIME)</span>.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AnnotationUsageDemo</span> <span class="p">{</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">readProtocolAnnotation</span><span class="p">(</span><span class="n">Object</span> <span class="n">element</span><span class="p">)</span> <span class="p">{</span> <span class="p">...}</span>
+
+  <span class="kd">public</span> <span class="nf">AnnotationUsageDemo</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">readProtocolAnnotation</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="readprotocolannotation">
+<h4>readProtocolAnnotation<a class="headerlink" href="#readprotocolannotation" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">readProtocolAnnotation</span></code> viene definito in modo da
+accedere dinamicamente (usando le API di <a class="reference external" href="https://www.oracle.com/technical-resources/articles/java/javareflection.html">Java Reflection</a>) alle informazioni introdotte nell’annotazione
+per visualizzarle.</p>
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">readProtocolAnnotation</span><span class="p">(</span><span class="n">Object</span> <span class="n">element</span><span class="p">)</span> <span class="p">{</span>
 <span class="k">try</span> <span class="p">{</span>
   <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">clazz</span>            <span class="o">=</span> <span class="n">element</span><span class="p">.</span><span class="na">getClass</span><span class="p">();</span>
@@ -178,14 +217,11 @@ l’annotazione:
   <span class="k">for</span> <span class="p">(</span><span class="n">Annotation</span> <span class="n">annot</span> <span class="p">:</span> <span class="n">annotations</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">annot</span> <span class="k">instanceof</span> <span class="n">AccessSpec</span><span class="p">)</span> <span class="p">{</span>
       <span class="n">AccessSpec</span> <span class="n">p</span>  <span class="o">=</span> <span class="p">(</span><span class="n">AccessSpec</span><span class="p">)</span> <span class="n">annot</span><span class="p">;</span>
-      <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outappl</span><span class="p">(</span><span class="s">&quot;Tipo del protocollo: &quot;</span>
-            <span class="o">+</span> <span class="n">p</span><span class="p">.</span><span class="na">protocol</span><span class="p">(),</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">CYAN</span><span class="p">);</span>
-      <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outappl</span><span class="p">(</span><span class="s">&quot;Url del protocollo:  &quot;</span>
-            <span class="o">+</span> <span class="n">p</span><span class="p">.</span><span class="na">url</span><span class="p">(),</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">CYAN</span><span class="p">);</span>
-      <span class="n">String</span> <span class="n">v</span> <span class="o">=</span> <span class="n">getHostAddr</span><span class="p">(</span>
-            <span class="s">&quot;(\\w*)://([a-zA-Z]*):(\\d*)/(\\w*)/(\\w*)&quot;</span><span class="p">,</span>
-            <span class="n">p</span><span class="p">.</span><span class="na">url</span><span class="p">());</span>
-      <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outappl</span><span class="p">(</span><span class="s">&quot;v: &quot;</span> <span class="o">+</span> <span class="n">v</span><span class="p">,</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">CYAN</span><span class="p">);</span>
+      <span class="n">CommUtils</span><span class="p">.</span><span class="na">outblue</span><span class="p">(</span><span class="s">&quot;Tipo del protocollo: &quot;</span> <span class="o">+</span> <span class="n">p</span><span class="p">.</span><span class="na">protocol</span><span class="p">());</span>
+      <span class="n">CommUtils</span><span class="p">.</span><span class="na">outblue</span><span class="p">(</span><span class="s">&quot;Url del protocollo:  &quot;</span> <span class="o">+</span> <span class="n">p</span><span class="p">.</span><span class="na">url</span><span class="p">());</span>
+      <span class="n">CommUtils</span><span class="p">.</span><span class="na">outblue</span><span class="p">(</span><span class="s">&quot;Configuration file: &quot;</span>  <span class="o">+</span> <span class="n">p</span><span class="p">.</span><span class="na">configFile</span><span class="p">());</span>
+      <span class="n">String</span> <span class="n">v</span> <span class="o">=</span> <span class="n">getHostAddr</span><span class="p">(</span> <span class="s">&quot;(\\w*)://([a-zA-Z]*):(\\d*)/(\\w*)/(\\w*)&quot;</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="na">url</span><span class="p">());</span>
+      <span class="n">CommUtils</span><span class="p">.</span><span class="na">outblue</span><span class="p">(</span><span class="s">&quot;hostAddr=&quot;</span> <span class="o">+</span> <span class="n">v</span><span class="p">);</span>
     <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{...</span> <span class="p">}</span>
@@ -196,12 +232,11 @@ l’annotazione:
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">getHostAddr</span><span class="p">(</span><span class="n">String</span> <span class="n">functor</span><span class="p">,</span> <span class="n">String</span> <span class="n">line</span><span class="p">){</span>
     <span class="n">Pattern</span> <span class="n">pattern</span> <span class="o">=</span> <span class="n">Pattern</span><span class="p">.</span><span class="na">compile</span><span class="p">(</span><span class="n">functor</span><span class="p">);</span>
     <span class="n">Matcher</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">pattern</span><span class="p">.</span><span class="na">matcher</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
-    <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outappl</span><span class="p">(</span><span class="s">&quot;line: &quot;</span> <span class="o">+</span> <span class="n">line</span><span class="p">,</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">CYAN</span><span class="p">);</span>
+    <span class="n">CommUtils</span><span class="p">.</span><span class="na">outblue</span><span class="p">(</span><span class="s">&quot;line: &quot;</span> <span class="o">+</span> <span class="n">line</span><span class="p">);</span>
     <span class="n">String</span> <span class="n">content</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span> <span class="n">matcher</span><span class="p">.</span><span class="na">find</span><span class="p">())</span> <span class="p">{</span>
         <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
-            <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outappl</span><span class="p">(</span><span class="s">&quot;goup &quot;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span>
-                  <span class="n">matcher</span><span class="p">.</span><span class="na">group</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>   <span class="n">ColorsOut</span><span class="p">.</span><span class="na">CYAN</span><span class="p">);</span>
+            <span class="n">CommUtils</span><span class="p">.</span><span class="na">outblue</span><span class="p">(</span><span class="s">&quot;group &quot;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="n">matcher</span><span class="p">.</span><span class="na">group</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
         <span class="p">}</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">matcher</span><span class="p">.</span><span class="na">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;:&quot;</span><span class="o">+</span><span class="n">matcher</span><span class="p">.</span><span class="na">group</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
      <span class="p">}</span>
@@ -212,15 +247,17 @@ l’annotazione:
 <p>L’output del programma è il seguente:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Tipo</span> <span class="k">del</span> <span class="n">protocollo</span><span class="p">:</span> <span class="n">HTTP</span>
 <span class="n">Url</span> <span class="k">del</span> <span class="n">protocollo</span><span class="p">:</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localHost</span><span class="p">:</span><span class="mi">8090</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">move</span>
-<span class="n">line</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localHost</span><span class="p">:</span><span class="mi">8090</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">move</span>
-<span class="n">goup</span> <span class="mi">1</span><span class="p">:</span><span class="n">http</span>
-<span class="n">goup</span> <span class="mi">2</span><span class="p">:</span><span class="n">localHost</span>
-<span class="n">goup</span> <span class="mi">3</span><span class="p">:</span><span class="mi">8090</span>
-<span class="n">goup</span> <span class="mi">4</span><span class="p">:</span><span class="n">api</span>
-<span class="n">goup</span> <span class="mi">5</span><span class="p">:</span><span class="n">move</span>
-<span class="n">v</span><span class="p">:</span> <span class="n">localHost</span><span class="p">:</span><span class="mi">8090</span>
+<span class="n">Configuration</span> <span class="n">file</span><span class="p">:</span> <span class="n">ProtocolConfig</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">getHostAddr</span> <span class="o">|</span> <span class="n">line</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localHost</span><span class="p">:</span><span class="mi">8090</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">move</span>
+<span class="n">getHostAddr</span> <span class="o">|</span> <span class="n">group</span> <span class="mi">1</span><span class="p">:</span><span class="n">http</span>
+<span class="n">getHostAddr</span> <span class="o">|</span> <span class="n">group</span> <span class="mi">2</span><span class="p">:</span><span class="n">localHost</span>
+<span class="n">getHostAddr</span> <span class="o">|</span> <span class="n">group</span> <span class="mi">3</span><span class="p">:</span><span class="mi">8090</span>
+<span class="n">getHostAddr</span> <span class="o">|</span> <span class="n">group</span> <span class="mi">4</span><span class="p">:</span><span class="n">api</span>
+<span class="n">getHostAddr</span> <span class="o">|</span> <span class="n">group</span> <span class="mi">5</span><span class="p">:</span><span class="n">move</span>
+<span class="n">hostAddr</span><span class="o">=</span> <span class="n">localHost</span><span class="p">:</span><span class="mi">8090</span>
 </pre></div>
 </div>
+</section>
 </section>
 </section>
 </section>
@@ -236,10 +273,17 @@ l’annotazione:
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Annotazioni</a><ul>
-<li><a class="reference internal" href="#meta-annotation-in-java">Meta-Annotation in Java</a></li>
+<li><a class="reference internal" href="#meta-annotation-in-java">Meta-Annotation in Java</a><ul>
+<li><a class="reference internal" href="#retention">Retention</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#annotazioni-esempio">Annotazioni: esempio</a><ul>
 <li><a class="reference internal" href="#annotation-definizione">Annotation: definizione</a></li>
-<li><a class="reference internal" href="#annotation-uso">Annotation: uso</a></li>
+<li><a class="reference internal" href="#annotation-esempio-di-definizione">Annotation: esempio di definizione</a></li>
+<li><a class="reference internal" href="#annotation-esempio-di-uso">Annotation: esempio di uso</a><ul>
+<li><a class="reference internal" href="#readprotocolannotation">readProtocolAnnotation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -249,8 +293,8 @@ l’annotazione:
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="AppuntiTecnologie.html"
-                          title="previous chapter">Appunti su tecnologie</a></p>
+    <p class="topless"><a href="Actors23Facade.html"
+                          title="previous chapter">Actors23Facade</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -288,7 +332,7 @@ l’annotazione:
           <a href="Books.html" title="Books"
              >next</a> |</li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="Actors23Facade.html" title="Actors23Facade"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Annotazioni</a></li> 

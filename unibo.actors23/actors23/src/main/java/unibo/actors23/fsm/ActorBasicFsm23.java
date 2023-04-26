@@ -306,9 +306,28 @@ FASE DI ESECUZIONE
         OldMsgQueue.add(msg);
         currentMsg=null;
     }
-    /*
-    Interrupt-related
-     */
+/*
+------------------------------------------------
+DELEGAZIONE
+------------------------------------------------
+*/
+
+    protected void delegate( String msgId, String actorName){
+        ActorBasic23 actor = ctx.getActor(actorName);
+        delegate(msgId,actor);
+    }
+    protected void delegate( String msgId, ActorBasic23 actor){
+        //CommUtils.outred(getName() + " | ActorBasicFsm23 delegates " + msgId + " to " + actor.getName() );
+        delegated.put( msgId, actor );
+    }
+    protected ActorBasic23 getDelegatedActor(IApplMessage msg){
+        ActorBasic23 a = delegated.get(msg.msgId());
+        return a ;
+    }
+
+/*
+INTERRUPT-RELATED
+ */
     protected void resume() {
         if(Actor23Utils.trace) CommUtils.outgray(getName() + " | ActorBasicFsm23 in " + curState + " resume:" + memoTransTab.size() );
         transTab           = tabRestore(memoTransTab);
@@ -334,24 +353,6 @@ FASE DI ESECUZIONE
         }
         return copied;
     }
-/*
-------------------------------------------------
-DELEGAZIONE
-------------------------------------------------
-*/
 
-    protected void delegate( String msgId, String actorName){
-        ActorBasic23 actor = ctx.getActor(actorName);
-        delegate(msgId,actor);
-    }
-    protected void delegate( String msgId, ActorBasic23 actor){
-        //CommUtils.outred(getName() + " | ActorBasicFsm23 delegates " + msgId + " to " + actor.getName() );
-        delegated.put( msgId, actor );
-    }
-    protected ActorBasic23 getDelegatedActor(IApplMessage msg){
-        ActorBasic23 a = delegated.get(msg.msgId());
-        return a ;
-    }
-
-   // protected boolean guardForTransition(String stateName, String transName ) {  return false; }
+    // protected boolean guardForTransition(String stateName, String transName ) {  return false; }
 }

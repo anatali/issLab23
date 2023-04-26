@@ -1,11 +1,9 @@
 package ProdConsStream;
 
-
 import unibo.actors23.ActorBasic23;
 import unibo.actors23.ActorContext23;
 import unibo.basicomm23.interfaces.IApplMessage;
 import unibo.basicomm23.utils.CommUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
@@ -33,7 +31,7 @@ public class Producer extends ActorBasic23 {
     @Override
     protected void elabMsg(IApplMessage msg) throws Exception {
         CommUtils.outgray(name + " | elabMsg " + msg + " in:" + Thread.currentThread().getName());
-        if (msg.msgId().equals("startcmd") && msg.msgContent().equals("start")) {
+        if (msg.msgId().equals("sysstartcmd") && msg.msgContent().equals("start")) {
             produceData();
         }
     }

@@ -51,20 +51,5 @@ public class ConsumerFsm23 extends ActorBasicFsm23 {
         }
         return sizeok ;
     }
-/*
-    @State( name = "s0", initial=true)
-    @Transition( state = "consume", msgId = "prodinfo"   )
-    protected void s0( IApplMessage msg ) {
-        CommUtils.outgreen(name + " | s0 "+msg  );
-        //Actor23Utils.showSystemConfiguration();
-    }
 
-    @State( name = "consume" )
-    @Transition( state = "consume", msgId = "prodinfo"   )
-    protected void consume( IApplMessage msg ) {
-        CommUtils.outgray(name + " | consume "+msg  );
-        data = data + "|" + msg.msgContent();
-        CommUtils.outgreen(name + " | data="+data  );
-    }
-*/
 }

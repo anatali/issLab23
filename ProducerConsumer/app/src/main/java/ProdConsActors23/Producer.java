@@ -16,7 +16,7 @@ public class Producer extends ActorBasic23 {
     @Override
     protected void elabMsg(IApplMessage msg)   {
         //CommUtils.outmagenta(name + " | elabMsg " + msg + " in:" + Thread.currentThread().getName());
-        if( msg.msgId().equals("startcmd") && msg.msgContent().equals("start")){
+        if( msg.msgId().equals("sysstartcmd") && msg.msgContent().equals("start")){
             String d = prodLogic.getDistance();
             //CommUtils.delay(3000); //wait before producing ..
             IApplMessage infoMsg  =

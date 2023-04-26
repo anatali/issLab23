@@ -28,6 +28,7 @@ public class ProducerFsm23 extends ActorBasicFsm23 {
     }
 
     @State( name = "produce" )
+    @Transition( state = "handlealarm" , msgId = "alarm", interrupt=true )
     @Transition( state = "produce",  msgId = continueId, guard="notCompleted"  )
     @Transition( state = "endWork" , msgId = continueId, guard="completed" )
     protected void produce( IApplMessage inputmsg ) {
@@ -41,7 +42,14 @@ public class ProducerFsm23 extends ActorBasicFsm23 {
             //CICLO => tranzione con guardia
             IApplMessage msg1 = prodMsg(continueId, "ok", name); //automsg
             this.forward(msg1);
+    }
 
+    @State( name="handlealarm")
+    protected void handlealarm( IApplMessage msg ) {
+        CommUtils.outred(name + " | handlealarm " + currentMsg );
+        CommUtils.delay(2000 );
+        CommUtils.outred(name + " | handlealarm continue" + currentMsg );
+        //this.resume();
     }
 
     @State( name = "endWork" )

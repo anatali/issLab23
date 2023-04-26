@@ -13,7 +13,7 @@ public class MainProdConsFsm23All {
         //Actor23Utils.trace = true;
         //Connection.trace   = true;
         Actor23Utils.createContexts("localhost",
-                "app/src/main/java/ProdConsFsm23/ProdConsActor23_1.pl",
+                "app/src/main/java/ProdConsFsm23/ProdConsActorFsm23.pl",
                 "app/src/main/java/shared/sysRules.pl");
     }
     public static void main(String[] args ){

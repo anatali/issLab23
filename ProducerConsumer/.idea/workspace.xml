@@ -1,137 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
-  </component>
-  <component name="ChangeListManager">
-    <list default="true" id="085de662-f8ac-42b8-95f4-57d2e983cf55" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
-    <option name="SHOW_DIALOG" value="false" />
-    <option name="HIGHLIGHT_CONFLICTS" value="true" />
-    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
-    <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="CodeStyleSettingsInfer">
-    <option name="done" value="true" />
-  </component>
-  <component name="ExternalProjectsData">
-    <projectState path="$PROJECT_DIR$">
-      <ProjectState />
-    </projectState>
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-  </component>
-  <component name="ProjectCodeStyleSettingsMigration">
-    <option name="version" value="1" />
-  </component>
-  <component name="ProjectId" id="2NdUuUOb7kQZzx9fhZAfcc0LDnr" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectViewState">
-    <option name="foldersAlwaysOnTop" value="false" />
-    <option name="showLibraryContents" value="true" />
-    <option name="showMembers" value="true" />
-    <option name="showModules" value="false" />
-  </component>
   <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/java/ProdConsActors23/twoctxclean" />
-    <property name="project.structure.last.edited" value="SDKs" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\ProdConsActors23\twoctxclean" />
-      <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\ProdConsActors23\onectx" />
-      <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java" />
-      <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\ProdConsStream" />
-      <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\ProdConsEvents" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Didattica2023\issLab23\ProducerConsumer\app\src\main\java\ProdConsActors23\twoctxmixed" />
-    </key>
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="ProdConsActors23.twoctxmixed" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="ProdConsActors23.onectx" />
-      <recent name="ProdConsActors23" />
-      <recent name="ProdConsStream" />
-      <recent name="example0" />
-      <recent name="PingPongDispatch" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Application.MainProdCons2a (1)">
-    <configuration name="MainProdCons2a (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ProdConsActors23.twoctxclean.MainProdCons2a" />
+  <component name="RunManager">
+    <configuration name="MainProdConsFsm23All" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ProdConsFsm23.MainProdConsFsm23All" />
       <module name="ProducerConsumer.app.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ProdConsActors23.twoctxclean.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MainProdCons2a" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ProdConsActors23.twoctxmixed.MainProdCons2a" />
-      <module name="ProducerConsumer.app.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ProdConsActors23.twoctxmixed.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MainProdCons2b (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ProdConsActors23.twoctxclean.MainProdCons2b" />
-      <module name="ProducerConsumer.app.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ProdConsActors23.twoctxclean.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MainProdCons2b" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ProdConsActors23.twoctxmixed.MainProdCons2b" />
-      <module name="ProducerConsumer.app.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ProdConsActors23.twoctxmixed.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MainProdConsAll" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ProdConsActors23.onectx.MainProdConsAll" />
-      <module name="ProducerConsumer.app.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ProdConsActors23.onectx.*" />
+          <option name="PATTERN" value="ProdConsFsm23.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -141,35 +19,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MainProdCons2a (1)" />
-        <item itemvalue="Application.MainProdCons2b (1)" />
-        <item itemvalue="Application.MainProdCons2b" />
-        <item itemvalue="Application.MainProdCons2a" />
-        <item itemvalue="Application.MainProdConsAll" />
+        <item itemvalue="Application.MainProdConsFsm23All" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
-  <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="085de662-f8ac-42b8-95f4-57d2e983cf55" name="Default Changelist" comment="" />
-      <created>1679993676595</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1679993676595</updated>
-    </task>
-    <servers />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

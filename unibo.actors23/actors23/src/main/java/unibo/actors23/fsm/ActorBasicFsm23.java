@@ -47,7 +47,7 @@ FASE DI PREPARAZIONE DEGLI STATI
     protected void prepareTheStates( ) {
         try {
             Method[] methods  = this.getClass().getDeclaredMethods( );
-            CommUtils.outgray("declareTheStates: "+ methods.length   );
+            CommUtils.outgray("prepareTheStates: "+ methods.length   );
 
             Method[] guards = Arrays.stream(methods)
                     .filter(m -> m.isAnnotationPresent(TransitionGuard.class))
@@ -266,6 +266,8 @@ FASE (DI PREPARAZIONE) DELLE AZIONI DI UNO STATO StateActionFun
         interruptTab.removeAllElements();
         stateWithInterrupt = null;
         StateActionFun a = stateMap.get(curState);
+        if(Actor23Utils.trace) CommUtils.outgray(getName()
+                + " | ActorBasicFsm23 in " + this.curState + " transition for:" +  msg);
         if( a != null ) {
             a.run( msg );
         }
@@ -304,7 +306,34 @@ FASE DI ESECUZIONE
         OldMsgQueue.add(msg);
         currentMsg=null;
     }
+    /*
+    Interrupt-related
+     */
+    protected void resume() {
+        CommUtils.outgray(getName() + " | QakActor22Fsm in " + curState + " resume:" + memoTransTab.size() );
+        transTab           = tabRestore(memoTransTab);
+        interruptTab       = interruptTabRestore(memoInterruptTab);
+        curState           = "resuming";
+    }
 
+    protected Vector<Pair<String,String>> tabRestore( Vector<Pair<String,String>> tab){
+        Vector< Pair<String, String> > copied = new Vector<Pair<String,String>>();
+        transTab = new Vector<Pair<String,String>>();
+        Iterator< Pair<String, String> >  iter  = tab.iterator();
+        while( iter.hasNext() ) {
+            copied.add( iter.next() );
+        }
+        return copied;
+    }
+    protected Vector<Pair<String,Boolean>> interruptTabRestore( Vector<Pair<String,Boolean>> tab){
+        Vector< Pair<String, Boolean> > copied = new Vector<Pair<String,Boolean>>();
+        interruptTab = new Vector<Pair<String,Boolean>>();
+        Iterator< Pair<String, Boolean> >  iter  = tab.iterator();
+        while( iter.hasNext() ) {
+            copied.add( iter.next() );
+        }
+        return copied;
+    }
 /*
 ------------------------------------------------
 DELEGAZIONE

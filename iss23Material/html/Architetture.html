@@ -1,0 +1,442 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Architetture &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Architetture</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="architetture">
+<h1>Architetture<a class="headerlink" href="#architetture" title="Permalink to this headline">¶</a></h1>
+<p>La moderna costruzione del software riconosce all’architettura del sistema un ruolo strategico,
+nonostante il termine <em>architettura</em> sia tra i vocaboli più sovraccarichi di significato.</p>
+<p>Normalmente, si parla di <span class="blue">architettura di un sistema</span> quando ci si vuole riferire all’insieme delle
+macro-parti in cui il sistema si articola, includendo le loro responsabilità, relazioni e interconnessioni.</p>
+<p>Per molti, il termine <em>architettura</em> potrebbe però evocare l’immagine di uno schema in cui compare una rete
+di blocchi e linee di connessione; questa visione andrebbe meglio indicata col termine <strong>mappa</strong>.</p>
+<p>Per altri, l’<em>architettura</em> evoca l’idea di uno schema concettuale di soluzione riferito a un certo dominio applicativo,
+come ad esempio nella frase <em>architetture web</em>; in questo caso sarebbe più appropriato utilizzare il termine <strong>framework</strong>.</p>
+<p>L’ Open Group Architectural Framework (<a class="reference external" href="https://it.wikipedia.org/wiki/The_Open_Group_Architecture_Framework">OpenGroupArch</a>) definisce architettura:</p>
+<ul class="simple">
+<li><p>“a set of elements depicted in an architectural model and a specification of how these elements are connected
+to meet the overall requirements of an information system”.</p></li>
+</ul>
+<p>Altrove  si dice che:</p>
+<ul class="simple">
+<li><p>“the software architecture of a program or computing system is the structure
+or structures of the system, which comprises software components, the externally-visible properties
+of these components and the relationships among them”.</p></li>
+</ul>
+<p>La IEEE Computer society definisce (nel 2000) l’architettura:</p>
+<ul class="simple">
+<li><p>“the fundamental organization of a
+system embodied in its components their relationships to each other and to the environment,
+and the principles guiding its design and evaluation”.</p></li>
+</ul>
+<p>Tra le altre accezioni possibili, una delle più curiose, su cui vale la pena di riflettere, è quella per cui:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>l’architettura è ciò che rimane di un sistema quando non si può più togliere nulla,
+continuando a comprenderne la struttura e il funzionamento.</p></li>
+</ul>
+</div></blockquote>
+<p>Le prime esperienze collettive nello studio delle architetture software possono essere fatte
+risalire al workshop OOPSLA del 1981 guidato da Bruce Anderson che mirava allo sviluppo
+di un “architecture handbook”.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 70%" />
+<col style="width: 30%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Nel testo <code class="docutils literal notranslate"><span class="pre">FSA</span> <span class="pre">-</span> <span class="pre">ISBN-10</span> <span class="pre">:</span> <span class="pre">1492043451</span></code> vengono presentati diversi tipi di Architetture Sosftware.”</p></td>
+<td><a class="reference internal image-reference" href="_images/softwareArch.webp"><img alt="_images/softwareArch.webp" src="_images/softwareArch.webp" style="width: 80%;" /></a>
+</td>
+</tr>
+<tr class="row-even"><td><p>Il testo  <code class="docutils literal notranslate"><span class="pre">CA</span>&#160; <span class="pre">-</span> <span class="pre">ISBN-10</span> <span class="pre">:</span> <span class="pre">0134494164</span></code>  approfondisce il ruolo delle architetture nel processo di produzione del software.”</p></td>
+<td><a class="reference internal image-reference" href="_images/cleanArchBook.jpg"><img alt="_images/cleanArchBook.jpg" src="_images/cleanArchBook.jpg" style="width: 80%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Da questi testi leggiamo:</p>
+<ul class="simple">
+<li><p>Architecture is about the important stuff … whatever that is (Ralph Johson) (FSA pg. 1)</p></li>
+<li><p>Everything in software architecture is a trade-off. (<strong>First law</strong> of Software Architecture) (FSA pg. 18)</p></li>
+<li><p><span class="blue">Why</span> is more important than <span class="blue">how</span>. (<strong>Second law</strong> of Software Architecture) (FSA pg. 18)</p></li>
+<li><p>The architecture for a software system arises from the combinations of requriments and additional concerns
+(Auditability, Security, Legality, Scalability …
+<span class="blue">-ilities</span> si veda <a class="reference external" href="https://en.wikipedia.org/wiki/List_of_system_quality_attributes">List of system quality attributes</a>)
+each protected by fitness functions</p></li>
+<li><p>All architecture become iterative becuase of <span class="blue">unknown of unknowns</span> (FSA pg. 14).
+What we need today is an <span class="blue">Evolutionary Architecture</span>. (FSA pg. 15).</p></li>
+<li><p>An <em>Evolutionary Architecture</em> supports guided, incremental changes across multiple dimensions, including -ilities</p></li>
+</ul>
+<p>Altrove (ad esempio in <em>Building Evolutionary Architectures</em> - <code class="docutils literal notranslate"><span class="pre">ISBN</span> <span class="pre">:</span> <span class="pre">9781492043454</span></code> ) leggiamo:</p>
+<ul class="simple">
+<li><p>The software development ecosystem (tools, frameworks, prectices, ..) forms a dynamic equilibrium - much like a biological system.</p></li>
+<li><p>The <em>Continuos Delivery</em> and <em>DevOps</em> movements added a new factor in the dynamic equilibrium.</p></li>
+<li><p><span class="remark">To build evolvable software systems, architets must think beyond just the technical architecture.</span></p></li>
+</ul>
+<section id="architetture-preliminari">
+<h2>Architetture preliminari<a class="headerlink" href="#architetture-preliminari" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-given docutils align-left" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><span class="blue">bigballofmud</span></p></td>
+<td><p><span class="blue">clientServer</span></p></td>
+</tr>
+<tr class="row-even"><td><img alt="_images/bigballofmud.png" src="_images/bigballofmud.png" />
+</td>
+<td><img alt="_images/clientServer3Tier.png" src="_images/clientServer3Tier.png" />
+</td>
+</tr>
+<tr class="row-odd"><td><p>obbrobrio (122/52)</p></td>
+<td><p>3 tier (124)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="architetture-monolitiche">
+<h2>Architetture monolitiche<a class="headerlink" href="#architetture-monolitiche" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-given docutils align-left" style="width: 100%">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><span class="blue">Layers</span></p></td>
+<td><p><span class="blue">Pipeline</span></p></td>
+<td><p><span class="blue">microkernel</span></p></td>
+</tr>
+<tr class="row-even"><td><img alt="_images/layered.png" src="_images/layered.png" />
+</td>
+<td><img alt="_images/pipline.png" src="_images/pipline.png" />
+</td>
+<td><img alt="_images/microkernel.png" src="_images/microkernel.png" />
+</td>
+</tr>
+<tr class="row-odd"><td><ol class="arabic simple" start="145">
+<li></li>
+</ol>
+</td>
+<td><p>(151/58)</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="architetture-distribuite">
+<h2>Architetture distribuite<a class="headerlink" href="#architetture-distribuite" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-given docutils align-left" style="width: 100%">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><span class="blue">service-based</span></p></td>
+<td><p><span class="blue">Event-driven</span></p></td>
+<td><p><span class="blue">Space-based</span></p></td>
+</tr>
+<tr class="row-even"><td><img alt="_images/service-based.jpg" src="_images/service-based.jpg" />
+</td>
+<td><img alt="_images/event-driven-broker.png" src="_images/event-driven-broker.png" />
+</td>
+<td><img alt="_images/Space_based_architecture.gif" src="_images/Space_based_architecture.gif" />
+</td>
+</tr>
+<tr class="row-odd"><td><ol class="arabic simple" start="163">
+<li></li>
+</ol>
+</td>
+<td><p>(179/70)</p></td>
+<td><p>211/63</p></td>
+</tr>
+</tbody>
+</table>
+<table class="colwidths-given docutils align-left" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><span class="blue">Service-oriented</span></p></td>
+<td><p><span class="blue">Microservices</span></p></td>
+</tr>
+<tr class="row-even"><td><img alt="_images/soa-esb.png" src="_images/soa-esb.png" />
+</td>
+<td><img alt="_images/microservices.png" src="_images/microservices.png" />
+</td>
+</tr>
+<tr class="row-odd"><td><p>(235/65)</p></td>
+<td><p>(245/68)</p></td>
+</tr>
+</tbody>
+</table>
+<p>A queste aggiungiamo le seguenti:</p>
+</section>
+<section id="architetture-per-applicazioni">
+<h2>Architetture per applicazioni<a class="headerlink" href="#architetture-per-applicazioni" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-given docutils align-left" style="width: 100%">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><span class="blue">Hexagonal</span></p></td>
+<td><p><span class="blue">Subsumption</span></p></td>
+<td><p><span class="blue">IOT</span></p></td>
+</tr>
+<tr class="row-even"><td><img alt="_images/hexArchitectureInKotlin.svg" src="_images/hexArchitectureInKotlin.svg" /></td>
+<td><img alt="_images/Subsumption_ArchitectureRobotic.gif" src="_images/Subsumption_ArchitectureRobotic.gif" />
+</td>
+<td><img alt="_images/iot0.png" src="_images/iot0.png" />
+</td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="architettura-esagonale-port-adapter">
+<h2>Architettura Esagonale (Port-Adapter)<a class="headerlink" href="#architettura-esagonale-port-adapter" title="Permalink to this headline">¶</a></h2>
+<p>Il concetto di <a class="reference external" href="https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)">Hexagonal Architecture</a>
+è stato introdotto nel 2005 da Alistair Cockburn come un contributo
+ad evitare ben note ‘trappole strutturali’ nella progettazione ad oggetti, come ad esempio
+dipendenze non desiderate tra layers o indebite inserzioni di codice applicativo nel codice
+delle interfacce-utente.</p>
+<p>Si tratta di un approccio alternativo alle tradizionali architetture ‘a livelli’ e, a detta di molti,
+segna anche l’origine delle <em>architetture a microservizi</em>. In sintesi, questo approccio:</p>
+<ul class="simple">
+<li><p>Rende un’applicazione inconsapevole (e quindi indipendente) della natura dei dispositivi di ingresso.
+Un evento giunge dal mondo esterno tramite una porta e un opportuno adapter converte l’evento in una
+chiamata di procedura o in un messaggio verso l’applicazione.</p></li>
+<li><p>Rende un’applicazione inconsapevole (e quindi indipendente) della natura dei dispositivi di uscita:
+quando essa deve emettere informazione
+verso il mondo esterno, utilizza una porta associata ad un adapter che crea gli opportuni segnali
+necessari per la specifica tencologia ricevente (umana o automatizzata).</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/portAdapterArch.png"><img alt="_images/portAdapterArch.png" src="_images/portAdapterArch.png" style="width: 70%;" /></a>
+<ul class="simple">
+<li><p>Un’applicazione ha una interazione con gli adapter legata alla sua propria semantica interna e
+non deve conoscere la natura di ciò che compare al di là degli adapter.</p></li>
+<li><p><span class="remark">Permette di sviluppare e testare un’applicazione in modo indipendente da eventuali dispositivi run-time
+e/o database e di essere egualmente attivabile da utenti umani, programmi, test automatizzati o scripts.</span></p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/hexlinear.PNG"><img alt="_images/hexlinear.PNG" src="_images/hexlinear.PNG" style="width: 80%;" /></a>
+</section>
+<section id="la-clean-architecture">
+<h2>La Clean Architecture<a class="headerlink" href="#la-clean-architecture" title="Permalink to this headline">¶</a></h2>
+<p>Proposta nel 2012 da <a class="reference external" href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html">Robert C. Martin</a>
+specializza l’architettura esagonale fornendo ulteriori dettagli sui componenti, che sono presentati
+in anelli concentrici.</p>
+<table class="colwidths-given docutils align-center" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="_images/cleanArch.jpg" src="_images/cleanArch.jpg" />
+</td>
+<td><img alt="_images/cleanArchCone.jpg" src="_images/cleanArchCone.jpg" />
+</td>
+</tr>
+</tbody>
+</table>
+<p>Gli adapter e le interfacce sono relegate negli anelli più esterni, mentre le parti centrali sono riservate
+alle entità e ai casi d’uso.</p>
+<p><span class="remark">Viene imposto il vincolo che sono sempre gli anelli esterni a dover dipendere da quelli interni e mai viceversa.</span></p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><dl class="simple">
+<dt><span class="blue">Entità</span></dt><dd><ul class="simple">
+<li><p>Rappresenta un oggetto del <span class="blue">dominio applicativo</span>.</p></li>
+<li><p>Può essere un oggetto aziendale con metodi oppure un insieme di strutture dati e funzioni.</p></li>
+<li><p>Realizza logica applicativa di tipo generale.</p></li>
+<li></li>
+</ul>
+</dd>
+</dl>
+</td>
+<td><dl class="simple">
+<dt><span class="blue">Use Cases</span></dt><dd><ul class="simple">
+<li><p>Rappresentano le <span class="blue">azioni applicative specifiche</span>.</p></li>
+<li><p>Non sono influenzate da infrastrutture (ad es. database).</p></li>
+<li><p>Non sanno chi li attiva e a chi/come inviare i risultati,
+ma usano interfacce.</p></li>
+<li><p>Possono generare eccezioni a livello business.</p></li>
+</ul>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-even"><td><dl class="simple">
+<dt><span class="blue">Controllers</span></dt><dd><ul class="simple">
+<li><p>Sono anche detti <span class="blue">Interface Adapters</span>.</p></li>
+<li><p>Recuperano e memorizzano dati implementando le interfacce richieste dagli use-cases.</p></li>
+<li><p>Convertono i dati (fornendo presentatori, visualizzazioni)</p></li>
+</ul>
+</dd>
+</dl>
+</td>
+<td><dl class="simple">
+<dt><span class="blue">External Interfaces</span></dt><dd><ul class="simple">
+<li><p>Incorporano drivers e <span class="blue">frameworks</span>  che fungono da collante.</p></li>
+<li><p>Usano le infrastrutture che si ritengono più appropriate.</p></li>
+<li></li>
+</ul>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vincoli-sulle-dipendenze">
+<h2>Vincoli sulle dipendenze<a class="headerlink" href="#vincoli-sulle-dipendenze" title="Permalink to this headline">¶</a></h2>
+<p>La figura che segue illustra come i Controllers e i Presenters comunicano con gli Uses Cases
+del livello superiore.</p>
+<img alt="_images/cleanArchControllerAdUseCases.png" class="align-center" src="_images/cleanArchControllerAdUseCases.png" />
+<p>Il flusso di controllo si origina dal Controller per passare poi allo UseCase e al Presenter.
+Lo scopo del Presenter è di separare i casi d’uso dal formato dell’interfaccia utente.</p>
+<p>Per evitare la dipendenza dello UseCase dal Presenter
+(cioè per rispettare il vincolo che sono sempre gli anelli esterni  a dover dipendere da quelli interni e mai viceversa),
+si possono usare due tecniche principali:</p>
+<ul class="simple">
+<li><p>Ricorrendo al principio della <a class="reference external" href="https://en.wikipedia.org/wiki/Dependency_inversion_principle">inversione delle dipendenze</a></p></li>
+<li><p>Usando il pattern mediator.</p></li>
+</ul>
+<section id="id1">
+<h3>Inversione delle dipendenze<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Il principio della <a class="reference external" href="https://en.wikipedia.org/wiki/Dependency_inversion_principle">inversione delle dipendenze</a>
+stabilisce quanto segue:</p>
+<ul>
+<li><p><span class="remark">I componenti di alto livello non devono dipendere da componenti di livello più basso.</span></p></li>
+<li><p><span class="remark">Le astrazioni non devono dipendere dai dettagli</span>.</p>
+<p>Sono i dettagli (ad esempio le implementazioni concrete) che devono dipendere dalle astrazioni.</p>
+</li>
+</ul>
+</section>
+<section id="il-pattern-mediator">
+<h3>Il pattern mediator<a class="headerlink" href="#il-pattern-mediator" title="Permalink to this headline">¶</a></h3>
+<p>Nel <a class="reference external" href="https://en.wikipedia.org/wiki/Mediator_pattern">mediator pattern</a>  due oggetti delegano la loro interazione a un terzo oggetto (il mediatore)
+invece di interagire direttamente.</p>
+<a class="reference internal image-reference" href="_images/meditorSequence.png"><img alt="_images/meditorSequence.png" class="align-center" src="_images/meditorSequence.png" style="width: 50%;" /></a>
+</section>
+</section>
+<section id="i-principi-solid">
+<h2>I principi SOLID<a class="headerlink" href="#i-principi-solid" title="Permalink to this headline">¶</a></h2>
+<p>Questo tipo di architettura vuole anche promuovere i principi
+<a class="reference external" href="https://it.wikipedia.org/wiki/SOLID">SOLID</a> per la progettazione/costruzione pulita del software.</p>
+<p>Si veda <a class="reference external" href="https://clevercoder.net/2018/09/08/clean-architecture-summary-review">Clean Architecture by Uncle Bob: Summary and review</a>.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Architetture</a><ul>
+<li><a class="reference internal" href="#architetture-preliminari">Architetture preliminari</a></li>
+<li><a class="reference internal" href="#architetture-monolitiche">Architetture monolitiche</a></li>
+<li><a class="reference internal" href="#architetture-distribuite">Architetture distribuite</a></li>
+<li><a class="reference internal" href="#architetture-per-applicazioni">Architetture per applicazioni</a></li>
+<li><a class="reference internal" href="#architettura-esagonale-port-adapter">Architettura Esagonale (Port-Adapter)</a></li>
+<li><a class="reference internal" href="#la-clean-architecture">La Clean Architecture</a></li>
+<li><a class="reference internal" href="#vincoli-sulle-dipendenze">Vincoli sulle dipendenze</a><ul>
+<li><a class="reference internal" href="#id1">Inversione delle dipendenze</a></li>
+<li><a class="reference internal" href="#il-pattern-mediator">Il pattern mediator</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#i-principi-solid">I principi SOLID</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Architetture.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Architetture</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

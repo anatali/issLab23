@@ -85,40 +85,79 @@ rilevato da uno dei <span class="brown">Sonar</span> cablati nelle pareti della 
 </ul>
 <p><span class="slide">Analisi</span></p>
 </section>
+<section id="appl1actors23-analisi-dei-requisiti">
+<h2>Appl1Actors23 - Analisi dei requisiti<a class="headerlink" href="#appl1actors23-analisi-dei-requisiti" title="Permalink to this headline">¶</a></h2>
+<p>In aggiunta all’analisi già condotta negli Sprint precedenti
+(<a class="reference internal" href="Appl1-HTTPSprint1.html#appl1-httpsprint1"><span class="std std-ref">Appl1-HTTPSprint1</span></a>, <a class="reference internal" href="Appl1-HTTPSprint2.html#appl1-httpsprint2"><span class="std std-ref">Appl1-HTTPSprint2</span></a>, <a class="reference internal" href="Appl1-HTTPSprint3.html#appl1-httpsprint3"><span class="std std-ref">Appl1-HTTPSprint3</span></a>)
+, evidenziamo un nuovo requisito:</p>
+<p><span class="slidekp">KP-requisiti: Sonar Data</span></p>
+<ul class="simple">
+<li><p>l’applicazione <span class="blue">appl</span> deve poter ricevere dati dai <span class="blue">sonar</span> presenti, quando essi rilevano un passaggio del
+<span class="blue">basicrobot</span>;</p></li>
+<li><p>i dati emessi dai <span class="blue">sonar</span> devono essere interpretati come un comando di <span class="brown">stop</span>, con
+<span class="brown">resume</span> automatica, dopo il tempo prefissato;</p></li>
+<li><p>per <span class="remark">sonar</span> il committente intende un <strong>dispositivo</strong> in grado di rilevare la distanza di oggetti posti davati
+ad esso e renderne disponibile il valore ai componenti dell’applicazione, preferibilmente <strong>senza doverli conoscere</strong>.</p></li>
+</ul>
+</section>
 <section id="appl1actors23-analisi-del-problema">
 <h2>Appl1Actors23 - Analisi del problema<a class="headerlink" href="#appl1actors23-analisi-del-problema" title="Permalink to this headline">¶</a></h2>
-<section id="analisi-struttura">
-<h3>Analisi: struttura<a class="headerlink" href="#analisi-struttura" title="Permalink to this headline">¶</a></h3>
+<p>In <a class="reference internal" href="Principi.html#dimensioni"><span class="std std-ref">Principi</span></a> si è detto che
+la descrizione di un sistema software può avvenire
+focalizzando l’attenzione su almeno tre diversi punti di vista:</p>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/Dimensioni.PNG"><img alt="_images/Dimensioni.PNG" class="align-center" src="_images/Dimensioni.PNG" style="width: 100%;" /></a>
+</td>
+<td><ul class="simple">
+<li><p>l’organizzazione del sistema in parti (<span class="slide2">struttura</span>);</p></li>
+<li><p>il modo in cui le diverse parti scambiano informazione implicita o esplicita tra loro (<span class="slide2">interazione</span>);</p></li>
+<li><p>il funzionamento del tutto e di ogni singola parte (<span class="slide2">comportamento</span>).</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Al centro della analisi di un sistema distribuito,
+prima ancora di considerare il comportamento dei singoli componenti,
+è bene porre l’interazione tra le parti.</p>
+<p><span class="slide1">I passi nella analisi del problema</span></p>
+<p>Quindi la nostra analisi verrà svolta come nel seguente ordine:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#analisi-struttura"><span class="std std-ref">Struttura</span></a>: Indivuazione dei <span class="slide2">macro-componenti</span> del sistema e della loro natura.</p></li>
+<li><p><a class="reference internal" href="#analisi-interazione"><span class="std std-ref">Interazione</span></a>: Analisi sulla interazione tra i macro-componenti.</p></li>
+<li><p><a class="reference internal" href="#analisi-comportamento"><span class="std std-ref">Comportamento</span></a>: Analisi sul comportamento di ciscun macro-componente.</p></li>
+</ol>
+<p>L’obiettivo è individuare una <span class="xref std std-ref">architettura logica&lt;L’architettura logica&gt; di riferimento</span>,
+che verrà poi ulteriormente
+specificata (cona zioni di <span class="slide2">zooming</span> entro i macro-componenti) in fase di progetto</p>
+<section id="analisi-struttura">
+<h3>Analisi: struttura<a class="headerlink" href="#analisi-struttura" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 45%" />
+</colgroup>
+<tbody>
 <tr class="row-odd"><td><p><span class="slide2">Struttura</span></p>
-<p>Il sistema è distribuito e ciascun macro-componente del sistema può essere modellato
+<p>Il sistema è distribuito e ciascun macro-componente può essere modellato
 come un <a class="reference internal" href="Actors23.html#actors23"><span class="std std-ref">attore</span></a>.</p>
-<p>L’attore <span class="blue">basicrobot</span> rappresenta un <strong>robot generico</strong>, che nasconde i dettagli relativi
+<p>L’attore <span class="blue">basicrobot</span> rappresenta un <span class="remark">robot generico</span>, che nasconde i dettagli relativi
 all’uso del <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot</span></a> o di un robot fisico.</p>
-<p>L’attore <span class="blue">sonar</span> rappresenta un dispositivo capace di enettere informazioni sulla distanza
-di un ostacolo posto di fornte ad esseo.</p>
+<p>L’attore <span class="blue">sonar</span> produce vaori di distanza, ma non ha conoscenza dei componenti del sistema.</p>
 </td>
 <td><a class="reference internal image-reference" href="_images/Appl1-actors.png"><img alt="_images/Appl1-actors.png" class="align-center" src="_images/Appl1-actors.png" style="width: 100%;" /></a>
 </td>
 </tr>
 </tbody>
 </table>
-<p>In aggiunta all’analisi già condotta negli Sprint precedenti, evidenziamo un nuovo</p>
-<p><span class="slidekp">KP-requisiti: Sonar Data</span></p>
-<ul class="simple">
-<li><p>l’applicazione <span class="blue">appl</span> deve poter ricevere dati dai <span class="blue">sonar</span> presenti, quando essi rilevano un passaggio del
-<span class="blue">basicrobot</span>;</p></li>
-<li><p>i dati emessi dai <span class="blue">sonar</span> devono essere interpretati come un comando di <span class="brown">stop</span>, con
-<span class="brown">resume</span> automatica, dopo il tempo prefissato.</p></li>
-</ul>
 </section>
 <section id="analisi-interazione">
-<h3>Analisi - interazione<a class="headerlink" href="#analisi-interazione" title="Permalink to this headline">¶</a></h3>
+<h3>Analisi: interazione<a class="headerlink" href="#analisi-interazione" title="Permalink to this headline">¶</a></h3>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
 <col style="width: 50%" />
@@ -182,7 +221,7 @@ e genera i comandi  <span class="brown">stop/resume</span>.</p></td>
 </table>
 </section>
 <section id="analisi-comportamento">
-<h3>Analisi - comportamento<a class="headerlink" href="#analisi-comportamento" title="Permalink to this headline">¶</a></h3>
+<h3>Analisi: comportamento<a class="headerlink" href="#analisi-comportamento" title="Permalink to this headline">¶</a></h3>
 <p>Ogni attore opera in modo message-driven. Tuttavia, risulta spesso più opportuno impostare il comportamento
 di un <a class="reference internal" href="Actors23FSM.html#actors23fsm"><span class="std std-ref">Attore come un Automa a Stati Finiti</span></a> che decide in ogni stato quali messaggi elaborare.</p>
 <p><span class="slidekp">KP-analisi: message-driven o FSM?</span></p>
@@ -336,17 +375,17 @@ renedere visibile questo stato alla <span class="blue">console</span>, senza inf
 <section id="sonarobserveractor23">
 <h3>SonarObserverActor23<a class="headerlink" href="#sonarobserveractor23" title="Permalink to this headline">¶</a></h3>
 <p>Il componente che percepisce gli eventi emessi dai sonar e genera i comandi <em>stop/resume</em>
-evita la emissione di molteplici stop/resume controllando il nome del sonar.</p>
+evita la emissione di molteplici stop/resume controllando il valore della distanza rilevata.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>public class SonarObserverActor23 extends ActorBasic23 {
-protected String sonarName   = null;
+protected String sonarDistance = null;
 ...
   @Override
   protected void elabMsg(IApplMessage message) throws Exception {
-      //Evita gestione multipla
-      if( sonarName != null &amp;&amp; message.msgSender().equals(sonarName) ) {
+      //Evita gestione multipla - equals should be relaxed ...
+       if( sonarDistance != null &amp;&amp; message.msgContent().equals(sonarDistance) ) {
         return;
       }
-      sonarName = message.msgSender();
+      sonarDistance = message.msgContent();
       //Evita gestione di altri messaggi
       if( ! message.isEvent() || ! message.msgId().equals(&quot;sonardata&quot;) ) return;
 
@@ -506,10 +545,11 @@ protected String sonarName   = null;
     <ul>
 <li><a class="reference internal" href="#">Appl1Actors23</a><ul>
 <li><a class="reference internal" href="#boundarywalker-nuovi-requisiti">BoundaryWalker: nuovi requisiti</a></li>
+<li><a class="reference internal" href="#appl1actors23-analisi-dei-requisiti">Appl1Actors23 - Analisi dei requisiti</a></li>
 <li><a class="reference internal" href="#appl1actors23-analisi-del-problema">Appl1Actors23 - Analisi del problema</a><ul>
 <li><a class="reference internal" href="#analisi-struttura">Analisi: struttura</a></li>
-<li><a class="reference internal" href="#analisi-interazione">Analisi - interazione</a></li>
-<li><a class="reference internal" href="#analisi-comportamento">Analisi - comportamento</a></li>
+<li><a class="reference internal" href="#analisi-interazione">Analisi: interazione</a></li>
+<li><a class="reference internal" href="#analisi-comportamento">Analisi: comportamento</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#appl1actors23-progetto">Appl1Actors23 - Progetto</a><ul>

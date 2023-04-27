@@ -1,0 +1,92 @@
+plugins {
+    id 'application'  //id 'java' implicito
+    id 'eclipse'
+    id 'jacoco'
+}
+
+version '1.0'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    flatDir { dirs '../../unibolibs' }
+}
+
+dependencies {
+    // Use JUnit test framework.
+    testImplementation 'junit:junit:4.13.2'
+
+    // This dependency is used by the application.
+    implementation 'com.google.guava:guava:30.1.1-jre'
+
+//HTTP
+    implementation 'org.apache.httpcomponents:httpclient:4.5'
+//LOGGING
+    //implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+//JSON
+     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+//SOCKET.IO (for WEnv)
+    implementation group: 'javax.websocket', name: 'javax.websocket-api', version: '1.1'
+    //javax.websocket api is only the specification
+    implementation group: 'org.glassfish.tyrus.bundles', name: 'tyrus-standalone-client', version: '1.9'
+//MQTT
+    implementation group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.2.5'
+//COAP
+    // https://mvnrepository.com/artifact/org.eclipse.californium/californium-core
+    implementation group: 'org.eclipse.californium', name: 'californium-core', version: '2.0.0-M12'
+    // https://mvnrepository.com/artifact/org.eclipse.californium/californium-proxy
+    implementation group: 'org.eclipse.californium', name: 'californium-proxy', version: '2.0.0-M12'
+
+    //KOTLIN (required by planner)
+    //implementation group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.6.0'
+
+    //PLANNER
+    //implementation name: 'unibo.planner22-1.0'
+    //implementation name: 'unibo.planner23-1.0'
+    // https://mvnrepository.com/artifact/com.googlecode.aima-java/aima-core
+    //implementation group: 'com.googlecode.aima-java', name: 'aima-core', version: '3.0.0'
+
+    //CUSTOM unibo
+    implementation name: 'unibo.basicomm23-1.0'
+    implementation name: '2p301'  //for Sprint3
+    implementation name: 'actors23-1.0'
+}
+
+//The Java plugin assumes src/main/java and src/test/java as default source directories.
+//https://www.baeldung.com/gradle-source-sets
+// sourceSets {
+    //main.java.srcDirs += ...
+    //test.java.srcDirs += ...
+ //}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.enabled true
+        csv.enabled true
+    }
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'appl1Systems.actorBasic.MainAppl1CoreActors23'
+}
+
+//Custom task
+task printSourceSetInformation(){
+
+    doLast{
+        sourceSets.each { srcSet ->
+            println "["+srcSet.name+"]"
+            print "-->Source directories: "+srcSet.allJava.srcDirs+"\n"
+            /*
+            print "-->Output directories: "+srcSet.output.classesDirs.files+"\n"
+            print "-->Compile classpath:\n"
+            srcSet.compileClasspath.files.each {
+                print "  "+it.path+"\n"
+            }*/
+            println ""
+        }
+    }
+}

@@ -492,6 +492,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="StepAsynch.html#msgqueue">msgQueue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StepAsynch.html#appl1coreactorlike">Appl1CoreActorlike</a></li>
 <li class="toctree-l3"><a class="reference internal" href="StepAsynch.html#vrobothlmovesinteractionasynch-update-come-produttore">VrobotHLMovesInteractionAsynch.update come produttore</a></li>
 <li class="toctree-l3"><a class="reference internal" href="StepAsynch.html#messaggio-esitocomando">messaggio-esitocomando</a></li>
 </ul>
@@ -531,10 +532,13 @@
 <li class="toctree-l2"><a class="reference internal" href="Actors23.html#actors23-l-attore">Actors23:l’attore</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="Actors23.html#il-comportamento-di-un-attore">Il comportamento di un attore</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="Actors23.html#actor23-mainloop">Actor23 mainLoop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Actors23.html#actor23-elabmsg">Actor23 elabMsg</a></li>
 <li class="toctree-l4"><a class="reference internal" href="Actors23.html#msgqueue">msgQueue</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="Actors23.html#actorbasic23-invio-di-messaggi">ActorBasic23: invio di messaggi</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Actors23.html#actorbasic23-invio-di-messaggi">ActorBasic23: invio di messaggi</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="Actors23.html#actorbasic23-sendmsg">ActorBasic23.sendMsg</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Actors23.html#actorbasic23-sendmsgtoremoteactor">ActorBasic23.sendMsgToRemoteActor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Actors23.html#actorbasic23-automsg">ActorBasic23.autoMsg</a></li>
@@ -542,9 +546,18 @@
 <li class="toctree-l4"><a class="reference internal" href="Actors23.html#sendmessageonconn">sendMessageOnConn</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="Actors23.html#interazione-con-alieni">Interazione con alieni</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="Actors23.html#actorbasic23-emissione-di-eventi">ActorBasic23: emissione di eventi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Actors23.html#emit">emit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23.html#emitlocalevent">emitLocalEvent</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Actors23.html#subscribelocalactor">subscribeLocalActor</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23.html#emitlocalstreamevent">emitLocalStreamEvent</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Actors23.html#interazione-con-alieni">Interazione con ‘alieni’</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Actors23.html#un-esempio-di-attori-e-contesti">Un esempio di attori e contesti</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="Actors23.html#metodo-di-lavoro">Metodo di lavoro</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Actors23.html#esempio-attori-e-loro-interazioni">Esempio: attori e  loro interazioni</a><ul>
@@ -590,6 +603,59 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="Actors23FSM.html">Actors23FSM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Actors23FSM.html#struttura-del-codice-applicativo">Struttura del codice applicativo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Actors23FSM.html#actors23fsm-annotazioni">Actors23FSM: Annotazioni</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Actors23FSM.html#unibo-actors23-fsm-actorbasicfsm23">unibo.actors23.fsm.ActorBasicFsm23</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Actors23FSM.html#actorbasicfsm23-fase-di-esecuzione">ActorBasicFsm23 - Fase di esecuzione</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Actors23FSM.html#actorbasicfsm23-elabmsg">ActorBasicFsm23 elabMsg</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Actors23FSM.html#actorbasicfsm23-checkifexpected">ActorBasicFsm23 checkIfExpected</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Actors23FSM.html#rappresentazione-dei-metodi-stato">Rappresentazione dei metodi-stato</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23FSM.html#stateactionfun">StateActionFun</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Actors23FSM.html#actorbasicfsm23-statemap">ActorBasicFsm23: stateMap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Actors23FSM.html#declarestate">declareState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Actors23FSM.html#dopreparestate">doPrepareState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Actors23FSM.html#addtransition">addTransition</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Actors23FSM.html#transtab">transTab</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Actors23FSM.html#nextstate">nextState</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Actors23FSM.html#messaggio-disponibile">Messaggio disponibile</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Actors23FSM.html#oldmsgqueue">OldMsgQueue</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23FSM.html#addexpectedmsg">addExpectedMsg</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Actors23FSM.html#statetransition">stateTransition</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Actors23FSM.html#curstate-e-currentmsg">curState e currentMsg</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23FSM.html#actorbasicfsm23-fase-di-preparazione">ActorBasicFsm23 - Fase di preparazione</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Actors23FSM.html#actorbasicfsm23-costruttore">ActorBasicFsm23: costruttore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Actors23FSM.html#preparethestates">prepareTheStates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Actors23FSM.html#elabannotatedmethod">elabAnnotatedMethod</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Actors23FSM.html#elabstatemethod">elabStateMethod</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Actors23FSM.html#actorbasicfsm23-le-annotazioni">ActorBasicFsm23: le annotazioni</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Actors23FSM.html#unibo-actors23-annotations-state">unibo.actors23.annotations.State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23FSM.html#unibo-actors23-annotations-transition">unibo.actors23.annotations.Transition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23FSM.html#unibo-actors23-annotations-transitionguard">unibo.actors23.annotations.TransitionGuard</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Actors23FSM.html#interrupt">Interrupt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Actors23FSM.html#actorbasicfsm23-un-esempio">ActorBasicFsm23: un esempio</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="Producers-Consumer.html">Producers-Consumer</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Producers-Consumer.html#prods-cons-requisiti">Prods-Cons: requisiti</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Producers-Consumer.html#prods-cons-i-diversi-sistemi">Prods-Cons: i diversi sistemi</a><ul>
@@ -612,7 +678,11 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="Producers-Consumer.html#prodconsactors23events">ProdConsActors23Events</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Producers-Consumer.html#prodconsstream">ProdConsStream</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Producers-Consumer.html#prodconsfsm23">ProdConsFSM23</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Producers-Consumer.html#prodconsfsm23">ProdConsFSM23</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Producers-Consumer.html#prodconsfsm23-producerfsm23">ProdConsFsm23.ProducerFsm23</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Producers-Consumer.html#prodconsfsm23-consumerfsm23">ProdConsFsm23.ConsumerFsm23</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="Producers-Consumer.html#prodconscoap">ProdConsCoap</a></li>
 </ul>
 </li>
@@ -637,12 +707,45 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="Appl1Actors23.html">Appl1Actors23</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Appl1Actors23.html#boundarywalker-nuovi-requisiti">BoundaryWalker: nuovi requisiti</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Appl1Actors23.html#appl1actors23-analisi-dei-requisiti">Appl1Actors23 - Analisi dei requisiti</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Appl1Actors23.html#appl1actors23-analisi-del-problema">Appl1Actors23 - Analisi del problema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Appl1Actors23.html#analisi-struttura">Analisi: struttura</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Appl1Actors23.html#analisi-interazione">Analisi: interazione</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Appl1Actors23.html#analisi-comportamento">Analisi: comportamento</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Appl1Actors23.html#appl1actors23-progetto">Appl1Actors23 - Progetto</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Appl1Actors23.html#appl1state">Appl1State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Appl1Actors23.html#unibo-appl1-observer-observeractorforpath">unibo.appl1.observer.ObserverActorForPath</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Appl1Actors23.html#appl1actors23-support-vrobothlmovesactors23">appl1Actors23.support.VrobotHLMovesActors23</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Appl1Actors23.html#sonarobserveractor23">SonarObserverActor23</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Appl1Actors23.html#appl1systems-actorbasic-appl1actors23">appl1Systems.actorBasic.Appl1Actors23</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Appl1Actors23.html#iapplaction-stepok">IApplAction stepok</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Appl1Actors23.html#iapplaction-stepfail">IApplAction stepfail</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Appl1Actors23.html#appl1actors23-distribuzione">Appl1Actors23 - Distribuzione</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Appl1ActorsFsm23.html">Appl1ActorsFsm23</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Appl1ActorsFsm23.html#appl1actorfsm23-fasi-iniziali">Appl1ActorFsm23: fasi iniziali</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Appl1ActorsFsm23.html#appl1actorfsm23-stepok">Appl1ActorFsm23: stepok</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Appl1ActorsFsm23.html#appl1actorfsm23-stepko">Appl1ActorFsm23: stepko</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Appl1ActorsFsm23.html#appl1actorfsm23-stopped">Appl1ActorFsm23: stopped</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Appl1ActorsFsm23.html#appl1actorfsm23-resumed">Appl1ActorFsm23: resumed</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="AppuntiTecnologie.html">Appunti su tecnologie</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="AppuntiTecnologie.html#annotazioni-java">Annotazioni Java</a></li>
 <li class="toctree-l2"><a class="reference internal" href="AppuntiTecnologie.html#coap">Coap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="AppuntiTecnologie.html#docker">Docker</a></li>
 <li class="toctree-l2"><a class="reference internal" href="AppuntiTecnologie.html#gradle">Gradle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="AppuntiTecnologie.html#mps">MPS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AppuntiTecnologie.html#mvc">MVC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="AppuntiTecnologie.html#id1">jQuery</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="AppuntiTecnologie.html#esempi-jquery">Esempi jQuery</a></li>
 </ul>
@@ -659,7 +762,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="SpringBootIntro.html#springbootwebsocket">SpringBootWebSocket</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="SpringBootIntro.html#usare-le-websocket-in-springboot">Usare le WebSocket in SpringBoot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SpringBootIntro.html#il-file-index-html">Il file index.html</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SpringBootIntro.html#il-file-static-index-html">Il file static/index.html</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SpringBootIntro.html#lo-script-wsminimal-js">Lo script wsminimal.js</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="SpringBootIntro.html#funzioni-di-connessione-e-ricezione-messaggi">Funzioni di connessione e ricezione messaggi</a></li>
 <li class="toctree-l4"><a class="reference internal" href="SpringBootIntro.html#funzioni-di-input-output">Funzioni di input/output</a></li>
@@ -765,11 +868,72 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="Actors23Facade.html">Actors23Facade</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Actors23Facade.html#qakfacade-cosa-fa">QakFacade: cosa fa</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#qakfacadeapi">QakFacadeApi</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Actors23Facade.html#qaksystemfacade">QakSystemFacade</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Actors23Facade.html#qaksystemfacade-invio-di-messaggi">QakSystemFacade - Invio di messaggi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#qakfacade-gui">QakFacade: GUI</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Actors23Facade.html#qaksystemgui-html">qakSystemGui.html</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Actors23Facade.html#websockets">websockets</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#qakfacade-esempio-di-uso">QakFacade: esempio di uso</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#qakfacade-hicontroller">QakFacade HIController</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Actors23Facade.html#l-interfaccia-qakhiservice">L’interfaccia QakHIService</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#hicontroller-realizzazione">HIController - realizzazione</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Actors23Facade.html#hicontroller-updateviewmodel">HIController updateViewmodel</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Actors23Facade.html#qakfacade-m2mcontroller">QakFacade M2MController</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#interfaccia-qakm2mservicesynch">Interfaccia QakM2MServiceSynch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#m2mcontroller-realizzazione-parte-sincrona">M2MController - realizzazione parte sincrona</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Actors23Facade.html#uso-di-openapi-ex-swagger">Uso di OpenApi (ex Swagger)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Actors23Facade.html#esempi-di-uso-con-curl">Esempi di uso con curl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Actors23Facade.html#uso-di-hal">Uso di HAL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Actors23Facade.html#qakfacade-interazioni-asincrone">QakFacade Interazioni asincrone</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#webclient">WebClient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#interfaccia-qakm2mserviceasynch">Interfaccia QakM2MServiceAsynch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#stream-vs-flux">Stream vs Flux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#m2mcontroller-realizzazione-parte-asincrona">M2MController - realizzazione parte asincrona</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Actors23Facade.html#dettagli-di-costruzione">Dettagli di costruzione</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#qakfacade-start">QakFacade - start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#qakfacade-build-gradle">QakFacade - build.gradle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#qakfacade-application-properties">QakFacade - application.properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#qakfacade-project">QakFacade - project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#qakfacade-usage">QakFacade - usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actors23Facade.html#logback-xml">Logback.xml</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Actors23Facade.html#about-docker">About Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Actors23Facade.html#docker-compose">Docker compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Actors23Facade.html#spring-profiles">SPRING profiles</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Annotazioni.html#meta-annotation-in-java">Meta-Annotation in Java</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Annotazioni.html#meta-annotation-in-java">Meta-Annotation in Java</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Annotazioni.html#retention">Retention</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="Annotazioni.html#annotazioni-esempio">Annotazioni: esempio</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="Annotazioni.html#annotation-definizione">Annotation: definizione</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Annotazioni.html#annotation-uso">Annotation: uso</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Annotazioni.html#annotation-esempio-di-definizione">Annotation: esempio di definizione</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Annotazioni.html#annotation-esempio-di-uso">Annotation: esempio di uso</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Annotazioni.html#readprotocolannotation">readProtocolAnnotation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

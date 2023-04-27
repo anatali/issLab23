@@ -450,8 +450,8 @@ protected String sonarDistance = null;
       }
       if( payload.startsWith(&quot;stepdone&quot;)){
         if( sonarEvent ){
-          //tolgo il robot dal sonar
-          Appl1StateObject.getVr().step( Appl1StateObject.getStepTime() );
+          /* //tolgo il robot dal sonar  OBSOLETO
+          Appl1StateObject.getVr().step( Appl1StateObject.getStepTime() ); */
           CommUtils.delay(2000);  //Da REQUISITO
           sonarEvent = false;
         }

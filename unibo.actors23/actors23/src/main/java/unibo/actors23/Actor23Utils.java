@@ -199,7 +199,7 @@ public class Actor23Utils {
     }
 
     public static void emitLocalEvent(IApplMessage ev, ActorContext23 ctx){
-        ctx.propagateEventToActors(ev);
+        ctx.propagateEventToActors(ev); //a tutti
     }
     public static void emitLocalEvent(IApplMessage ev, ActorBasic23 actor){
         actor.emitLocal(ev);  //escluso actor

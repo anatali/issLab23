@@ -334,6 +334,22 @@ un evento.</p>
 </section>
 <section id="appl1actors23-support-vrobothlmovesactors23">
 <h3>appl1Actors23.support.VrobotHLMovesActors23<a class="headerlink" href="#appl1actors23-support-vrobothlmovesactors23" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 45%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Il nuovo supporto comunica in modo asincrono con il <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot</span></a> e
+traduce le informazioni ricevute da WEnv in messaggi ad <span class="blue">appl</span>.</p>
+<p>Quando riceve informazioni realative al <span class="blue">sonar</span>, genera un evento locale che viene
+poi elaborato da <span class="blue">obspath</span>.</p>
+</td>
+<td><a class="reference internal image-reference" href="_images/VrobotHLMovesActors23.png"><img alt="_images/VrobotHLMovesActors23.png" class="align-center" src="_images/VrobotHLMovesActors23.png" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
 <p><span class="slidekp">KP-project: è bene generare messaggi con msgId diversi?</span></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">VrobotHLMovesActors23</span> <span class="n">extends</span> <span class="n">ApplAbstractObserver</span>
                                    <span class="n">implements</span> <span class="n">IVrobotMovesAsynch</span> <span class="p">{</span>
@@ -349,7 +365,8 @@ un evento.</p>
         <span class="n">IApplMessage</span> <span class="n">sonarEvent</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">buildEvent</span><span class="p">(</span>
               <span class="s2">&quot;vrhlsprt&quot;</span><span class="p">,</span><span class="s2">&quot;sonardata&quot;</span><span class="p">,</span><span class="s2">&quot;&#39;&quot;</span><span class="o">+</span><span class="s2">&quot;sonar(&quot;</span> <span class="o">+</span><span class="n">d</span> <span class="o">+</span> <span class="s2">&quot; )&quot;</span><span class="o">+</span><span class="s2">&quot;&#39;&quot;</span><span class="p">);</span>
         <span class="o">//</span><span class="n">msg</span><span class="p">(</span><span class="n">sonardata</span><span class="p">,</span><span class="n">event</span><span class="p">,</span><span class="n">vrhlsprt</span><span class="p">,</span><span class="n">ANY</span><span class="p">,</span><span class="s1">&#39;sonar( D )&#39;</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
-        <span class="n">Actor23Utils</span><span class="o">.</span><span class="n">emitLocalEvent</span><span class="p">(</span> <span class="n">sonarEvent</span><span class="p">,</span><span class="n">appl</span> <span class="p">);</span>
+        <span class="n">Actor23Utils</span><span class="o">.</span><span class="n">emitLocalEvent</span><span class="p">(</span> <span class="n">sonarEvent</span><span class="p">,</span><span class="n">appl</span> <span class="p">);</span> <span class="o">//</span><span class="n">elaborato</span> <span class="n">da</span> <span class="n">sonarobs</span>
+        <span class="o">//</span><span class="n">Questo</span> <span class="s1">&#39;alieno&#39;</span> <span class="n">usa</span> <span class="n">l</span><span class="s1">&#39;utility per indurre appl ad emettere l&#39;</span><span class="n">evento</span>
       <span class="p">}</span>
       <span class="k">if</span> <span class="p">(</span><span class="n">jsonObj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;endmove&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
        <span class="o">...</span>
@@ -449,12 +466,6 @@ protected String sonarDistance = null;
           return;
       }
       if( payload.startsWith(&quot;stepdone&quot;)){
-        if( sonarEvent ){
-          /* //tolgo il robot dal sonar  OBSOLETO
-          Appl1StateObject.getVr().step( Appl1StateObject.getStepTime() ); */
-          CommUtils.delay(2000);  //Da REQUISITO
-          sonarEvent = false;
-        }
           if( Appl1StateObject.getIsRunning() &amp;&amp; ! Appl1StateObject.getStopped()  )
             stepok.handle(payload);
           return;

@@ -119,7 +119,7 @@ public abstract class ActorBasic23 extends CoapResource implements IActor23 {
     public void unsubscribe( ActorBasic23 actor){
         actor.subscribers.remove(this);
     }
-    public void emitLocalStreamEvent( IApplMessage event ){
+    protected void emitLocalStreamEvent( IApplMessage event ){
         if( Actor23Utils.trace)  CommUtils.outyellow(name + " | emitLocalStreamEvent " + event
                 + " numOfSubscribers=" + subscribers.size() ) ;
         subscribers.forEach( (actor) -> {
@@ -192,7 +192,7 @@ public abstract class ActorBasic23 extends CoapResource implements IActor23 {
         }
     }
 
-    public  void emit( IApplMessage msg   )   {  //per consentire l'emissione da supporti
+    protected  void emit( IApplMessage msg   )   {  //per consentire l'emissione da supporti
         if( msg.isEvent()){
             ctx.propagateEventToProxies(msg);
             ctx.propagateEventToActors(msg); //per gli attori locali
@@ -200,10 +200,10 @@ public abstract class ActorBasic23 extends CoapResource implements IActor23 {
             CommUtils.outred(  " | emit ERROR: msg is not an event:  " + msg.msgType() );
         }
     }
-    public  void emitLocal( IApplMessage msg   )   {  //per consentire l'emissione da supporti
+    protected  void emitLocal( IApplMessage msg   )   {  //per consentire l'emissione da supporti
         if( msg.isEvent()){
             //ctx.propagateEventToProxies(msg);
-            ctx.propagateEventToActors(msg); //per gli attori locali
+                    ctx.propagateEventToActors(msg); //per gli attori locali
         }else{
             CommUtils.outred(  " | emit ERROR: msg is not an event:  " + msg.msgType() );
         }

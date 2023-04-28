@@ -120,7 +120,7 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
                         "vrhlsprt","sonardata","'"+"sonar(" +d + " )"+"'");
                 Actor23Utils.emitLocalEvent( sonarEvent,appl );//Elaborato da sonarobs
                 //Questo 'alieno' usa l'utility per indurre appl ad emettere l'evento
-                //appl.emitLocalStreamEvent(sonarEvent); //appl funge da emitter
+                    //appl.getContext().propagateEventToActors(sonarEvent);
                 return;
             }
             if (jsonObj.get("collision") != null) {

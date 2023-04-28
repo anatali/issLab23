@@ -198,10 +198,16 @@ e genera i comandi  <span class="brown">stop/resume</span>.</p></td>
 </tr>
 </tbody>
 </table>
-<p>Poichè il <span class="blue">sonar</span> potrebbe emettere una sequenza di più eventi in serie, occorre</p>
 <p><span class="slidekp">KP-analisi: Evitare più stop/resume</span></p>
-<p>Osserviamo inoltre che un utente umano ptrebbe premere i pulsanti della <span class="blue">console</span> in una sequenza errata.</p>
+<p>E’ molto probabile che il <span class="blue">sonar</span>  emetta una sequenza di più eventi in serie. Occorre fare in modo che
+solo il primo evento della serie innsechi uno <em>stop</em> (con relativo successivo <em>resume</em>).</p>
+<p><span class="slidekp">KP-analisi: Multi-console problem</span></p>
+<p>Trasformare un evento del <span class="blue">sonar</span> in un comando <em>stop</em> seguito poi da una <em>resume</em>, equivale a pensare che l’applicazione
+possa essere comandata da due <span class="blue">console</span>.
+Per evitare interferenze, occorre che la console di utente venga <span class="remark">disabilitata/ignorata</span> quando si manifesta
+uno <em>stop</em> dovuto al <span class="blue">sonar</span>.</p>
 <p><span class="slidekp">KP-analisi: Click fuori fase sui pulsanti</span></p>
+<p>Un utente umano ptrebbe premere i pulsanti della <span class="blue">console</span> in una sequenza errata.</p>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
 <col style="width: 40%" />

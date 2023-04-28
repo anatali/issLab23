@@ -7,7 +7,7 @@ import unibo.basicomm23.utils.CommUtils;
 public class MainAppl1CoreActors23 {
 
     public void configureTheSystem(){
-        String userDir = System.getProperty("user.dir"); //C:\Didattica2023\issLab2023\Appl1
+        String userDir = System.getProperty("user.dir");
         CommUtils.outblue("Working Directory = " + userDir);
         //Actor23Utils.trace = true;
         //Connection.trace   = true;

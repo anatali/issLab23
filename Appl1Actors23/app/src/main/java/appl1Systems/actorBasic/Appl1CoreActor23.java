@@ -51,8 +51,6 @@ public class Appl1CoreActor23 extends ActorBasic23 {
              Appl1StateObject.setIsRunning(true);
              Appl1StateObject.setStarted(true);
 
-
-
              IApplMessage event = CommUtils.buildEvent(name,"startobs", "ok");
              emitLocalStreamEvent(event);
              if( ! Appl1StateObject.robotMustBeAtHome("START",this) ){
@@ -72,37 +70,16 @@ public class Appl1CoreActor23 extends ActorBasic23 {
             return;
         }
         if( message.msgId().equals("getpath")){
-            /*
-            //ELABORAZIONE DIRETTA
-            String curPath = Appl1StateObject.getPath();
-            CommUtils.outred(name + " | elabMsg: getpath " + curPath );
-            IApplMessage answer = CommUtils.buildReply(
-                    name,"getpathanswer", "'"+curPath+"'", message.msgSender());
-            reply(answer, message);
-            */
             //ELABORAZIONE DELEGATA
             Actor23Utils.sendMsg(message, ctx, "obsforpath");
             return;
         }
         if( message.msgId().equals("isrunning")){
-            /*
-            //ELABORAZIONE DIRETTA
-           CommUtils.outred(name + " | elabMsg: isrunning " + Appl1StateObject.getIsRunning() );
-            IApplMessage answer = CommUtils.buildReply(
-                    name,"isrunninganswer", ""+ Appl1StateObject.getIsRunning() , message.msgSender());
-            reply(answer, message);
-            */
             //ELABORAZIONE DELEGATA
             Actor23Utils.sendMsg(message, ctx, "obsforpath");
             return;
         }
         if( payload.startsWith("stepdone")){
-             if( sonarEvent ){
-                 Appl1StateObject.getVr().step( Appl1StateObject.getStepTime() ); //mi tolgo dal sonar
-                //stopped = true;
-                CommUtils.delay(2000);
-                 sonarEvent = false;
-             }
             if( Appl1StateObject.getIsRunning() && ! Appl1StateObject.getStopped()  ) stepok.handle(payload);
             return;
         }
@@ -115,14 +92,6 @@ public class Appl1CoreActor23 extends ActorBasic23 {
             return;
         }
         if( payload.contains("sonar")){ //'sonar(-21)'
-            /*
-            IApplMessage sonarevent = CommUtils.buildEvent(
-                    name,"sonardata", payload  );
-            CommUtils.outred(name + " | elab SONAR " + sonarevent);
-            //this.emit(sonarevent);  //tranne a sè stesso
-            //emitLocalStreamEvent(sonarevent);  //TODO / check
-
-             */
             return;
         }
     }

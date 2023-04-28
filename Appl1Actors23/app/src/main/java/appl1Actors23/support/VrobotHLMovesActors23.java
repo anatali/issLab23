@@ -96,14 +96,7 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
             notifyAll();
         }
     }
-/*
-    protected void emitEvent(String evid, String payload){
-        IApplMessage sonarevent = CommUtils.buildEvent(
-                "vrhlsupport",evid, payload  );
-        CommUtils.outred( "VrobotHLMovesActors23 | emitEvent " + sonarevent);
-        appl.g.emit(sonarevent);  //tranne a sè stesso
 
-    }*/
     @Override
     public void update(String info) {
          try {
@@ -125,23 +118,13 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
                 long d = (long) jsonObj.get("distance") ;
                 IApplMessage sonarEvent = CommUtils.buildEvent(
                         "vrhlsprt","sonardata","'"+"sonar(" +d + " )"+"'");
-                //Imviare un msg ad appl perchè generi un evento a favore di SonarObserverActor23
-                //è ridondante
-                /*
-                String wenvInfo = toApplMsg.replace("wenvinfo","sonardata")
-                        .replace("CONTENT",  "'"+"sonar(" +d + " )"+"'");
-                IApplMessage msg = new ApplMessage(wenvInfo);
-                Actor23Utils.sendMsg(msg,appl);
-                Invio l'evento a tutti gli attori locali -> gestito da SonarObserverActor23
-                 */
-                Actor23Utils.emitLocalEvent( sonarEvent,appl );
+                Actor23Utils.emitLocalEvent( sonarEvent,appl );//Elaborato da sonarobs
                 //appl.emitLocalStreamEvent(sonarEvent);  //appl funge da emitter
                 return;
             }
             if (jsonObj.get("collision") != null) {
                 /*
-                String wenvInfo = toApplMsg.replace("CONTENT",
-                        "collision(" + elapsed + " )");
+                String wenvInfo = toApplMsg.replace("CONTENT","collision(" + elapsed + " )");
                 IApplMessage msg = new ApplMessage(wenvInfo);
                 Actor23Utils.sendMsg(msg,appl);  //non viene gestito
                  */
@@ -154,8 +137,7 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
                 //CommUtils.outred("     VrobotHLMovesActors23 | update move=" + move);
                 //move moveForward-collision or moveBackward-collision
                 if (endmove) {
-                    //msgQueue.put("stepdone(" + elapsed + ")");
-                    if( ( move.equals("turnLeft") || move.equals("turnRight")) ){
+                     if( ( move.equals("turnLeft") || move.equals("turnRight")) ){
                         activateWaiting("" + endmove);
                         return;
                     }

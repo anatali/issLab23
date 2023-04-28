@@ -5,6 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="99989e2c-357a-4783-9ad9-184bdd8e35cc" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Appl1Actors23/app/src/main/java/appl1Actors23/support/VrobotHLMovesActors23.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1Actors23/app/src/main/java/appl1Actors23/support/VrobotHLMovesActors23.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1Actors23/app/src/main/java/appl1Systems/actorBasic/Appl1CoreActor23.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1Actors23/app/src/main/java/appl1Systems/actorBasic/Appl1CoreActor23.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1Actors23/app/src/main/java/appl1Systems/actorBasic/MainAppl1CoreActors23.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1Actors23/app/src/main/java/appl1Systems/actorBasic/MainAppl1CoreActors23.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

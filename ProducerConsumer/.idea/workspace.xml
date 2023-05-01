@@ -5,10 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="99989e2c-357a-4783-9ad9-184bdd8e35cc" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Appl1Actors23/app/src/main/java/appl1Actors23/support/VrobotHLMovesActors23.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1Actors23/app/src/main/java/appl1Actors23/support/VrobotHLMovesActors23.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/7.4.2/executionHistory/executionHistory.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/7.4.2/fileHashes/fileHashes.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/Californium3.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/resources/utils/PathStateObject.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/robotConfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/appl/Appl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/consoleobs/Consoleobs.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/ctxall/MainCtxall.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/obsforpath/Obsforpath.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/sonarobs/Sonarobs.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibolibs/unibo.planner22-1.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibolibs/unibo.qakactor23-3.5.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/Actor23Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/Actor23Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/ActorBasic23.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/ActorBasic23.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

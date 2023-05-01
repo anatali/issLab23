@@ -239,8 +239,8 @@ protected void stepok( IApplMessage msg )  {
 un evento verso <span class="blue">appl</span> (che si è registrata presso di lui).
 Questo evento è  ignorato da <span class="blue">appl</span> se si trova in uno stato in cui non è atteso.</p>
 <p>L’applicazione Java <code class="docutils literal notranslate"><span class="pre">CmdConsoleRemote</span></code> trasforma un click su un pulsante in un dispatch
-verso <span class="blue">appl</span>. Poichè un attore-FSM memorizza i messaggi non attesi, si possono</p>
-<p>manifestare problemi quando l’utente effettua pressioni multiple o fuori fase di stop/resume;
+verso <span class="blue">appl</span>. Poichè un attore-FSM memorizza i messaggi non attesi, si possono
+manifestare problemi quando l’utente effettua pressioni multiple o fuori fase di stop/resume;
 evitare questi problemi significa complicare il codice di <span class="xref std std-ref">Appl1ActorFsm23</span> con la introduzione
 di variabili interne e testo su di queste o addirittura la nescita di nuovi stati per svuotare
 la coda di ingresso da messaggi fuori fase.</p>

@@ -1,0 +1,338 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Appl1ActorsFsm23 &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="QakActors23" href="QakActors23.html" />
+    <link rel="prev" title="Annotazioni" href="Annotazioni.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="QakActors23.html" title="QakActors23"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Annotazioni.html" title="Annotazioni"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appl1ActorsFsm23</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="appl1actorsfsm23">
+<h1>Appl1ActorsFsm23<a class="headerlink" href="#appl1actorsfsm23" title="Permalink to this headline">¶</a></h1>
+<p>Nel processo di realizzazione dei requisiti dell’<a class="reference internal" href="Applicazione1.html#applicazione1"><span class="std std-ref">Applicazione1</span></a>, abbiamo progettato e sviluppato sistemi software diversi,
+dapprima basati sul classico concetto di  <strong>Object</strong> (Java) e su <span class="blue">interazioni sincrone</span>
+(a chiamata di procedura o request/response bloccante)
+e successivamente basati su  <strong>Actor</strong> privi di memoria comune e su <span class="blue">interazioni asincrone</span>.</p>
+<p>La figura riporta l’architettura proposta usando il concetto di  <strong>Actor message-driven</strong>:</p>
+<a class="reference internal image-reference" href="_images/Appl1-Contesti.PNG"><img alt="_images/Appl1-Contesti.PNG" class="align-center" src="_images/Appl1-Contesti.PNG" style="width: 80%;" /></a>
+<p>In questa sezione, manteniamo questa architettura, ma impostiamo il funzonamento di (alcuni) attori come automi a stati finiti,
+i cui stati sono rappresentati da metodi annotati, come introdotto in <a class="reference internal" href="Actors23FSM.html#actors23fsm"><span class="std std-ref">Actors23FSM</span></a>.</p>
+<p><span class="slide">Descrizione del sistema</span></p>
+<section id="appl1actorfsm23-appl1coreactorfsm23-pl">
+<h2>Appl1ActorFsm23: appl1CoreActorFsm23.pl<a class="headerlink" href="#appl1actorfsm23-appl1coreactorfsm23-pl" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%====================================================================================</span>
+<span class="o">%</span> <span class="n">appl1CoreActorFsm23</span><span class="o">.</span><span class="n">pl</span> <span class="n">description</span>
+<span class="o">%====================================================================================</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>  <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;8720&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">appl</span><span class="p">,</span>        <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;appl1Systems.actorFsm.Appl1ActorFsm23&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">sonarobs</span><span class="p">,</span>    <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;appl1Actors23.SonarObserverActor23&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">obsforpath</span><span class="p">,</span>  <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;appl1Actors23.observeractor.ObserverActorForPath&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span> <span class="n">console</span><span class="p">,</span>     <span class="n">ctxall</span><span class="p">,</span> <span class="s2">&quot;appl1Actors23.CmdConsoleActor23&quot;</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>L’attore che esprime la logica applicativa viene ottenuto come specializzazione della classe
+<a class="reference internal" href="Actors23FSM.html#unibo-actors23-fsm-actorbasicfsm23"><span class="std std-ref">ActorBasicFsm23</span></a>,
+che ‘trasforma’ il metodo abstract <a class="reference internal" href="Actors23.html#actor23-elabmsg"><span class="std std-ref">Actor23 elabMsg</span></a> nel funzionamento di una macchina a stati
+(si veda <a class="reference internal" href="Actors23FSM.html#actorbasicfsm23-fase-di-esecuzione"><span class="std std-ref">ActorBasicFsm23 - Fase di esecuzione</span></a>), in cui
+ogni stato corrente specifica i messaggi che lo possono portare a uno stato successivo.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">Appl1ActorFsm23</span> <span class="n">extends</span> <span class="n">ActorBasicFsm23</span> <span class="p">{</span>
+
+ <span class="n">public</span> <span class="n">Appl1ActorFsm23</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">ActorContext23</span> <span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nb">super</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ctx</span><span class="p">);</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<p>Il codice del componente appl, istanza di <code class="docutils literal notranslate"><span class="pre">Appl1ActorFsm23</span></code>, si trova nella directory
+<code class="docutils literal notranslate"><span class="pre">Appl1Actors23/app/src/main/java/appl1Systems/actorFsm/Appl1ActorFsm23.java</span></code>
+di <a class="reference external" href="../../../../Appl1Actors23/app/src/main/java/appl1Systems/actorFsm/">Appl1Actors23 project</a>.</p>
+<p><span class="slide">Il core applicativo</span></p>
+</section>
+<section id="appl1actorfsm23-fasi-iniziali">
+<h2>Appl1ActorFsm23: fasi iniziali<a class="headerlink" href="#appl1actorfsm23-fasi-iniziali" title="Permalink to this headline">¶</a></h2>
+<p>Nello stato inziale <span class="remark">s0</span>, l’attore si sottoscrive al componente <span class="blue">console</span>
+per ricevere direttamente gli eventi <code class="docutils literal notranslate"><span class="pre">xxxcmd</span></code> che denotano i comandi selezionati dall’utente finale.</p>
+<p>Quindi, alla ricezione dell’evento <code class="docutils literal notranslate"><span class="pre">startcmd</span></code> (emesso da <span class="blue">console</span>), l’attore transita
+in uno stato dedicato alla configurazione.</p>
+<section id="appl1actorfsm23-stato-s0">
+<h3>Appl1ActorFsm23 stato s0<a class="headerlink" href="#appl1actorfsm23-stato-s0" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;s0&quot;</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;init&quot;</span><span class="p">,</span>  <span class="n">msgId</span> <span class="o">=</span> <span class="s2">&quot;startcmd&quot;</span>   <span class="p">)</span>
+<span class="n">protected</span> <span class="n">void</span> <span class="n">s0</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="o">//</span><span class="n">KP</span><span class="o">-</span><span class="n">analisi</span><span class="p">:</span> <span class="n">Click</span> <span class="n">fuori</span> <span class="n">fase</span> <span class="n">sui</span> <span class="n">pulsanti</span>
+    <span class="n">this</span><span class="o">.</span><span class="n">subscribeLocalActor</span><span class="p">(</span><span class="s2">&quot;console&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="appl1actorfsm23-stato-init">
+<h3>Appl1ActorFsm23 stato init<a class="headerlink" href="#appl1actorfsm23-stato-init" title="Permalink to this headline">¶</a></h3>
+<p>Le azioni dello stato <span class="remark">init</span> sono:</p>
+<ol class="arabic simple">
+<li><p>uso della utility <code class="docutils literal notranslate"><span class="pre">Appl1StateObject</span></code> per leggere il file di configurazione e fissare i valori
+iniziali delle variabili di stato interne (<code class="docutils literal notranslate"><span class="pre">isrunning,</span> <span class="pre">started</span></code>);</p></li>
+<li><p>attivazione del componente <span class="blue">obsforpath</span> mediante <a class="reference internal" href="Actors23.html#emitlocalstreamevent"><span class="std std-ref">emitLocalStreamEvent</span></a>;</p></li>
+<li><p>controllo della posizione iniziale del robot in HOME;</p></li>
+<li><p>delega a <span class="blue">obsforpath</span> della gestione delle richieste <code class="docutils literal notranslate"><span class="pre">getpath</span></code> e <code class="docutils literal notranslate"><span class="pre">isrunning</span></code></p></li>
+<li><p>invio al robot di un comando di step, per iniziare la fase proattiva</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>@State( name = &quot;init&quot; )
+@Transition( state = &quot;stopped&quot;,  msgId = &quot;stopcmd&quot; )
+@Transition( state = &quot;stepok&quot;,   msgId = &quot;stepdone&quot; )
+@Transition( state = &quot;error&quot;,    msgId = &quot;stepfailed&quot; )
+protected void init( IApplMessage msg ) {
+  if( Appl1StateObject.getStarted() ){
+      CommUtils.outred(name + &quot; |  ALREADY STARTED &quot; );
+      return;
+  }
+  try {
+
+    Appl1StateObject.readConfigFromFile(this);
+    Appl1StateObject.reset();
+
+
+    //Appl1State.getVr().setTrace(true);
+
+    IApplMessage event = CommUtils.buildEvent(name, &quot;startobs&quot;, &quot;ok&quot;);
+    emitLocalStreamEvent(event);
+
+    if (!Appl1StateObject.robotMustBeAtHome(&quot;START&quot;,this)) {
+      CommUtils.outred(name + &quot; | elabMsg: NOT AT HOME &quot;);
+      throw new Exception(&quot;Robot must be at home&quot;);
+    }
+    //KP-project: chi mantiene lo stato?
+    this.delegate(&quot;getpath&quot;,&quot;obsforpath&quot;);
+    this.delegate(&quot;isrunning&quot;,&quot;obsforpath&quot;);
+
+    //PRIMA MOSSA
+    Appl1StateObject.doStepAsynch();
+  }catch(Exception e){...}
+}
+
+@State( name = &quot;error&quot;)
+protected void error( IApplMessage msg ) {
+    CommUtils.outred(&quot;error&quot;);
+}
+</pre></div>
+</div>
+<p>A questo punto, in assenza di errori sulla posizione iniziale del robot, l’attore attende
+l’esito del comando step che si traduce in una transione allo stato <span class="remark">stepok</span> in caso di successo
+e a <span class="remark">error</span> in caso di fallimento, in quanto l’assunzione è che non vi siano ostacoli.</p>
+<p>Nel caso l’utente prema immediatamente il pulsante stop, la transizione va allo stato
+<span class="xref std std-ref">stopped</span>.</p>
+</section>
+</section>
+<section id="appl1actorfsm23-application-logic">
+<h2>Appl1ActorFsm23: application logic<a class="headerlink" href="#appl1actorfsm23-application-logic" title="Permalink to this headline">¶</a></h2>
+<section id="appl1actorfsm23-stato-stepok">
+<h3>Appl1ActorFsm23: stato stepok<a class="headerlink" href="#appl1actorfsm23-stato-stepok" title="Permalink to this headline">¶</a></h3>
+<p>Nel caso di step completato con sucesso,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>@State( name = &quot;stepok&quot;)
+@Transition( state = &quot;stopped&quot;,   msgId = &quot;stopcmd&quot; )
+@Transition( state = &quot;stepok&quot;,    msgId = &quot;stepdone&quot; )
+@Transition( state = &quot;stepko&quot;,    msgId = &quot;stepfailed&quot; )
+protected void stepok( IApplMessage msg )  {
+    if( Appl1StateObject.getIsRunning() &amp;&amp; ! Appl1StateObject.getStopped()  )
+      //stepok.handle(msg.msgContent());
+        try{ //msg = stepdone(373)
+            Appl1StateObject.updateObservers(&quot;robot-stepdone&quot;,this);
+            Appl1StateObject.incNSteps();
+            CommUtils.delay(300); //to view steps better
+            Appl1StateObject.doStepAsynch();
+        }catch(Exception e){ e.printStackTrace();}
+}
+</pre></div>
+</div>
+</section>
+<section id="appl1actorfsm23-stato-stepko">
+<h3>Appl1ActorFsm23: stato stepko<a class="headerlink" href="#appl1actorfsm23-stato-stepko" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;stepko&quot;</span><span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;stopped&quot;</span><span class="p">,</span>   <span class="n">msgId</span> <span class="o">=</span> <span class="s2">&quot;stopcmd&quot;</span> <span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;stepok&quot;</span><span class="p">,</span>  <span class="n">msgId</span> <span class="o">=</span> <span class="s2">&quot;stepdone&quot;</span> <span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;stepko&quot;</span><span class="p">,</span>  <span class="n">msgId</span> <span class="o">=</span> <span class="s2">&quot;stepfailed&quot;</span> <span class="p">)</span>
+<span class="n">protected</span> <span class="n">void</span> <span class="n">stepko</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="o">//</span><span class="n">stepfail</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">msgContent</span><span class="p">());</span>
+    <span class="k">try</span><span class="p">{</span> <span class="o">//</span><span class="n">msg</span><span class="o">=</span><span class="n">stepfailed</span><span class="p">(</span><span class="mi">362</span><span class="p">,</span> <span class="n">collision</span> <span class="p">)</span>
+        <span class="n">Struct</span> <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">Struct</span><span class="p">)</span><span class="n">Term</span><span class="o">.</span><span class="n">createTerm</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">msgContent</span><span class="p">());</span>
+        <span class="n">String</span> <span class="n">cause</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">getArg</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">cause</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;collision&quot;</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">updateObservers</span><span class="p">(</span><span class="s2">&quot;robot-collision&quot;</span><span class="p">,</span><span class="n">this</span><span class="p">);</span>
+            <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">incNEdges</span><span class="p">();</span>
+            <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">getVr</span><span class="p">()</span><span class="o">.</span><span class="n">turnLeft</span><span class="p">();</span>
+            <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">updateObservers</span><span class="p">(</span><span class="s2">&quot;robot-turnLeft&quot;</span><span class="p">,</span><span class="n">this</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">getNEdges</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">doStepAsynch</span><span class="p">();</span>
+            <span class="k">else</span> <span class="p">{</span>
+                <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">reset</span><span class="p">();</span>
+                <span class="n">Appl1StateObject</span><span class="o">.</span><span class="n">robotMustBeAtHome</span><span class="p">(</span><span class="s2">&quot;END&quot;</span><span class="p">,</span><span class="n">this</span><span class="p">);</span>
+                <span class="n">CommUtils</span><span class="o">.</span><span class="n">outblue</span><span class="p">(</span><span class="s2">&quot;stepfail automsg &quot;</span><span class="o">+</span> <span class="n">restart</span>  <span class="p">);</span>
+
+                <span class="n">autoMsg</span><span class="p">(</span><span class="n">restart</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span><span class="n">catch</span><span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">){</span> <span class="n">e</span><span class="o">.</span><span class="n">printStackTrace</span><span class="p">();}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="appl1actorfsm23-stato-stopped">
+<h3>Appl1ActorFsm23: stato stopped<a class="headerlink" href="#appl1actorfsm23-stato-stopped" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;stopped&quot;</span><span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;resumed&quot;</span><span class="p">,</span>  <span class="n">msgId</span> <span class="o">=</span> <span class="s2">&quot;resumecmd&quot;</span>  <span class="p">)</span>
+<span class="n">protected</span> <span class="n">void</span> <span class="n">stopped</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">CommUtils</span><span class="o">.</span><span class="n">outmagenta</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%%% s</span><span class="s2">topped:&quot;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="appl1actorfsm23-stato-resumed">
+<h3>Appl1ActorFsm23: stato resumed<a class="headerlink" href="#appl1actorfsm23-stato-resumed" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;resumed&quot;</span><span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;stepok&quot;</span><span class="p">,</span>  <span class="n">msgId</span> <span class="o">=</span> <span class="s2">&quot;stepdone&quot;</span>  <span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;stepko&quot;</span><span class="p">,</span>  <span class="n">msgId</span> <span class="o">=</span> <span class="s2">&quot;stepfailed&quot;</span> <span class="p">)</span>
+<span class="n">protected</span> <span class="n">void</span> <span class="n">resumed</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
+     <span class="n">CommUtils</span><span class="o">.</span><span class="n">outmagenta</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%%% r</span><span class="s2">esumed:&quot;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="console-attore-o-applicazione-esterna">
+<h2>Console: attore o applicazione esterna?<a class="headerlink" href="#console-attore-o-applicazione-esterna" title="Permalink to this headline">¶</a></h2>
+<p>L’attore <code class="docutils literal notranslate"><span class="pre">CmdConsoleActor23</span></code> usa <a class="reference internal" href="Actors23.html#emitlocalstreamevent"><span class="std std-ref">emitLocalStreamEvent</span></a> per trasformare un click su un pulsante in
+un evento verso <span class="blue">appl</span> (che si è registrata presso di lui).
+Questo evento è  ignorato da <span class="blue">appl</span> se si trova in uno stato in cui non è atteso.</p>
+<p>L’applicazione Java <code class="docutils literal notranslate"><span class="pre">CmdConsoleRemote</span></code> trasforma un click su un pulsante in un dispatch
+verso <span class="blue">appl</span>. Poichè un attore-FSM memorizza i messaggi non attesi, si possono</p>
+<p>manifestare problemi quando l’utente effettua pressioni multiple o fuori fase di stop/resume;
+evitare questi problemi significa complicare il codice di <span class="xref std std-ref">Appl1ActorFsm23</span> con la introduzione
+di variabili interne e testo su di queste o addirittura la nescita di nuovi stati per svuotare
+la coda di ingresso da messaggi fuori fase.</p>
+</section>
+<section id="una-versione-in-qak">
+<h2>Una versione in Qak<a class="headerlink" href="#una-versione-in-qak" title="Permalink to this headline">¶</a></h2>
+<p>Una versione analoga a questa, espressa nel linguaggio Qak, si ttrova in
+<a class="reference internal" href="Appl1ActorsQak23.html#appl1actorsqak23"><span class="std std-ref">Appl1ActorsQak23</span></a>.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Appl1ActorsFsm23</a><ul>
+<li><a class="reference internal" href="#appl1actorfsm23-appl1coreactorfsm23-pl">Appl1ActorFsm23: appl1CoreActorFsm23.pl</a></li>
+<li><a class="reference internal" href="#appl1actorfsm23-fasi-iniziali">Appl1ActorFsm23: fasi iniziali</a><ul>
+<li><a class="reference internal" href="#appl1actorfsm23-stato-s0">Appl1ActorFsm23 stato s0</a></li>
+<li><a class="reference internal" href="#appl1actorfsm23-stato-init">Appl1ActorFsm23 stato init</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#appl1actorfsm23-application-logic">Appl1ActorFsm23: application logic</a><ul>
+<li><a class="reference internal" href="#appl1actorfsm23-stato-stepok">Appl1ActorFsm23: stato stepok</a></li>
+<li><a class="reference internal" href="#appl1actorfsm23-stato-stepko">Appl1ActorFsm23: stato stepko</a></li>
+<li><a class="reference internal" href="#appl1actorfsm23-stato-stopped">Appl1ActorFsm23: stato stopped</a></li>
+<li><a class="reference internal" href="#appl1actorfsm23-stato-resumed">Appl1ActorFsm23: stato resumed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#console-attore-o-applicazione-esterna">Console: attore o applicazione esterna?</a></li>
+<li><a class="reference internal" href="#una-versione-in-qak">Una versione in Qak</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Annotazioni.html"
+                          title="previous chapter">Annotazioni</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="QakActors23.html"
+                          title="next chapter">QakActors23</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Appl1ActorsFsm23.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="QakActors23.html" title="QakActors23"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Annotazioni.html" title="Annotazioni"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appl1ActorsFsm23</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

@@ -20,7 +20,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Appl1ActorsFsm23" href="Appl1ActorsFsm23.html" />
+    <link rel="next" title="Annotazioni" href="Annotazioni.html" />
     <link rel="prev" title="SistemiActors23" href="SistemiActors23.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,7 +30,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="Appl1ActorsFsm23.html" title="Appl1ActorsFsm23"
+          <a href="Annotazioni.html" title="Annotazioni"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="SistemiActors23.html" title="SistemiActors23"
@@ -313,7 +313,7 @@ necessarie.</p>
  <span class="nd">@Override</span>
  <span class="n">protected</span> <span class="n">void</span> <span class="n">elabMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">inputmsg</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
   <span class="o">...</span>
-  <span class="o">/</span><span class="n">GESTRIONE</span> <span class="n">DELEGATA</span>
+  <span class="o">//</span><span class="n">GESTIONE</span> <span class="n">DELEGATA</span>
   <span class="k">if</span><span class="p">(</span> <span class="n">inputmsg</span><span class="o">.</span><span class="n">isRequest</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">inputmsg</span><span class="o">.</span><span class="n">msgId</span><span class="p">()</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;getpath&quot;</span><span class="p">)){</span><span class="o">/</span>
     <span class="n">IApplMessage</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">buildReply</span><span class="p">(</span> <span class="n">name</span><span class="p">,</span><span class="s2">&quot;getpathanswer&quot;</span><span class="p">,</span>
                  <span class="s2">&quot;&#39;&quot;</span><span class="o">+</span><span class="n">getCurrentPath</span><span class="p">()</span><span class="o">+</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="n">inputmsg</span><span class="o">.</span><span class="n">msgSender</span><span class="p">());</span>
@@ -371,7 +371,7 @@ poi elaborato da <span class="blue">obspath</span>.</p>
         <span class="n">IApplMessage</span> <span class="n">sonarEvent</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">buildEvent</span><span class="p">(</span>
               <span class="s2">&quot;vrhlsprt&quot;</span><span class="p">,</span><span class="s2">&quot;sonardata&quot;</span><span class="p">,</span><span class="s2">&quot;&#39;&quot;</span><span class="o">+</span><span class="s2">&quot;sonar(&quot;</span> <span class="o">+</span><span class="n">d</span> <span class="o">+</span> <span class="s2">&quot; )&quot;</span><span class="o">+</span><span class="s2">&quot;&#39;&quot;</span><span class="p">);</span>
         <span class="o">//</span><span class="n">msg</span><span class="p">(</span><span class="n">sonardata</span><span class="p">,</span><span class="n">event</span><span class="p">,</span><span class="n">vrhlsprt</span><span class="p">,</span><span class="n">ANY</span><span class="p">,</span><span class="s1">&#39;sonar( D )&#39;</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
-        <span class="n">Actor23Utils</span><span class="o">.</span><span class="n">emitLocalEvent</span><span class="p">(</span> <span class="n">sonarEvent</span><span class="p">,</span><span class="n">appl</span> <span class="p">);</span> <span class="o">//</span><span class="n">elaborato</span> <span class="n">da</span> <span class="n">sonarobs</span>
+        <span class="n">Actor23Utils</span><span class="o">.</span><span class="n">emitLocalEvent</span><span class="p">(</span> <span class="n">sonarEvent</span><span class="p">,</span><span class="n">appl</span> <span class="p">);</span> <span class="o">//</span><span class="n">elaborato</span> <span class="n">da</span> <span class="n">sonarobserver</span>
         <span class="o">//</span><span class="n">Questo</span> <span class="s1">&#39;alieno&#39;</span> <span class="n">usa</span> <span class="n">l</span><span class="s1">&#39;utility per indurre appl ad emettere l&#39;</span><span class="n">evento</span>
       <span class="p">}</span>
       <span class="k">if</span> <span class="p">(</span><span class="n">jsonObj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;endmove&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
@@ -594,8 +594,8 @@ protected String sonarDistance = null;
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="Appl1ActorsFsm23.html"
-                          title="next chapter">Appl1ActorsFsm23</a></p>
+    <p class="topless"><a href="Annotazioni.html"
+                          title="next chapter">Annotazioni</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -625,7 +625,7 @@ protected String sonarDistance = null;
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="Appl1ActorsFsm23.html" title="Appl1ActorsFsm23"
+          <a href="Annotazioni.html" title="Annotazioni"
              >next</a> |</li>
         <li class="right" >
           <a href="SistemiActors23.html" title="SistemiActors23"

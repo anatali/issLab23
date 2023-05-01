@@ -1,0 +1,542 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Appl1ActorsQak23 &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Appunti su tecnologie" href="AppuntiTecnologie.html" />
+    <link rel="prev" title="QakActors23Demo" href="QakActors23Demo.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="QakActors23Demo.html" title="QakActors23Demo"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appl1ActorsQak23</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="appl1actorsqak23">
+<h1>Appl1ActorsQak23<a class="headerlink" href="#appl1actorsqak23" title="Permalink to this headline">¶</a></h1>
+<p>Riportiamo qui un possibile modello Qak dell’<a class="reference internal" href="Applicazione1.html#applicazione1"><span class="std std-ref">Applicazione1</span></a>, simile a quanto sviluppato in
+<a class="reference internal" href="Appl1ActorsFsm23.html#appl1actorsfsm23"><span class="std std-ref">Appl1ActorsFsm23</span></a>.</p>
+<section id="appl1actorsqak23-architettura">
+<h2>Appl1ActorsQak23 architettura<a class="headerlink" href="#appl1actorsqak23-architettura" title="Permalink to this headline">¶</a></h2>
+<p>La figura che segue illustra l’architettura del sistema</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/ArchAppl1ActorsQak23.png"><img alt="_images/ArchAppl1ActorsQak23.png" class="align-center" src="_images/ArchAppl1ActorsQak23.png" style="width: 100%;" /></a>
+</td>
+<td><p>Questa immagine costituisce una rappresentazione prodotta dalla <a class="reference internal" href="QakActors23.html#qak-software-factory"><span class="std std-ref">Qak software factory</span></a>,
+sulla base del modello stesso, una volta completato.</p>
+<p>Gli eventi:</p>
+<ul class="simple">
+<li><p><span class="brown">sonardata</span> sono generati dai Sonar presenti in WEnv</p></li>
+<li><p><span class="brown">info</span> sono generati da appl per aggiornare <span class="blue">obsforpath</span></p></li>
+<li><p><span class="brown">guicmd</span> e <span class="brown">guicmd</span> sono generati dal supporto <span class="blue">GuiObsForQak</span> che converte click sui
+pulsanti della GUI in eventi locali</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<section id="appl1qak-pl">
+<h3>appl1qak.pl<a class="headerlink" href="#appl1qak-pl" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%===============================================</span>
+<span class="o">%</span> <span class="n">appl1qak</span> <span class="n">description</span>
+<span class="o">%===============================================</span>
+<span class="n">context</span><span class="p">(</span><span class="n">ctxall</span><span class="p">,</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span><span class="s2">&quot;TCP&quot;</span><span class="p">,</span><span class="s2">&quot;8720&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span><span class="n">appl</span><span class="p">,</span> <span class="n">ctxall</span><span class="p">,</span><span class="s2">&quot;it.unibo.appl.Appl&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span><span class="n">consoleobs</span><span class="p">,</span> <span class="n">ctxall</span><span class="p">,</span><span class="s2">&quot;it.unibo.consoleobs.Consoleobs&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span><span class="n">sonarobs</span><span class="p">,</span> <span class="n">ctxall</span><span class="p">,</span><span class="s2">&quot;it.unibo.sonarobs.Sonarobs&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span><span class="n">obsforpath</span><span class="p">,</span> <span class="n">ctxall</span><span class="p">,</span><span class="s2">&quot;it.unibo.obsforpath.Obsforpath&quot;</span><span class="p">)</span><span class="o">.</span>
+<span class="n">qactor</span><span class="p">(</span><span class="n">console</span><span class="p">,</span> <span class="n">ctxall</span><span class="p">,</span><span class="s2">&quot;it.unibo.console.Console&quot;</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="dichiarazione-dei-messaggi">
+<h2>Dichiarazione dei messaggi<a class="headerlink" href="#dichiarazione-dei-messaggi" title="Permalink to this headline">¶</a></h2>
+<p>Tutte le versioni distribuite sviluppate in precedenza, basate su attori o meno, erano costituite da
+componenti software che interagvano tramite messaggi.</p>
+<p>I messaggi sono ciò che permetteva ai componenti di formare un sistema, ma non erano mai posti in evidenza;
+anche nella e basata su annotazioni non esistevano sezioni che introducessero in modo esplicito la descrizione
+dei messaggi.</p>
+<p>Ora invece, come previsto dal <a class="reference internal" href="QakActors23.html#qak-model-template"><span class="std std-ref">Qak model template</span></a> occorre iniziare proprio dalla dichiarazione dei messaggi
+che formano il ‘collante’ del sistema.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="o">/*</span> <span class="o">-</span><span class="n">msglog</span> <span class="o">*/</span> <span class="n">appl1qak</span>
+
+<span class="n">Dispatch</span> <span class="n">startcmd</span>   <span class="p">:</span> <span class="n">start</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">restart</span>    <span class="p">:</span> <span class="n">start</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">stopcmd</span>    <span class="p">:</span> <span class="n">stop</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">resumecmd</span>  <span class="p">:</span> <span class="n">resume</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+
+<span class="n">Dispatch</span> <span class="n">stopappl</span>   <span class="p">:</span> <span class="n">stopappl</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">resumeappl</span> <span class="p">:</span> <span class="n">resumeappl</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+
+<span class="o">//</span><span class="n">Dispatch</span> <span class="n">cmd</span>        <span class="p">:</span> <span class="n">cmd</span><span class="p">(</span><span class="n">MOVE</span><span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">stepdone</span>   <span class="p">:</span> <span class="n">stepdone</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">stepfailed</span> <span class="p">:</span> <span class="n">stepfailed</span><span class="p">(</span><span class="n">DURATION</span><span class="p">,</span> <span class="n">CAUSE</span><span class="p">)</span>
+
+<span class="n">Request</span> <span class="n">getpath</span>     <span class="p">:</span> <span class="n">getpath</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+<span class="n">Request</span> <span class="n">isrunning</span>   <span class="p">:</span> <span class="n">isrunning</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+<span class="n">Reply</span> <span class="n">pathamswer</span>    <span class="p">:</span> <span class="n">pathamswer</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+<span class="n">Reply</span> <span class="n">runninganswer</span> <span class="p">:</span> <span class="n">runninganswer</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+
+<span class="n">Event</span> <span class="n">info</span>          <span class="p">:</span> <span class="n">info</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+<span class="n">Event</span> <span class="n">sonardata</span>     <span class="p">:</span> <span class="n">sonar</span><span class="p">(</span><span class="n">DISTANCE</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="dichiarazione-dei-contesti">
+<h2>Dichiarazione dei contesti<a class="headerlink" href="#dichiarazione-dei-contesti" title="Permalink to this headline">¶</a></h2>
+<p>Subito dopo dobbiamo descrivere i contesti che formano il sistema.
+Al momento, tenendo conto quanto detto in <a class="reference internal" href="Actors23.html#metodo-di-lavoro"><span class="std std-ref">Metodo di lavoro</span></a>, ne definiamo uno solo.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Context</span> <span class="n">ctxall</span>  <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8720</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="dichiarazione-degli-attori">
+<h2>Dichiarazione degli attori<a class="headerlink" href="#dichiarazione-degli-attori" title="Permalink to this headline">¶</a></h2>
+<p>Il <a class="reference internal" href="QakActors23.html#qak-model-template"><span class="std std-ref">Qak model template</span></a> indica che il passo successivo ricguarda la dichiarazione degli
+attori che compongono il sistema.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">QActor</span> <span class="n">appl</span> <span class="n">context</span> <span class="n">ctxall</span><span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+
+<span class="n">QActor</span> <span class="n">obsforpath</span> <span class="n">context</span> <span class="n">ctxall</span><span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+
+<span class="n">QActor</span> <span class="n">consoleobs</span> <span class="n">context</span> <span class="n">ctxall</span><span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+
+<span class="n">QActor</span> <span class="n">sonarobs</span> <span class="n">context</span> <span class="n">ctxall</span><span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<section id="qactor-appl">
+<h3>QActor appl<a class="headerlink" href="#qactor-appl" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*
+* ------------------------------------------------------------------
+*  appl
+* ------------------------------------------------------------------
+*/
+QActor appl context ctxall{
+     State s0 initial {
+        println(&quot;&amp;&amp;&amp;  appl ACTIVE ...&quot;)
+        //[# NumEdges = 0   #]
+        [#  unibo.basicomm23.utils.Connection.trace=true
+            utils.Appl1StateObject.setConfigFilePath(&quot;./robotConfig.json&quot;);
+            unibo.basicomm23.utils.CommUtils.outblue(name + &quot; | init $currentMsg&quot;   )
+            //delegate(&quot;isrunning&quot;,&quot;obsforpath&quot;);
+            //delegate(&quot;getpath&quot;,&quot;obsforpath&quot;);
+        #]
+        //[# subscribeLocalActor(&quot;obsforpath&quot;) #]
+
+
+        delegate &quot;stopcmd&quot; to consoleobs
+        delegate &quot;resumecmd&quot; to consoleobs
+
+        delegate &quot;isrunning&quot; to obsforpath
+        delegate &quot;getpath&quot; to obsforpath
+    }
+    Transition t0 whenMsg startcmd -&gt; startboundary
+
+    State startboundary{
+        [#  utils.Appl1StateObject.initappl(myself, currentMsg) #]
+        println(&quot;startboundary  &quot;)
+        [#  utils.Appl1StateObject.doStepAsynch() #]
+        //request basicrobot -m step : step($StepTime)
+    }
+    Transition t0 whenMsg stepdone   -&gt; stepok
+                whenMsg stepfailed -&gt; stepko
+                whenMsg stopappl   -&gt; stopped
+
+    State stepok{
+        delay 300 //to avoid too rapid changes
+        [#  utils.Appl1StateObject.incNSteps()
+            utils.Appl1StateObject.doStepAsynch()
+        #]
+        //request basicrobot -m step : step($StepTime)
+        updateResource [# &quot;robot-stepdone&quot; #]
+        emitlocalstream info : info(robotstepdone)
+    }
+    Transition t0 whenMsg stepdone   -&gt; stepok
+                whenMsg stepfailed -&gt; stepko
+                whenMsg stopappl   -&gt; stopped
+
+
+    State stepko {
+        println(&quot;stepko &quot;)
+        updateResource [# &quot;robot-collision&quot; #]
+        emitlocalstream info : info(robotcollision)
+        [#  utils.Appl1StateObject.incNEdges()
+            utils.Appl1StateObject.getVr().turnLeft()
+        #]
+        //forward basicrobot -m cmd : cmd(l)
+        updateResource [# &quot;robot-turnleft&quot; #]
+        emitlocalstream info : info(robotturnleft)
+        if [# utils.Appl1StateObject.getNEdges() &lt; 4 #] {
+            delay 300
+            [#  utils.Appl1StateObject.doStepAsynch() #]
+            //request basicrobot -m step : step($StepTime)
+        }else {
+            forward appl -m restart : start(again)  //automsg
+        }
+    }
+    Transition t0 whenMsg stepdone   -&gt; stepok
+                whenMsg stepfailed -&gt; stepko
+                whenMsg stopappl   -&gt; stopped
+                whenMsg restart    -&gt; consumePreviousStart
+
+
+    State stopped{
+        println(&quot;appl stopped &quot;)
+    }
+    Transition t0 whenMsg resumeappl -&gt; resumed
+
+    State resumed{
+        println(&quot;appl resumed &quot;)
+    }
+    Transition t0 whenMsg stepdone   -&gt; stepok  //accordati dopo stopappl
+                whenMsg stepfailed -&gt; stepko
+
+/*
+* appl RESTARTING
+*/
+    //elimino more click su start
+    State consumePreviousStart{
+        printCurrentMessage
+    }
+    Transition t0 whenTime 10 -&gt; waittorestart
+                whenMsg startcmd -&gt; consumePreviousStart
+
+    //Inizializzo e attendo un nuovo startcmd
+    State waittorestart{
+        [#  utils.Appl1StateObject.reset()
+        #]
+        println(&quot;waittorestart&quot;)
+    }
+    Transition t0 whenMsg startcmd -&gt; restart
+
+    State restart{
+        [#  utils.Appl1StateObject.setIsRunning(true)
+        utils.Appl1StateObject.doStepAsynch() #]
+        println(&quot;restart&quot;)
+    }
+    Transition t0 whenMsg stepdone   -&gt; stepok
+                whenMsg stepfailed -&gt; stepko
+}
+</pre></div>
+</div>
+</section>
+<section id="qactor-consoleobs">
+<h3>QActor consoleobs<a class="headerlink" href="#qactor-consoleobs" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+<span class="o">--------------------------------------</span>
+<span class="n">consoleobs</span>
+<span class="o">--------------------------------------</span>
+<span class="o">*/</span>
+<span class="n">QActor</span> <span class="n">consoleobs</span> <span class="n">context</span> <span class="n">ctxall</span><span class="p">{</span>
+    <span class="p">[</span><span class="c1"># var Stopped = false #]</span>
+    <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span><span class="p">{</span>
+        <span class="o">//</span><span class="n">printCurrentMessage</span>
+    <span class="p">}</span>
+    <span class="n">Transition</span> <span class="n">t0</span> <span class="n">whenMsg</span>  <span class="n">stopcmd</span>   <span class="o">-&gt;</span> <span class="n">handlestop</span>
+                <span class="n">whenMsg</span>  <span class="n">resumecmd</span> <span class="o">-&gt;</span> <span class="n">handleresume</span>
+    <span class="n">State</span> <span class="n">handlestop</span><span class="p">{</span>
+        <span class="n">printCurrentMessage</span>
+        <span class="k">if</span><span class="p">[</span><span class="c1"># Stopped #] {</span>
+            <span class="n">println</span><span class="p">(</span><span class="s2">&quot;consoleobs: already stopped&quot;</span><span class="p">)</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="p">[</span><span class="c1"># Stopped = true #]</span>
+            <span class="n">forward</span> <span class="n">appl</span> <span class="o">-</span><span class="n">m</span> <span class="n">stopappl</span> <span class="p">:</span> <span class="n">stopappl</span><span class="p">(</span><span class="n">console</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">Goto</span> <span class="n">s0</span>
+
+    <span class="n">State</span> <span class="n">handleresume</span><span class="p">{</span>
+    <span class="k">if</span><span class="p">[</span><span class="c1"># Stopped #] {</span>
+            <span class="n">forward</span> <span class="n">appl</span> <span class="o">-</span><span class="n">m</span> <span class="n">resumeappl</span> <span class="p">:</span> <span class="n">resumepappl</span><span class="p">(</span><span class="n">console</span><span class="p">)</span>
+            <span class="p">[</span><span class="c1"># Stopped = false #]</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&quot;consoleobs: resume ignored&quot;</span><span class="p">)}</span>
+    <span class="p">}</span>
+    <span class="n">Goto</span> <span class="n">s0</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="qactor-sonarobs">
+<h3>QActor sonarobs<a class="headerlink" href="#qactor-sonarobs" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+<span class="o">--------------------------------------</span>
+<span class="n">sonarobs</span>
+<span class="o">--------------------------------------</span>
+<span class="o">*/</span>
+<span class="n">QActor</span> <span class="n">sonarobs</span> <span class="n">context</span> <span class="n">ctxall</span><span class="p">{</span>
+    <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span><span class="p">{</span>
+        <span class="n">printCurrentMessage</span>
+    <span class="p">}</span>
+    <span class="n">Transition</span> <span class="n">t0</span> <span class="n">whenEvent</span> <span class="n">sonardata</span> <span class="o">-&gt;</span> <span class="n">handleSonarData</span>
+
+
+    <span class="n">State</span> <span class="n">handleSonarData</span><span class="p">{</span>
+        <span class="n">printCurrentMessage</span>
+        <span class="n">forward</span> <span class="n">appl</span> <span class="o">-</span><span class="n">m</span> <span class="n">stopcmd</span> <span class="p">:</span> <span class="n">stop</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="n">delay</span> <span class="mi">2000</span>
+        <span class="n">forward</span> <span class="n">appl</span> <span class="o">-</span><span class="n">m</span> <span class="n">resumecmd</span> <span class="p">:</span> <span class="n">resume</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">Goto</span> <span class="n">ignoreSonarData</span>
+
+    <span class="n">State</span> <span class="n">ignoreSonarData</span><span class="p">{</span>
+        <span class="n">printCurrentMessage</span>
+    <span class="p">}</span>
+    <span class="n">Transition</span> <span class="n">t0</span> <span class="n">whenTime</span> <span class="mi">500</span> <span class="o">-&gt;</span> <span class="n">s0</span> <span class="n">whenEvent</span> <span class="n">sonardata</span> <span class="o">-&gt;</span> <span class="n">ignoreSonarData</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="qactor-obsforpath">
+<h3>QActor obsforpath<a class="headerlink" href="#qactor-obsforpath" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*
+--------------------------------------
+obsforpath
+--------------------------------------
+*/
+QActor obsforpath context ctxall{
+    [# val path = utils.PathStateObject() #]
+State s0 initial{
+    printCurrentMessage
+    subscribeTo appl
+}
+Goto waitmsgs
+
+State waitmsgs{
+    println(&quot;obsforpath waiting ...&quot;)
+}
+Transition t0 whenRequest isrunning -&gt; handleIsrunning
+                whenRequest getpath   -&gt; handlegetpath
+                whenEvent   info      -&gt; handleinfo
+
+State handleinfo{
+    printCurrentMessage
+    onMsg( info : info(ARG) ) {
+        [# val move = payloadArg(0) #]
+        println ( &quot;obsforpath handleinfo ${payloadArg(0)} &quot; )
+        [# path.updatePath(  payloadArg(0)  ) #]
+    }
+}
+Goto waitmsgs
+
+State  handleIsrunning{
+    printCurrentMessage
+    [#  val r = utils.Appl1StateObject.getIsRunning( ) #]
+    replyTo isrunning with runninganswer : runninganswer(true)
+}
+Goto waitmsgs
+
+State  handlegetpath{
+    //printCurrentMessage
+    [# var Curpath = path.getCurrentPath() #]
+    println(&quot;obsforpath | current path=$Curpath&quot;)
+    replyTo getpath with pathamswer : pathamswer($Curpath)
+}
+Goto waitmsgs
+}
+</pre></div>
+</div>
+</section>
+<section id="qactor-console">
+<h3>QActor console<a class="headerlink" href="#qactor-console" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">QActor</span> <span class="n">console</span> <span class="n">context</span> <span class="n">ctxall</span><span class="p">{</span>
+    <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span><span class="p">{</span>
+            <span class="n">printCurrentMessage</span>
+            <span class="p">[</span><span class="c1"># gui.GuiUtils.createGui(myself) #]</span>
+
+    <span class="p">}</span>
+    <span class="n">Goto</span> <span class="n">waitevents</span>
+
+    <span class="n">State</span> <span class="n">waitevents</span><span class="p">{}</span>
+    <span class="n">Transition</span> <span class="n">t0</span> <span class="n">whenEvent</span> <span class="n">guicmd</span> <span class="o">-&gt;</span> <span class="n">handleGuicmd</span>
+                  <span class="n">whenEvent</span> <span class="n">getpath</span> <span class="o">-&gt;</span> <span class="n">handleGuigetpath</span>
+
+    <span class="n">State</span> <span class="n">handleGuicmd</span> <span class="p">{</span>
+            <span class="n">printCurrentMessage</span>
+            <span class="n">onMsg</span> <span class="p">(</span> <span class="n">guicmd</span> <span class="p">:</span> <span class="n">guicmd</span><span class="p">(</span><span class="n">start</span><span class="p">)){</span>
+                    <span class="p">[</span><span class="c1"># CommUtils.outmagenta(&quot;console start&quot;) #]</span>
+                    <span class="n">forward</span> <span class="n">appl</span> <span class="o">-</span><span class="n">m</span> <span class="n">startcmd</span> <span class="p">:</span> <span class="n">startcmd</span><span class="p">(</span><span class="n">console</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="n">onMsg</span> <span class="p">(</span> <span class="n">guicmd</span> <span class="p">:</span> <span class="n">guicmd</span><span class="p">(</span><span class="n">stop</span><span class="p">)){</span>
+                    <span class="p">[</span><span class="c1">#  CommUtils.outmagenta(&quot;console stop&quot;) #]</span>
+                    <span class="n">forward</span> <span class="n">appl</span> <span class="o">-</span><span class="n">m</span> <span class="n">stopcmd</span> <span class="p">:</span> <span class="n">stopcmd</span><span class="p">(</span><span class="n">console</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="n">onMsg</span> <span class="p">(</span> <span class="n">guicmd</span> <span class="p">:</span> <span class="n">guicmd</span><span class="p">(</span><span class="n">resume</span><span class="p">)){</span>
+                    <span class="p">[</span><span class="c1">#  CommUtils.outmagenta(&quot;console resume&quot;) #]</span>
+                    <span class="n">forward</span> <span class="n">appl</span> <span class="o">-</span><span class="n">m</span> <span class="n">resumecmd</span> <span class="p">:</span> <span class="n">resumecmd</span><span class="p">(</span><span class="n">console</span><span class="p">)</span>
+            <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">Goto</span> <span class="n">waitevents</span>
+
+    <span class="n">State</span> <span class="n">handleGuigetpath</span> <span class="p">{</span>
+            <span class="n">request</span> <span class="n">appl</span> <span class="o">-</span><span class="n">m</span> <span class="n">getpath</span> <span class="p">:</span> <span class="n">getpath</span><span class="p">(</span><span class="n">gui</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">Transition</span> <span class="n">t0</span> <span class="n">whenReply</span> <span class="n">pathamswer</span> <span class="o">-&gt;</span> <span class="n">handlepathanswer</span>
+
+
+    <span class="n">State</span>  <span class="n">handlepathanswer</span><span class="p">{</span>
+            <span class="n">printCurrentMessage</span>
+            <span class="n">onMsg</span> <span class="p">(</span> <span class="n">pathamswer</span> <span class="p">:</span> <span class="n">pathamswer</span><span class="p">(</span><span class="n">A</span><span class="p">)){</span>
+                    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;PATH= ${payloadArg(0)}&quot;</span> <span class="p">)</span>
+            <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">Goto</span> <span class="n">waitevents</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="il-supporto-guiobsforqak">
+<h3>Il supporto GuiObsForQak<a class="headerlink" href="#il-supporto-guiobsforqak" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">GuiObsForQak</span> <span class="n">implements</span> <span class="n">IObserver</span> <span class="p">{</span>
+<span class="n">private</span> <span class="n">ActorBasic</span> <span class="n">owner</span><span class="p">;</span>
+
+<span class="n">public</span> <span class="n">GuiObsForQak</span><span class="p">(</span><span class="n">ActorBasic</span> <span class="n">owner</span><span class="p">){</span>
+    <span class="n">this</span><span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">owner</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nd">@Override</span>
+<span class="n">public</span> <span class="n">void</span> <span class="n">update</span><span class="p">(</span><span class="n">String</span> <span class="n">move</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">IApplMessage</span> <span class="n">curMsg</span> <span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">move</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;getpath&quot;</span><span class="p">)</span> <span class="p">){</span>
+        <span class="n">curMsg</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">buildEvent</span><span class="p">(</span><span class="s2">&quot;gui&quot;</span><span class="p">,</span><span class="s2">&quot;getpath&quot;</span><span class="p">,</span><span class="s2">&quot;getpath(gui)&quot;</span> <span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+        <span class="n">curMsg</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">buildEvent</span><span class="p">(</span><span class="s2">&quot;gui&quot;</span><span class="p">,</span>  <span class="s2">&quot;guicmd&quot;</span><span class="p">,</span><span class="s2">&quot;guicmd(&quot;</span><span class="o">+</span><span class="n">move</span><span class="o">+</span><span class="s2">&quot;)&quot;</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="o">//</span><span class="n">MsgUtil</span><span class="o">.</span><span class="n">emitLocalStreamEvent</span><span class="p">(</span><span class="n">curMsg</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">null</span><span class="p">);</span>
+    <span class="n">owner</span><span class="o">.</span><span class="n">sendMsgToMyself</span><span class="p">(</span><span class="n">curMsg</span><span class="p">);</span>
+    <span class="n">CommUtils</span><span class="o">.</span><span class="n">outyellow</span><span class="p">(</span><span class="s2">&quot;GuiObsForQak emits: &quot;</span> <span class="o">+</span> <span class="n">curMsg</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nd">@Override</span>
+<span class="n">public</span> <span class="n">void</span> <span class="n">update</span><span class="p">(</span><span class="n">Observable</span> <span class="n">o</span><span class="p">,</span> <span class="n">Object</span> <span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">update</span><span class="p">(</span> <span class="n">arg</span><span class="o">.</span><span class="n">toString</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Appl1ActorsQak23</a><ul>
+<li><a class="reference internal" href="#appl1actorsqak23-architettura">Appl1ActorsQak23 architettura</a><ul>
+<li><a class="reference internal" href="#appl1qak-pl">appl1qak.pl</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dichiarazione-dei-messaggi">Dichiarazione dei messaggi</a></li>
+<li><a class="reference internal" href="#dichiarazione-dei-contesti">Dichiarazione dei contesti</a></li>
+<li><a class="reference internal" href="#dichiarazione-degli-attori">Dichiarazione degli attori</a><ul>
+<li><a class="reference internal" href="#qactor-appl">QActor appl</a></li>
+<li><a class="reference internal" href="#qactor-consoleobs">QActor consoleobs</a></li>
+<li><a class="reference internal" href="#qactor-sonarobs">QActor sonarobs</a></li>
+<li><a class="reference internal" href="#qactor-obsforpath">QActor obsforpath</a></li>
+<li><a class="reference internal" href="#qactor-console">QActor console</a></li>
+<li><a class="reference internal" href="#il-supporto-guiobsforqak">Il supporto GuiObsForQak</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="QakActors23Demo.html"
+                          title="previous chapter">QakActors23Demo</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="AppuntiTecnologie.html"
+                          title="next chapter">Appunti su tecnologie</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Appl1ActorsQak23.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="QakActors23Demo.html" title="QakActors23Demo"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Appl1ActorsQak23</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

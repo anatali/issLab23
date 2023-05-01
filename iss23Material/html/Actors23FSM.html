@@ -48,12 +48,16 @@
             
   <section id="actors23fsm">
 <h1>Actors23FSM<a class="headerlink" href="#actors23fsm" title="Permalink to this headline">¶</a></h1>
-<p>In questa sezione, vediamo come realizzare gli attori come <a class="reference internal" href="Principi.html#automi-a-stati-finiti"><span class="std std-ref">Automi a stati finiti</span></a> (FSM: Finite State Machines)
-avvalendoci delle <a class="reference internal" href="Annotazioni.html#annotazioni"><span class="std std-ref">annotazioni Java</span></a>.</p>
-<p>Attualmente, un attore <a class="reference internal" href="Actors23.html#actorbasic23"><span class="std std-ref">ActorBasic23</span></a> ha un
+<p>In <a class="reference internal" href="Appl1Actors23.html#appl1actors23"><span class="std std-ref">Appl1Actors23</span></a> abbiamo usato il concetto di <a class="reference internal" href="StepAsynch.html#appl1coreactorlike"><span class="std std-ref">Attore</span></a> e
+la libreria di supporto <a class="reference internal" href="Actors23.html#actors23"><span class="std std-ref">Actors23</span></a> per realizzare un sistema software che soddisfi i
+requisiti di ‘<a class="reference internal" href="Applicazione1.html#applicazione1"><span class="std std-ref">Applicazione1</span></a>.</p>
+<p>Gli attori hanno costituito un tipo di componente più adatto alla costruzione del sistema distribuito
+richiesto. In accordo al modello originale, un attore <a class="reference internal" href="Actors23.html#actorbasic23"><span class="std std-ref">ActorBasic23</span></a> ha un
 <a class="reference internal" href="Actors23.html#il-comportamento-di-un-attore"><span class="std std-ref">comportamento message-driven</span></a> in quanto
 elabora i messaggi in modo FIFO, senza specificare a-priori
 a quali messaggi è interessato in un certo stato della sua attività.</p>
+<p>In questa sezione, vediamo come realizzare gli attori come <a class="reference internal" href="Principi.html#automi-a-stati-finiti"><span class="std std-ref">Automi a stati finiti</span></a> (FSM: Finite State Machines)
+avvalendoci delle <a class="reference internal" href="Annotazioni.html#annotazioni"><span class="std std-ref">annotazioni Java</span></a>.</p>
 <p><span class="slide1">Oltre il message-driven</span></p>
 <p>Il modello computazionale degli <a class="reference internal" href="Principi.html#automi-a-stati-finiti"><span class="std std-ref">Automi a stati finiti</span></a> permette di definire,
 per ogni stato dell’attore, quali messaggi provocano una transizione a stati successivi.
@@ -149,6 +153,7 @@ il messaggio in una coda (<a class="reference internal" href="#oldmsgqueue"><spa
 </ol>
 <p>La coda <a class="reference internal" href="#oldmsgqueue"><span class="std std-ref">OldMsgQueue</span></a> (inzialmente vuota) viene esplorata nel momento in cui l’attore deve decidere in quale
 nuovo stato futuro transitare: si veda il metodo <a class="reference internal" href="#nextstate"><span class="std std-ref">nextState</span></a>.</p>
+<p><span class="slide2">La nuova elabMsg</span></p>
 <section id="actorbasicfsm23-elabmsg">
 <h4>ActorBasicFsm23 elabMsg<a class="headerlink" href="#actorbasicfsm23-elabmsg" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>@Override
@@ -190,10 +195,10 @@ messaggio corrente.</p></td>
 </section>
 <section id="rappresentazione-dei-metodi-stato">
 <h4>Rappresentazione dei metodi-stato<a class="headerlink" href="#rappresentazione-dei-metodi-stato" title="Permalink to this headline">¶</a></h4>
-<p>La classe <code class="docutils literal notranslate"><span class="pre">ActorBasicFsm23</span></code> è alquanto  <a href="#id1"><span class="problematic" id="id2">`opinionated`_</span></a> …, in quanto impone un precisa struttura al
+<p>La classe <code class="docutils literal notranslate"><span class="pre">ActorBasicFsm23</span></code> è alquanto  <a class="reference external" href="https://www.baeldung.com/cs/opinionated-software-design">opinionated</a> …, in quanto impone un precisa struttura al
 comportamento di uno stato in relazione alla ricezione di un messaggio
 <a class="reference internal" href="unibo.basicomm23.html#unibo-interaction-interfaces-iapplmessage"><span class="std std-ref">IApplMessage</span></a>.</p>
-<p>La sequenza delle azioni eseguite in uno stato, deve essere specificato da oggetti che implementano
+<p>La sequenza delle azioni eseguite in uno stato, deve essere specificata da oggetti che implementano
 l’interfaccia  <code class="docutils literal notranslate"><span class="pre">StateActionFun</span></code>.</p>
 </section>
 </section>
@@ -243,8 +248,8 @@ la catena:
 dal primo <a class="reference internal" href="#messaggio-disponibile"><span class="std std-ref">Messaggio disponibile</span></a>.</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>protected void doPrepareState(ActorBasicFsm23 castMyself,
-                              Method curMethod, String stateName, Vector&lt;String&gt; nextStates,
-                              Vector&lt;String&gt; msgIds, Vector&lt;Method&gt; guards, Vector&lt;Boolean&gt; interrupts) {
+        Method curMethod, String stateName, Vector&lt;String&gt; nextStates,
+        Vector&lt;String&gt; msgIds, Vector&lt;Method&gt; guards, Vector&lt;Boolean&gt; interrupts) {
  declareState( stateName, new StateActionFun() {
   @Override
     public void run( IApplMessage msg ) {
@@ -556,14 +561,17 @@ protected Method getGuard(Method[] guards, String guardName) {
 <p><span class="slide">Problematiche ancora aperte</span></p>
 <p><span class="slidekp">Messaggi che non arrivano</span></p>
 <p><span class="slidekp">Elaborazione a interrupt</span></p>
+<p>Si invita il lettore a formulare una propria opinione (in qualità di analista) su queste problematiche, che
+riprenderemo più avanti.</p>
 </section>
-</section>
-<section id="interrupt">
-<h2>Interrupt<a class="headerlink" href="#interrupt" title="Permalink to this headline">¶</a></h2>
 </section>
 <section id="actorbasicfsm23-un-esempio">
 <h2>ActorBasicFsm23: un esempio<a class="headerlink" href="#actorbasicfsm23-un-esempio" title="Permalink to this headline">¶</a></h2>
-<p>Per un esempio più completo,  veda <a class="reference internal" href="Producers-Consumer.html#prodconsfsm23"><span class="std std-ref">ProdConsFSM23</span></a></p>
+<p>Per esempi più completi di uso di <a class="reference internal" href="#unibo-actors23-fsm-actorbasicfsm23"><span class="std std-ref">ActorBasicFsm23</span></a>, si  veda:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="Producers-Consumer.html#prodconsfsm23"><span class="std std-ref">ProdConsFSM23</span></a></p></li>
+<li><p><a class="reference internal" href="Appl1ActorsFsm23.html#appl1actorsfsm23"><span class="std std-ref">Appl1ActorsFsm23</span></a></p></li>
+</ul>
 </section>
 </section>
 
@@ -626,7 +634,6 @@ protected Method getGuard(Method[] guards, String guardName) {
 <li><a class="reference internal" href="#unibo-actors23-annotations-transitionguard">unibo.actors23.annotations.TransitionGuard</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#interrupt">Interrupt</a></li>
 <li><a class="reference internal" href="#actorbasicfsm23-un-esempio">ActorBasicFsm23: un esempio</a></li>
 </ul>
 </li>

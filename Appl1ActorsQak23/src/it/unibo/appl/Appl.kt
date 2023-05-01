@@ -3,6 +3,7 @@ package it.unibo.appl
 
 import it.unibo.kactor.*
 import alice.tuprolog.*
+import unibo.basicomm23.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -15,11 +16,6 @@ class Appl ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 	}
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		val interruptedStateTransitions = mutableListOf<Transition>()
-		 		 
-		//var NumEdges    = 0
-		//var StepTime    = 350L
-		//var basicrobot  = unibo.basicrobot23.Basicrobot23()
-		//var result      =  true
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State

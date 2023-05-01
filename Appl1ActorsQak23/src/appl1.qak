@@ -1,7 +1,7 @@
 /*
 
  */  
-System /* -msglog */ appl1 
+System /* -msglog */ appl1qak 
 
 Dispatch startcmd   : start( ARG ) 
 Dispatch restart    : start( ARG ) 
@@ -11,7 +11,6 @@ Dispatch resumecmd  : resume( ARG )
 Dispatch stopappl   : stopappl( ARG ) 
 Dispatch resumeappl : resumeappl( ARG ) 
 
-//Dispatch cmd        : cmd(MOVE)  
 Dispatch stepdone   : stepdone(V)  
 Dispatch stepfailed : stepfailed(DURATION, CAUSE)
 
@@ -20,6 +19,8 @@ Request isrunning   : isrunning( ARG )
 Reply pathamswer    : pathamswer( ARG )
 Reply runninganswer : runninganswer( ARG )
 
+Event getpath       : getpath( ARG )	
+Event guicmd        : guicmd( ARG )	
 Event info          : info(ARG)
 Event sonardata     : sonar(DISTANCE)
 
@@ -34,12 +35,7 @@ Context ctxall  ip [host="localhost" port=8720]
  * ------------------------------------------------------------------
 */     
 QActor appl context ctxall{         
-[# 		 
-//var NumEdges    = 0
-//var StepTime    = 350L
-//var basicrobot  = unibo.basicrobot23.Basicrobot23()
-//var result      =  true
-#]  
+ 
 //curl -d "{\"msg\":\"msg(start,dispatch,gui,appl,start(ok),1)\"}"
 //-H "Content-Type: application/json"
 //-X PUT http://localhost:8090/qak/sendMessage
@@ -254,4 +250,58 @@ QActor obsforpath context ctxall{
  	replyTo getpath with pathamswer : pathamswer($Curpath)
   }  
   Goto waitmsgs  
+}
+
+/*
+--------------------------------------
+ console
+--------------------------------------
+*/
+/*
+ * Usa un supporto che emette streamevent 
+   Converte streamevent in comando a appl */
+QActor console context ctxall{
+	State s0 initial{
+		printCurrentMessage		
+		[# gui.GuiUtils.createGui(myself) #]	
+			
+	}
+	Goto waitevents
+	
+	State waitevents{}
+	Transition t0 whenEvent guicmd -> handleGuicmd
+	              whenEvent getpath -> handleGuigetpath
+	
+	State handleGuicmd {
+		printCurrentMessage
+		onMsg ( guicmd : guicmd(start)){
+			[# CommUtils.outmagenta("console start") #]
+			forward appl -m startcmd : startcmd(console) 
+		}
+	    onMsg ( guicmd : guicmd(stop)){
+			[#  CommUtils.outmagenta("console stop") #]
+			forward appl -m stopcmd : stopcmd(console) 
+		}
+		onMsg ( guicmd : guicmd(resume)){
+			[#  CommUtils.outmagenta("console resume") #]
+			forward appl -m resumecmd : resumecmd(console) 
+		}
+	} 
+	Goto waitevents
+	
+	State handleGuigetpath {
+		request appl -m getpath : getpath(gui)
+	}	
+	Transition t0 whenReply pathamswer -> handlepathanswer
+	
+	
+	State  handlepathanswer{
+		printCurrentMessage
+		onMsg ( pathamswer : pathamswer(A)){
+			println("PATH= ${payloadArg(0)}" )
+		}		
+	}
+	Goto waitevents
+	
+	
 }

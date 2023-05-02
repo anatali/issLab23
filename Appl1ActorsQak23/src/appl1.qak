@@ -3,13 +3,13 @@
  */  
 System /* -msglog */ appl1qak 
 
-Dispatch startcmd   : start( ARG ) 
+Dispatch startcmd   : start( ARG ) 			//sender:console receiver:appl
 Dispatch restart    : start( ARG ) 
 Dispatch stopcmd    : stop( ARG ) 
 Dispatch resumecmd  : resume( ARG ) 
 
-Dispatch stopappl   : stopappl( ARG ) 
-Dispatch resumeappl : resumeappl( ARG ) 
+Dispatch stopappl   : stopappl( ARG ) 	//sender:consoleobs receiver:appl
+Dispatch resumeappl : resumeappl( ARG ) //sender:consoleobs receiver:appl
 
 Dispatch stepdone   : stepdone(V)  
 Dispatch stepfailed : stepfailed(DURATION, CAUSE)
@@ -41,7 +41,7 @@ Context ctxall  ip [host="localhost" port=8720]
 */
 QActor appl context ctxall{         
  
-//curl -d "{\"msg\":\"msg(start,dispatch,gui,appl,start(ok),1)\"}"
+//curl -d "{\"msg\":\"msg(startcmd,dispatch,gui,appl,start(ok),1)\"}"
 //-H "Content-Type: application/json"
 //-X PUT http://localhost:8720/qak/sendMessage
 
@@ -53,7 +53,7 @@ QActor appl context ctxall{
 			unibo.basicomm23.utils.CommUtils.outblue(name + " | init $currentMsg"   ) 
 		#] 	
 		
-		delegate "stopcmd" to consoleobs
+		delegate "stopcmd" to consoleobs	//TODO: uodate in the python for image
 		delegate "resumecmd" to consoleobs
 		
 		delegate "isrunning" to obsforpath
@@ -123,11 +123,12 @@ QActor appl context ctxall{
  /*
   * appl RESTARTING 
   */  
-     //elimino più click su start
+     //elimino più click su start (per una demo di whenTime) 
+     //TODO: evitare questo modo di procedere
     State consumePreviousStart{ 
     	printCurrentMessage
     }
-    Transition t0 whenTime 10 -> waittorestart  
+    Transition t0 whenTime 10      -> waittorestart  
                   whenMsg startcmd -> consumePreviousStart
 
 	//Inizializzo e attendo un nuovo startcmd
@@ -151,6 +152,7 @@ QActor appl context ctxall{
 /*
 --------------------------------------
  consoleobs
+ stopcmd/resumecmd delegated by appl 
 --------------------------------------
 */
 QActor consoleobs context ctxall{

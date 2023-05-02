@@ -3,7 +3,6 @@ package it.unibo.appl
 
 import it.unibo.kactor.*
 import alice.tuprolog.*
-import unibo.basicomm23.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -20,11 +19,9 @@ class Appl ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 				state("s0") { //this:State
 					action { //it:State
 						println("&&&  appl ACTIVE ...")
-						  unibo.basicomm23.utils.Connection.trace=true
+						  //unibo.basicomm23.utils.Connection.trace=true
 									utils.Appl1StateObject.setConfigFilePath("./robotConfig.json");
 									unibo.basicomm23.utils.CommUtils.outblue(name + " | init $currentMsg"   ) 
-									//delegate("isrunning","obsforpath");    	 
-									//delegate("getpath","obsforpath");
 						delegate("stopcmd", "consoleobs") 
 						delegate("resumecmd", "consoleobs") 
 						delegate("isrunning", "obsforpath") 
@@ -54,7 +51,7 @@ class Appl ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 					action { //it:State
 						delay(300) 
 						  utils.Appl1StateObject.incNSteps()
-						 			utils.Appl1StateObject.doStepAsynch() 
+						 			utils.Appl1StateObject.doStepAsynch() //TODO: use basicrobot
 						updateResourceRep( "robot-stepdone"  
 						)
 						emitLocalStreamEvent("info", "info(robotstepdone)" ) 
@@ -74,7 +71,7 @@ class Appl ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 						)
 						emitLocalStreamEvent("info", "info(robotcollision)" ) 
 						  utils.Appl1StateObject.incNEdges()
-									utils.Appl1StateObject.getVr().turnLeft() 
+									utils.Appl1StateObject.getVr().turnLeft()  //TODO: use basicrobot
 						updateResourceRep( "robot-turnleft"  
 						)
 						emitLocalStreamEvent("info", "info(robotturnleft)" ) 

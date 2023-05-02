@@ -34,23 +34,24 @@ Context ctxall  ip [host="localhost" port=8720]
  *  appl 
  * ------------------------------------------------------------------
 */     
+
+/*
+  WARNING: Occorre rivedere utils.Appl1StateObject 
+           e inserire basicrobot prina locale e poi esterno
+*/
 QActor appl context ctxall{         
  
 //curl -d "{\"msg\":\"msg(start,dispatch,gui,appl,start(ok),1)\"}"
 //-H "Content-Type: application/json"
-//-X PUT http://localhost:8090/qak/sendMessage
+//-X PUT http://localhost:8720/qak/sendMessage
 
 	State s0 initial {	 
 		println("&&&  appl ACTIVE ...") 
-		//[# NumEdges = 0   #] 
-		[#  unibo.basicomm23.utils.Connection.trace=true
+		//Da sopstare in basicrobot ...
+		[#  //unibo.basicomm23.utils.Connection.trace=true
 			utils.Appl1StateObject.setConfigFilePath("./robotConfig.json");
 			unibo.basicomm23.utils.CommUtils.outblue(name + " | init $currentMsg"   ) 
-			//delegate("isrunning","obsforpath");    	 
-			//delegate("getpath","obsforpath");
-		#] 
-		//[# subscribeLocalActor("obsforpath") #]	
-		
+		#] 	
 		
 		delegate "stopcmd" to consoleobs
 		delegate "resumecmd" to consoleobs
@@ -73,7 +74,7 @@ QActor appl context ctxall{
      State stepok{     	
  		delay 300 //to avoid too rapid changes
  		[#  utils.Appl1StateObject.incNSteps()
- 			utils.Appl1StateObject.doStepAsynch() 
+ 			utils.Appl1StateObject.doStepAsynch() //TODO: use basicrobot
  		#] 
 		//request basicrobot -m step : step($StepTime)
    		updateResource [# "robot-stepdone" #] 	
@@ -89,7 +90,7 @@ QActor appl context ctxall{
 		updateResource [# "robot-collision" #] 
 		emitlocalstream info : info(robotcollision)
 		[#  utils.Appl1StateObject.incNEdges()
-			utils.Appl1StateObject.getVr().turnLeft() 
+			utils.Appl1StateObject.getVr().turnLeft()  //TODO: use basicrobot
 		#] 
 		//forward basicrobot -m cmd : cmd(l)
 		updateResource [# "robot-turnleft" #] 	
@@ -302,6 +303,10 @@ QActor console context ctxall{
 		}		
 	}
 	Goto waitevents
-	
-	
 }
+
+/*
+--------------------------------------
+ basicrobot
+--------------------------------------
+*/

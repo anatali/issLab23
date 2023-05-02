@@ -3,7 +3,6 @@ package it.unibo.obsforpath
 
 import it.unibo.kactor.*
 import alice.tuprolog.*
-import unibo.basicomm23.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

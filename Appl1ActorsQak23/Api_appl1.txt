@@ -16,3 +16,7 @@
 {"actor":"appl", "msgType":"dispatch", "sender":"sonarobs", "msgId":"stopcmd"}
 {"actor":"appl", "msgType":"dispatch", "sender":"sonarobs", "msgId":"resumecmd"}
 {"actor":"obsforpath", "msgType":"eventtransition", "sender":"sys", "msgId":"info"}
+{"actor":"appl", "msgType":"dispatch", "sender":"appl", "msgId":"restart"}
+{"actor":"sonarobs", "msgType":"eventtransition", "sender":"sys", "msgId":"sonardata"}
+{"actor":"appl", "msgType":"dispatch", "sender":"sonarobs", "msgId":"stopcmd"}
+{"actor":"appl", "msgType":"dispatch", "sender":"sonarobs", "msgId":"resumecmd"}

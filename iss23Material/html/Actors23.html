@@ -86,14 +86,14 @@ Si veda: <a class="reference internal" href="#il-comportamento-di-un-attore"><sp
 <li><p>è logicamente attivo, cioè dotato di flusso di controllo autonomo;</p></li>
 <li><p>è capace di inviare messaggi ad un altro attore, di cui conosce il <strong>nome</strong>, incluso sè stesso;</p></li>
 <li><p>è capace di eseguire elaborazioni autonome e/o elaborazioni di messaggi;</p></li>
-<li><p>è dotato di una sua <span class="remark">coda locale</span> (<a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a>) in cui sono depositati i messaggi
+<li><p>è dotato di una sua <span class="remark">coda locale</span> (<a class="reference internal" href="StepAsynch.html#msgqueue"><span class="std std-ref">msgQueue</span></a>) in cui sono depositati i messaggi
 a lui inviati, quando questi arrivano mentre l’attore è impegnato in una fase di elaborazione;</p></li>
-<li><p>elabora i messaggi ricevuti uno alla volta, prelevandoli dalla sua coda <a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a>) in modo <em>First-In-First-Out</em> (FIFO).
+<li><p>elabora i messaggi ricevuti uno alla volta, prelevandoli dalla sua coda <a class="reference internal" href="StepAsynch.html#msgqueue"><span class="std std-ref">msgQueue</span></a>) in modo <em>First-In-First-Out</em> (FIFO).
 Questo modo di operare vine denominato come <span class="remark">attore message-driven</span>.</p></li>
 <li><p>nasce, vive e muore in un <span class="xref std std-ref">contesto</span> che può essere comune a (molti) altri attori.</p></li>
 </ul>
 <p>Al momento realizzeremo questo modello in Java associando ad ogni attore un Thread e realizzando
-la <a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a> con una <a class="reference external" href="https://www.baeldung.com/java-blocking-queue">BlokingQueue</a> Java,
+la <a class="reference internal" href="StepAsynch.html#msgqueue"><span class="std std-ref">msgQueue</span></a> con una <a class="reference external" href="https://www.baeldung.com/java-blocking-queue">BlokingQueue</a> Java,
 ma motivi di efficienza ci porteranno, più avanti, ad utilizzare le <em>coroutines</em> e i <em>channel</em> di Kotlin.</p>
 <p><span class="slide">Il contesto</span></p>
 </section>
@@ -126,7 +126,7 @@ del sistema.</p>
 </td>
 </tr>
 <tr class="row-even"><td><p>Il Server di contesto depone i messaggi <a class="reference internal" href="unibo.basicomm23.html#unibo-interaction-interfaces-iapplmessage"><span class="std std-ref">IApplMessage</span></a>
-ricevuti su una <a class="reference internal" href="Interaction.html#interconnessione"><span class="std std-ref">Interconnessione</span></a> sulla  <a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a>
+ricevuti su una <a class="reference internal" href="Interaction.html#interconnessione"><span class="std std-ref">Interconnessione</span></a> sulla  <a class="reference internal" href="StepAsynch.html#msgqueue"><span class="std std-ref">msgQueue</span></a>
 dell’attore destinatario.</p>
 <p>Per questo scopo, il Sever si avvale di un unico <span class="blue">gestore di messaggi di sistema</span>: il
 <a class="reference internal" href="#unibo-basicomm23-actors23-contextmsghandler"><span class="std std-ref">ContextMsgHandler</span></a>.</p>
@@ -369,7 +369,7 @@ avvalendosi degli altri metodi di utlilità e delle regole definite in <a class=
 <ul class="simple">
 <li><p>fa parte di un <a class="reference internal" href="#actors23-il-contesto"><span class="std std-ref">contesto</span></a></p></li>
 <li><p>specializza la classe <a class="reference internal" href="#unibo-basicomm23-actors23-actorbasic23"><span class="std std-ref">ActorBasic23</span></a></p></li>
-<li><p>opera in modo <span class="remark">message-driven</span>, elaborando i messaggi che il contesto pone nella sua <a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a></p></li>
+<li><p>opera in modo <span class="remark">message-driven</span>, elaborando i messaggi che il contesto pone nella sua <a class="reference internal" href="StepAsynch.html#msgqueue"><span class="std std-ref">msgQueue</span></a></p></li>
 <li><p>è dotato di operazioni (<span class="xref std std-ref">sendMsg</span> e <span class="xref std std-ref">reply</span>) per inviare messaggi ad altri attori,
 locali al suo contesto o in contesti diversi</p></li>
 </ul>
@@ -438,7 +438,7 @@ un attore destinatario distinguendo tra attore locale e attore remoto.</p>
 <h3>ActorBasic23.sendMsg<a class="headerlink" href="#actorbasic23-sendmsg" title="Permalink to this headline">¶</a></h3>
 <p>L’invio di un messaggio avviene come segue:</p>
 <ul class="simple">
-<li><p>Se il destinatario è nello stesso contesto: si inserisce del messaggio nella  <a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a> del destinatario.</p></li>
+<li><p>Se il destinatario è nello stesso contesto: si inserisce del messaggio nella  <a class="reference internal" href="StepAsynch.html#msgqueue"><span class="std std-ref">msgQueue</span></a> del destinatario.</p></li>
 <li><p>Se il destinatario è in un altro contesto: si determina un <a class="reference internal" href="#actor23-proxy"><span class="std std-ref">proxy</span></a> al contesto del destinatorio e
 lo si usa per trasmettere il messaggio al server remoto.</p></li>
 </ul>
@@ -495,7 +495,7 @@ il suo nome come destinatario e inviare il messaggio con una normale <a class="r
 <ul class="simple">
 <li><p>Il contesto che elabora un messaggio di richiesta, inserisce nel messaggio stesso un riferimento alla Interconnection
 su cui è stato ricevuto.</p></li>
-<li><p>Un attore che preleva dalla sua <a class="reference internal" href="#msgqueue"><span class="std std-ref">msgQueue</span></a> un messaggio di richiesta, lo memorizza in
+<li><p>Un attore che preleva dalla sua <a class="reference internal" href="StepAsynch.html#msgqueue"><span class="std std-ref">msgQueue</span></a> un messaggio di richiesta, lo memorizza in
 una tabella <code class="docutils literal notranslate"><span class="pre">HashMap&lt;String,</span> <span class="pre">IApplMessage&gt;</span> <span class="pre">requestMap</span></code>.</p></li>
 </ul>
 <p><span class="slide2">La gestione delle risposte</span></p>

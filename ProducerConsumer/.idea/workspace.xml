@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="99989e2c-357a-4783-9ad9-184bdd8e35cc" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Appl1Actors23/app/src/main/java/appl1Systems/actorBasic/Appl1CoreActor23.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1Actors23/app/src/main/java/appl1Systems/actorBasic/Appl1CoreActor23.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/appl/Appl.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/console/Console.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/consoleobs/Consoleobs.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/ctxall/MainCtxall.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/obsforpath/Obsforpath.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/sonarobs/Sonarobs.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/annotations/example/AnnotationUsageDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actors23/actors23/src/main/java/unibo/actors23/annotations/example/AnnotationUsageDemo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibolibs/unibo.qakactor23-3.5.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../unibolibs/unibo.qakactor23-3.5.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,12 +39,12 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../issLab2023/unibo.basicrobot23" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.15174508" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager" selected="Application.MainProdConsStream">
+  <component name="RunManager" selected="Application.MainProdConsFsm23All">
     <configuration name="MainProdConsFsm23All" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ProdConsFsm23.MainProdConsFsm23All" />
       <module name="ProducerConsumer.app.main" />

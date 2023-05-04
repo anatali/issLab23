@@ -80,11 +80,13 @@ public class Appl1CoreActor23 extends ActorBasic23 {
             return;
         }
         if( payload.startsWith("stepdone")){
-            if( Appl1StateObject.getIsRunning() && ! Appl1StateObject.getStopped()  ) stepok.handle(payload);
+            if( Appl1StateObject.getIsRunning() && ! Appl1StateObject.getStopped()  )
+                stepok.handle(payload);
             return;
         }
         if( payload.startsWith("stepfailed") ){
-            if( Appl1StateObject.getIsRunning() && ! Appl1StateObject.getStopped() )  stepfail.handle(payload);
+            if( Appl1StateObject.getIsRunning() && ! Appl1StateObject.getStopped() )
+                stepfail.handle(payload);
             return;
         }
         if( payload.startsWith("collision")){

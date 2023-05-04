@@ -24,10 +24,9 @@ Event guicmd        : guicmd( ARG )
 Event info          : info(ARG)
 Event sonardata     : sonar(DISTANCE)
 
+ 
 
-//Context ctxbasicrobot    ip [host="localhost" port=8020] 
 Context ctxall  ip [host="localhost" port=8720]
-//ExternalQActor basicrobot context ctxbasicrobot  
 
 /*  
  * ------------------------------------------------------------------
@@ -35,36 +34,29 @@ Context ctxall  ip [host="localhost" port=8720]
  * ------------------------------------------------------------------
 */     
 
-/*
-  WARNING: Occorre rivedere utils.Appl1StateObject 
-           e inserire basicrobot prina locale e poi esterno
-*/
 QActor appl context ctxall{         
  
-//curl -d "{\"msg\":\"msg(startcmd,dispatch,gui,appl,start(ok),1)\"}"
-//-H "Content-Type: application/json"
-//-X PUT http://localhost:8720/qak/sendMessage
 
 	State s0 initial {	 
 		println("&&&  appl ACTIVE ...") 
 		//Da sopstare in basicrobot ...
 		[#  //unibo.basicomm23.utils.Connection.trace=true
-			utils.Appl1StateObject.setConfigFilePath("./robotConfig.json");
-			unibo.basicomm23.utils.CommUtils.outblue(name + " | init $currentMsg"   ) 
+			utils.Appl1Startup.setConfigFilePath("./robotConfig.json");
+			CommUtils.outblue(name + " | init $currentMsg"   ) 
 		#] 	
 		
-		delegate "stopcmd" to consoleobs	//TODO: uodate in the python for image
+		delegate "stopcmd" to consoleobs	
 		delegate "resumecmd" to consoleobs
 		
 		delegate "isrunning" to obsforpath
 		delegate "getpath" to obsforpath
-   	} 
+   	}  
    	Transition t0 whenMsg startcmd -> startboundary
-
+    
   	State startboundary{  		  
-   		[#  utils.Appl1StateObject.initappl(myself, currentMsg) #] 
+   		[#  utils.Appl1Startup.initappl(myself, currentMsg) #] 
      	println("startboundary  ") 
-     	[#  utils.Appl1StateObject.doStepAsynch() #] 
+     	[#  utils.Appl1Startup.doStepAsynch() #] 
     	//request basicrobot -m step : step($StepTime)    	
 	}   
  	Transition t0 whenMsg stepdone   -> stepok
@@ -74,7 +66,7 @@ QActor appl context ctxall{
      State stepok{     	
  		delay 300 //to avoid too rapid changes
  		[#  utils.Appl1StateObject.incNSteps()
- 			utils.Appl1StateObject.doStepAsynch() //TODO: use basicrobot
+ 			utils.Appl1Startup.doStepAsynch() //TODO: use basicrobot cmd(w)
  		#] 
 		//request basicrobot -m step : step($StepTime)
    		updateResource [# "robot-stepdone" #] 	
@@ -90,14 +82,14 @@ QActor appl context ctxall{
 		updateResource [# "robot-collision" #] 
 		emitlocalstream info : info(robotcollision)
 		[#  utils.Appl1StateObject.incNEdges()
-			utils.Appl1StateObject.getVr().turnLeft()  //TODO: use basicrobot
+			utils.Appl1Startup.getVr().turnLeft()   
 		#] 
 		//forward basicrobot -m cmd : cmd(l)
 		updateResource [# "robot-turnleft" #] 	
 		emitlocalstream info : info(robotturnleft)
         if [# utils.Appl1StateObject.getNEdges() < 4 #] {
         	delay 300 
-        	[#  utils.Appl1StateObject.doStepAsynch() #] 
+        	[#  utils.Appl1Startup.doStepAsynch() #] 
         	//request basicrobot -m step : step($StepTime)       	
         }else { 
         	forward appl -m restart : start(again)  //automsg
@@ -123,7 +115,7 @@ QActor appl context ctxall{
  /*
   * appl RESTARTING 
   */  
-     //elimino più click su start (per una demo di whenTime) 
+     //elimino more click su start (per una demo di whenTime)
      //TODO: evitare questo modo di procedere
     State consumePreviousStart{ 
     	printCurrentMessage
@@ -141,7 +133,7 @@ QActor appl context ctxall{
     
     State restart{ 
     	[#  utils.Appl1StateObject.setIsRunning(true) 
-         utils.Appl1StateObject.doStepAsynch() #] 
+         utils.Appl1Startup.doStepAsynch() #] 
  		println("restart") 
 	}      	 
  	Transition t0 whenMsg stepdone   -> stepok
@@ -154,7 +146,7 @@ QActor appl context ctxall{
  consoleobs
  stopcmd/resumecmd delegated by appl 
 --------------------------------------
-*/
+*/ 
 QActor consoleobs context ctxall{
 	[# var Stopped = false #]
 	State s0 initial{
@@ -307,8 +299,4 @@ QActor console context ctxall{
 	Goto waitevents
 }
 
-/*
---------------------------------------
- basicrobot
---------------------------------------
-*/
+ 

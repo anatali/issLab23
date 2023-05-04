@@ -4,7 +4,6 @@ import unibo.basicomm23.utils.CommUtils;
 import java.lang.annotation.Annotation;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 @AccessSpec(
         protocol   = AccessSpec.issProtocol.HTTP,
         url        = "http://localHost:8090/api/move"

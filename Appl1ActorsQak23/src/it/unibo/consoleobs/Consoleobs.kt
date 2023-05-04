@@ -3,6 +3,9 @@ package it.unibo.consoleobs
 
 import it.unibo.kactor.*
 import alice.tuprolog.*
+import unibo.basicomm23.*
+import unibo.basicomm23.utils.*
+import unibo.basicomm23.interfaces.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

@@ -7,7 +7,7 @@
     <content url="file://$MODULE_DIR$/../../test" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="unibo.appl1.main" />
+    <orderEntry type="module" module-name="unibo.appl1qak.main" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:pom:1.6.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.0" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okhttp3:mockwebserver:4.9.3" level="project" />
@@ -55,5 +55,5 @@
     <orderEntry type="library" name="Gradle: org.apache.httpcomponents.core5:httpcore5-h2:5.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.californium:californium-legal:3.5.0" level="project" />
   </component>
-  <component name="TestModuleProperties" production-module="unibo.appl1.main" />
+  <component name="TestModuleProperties" production-module="unibo.appl1qak.main" />
 </module>

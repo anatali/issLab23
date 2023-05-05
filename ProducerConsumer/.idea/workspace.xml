@@ -5,6 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="99989e2c-357a-4783-9ad9-184bdd8e35cc" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.idea/modules/unibo.appl1qak.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.idea/modules/unibo.appl1qak.main.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.idea/modules/unibo.appl1qak.test.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/src/appll1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/a0/A0.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/ctx1/MainCtx1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/7.4.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/7.4.2/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/7.4.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/7.4.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/7.4.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/7.4.2/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/7.4.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/7.4.2/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.idea/.name" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/Api_appl1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/Api_appl1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/Api_appl1qak.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/Api_appl1qak.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/Arch_appl1.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/Arch_appl1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/appl1.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/appl1.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/build2022.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/qakrestappl_Transitions.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/qakrestappl_Transitions.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/appl1.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/src/appl1.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/appl/Appl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/console/Console.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/consoleobs/Consoleobs.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/ctxall/MainCtxall.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/obsforpath/Obsforpath.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/sonarobs/Sonarobs.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -19,12 +19,7 @@ eventedgeattr = {
 with Diagram('appl1Arch', show=False, outformat='png', graph_attr=graphattr) as diag:
   with Cluster('env'):
      sys = Custom('','./qakicons/system.png')
-     with Cluster('ctxall', graph_attr=nodeattr):
-          appl=Custom('appl','./qakicons/symActorSmall.png')
-          sonarobs=Custom('sonarobs','./qakicons/symActorSmall.png')
-          obsforpath=Custom('obsforpath','./qakicons/symActorSmall.png')
-     appl >> Edge(color='blue', style='solid', xlabel='restart', fontcolor='blue') >> appl
-     sys >> Edge(color='red', style='dashed', xlabel='sonardata', fontcolor='red') >> sonarobs
-     sonarobs >> Edge(color='blue', style='solid', xlabel='stopcmd', fontcolor='blue') >> appl
-     sonarobs >> Edge(color='blue', style='solid', xlabel='resumecmd', fontcolor='blue') >> appl
+     with Cluster('ctx1', graph_attr=nodeattr):
+          a0=Custom('a0','./qakicons/symActorSmall.png')
+     a0 >> Edge(color='blue', style='solid', xlabel='info', fontcolor='blue') >> a0
 diag

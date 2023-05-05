@@ -1,6 +1,7 @@
 /*
 ================================================================================
-build.gradle for appl1
+build22.gradle
+GENERATED ONLY ONCE
 ================================================================================
 */
 plugins {
@@ -44,11 +45,6 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm
     implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core-jvm', version: "$kotlinVersion"
 
-//SOCKET.IO (for WEnv) NON NECESSARIO SE USIAMO BASICROBOT
-    implementation group: 'javax.websocket', name: 'javax.websocket-api', version: '1.1'
-    //javax.websocket api is only the specification
-    implementation group: 'org.glassfish.tyrus.bundles', name: 'tyrus-standalone-client', version: '1.9'
-
     /*  MQTT *************************************************************************************************************** */
     // https://mvnrepository.com/artifact/org.eclipse.paho/org.eclipse.paho.client.mqttv3
     implementation group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.2.5'
@@ -56,7 +52,6 @@ dependencies {
     /* JSON **************************************************************************************************************** */
     // https://mvnrepository.com/artifact/org.json/json
     //implementation group: 'org.json', name: 'json', version: '20220320'
-//JSON
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
     /* COAP **************************************************************************************************************** */
@@ -111,7 +106,7 @@ eclipse {
 
 application {
     // Define the main class for the application.
-    mainClass = 'it.unibo.ctxall.MainCtxallKt'
+    mainClass = 'it.unibo.ctx1.MainCtx1Kt'
 }
 
  jar {

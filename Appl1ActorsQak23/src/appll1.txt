@@ -1,0 +1,302 @@
+/*
+
+ */  
+System /* -msglog */ appl1qak 
+
+Dispatch startcmd   : start( ARG ) 			//sender:console receiver:appl
+Dispatch restart    : start( ARG ) 
+Dispatch stopcmd    : stop( ARG ) 
+Dispatch resumecmd  : resume( ARG ) 
+
+Dispatch stopappl   : stopappl( ARG ) 	//sender:consoleobs receiver:appl
+Dispatch resumeappl : resumeappl( ARG ) //sender:consoleobs receiver:appl
+
+Dispatch stepdone   : stepdone(V)  
+Dispatch stepfailed : stepfailed(DURATION, CAUSE)
+
+Request getpath     : getpath( ARG )	
+Request isrunning   : isrunning( ARG )
+Reply pathamswer    : pathamswer( ARG )
+Reply runninganswer : runninganswer( ARG )
+
+Event getpath       : getpath( ARG )	
+Event guicmd        : guicmd( ARG )	
+Event info          : info(ARG)
+Event sonardata     : sonar(DISTANCE)
+
+ 
+
+Context ctxall  ip [host="localhost" port=8720]
+
+/*  
+ * ------------------------------------------------------------------
+ *  appl 
+ * ------------------------------------------------------------------
+*/     
+
+QActor appl context ctxall{         
+ 
+
+	State s0 initial {	 
+		println("&&&  appl ACTIVE ...") 
+		//Da sopstare in basicrobot ...
+		[#  //unibo.basicomm23.utils.Connection.trace=true
+			utils.Appl1Startup.setConfigFilePath("./robotConfig.json");
+			CommUtils.outblue(name + " | init $currentMsg"   ) 
+		#] 	
+		
+		delegate "stopcmd" to consoleobs	
+		delegate "resumecmd" to consoleobs
+		
+		delegate "isrunning" to obsforpath
+		delegate "getpath" to obsforpath
+   	}  
+   	Transition t0 whenMsg startcmd -> startboundary
+    
+  	State startboundary{  		  
+   		[#  utils.Appl1Startup.initappl(myself, currentMsg) #] 
+     	println("startboundary  ") 
+     	[#  utils.Appl1Startup.doStepAsynch() #] 
+    	//request basicrobot -m step : step($StepTime)    	
+	}   
+ 	Transition t0 whenMsg stepdone   -> stepok
+	              whenMsg stepfailed -> stepko
+	              whenMsg stopappl   -> stopped
+     
+     State stepok{     	
+ 		delay 300 //to avoid too rapid changes
+ 		[#  utils.Appl1StateObject.incNSteps()
+ 			utils.Appl1Startup.doStepAsynch() //TODO: use basicrobot cmd(w)
+ 		#] 
+		//request basicrobot -m step : step($StepTime)
+   		updateResource [# "robot-stepdone" #] 	
+   		emitlocalstream info : info(robotstepdone) 
+     }
+  	Transition t0 whenMsg stepdone   -> stepok
+	              whenMsg stepfailed -> stepko
+	              whenMsg stopappl   -> stopped
+      
+     
+	State stepko {
+		println("stepko ") 
+		updateResource [# "robot-collision" #] 
+		emitlocalstream info : info(robotcollision)
+		[#  utils.Appl1StateObject.incNEdges()
+			utils.Appl1Startup.getVr().turnLeft()   
+		#] 
+		//forward basicrobot -m cmd : cmd(l)
+		updateResource [# "robot-turnleft" #] 	
+		emitlocalstream info : info(robotturnleft)
+        if [# utils.Appl1StateObject.getNEdges() < 4 #] {
+        	delay 300 
+        	[#  utils.Appl1Startup.doStepAsynch() #] 
+        	//request basicrobot -m step : step($StepTime)       	
+        }else { 
+        	forward appl -m restart : start(again)  //automsg
+        } 
+	}
+	Transition t0 whenMsg stepdone   -> stepok
+	              whenMsg stepfailed -> stepko
+	              whenMsg stopappl   -> stopped
+	              whenMsg restart    -> consumePreviousStart
+	   	 
+    	 
+    State stopped{
+    	println("appl stopped ") 
+    }
+    Transition t0 whenMsg resumeappl -> resumed 
+    
+    State resumed{
+    	println("appl resumed ") 
+    }     
+ 	Transition t0 whenMsg stepdone   -> stepok  //accordati dopo stopappl
+	              whenMsg stepfailed -> stepko
+
+ /*
+  * appl RESTARTING 
+  */  
+     //elimino more click su start (per una demo di whenTime)
+     //TODO: evitare questo modo di procedere
+    State consumePreviousStart{ 
+    	printCurrentMessage
+    }
+    Transition t0 whenTime 10      -> waittorestart  
+                  whenMsg startcmd -> consumePreviousStart
+
+	//Inizializzo e attendo un nuovo startcmd
+    State waittorestart{ 
+    	[#  utils.Appl1StateObject.reset() 
+     	#]
+ 		println("waittorestart") 
+	}      	 
+    Transition t0 whenMsg startcmd -> restart
+    
+    State restart{ 
+    	[#  utils.Appl1StateObject.setIsRunning(true) 
+         utils.Appl1Startup.doStepAsynch() #] 
+ 		println("restart") 
+	}      	 
+ 	Transition t0 whenMsg stepdone   -> stepok
+	              whenMsg stepfailed -> stepko
+    
+}
+
+/*
+--------------------------------------
+ consoleobs
+ stopcmd/resumecmd delegated by appl 
+--------------------------------------
+*/ 
+QActor consoleobs context ctxall{
+	[# var Stopped = false #]
+	State s0 initial{
+		//printCurrentMessage			
+	}
+	Transition t0 whenMsg  stopcmd   -> handlestop
+				  whenMsg  resumecmd -> handleresume
+	State handlestop{
+		printCurrentMessage
+		if[# Stopped #] {
+			println("consoleobs: already stopped")
+		}else{
+			[# Stopped = true #]
+			forward appl -m stopappl : stopappl(console)
+		}
+	}
+	Goto s0
+	
+	State handleresume{
+	   if[# Stopped #] { 
+	   		forward appl -m resumeappl : resumepappl(console)
+	   		[# Stopped = false #]
+	   }else{ println("consoleobs: resume ignored")}
+	}	
+	Goto s0
+}
+
+/*
+--------------------------------------
+ sonarobs
+--------------------------------------
+*/
+QActor sonarobs context ctxall{
+	State s0 initial{
+		printCurrentMessage			
+	}
+	Transition t0 whenEvent sonardata -> handleSonarData
+	
+	
+	State handleSonarData{
+		printCurrentMessage		
+		forward appl -m stopcmd : stop( 0 )
+		delay 2000
+		forward appl -m resumecmd : resume( 0 )
+	}
+	Goto ignoreSonarData
+				 	
+	State ignoreSonarData{
+		printCurrentMessage
+	}
+	Transition t0 whenTime 500 -> s0 whenEvent sonardata -> ignoreSonarData
+	
+}
+
+/*
+--------------------------------------
+ obsforpath
+--------------------------------------
+*/
+QActor obsforpath context ctxall{
+	[# val path = utils.PathStateObject() #]
+  State s0 initial{
+	printCurrentMessage		
+	subscribeTo appl	
+  }
+  Goto waitmsgs
+  
+  State waitmsgs{  	
+  	println("obsforpath waiting ...")
+  }
+  Transition t0 whenRequest isrunning -> handleIsrunning
+                whenRequest getpath   -> handlegetpath
+                whenEvent   info      -> handleinfo
+  
+  State handleinfo{
+  	printCurrentMessage
+  	onMsg( info : info(ARG) ) {
+  		[# val move = payloadArg(0) #]
+  		println ( "obsforpath handleinfo ${payloadArg(0)} " )
+  		[# path.updatePath(  payloadArg(0)  ) #]
+  	}
+  }
+  Goto waitmsgs  
+  
+  State  handleIsrunning{
+  	printCurrentMessage
+ 	[#  val r = utils.Appl1StateObject.getIsRunning( ) #] 
+ 	replyTo isrunning with runninganswer : runninganswer(true)
+  } 
+  Goto waitmsgs  
+  
+  State  handlegetpath{
+  	//printCurrentMessage
+  	[# var Curpath = path.getCurrentPath() #]
+  	println("obsforpath | current path=$Curpath")
+ 	replyTo getpath with pathamswer : pathamswer($Curpath)
+  }  
+  Goto waitmsgs  
+}
+
+/*
+--------------------------------------
+ console
+--------------------------------------
+*/
+/*
+ * Usa un supporto che emette streamevent 
+   Converte streamevent in comando a appl */
+QActor console context ctxall{
+	State s0 initial{
+		printCurrentMessage		
+		[# gui.GuiUtils.createGui(myself) #]	
+			
+	}
+	Goto waitevents
+	
+	State waitevents{}
+	Transition t0 whenEvent guicmd -> handleGuicmd
+	              whenEvent getpath -> handleGuigetpath
+	
+	State handleGuicmd {
+		printCurrentMessage
+		onMsg ( guicmd : guicmd(start)){
+			[# CommUtils.outmagenta("console start") #]
+			forward appl -m startcmd : startcmd(console) 
+		}
+	    onMsg ( guicmd : guicmd(stop)){
+			[#  CommUtils.outmagenta("console stop") #]
+			forward appl -m stopcmd : stopcmd(console) 
+		}
+		onMsg ( guicmd : guicmd(resume)){
+			[#  CommUtils.outmagenta("console resume") #]
+			forward appl -m resumecmd : resumecmd(console) 
+		}
+	} 
+	Goto waitevents
+	
+	State handleGuigetpath {
+		request appl -m getpath : getpath(gui)
+	}	
+	Transition t0 whenReply pathamswer -> handlepathanswer
+	
+	
+	State  handlepathanswer{
+		printCurrentMessage
+		onMsg ( pathamswer : pathamswer(A)){
+			println("PATH= ${payloadArg(0)}" )
+		}		
+	}
+	Goto waitevents
+}
+
+ 

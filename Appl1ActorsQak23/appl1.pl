@@ -1,7 +1,5 @@
 %====================================================================================
 % appl1 description   
 %====================================================================================
-context(ctxall, "localhost",  "TCP", "8720").
- qactor( appl, ctxall, "it.unibo.appl.Appl").
-  qactor( sonarobs, ctxall, "it.unibo.sonarobs.Sonarobs").
-  qactor( obsforpath, ctxall, "it.unibo.obsforpath.Obsforpath").
+context(ctx1, "localhost",  "TCP", "8888").
+ qactor( a0, ctx1, "it.unibo.a0.A0").

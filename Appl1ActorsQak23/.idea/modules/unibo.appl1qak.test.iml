@@ -55,5 +55,4 @@
     <orderEntry type="library" name="Gradle: org.apache.httpcomponents.core5:httpcore5-h2:5.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.californium:californium-legal:3.5.0" level="project" />
   </component>
-  <component name="TestModuleProperties" production-module="unibo.appl1qak.main" />
 </module>

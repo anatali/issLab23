@@ -1,0 +1,141 @@
+/* 
+ * ================================================================================
+ * basicrobot.qak version of unibo.basicrobot23
+ * ================================================================================
+ https://peppe8o.com/fix-slow-ssh-remote-terminal-issue-in-raspberry-pi-os/
+ */  
+   
+System /* -trace  */ basicrobot23   
+
+Dispatch cmd       	: cmd(MOVE)      
+Dispatch end       	: end(ARG)   
+  
+//Dispatch step       : step( TIME )	
+//Dispatch stepdone   : stepdone(V)  
+//Dispatch stepfailed : stepfail(DURATION, CAUSE)
+
+Request step       : step(TIME)	
+Reply stepdone     : stepdone(V)  
+Reply stepfailed   : stepfailed(DURATION, CAUSE)
+
+Event  sonardata   : sonar( DISTANCE ) 	    //for external components, not coap-observed
+Event obstacle     : obstacle(X) 
+
+
+//Dispatch coapUpdate: coapUpdate(RESOURCE, VALUE)
+
+Context ctxbasicrobot ip [host="localhost" port=8020]  
+
+//CodedQActor datacleaner    context ctxbasicrobot className "rx.dataCleaner"
+//CodedQActor distancefilter context ctxbasicrobot className "rx.distanceFilter"
+ 
+QActor basicrobot context ctxbasicrobot{
+[#  
+  var StepTime      = 0L
+  var StartTime     = 0L     
+  var Duration      = 0L   
+  var RobotType     = "" 
+  var CurrentMove   = "unkknown"
+  var StepSynchRes  = false
+   
+#]   
+ 	State s0 initial { 	       
+ 		discardMsg Off  //WE want receive any msg
+ 		//[# unibo.comm22.utils.CommSystemConfig.tracing = false #]  //tracing at unibo.comm22 level
+		println("basicrobot | STARTS")	
+		//[# sysUtil.trace = true #]  //Trace the behavior of ActorBasic
+ 		qrun uniborobots.robotSupport.create(myself,"basicrobotConfig.json")	
+ 		
+ 		[# RobotType = uniborobots.robotSupport.robotKind #]
+  		run uniborobots.robotSupport.move( "a" )    //synch
+ 		run uniborobots.robotSupport.move( "d" )	//synch
+        updateResource [# "basicrobot(started)" #]
+ 	} 
+	Goto work
+	
+	State work{ 
+		println("basicrobot  | waiting .................. ")  
+	} 
+	Transition t1   whenRequest  step      -> doStep		
+					whenMsg     cmd       -> execcmd
+				  	whenMsg     end       -> endwork			  
+	
+	State execcmd{
+		printCurrentMessage
+		onMsg( cmd : cmd(MOVE) ){
+  			//activate the motors  
+  			[# CurrentMove = payloadArg(0) #]
+			run uniborobots.robotSupport.move( payloadArg(0 ) )
+			updateResource [# "moveactivated(${payloadArg(0)})" #]
+		}
+	 }
+	 Goto work   
+ 
+	
+   	State doStep{ 
+ 		printCurrentMessage  
+		onMsg( step : step( T ) ){  
+			[#	StepTime     = payloadArg(0).toLong()  	#]    
+			updateResource [# "step(${StepTime})" #]
+  		}  
+        memoCurrentTime StartTime  
+        println("basicrobot | doing doStep StepTime=$StepTime  ")        
+        [# StepSynchRes = uniborobots.robotSupport.dostep( StepTime ) #]   
+	}  	
+		Goto stepok if [# StepSynchRes #] else stepKo 
+	//Transition t0 
+		//whenTimeVar StepTime  -> stepok  
+		//whenMsg stepdone   -> stepok
+     	//whenMsg stepfailed -> stepKo
+     	 
+	State stepok{   
+		printCurrentMessage
+ 		run uniborobots.robotSupport.move( "h" )  //stop the (real) robot 
+		updateResource [# "stepDone($StepTime)" #]
+   		//emit info : info( stepdone($StepTime) )
+   		replyTo step with stepdone : stepdone($StepTime)
+		println("basicrobot | stepDone reply done")
+  	}
+	Goto work  
+ 
+	State stepKo{  	 	
+		printCurrentMessage
+		setDuration Duration from StartTime
+		run uniborobots.robotSupport.move( "h" )  //stop the (real) robot
+		[# var TunedDuration   =  ((Duration * 0.80)).toLong()   #]
+		println("basicrobot | stepFail duration=$Duration  TunedDuration=$TunedDuration")
+			run uniborobots.robotSupport.move( "s" )
+			delayVar TunedDuration 
+			run uniborobots.robotSupport.move( "h" ) 
+ 		updateResource [# "stepFail($Duration)" #] 
+ 		replyTo step with stepfailed : stepfailed($Duration, obst)
+    } 
+	Goto work
+
+
+
+					
+	State endwork{ 
+		updateResource [# "basicrobot(end)" #]	 		
+ 		terminate 1
+	}   
+ 
+}
+  
+
+QActor eventobserver context ctxbasicrobot{
+	State s0 initial{
+		
+	}
+	Transition t0 whenEvent sonardata -> handleEvent
+	              whenEvent obstacle  -> handleEvent
+	
+	State handleEvent{
+		printCurrentMessage
+		[# CommUtils.outcyan("handleEvent $currentMsg") #]
+	}
+	Transition t0 whenEvent sonardata -> handleEvent
+	              whenEvent obstacle  -> handleEvent
+	
+}
+

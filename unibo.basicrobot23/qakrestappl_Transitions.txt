@@ -1,2 +1,3 @@
+{"actor":"basicrobot", "msgType":"dispatch", "curstate":"ss0", "nextstate":"work", "msgId":"engaged"}
 {"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"execcmd", "msgId":"cmd"}
 {"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"endwork", "msgId":"end"}

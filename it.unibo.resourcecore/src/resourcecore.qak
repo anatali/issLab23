@@ -1,0 +1,71 @@
+System resourcecore
+Request cmd         : cmd(X) // X =  w | s | a | d | h
+Reply   replytocmd  : replytocmd(X)
+Event    alarm      : alarm(V)
+    
+/*
+ * Attende request cmd
+ */
+Context ctxresourcecore ip [host="localhost" port=8045]
+ 
+QActor resourcecore context ctxresourcecore{
+[# var ready = true #]
+
+  State s0 initial { 
+     //printCurrentMessage color blue
+     println("$name waiting ... ") color black
+  }
+  Transition t0
+    whenRequest cmd  and [# ready #] -> handleRequestCmd
+    whenEvent   alarm -> handleAlarm
+ 
+  State handleAlarm{
+ 	 //printCurrentMessage color blue
+  	 onMsg( alarm : alarm(on) ){
+  	 	println("$name alarm on") color red
+	      [# ready = false #]
+     }
+  	 onMsg( alarm : alarm(off) ){
+  	 	println("$name alarm off") color red
+	      [# ready = true #]
+     } 
+  }
+  Goto s0
+  
+
+  State handleRequestCmd{
+    printCurrentMessage color blue
+    onMsg( cmd : cmd(X) ){
+      [# val arg = payloadArg(0)
+      	 val ANSW = "answerFor_${arg}" 
+      #]
+      replyTo cmd with replytocmd : replytocmd( $ANSW )
+    }
+  }
+  Goto s0
+} 
+
+/*
+QActor callmock context ctxresourcecore{
+	State s0 initial {
+      println("callmock READY") color green  
+      printCurrentMessage  color green
+      request resourcecore -m cmd : cmd(w)
+      request resourcecore -m cmd : cmd(h)
+      emit alarm : alarm(on)
+      request resourcecore -m cmd : cmd(s)
+      request resourcecore -m cmd : cmd(r)
+      delay 2000 
+      emit alarm : alarm(off)
+      delay 1000 
+      request resourcecore -m cmd : cmd(l)
+    }
+    Transition t0 whenReply replytocmd -> handleAnswer
+    
+    State handleAnswer{
+    	printCurrentMessage color green  
+    }
+    Transition t0 whenReply replytocmd -> handleAnswer
+
+}
+*/

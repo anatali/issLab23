@@ -1,0 +1,101 @@
+/*
+ * See it.unibo.demoqak21/userdocs/LabQakExamples2021.html#sentinel
+ * ----------------------------------------------------------------------------
+ * The sentinel actor
+ * - waits for an alarm event  
+ * - ends its job after 1sec
+ * - handles the alarm with an activity tha lasts 1500 msecs
+ * - after an event-handling, it restarts its job again
+ *   
+ * 
+ * The sender actor
+ *  - generates a alarm(fire) event 'immediately' (before 1 sec)
+ *  - generates a alarm(tsunami) event after 1200 mssec
+ */
+ 
+System sentinel
+ 	//"tcp://mqtt.eclipse.org:1883"
+	//mqtt.eclipse.org
+	//tcp://test.mosquitto.org
+	//mqtt.fluux.io
+	//"tcp://broker.hivemq.com" 
+//mqttBroker "localhost" : 1883 eventTopic "sentinel/events"
+ 
+Event   alarm : alarm(V)  
+
+Context ctxsentinel ip [host="localhost" port=8055]
+   
+QActor sentinel context ctxsentinel{
+[# var counter=0 #]		//Kotlin code
+	State s0 initial { 	
+		println("sentinel | STARTS")	 
+ 	} 
+ 	Goto watch if [# counter==0 #] else end //guard
+ 	
+ 	State watch{
+ 		println("sentinel | WATCH") 
+ 	}	
+ 	Transition t0  whenTime 60000 -> timeout			//(1)
+ 			whenEvent alarm and [# counter==0 #] -> handleAlarm
+ 	 
+ 	State timeout{
+   		printCurrentMessage
+  		println("sentinel | TIMEOUT")	 
+  		[# counter++ 	#]	
+ 	}
+ 	Goto s0     
+ 	 
+ 	State handleAlarm{
+  		printCurrentMessage
+  		updateResource[# "alarm $currentMsg" #]
+  		onMsg ( alarm : alarm(V) ) { 
+  			println("sentinel | ALARM ${payloadArg(0)} ")  // 
+  		} 
+  		delay 1500		   
+   	}	
+    	Goto s0		 
+    	/* Goto s0:
+    	   The actor specifies an empty move  => in this state it does not declare 
+           nothing about events or messages.
+           The next alarm event (tsunami) is inserted in the actor queue, that will be
+           inspected in the state s0 -> watch. Thus it will be perceived
+   	     */
+    	//Transition t0 whenTime 10  -> explore  
+    	/* 
+    	 * The actor declares no interest for the alarm event in this state.
+    	 * If the next alarm event (tsunami) arrives before 1,5 sec, it is ignored (lost) 
+    	 * */
+     	
+ 	State explore{
+ 		println("sentinel | exploring (quite fast) ...")
+ 	}
+ 	Goto watch
+  	
+ 	State end{
+ 		println("sentinel | ENDS")	
+   	}
+   	//Goto watch	//(3)
+ }
+
+/*  
+ * For local test
+ */
+ 
+QActor sender context ctxsentinel{
+	State s0 initial { 	  
+		/*  		  
+ 		 println("			sender emits fire")
+		 emit alarm : alarm( disaster(fire) )  
+		 
+		 delay 1200
+ 		 println("			sender emits tsunami")
+		 emit alarm : alarm( tsunami )	 
+		 
+//		 delay 1000
+//		 terminate 0 
+
+*/
+	}
+
+	
+}

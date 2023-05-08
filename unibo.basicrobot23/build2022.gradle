@@ -1,6 +1,6 @@
 /*
 ================================================================================
-build.gradle
+build22.gradle
 GENERATED ONLY ONCE
 ================================================================================
 */
@@ -45,13 +45,22 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm
     implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core-jvm', version: "$kotlinVersion"
 
+	//SOCKET.IO (for WEnv)
+    implementation group: 'javax.websocket', name: 'javax.websocket-api', version: '1.1'
+    //javax.websocket api is only the specification
+    implementation group: 'org.glassfish.tyrus.bundles', name: 'tyrus-standalone-client', version: '1.9'
+
+	//HTTP
+    implementation 'org.apache.httpcomponents:httpclient:4.5'
+
     /*  MQTT *************************************************************************************************************** */
     // https://mvnrepository.com/artifact/org.eclipse.paho/org.eclipse.paho.client.mqttv3
     implementation group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.2.5'
 
     /* JSON **************************************************************************************************************** */
     // https://mvnrepository.com/artifact/org.json/json
-    implementation group: 'org.json', name: 'json', version: '20220320'
+    //implementation group: 'org.json', name: 'json', version: '20220320'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
     /* COAP **************************************************************************************************************** */
     // https://mvnrepository.com/artifact/org.eclipse.californium/californium-core
@@ -65,9 +74,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver
 	testImplementation group: 'com.squareup.okhttp3', name: 'mockwebserver', version: '4.9.3'
 
-    /* LOG4J *************************************************************************************************************** */
-    // https://mvnrepository.com/artifact/org.slf4j/slf4j-reload4j
-    implementation group: 'org.slf4j', name: 'slf4j-reload4j', version: '2.0.0-alpha7'
+    /* LOG4J *************************************************************************************************************** */    
+    //implementation group: 'org.slf4j', name: 'slf4j-reload4j', version: '2.0.0-alpha7'
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
 
     /* HTTP **************************************************************************************************************** */
     // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
@@ -78,8 +87,8 @@ dependencies {
     /* UNIBO *************************************************************************************************************** */
     implementation name: 'uniboInterfaces'
     implementation name: '2p301'
-	implementation name: 'unibo.qakactor22-3.2'
-	implementation name: 'unibo.comm22-1.1'
+	implementation name: 'unibo.qakactor23-3.5'
+    implementation name: 'unibo.basicomm23-1.0'
 
     /* AIMA **************************************************************************************************************** */
  	//PLANNER  

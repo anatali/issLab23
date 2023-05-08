@@ -89,7 +89,7 @@ de definire in tempi rapidi un modello eseguibile del sistema.</p>
 <li><p>it.unibo.Qactork.ui_1.3.5.jar</p></li>
 <li><p>it.unibo.Qactork_1.3.5.jar</p></li>
 </ul>
-<p>Essi sono disponibili in: <strong>issLab2023/iss23Material/plugins</strong>.</p>
+<p>Essi sono disponibili in: <strong>issLab23/iss23Material/plugins</strong>.</p>
 </section>
 <section id="qak-codice-e-risorse-generate">
 <h3>Qak codice e risorse generate<a class="headerlink" href="#qak-codice-e-risorse-generate" title="Permalink to this headline">¶</a></h3>
@@ -98,10 +98,13 @@ de definire in tempi rapidi un modello eseguibile del sistema.</p>
 <li><p>un editor guidato dalla sintassi;</p></li>
 <li><p>la generazione di una descrizione del sistema come quella usata
 in <a class="reference internal" href="Actors23.html#descrizione-di-un-sistema-distribuito"><span class="std std-ref">Actors23</span></a></p></li>
-<li><p>la generazione di un file <em>build.grade</em></p></li>
+<li><p>la generazione di un file <em>build2022.grade</em> e di altre risorse</p></li>
 <li><p>la generazione del codice di raccordo con la <a class="reference internal" href="#qak-infrastructure"><span class="std std-ref">Qak infrastructure</span></a></p></li>
 <li><p>la generazione di codice Python per la produzione di una rappresentazione grafica del sistema</p></li>
 </ul>
+</section>
+<section id="qak-factory">
+<h3>Qak factory<a class="headerlink" href="#qak-factory" title="Permalink to this headline">¶</a></h3>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
 <col style="width: 55%" />
@@ -120,10 +123,30 @@ che definisce <span class="slide2">struttura, interazione e comportamento</span>
 </tbody>
 </table>
 </section>
+<section id="qak-infrastructure">
+<h3>Qak infrastructure<a class="headerlink" href="#qak-infrastructure" title="Permalink to this headline">¶</a></h3>
+<p>La libreria <strong>unibo.qakactor23-3.5.jar</strong> è prodotta nel progetto
+<span class="blue">unibo.qakactor23</span> e costituisce la
+la <span class="blue">qak-infrastructure</span>, che si appoggia
+al supporto <strong>unibo.basicomm23-1.0.jar</strong> introdotto nel progetto <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a>,
+che implementa il concetto <a class="reference internal" href="Interaction.html#interaction"><span class="std std-ref">Interaction</span></a> per diversi protocolli (TCP, UDP, CoAP, …).</p>
+</section>
 <section id="id1">
 <h3>Qak syntax<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>La sintassi del linguaggio, che introduce le notazioni relative al <span class="blue">metamodello QActor</span>,
 è definita in in <a class="reference external" href="./_static/Qactork.xtext">Qak syntax</a>.  Riportiamo qui alcuni esempi.</p>
+<section id="dichiarazione-degli-attori">
+<h4>Dichiarazione degli attori<a class="headerlink" href="#dichiarazione-degli-attori" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">QActorDeclaration</span> <span class="p">:</span> <span class="n">QActor</span> <span class="o">|</span> <span class="n">QActorCoded</span> <span class="o">|</span> <span class="n">QActorExternal</span> <span class="p">;</span>
+</pre></div>
+</div>
+<p>La sintassi inidca che vi sono tre tipi di attori:</p>
+<ul class="simple">
+<li><p>attori ‘normali’: <a class="reference internal" href="#dichiarazione-di-un-qactor"><span class="std std-ref">Dichiarazione di un QActor</span></a></p></li>
+<li><p>attori ‘codificati’: <a class="reference internal" href="#codedqactor"><span class="std std-ref">CodedQActor</span></a></p></li>
+<li><p>attori ‘esterni’: <a class="reference internal" href="#externalqactor"><span class="std std-ref">ExternalQActor</span></a></p></li>
+</ul>
+</section>
 <section id="dichiarazione-dei-messaggi">
 <h4>Dichiarazione dei messaggi<a class="headerlink" href="#dichiarazione-dei-messaggi" title="Permalink to this headline">¶</a></h4>
 <p>I diversi tipi di messaggio sono dichiarati usando una <em>sintassi</em> Prolog-like (si veda <a class="reference external" href="http://amsacta.unibo.it/5450/7/tuprolog-guide.pdf">tuProlog</a> ):</p>
@@ -219,18 +242,136 @@ modello Qak venga definito organizzando la sua descrizione nel modo che segue:</
 <p><span class="slide2">Sequenza delle dichiarazioni nel modello</span></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="o">&lt;</span> <span class="n">NAME</span> <span class="n">OF</span> <span class="n">THE</span> <span class="n">SYSTEM</span> <span class="o">&gt;</span>
 
-<span class="o">//</span><span class="n">DECLARATION</span> <span class="n">OF</span> <span class="n">MESSAGES</span> <span class="n">AND</span> <span class="n">EVENTS</span>
+<span class="o">//</span><span class="mi">1</span> <span class="o">-</span> <span class="n">DECLARATION</span> <span class="n">OF</span> <span class="n">MESSAGES</span> <span class="n">AND</span> <span class="n">EVENTS</span>
 <span class="o">...</span>
-<span class="o">//</span><span class="n">DECLARATION</span> <span class="n">OF</span> <span class="n">CONTEXTS</span>
+<span class="o">//</span><span class="mi">2</span> <span class="o">-</span> <span class="n">DECLARATION</span> <span class="n">OF</span> <span class="n">CONTEXTS</span>
 <span class="n">Context</span> <span class="n">CTXNAME</span> <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;HOSTIP&quot;</span> <span class="n">port</span><span class="o">=</span><span class="n">PORTNUM</span><span class="p">]</span>
 
-<span class="o">//</span><span class="n">DECLARATION</span> <span class="n">OF</span> <span class="n">ACTORS</span>
+<span class="o">//</span><span class="mi">3</span> <span class="o">-</span> <span class="n">DECLARATION</span> <span class="n">OF</span> <span class="n">ACTORS</span>
 <span class="o">...</span>
 </pre></div>
 </div>
-<p><span class="slide">Qak esempi</span></p>
+<p><span class="slide1">Struttura sintattica di un QActor</span></p>
+<section id="dichiarazione-di-un-qactor">
+<h3>Dichiarazione di un QActor<a class="headerlink" href="#dichiarazione-di-un-qactor" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>QActor &lt;NomeAttore&gt; context &lt;NomeContesto&gt;{
+  State &lt;NomeStato&gt; initial?{
+    &lt;Azioni dello stato&gt;
+  }
+  &lt;Transition&gt;
+}
+</pre></div>
+</div>
+</td>
+<td><p>Il tag <span class="blue">initial</span> deve essere presente in un unico stato.</p>
+<ul class="simple">
+<li><p>Per un primo esempio si veda <a class="reference internal" href="#demobetter-qak"><span class="std std-ref">demobetter.qak</span></a>.</p></li>
+<li><p>Per un esempio più completo si veda <a class="reference internal" href="QakActors23Demo.html#demo0-qak"><span class="std std-ref">demo0.qak</span></a>.</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<section id="dichiarazione-delle-transizioni">
+<h4>Dichiarazione delle transizioni<a class="headerlink" href="#dichiarazione-delle-transizioni" title="Permalink to this headline">¶</a></h4>
+<p>La transizone da uno stato a uno stato successivo può avvenire senza attesa di alcun messaggio (<span class="blue">EmptyTransition</span>)
+oppure in relazione alla disponibilità di un messaggio tra quelli definiti in <a class="reference internal" href="#dichiarazione-dei-messaggi"><span class="std std-ref">Dichiarazione dei messaggi</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Transition</span>         <span class="p">:</span>  <span class="n">EmptyTransition</span> <span class="o">|</span> <span class="n">NonEmptyTransition</span>  <span class="p">;</span>
+</pre></div>
+</div>
+<section id="emptytransition">
+<h5>EmptyTransition<a class="headerlink" href="#emptytransition" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>EmptyTransition    :  &quot;Goto&quot; targetState=[State]
+                      (&quot;if&quot; eguard=AnyAction &quot;else&quot; othertargetState=[State] )?  ;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Per un esempio si veda <a class="reference internal" href="QakActors23Demo.html#qactor-sender-e-perceiver"><span class="std std-ref">demo0.qak</span></a>.</p></li>
+</ul>
+</section>
+<section id="nonemptytransition">
+<h5>NonEmptyTransition<a class="headerlink" href="#nonemptytransition" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>NonEmptyTransition:&quot;Transition&quot; name=ID  (duration=Timeout)?  (trans+=InputTransition)*;
+</pre></div>
+</div>
+<p>Una transizione <span class="blue">NonEmptyTransition</span> associata alla disponibilità di un messaggio
+(come defnito in <a class="reference internal" href="Actors23FSM.html#messaggio-disponibile"><span class="std std-ref">Actors23FSM</span></a>) distingue tra i diversi
+<a class="reference internal" href="#dichiarazione-dei-messaggi"><span class="std std-ref">tipi di messaggio</span></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>InputTransition    : MsgTransSwitch | RequestTransSwitch |  ReplyTransSwitch |
+                     EventTransSwitch | InterruptTranSwitch ;
+
+MsgTransSwitch     : &quot;whenMsg&quot;     message=[Dispatch]
+                      (&quot;and&quot;  guard=AnyAction  )?  &quot;-&gt;&quot;  targetState=[State]  ;
+RequestTransSwitch : &quot;whenRequest&quot; message=[Request]
+                      (&quot;and&quot;  guard=AnyAction  )?  &quot;-&gt;&quot;  targetState=[State]  ;
+ReplyTransSwitch   : &quot;whenReply&quot;   message=[Reply]
+                      (&quot;and&quot;  guard=AnyAction  )?  &quot;-&gt;&quot;  targetState=[State]  ;
+EventTransSwitch   : &quot;whenEvent&quot;   message=[Event]
+                      (&quot;and&quot;  guard=AnyAction  )?  &quot;-&gt;&quot;  targetState=[State]  ;
+InterruptTranSwitch: &quot;whenInterrupt&quot;   message=[Dispatch]
+                      (&quot;and&quot;  guard=AnyAction  )?  &quot;-&gt;&quot;  targetState=[State]  ;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Per un esempio di <em>MsgTransSwitch</em> si veda <a class="reference internal" href="QakActors23Demo.html#qactor-demo0"><span class="std std-ref">demo0.qak</span></a>.</p></li>
+<li><p>Per un esempio di <em>RequestTransSwitch</em> e <em>ReplyTransSwitch</em> si veda <a class="reference internal" href="QakActors23Demo.html#demorequest-qak"><span class="std std-ref">demorequest.qak</span></a>.</p></li>
+<li><p>Per un esempio di <em>EventTransSwitch</em>   si veda actor <em>perceiver</em> in <a class="reference internal" href="QakActors23Demo.html#qactor-demo0"><span class="std std-ref">demo0.qak</span></a>.</p></li>
+</ul>
+</section>
+<section id="guardia">
+<h5>Guardia<a class="headerlink" href="#guardia" title="Permalink to this headline">¶</a></h5>
+<p>Una transzione associata a una guardia viene attivata solo se la valutazione della condizione espressa dalla
+guardia produce il valore <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+<ul class="simple">
+<li><p>Per un esempio si veda <a class="reference internal" href="QakActors23Demo.html#id1"><span class="std std-ref">resourcecore.qak</span></a>.</p></li>
+</ul>
+</section>
+<section id="whentime">
+<h5>whenTime<a class="headerlink" href="#whentime" title="Permalink to this headline">¶</a></h5>
+<p>Per evitare una attesa indefinita di messaggi in uno stato, è poosibile associare alla transizione un <span class="blue">timeout</span>
+(come un numero naturale in msec)
+scaduto il quale l’automa transita nello stato specificato.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Timeout</span>            <span class="p">:</span> <span class="n">TimeoutInt</span> <span class="o">|</span> <span class="n">TimeoutVar</span> <span class="o">|</span> <span class="n">TimeoutSol</span> <span class="o">|</span> <span class="n">TimeoutVarRef</span><span class="p">;</span>
+<span class="n">TimeoutInt</span>         <span class="p">:</span> <span class="s2">&quot;whenTime&quot;</span>    <span class="n">msec</span><span class="o">=</span><span class="n">INT</span>  <span class="s2">&quot;-&gt;&quot;</span> <span class="n">targetState</span> <span class="o">=</span> <span class="p">[</span><span class="n">State</span><span class="p">]</span>  <span class="p">;</span>
+</pre></div>
+</div>
+<p>Lo scadere del tempo indicato in <span class="blue">whenTime</span> provoca l’emissione di un evento, con indentificatore
+<code class="docutils literal notranslate"><span class="pre">local_tout_actorname_state</span></code> ove <code class="docutils literal notranslate"><span class="pre">actorname</span></code> è il nome dell’attore e <code class="docutils literal notranslate"><span class="pre">state</span></code> è  il nome dello stato corrente</p>
+<ul class="simple">
+<li><p>Per un esempio si veda l’actor <em>perceiver</em> in <a class="reference internal" href="QakActors23Demo.html#qactor-sender-e-perceiver"><span class="std std-ref">demo0.qak</span></a>.</p></li>
+</ul>
+</section>
+<section id="whentimevar-e-altre-forme">
+<h5>whenTimeVar e altre forme<a class="headerlink" href="#whentimevar-e-altre-forme" title="Permalink to this headline">¶</a></h5>
+<p>Le forme che si aggiungono a <code class="docutils literal notranslate"><span class="pre">TimeoutInt</span></code> sono utili in situazioni in cui il tempo non sia noto a priori,
+ma derivi da elaborazioni.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TimeoutVar</span>         <span class="p">:</span> <span class="s2">&quot;whenTimeVar&quot;</span>    <span class="n">variable</span>   <span class="o">=</span> <span class="n">Variable</span>    <span class="s2">&quot;-&gt;&quot;</span> <span class="n">targetState</span> <span class="o">=</span> <span class="p">[</span><span class="n">State</span><span class="p">]</span>  <span class="p">;</span>
+<span class="n">TimeoutVarRef</span>      <span class="p">:</span> <span class="s2">&quot;whenTimeVarRef&quot;</span> <span class="n">refvar</span>     <span class="o">=</span> <span class="n">VarRef</span>      <span class="s2">&quot;-&gt;&quot;</span> <span class="n">targetState</span> <span class="o">=</span> <span class="p">[</span><span class="n">State</span><span class="p">]</span>  <span class="p">;</span>
+<span class="n">TimeoutSol</span>         <span class="p">:</span> <span class="s2">&quot;whenTimeSol&quot;</span>    <span class="n">refsoltime</span> <span class="o">=</span> <span class="n">VarSolRef</span>   <span class="s2">&quot;-&gt;&quot;</span> <span class="n">targetState</span> <span class="o">=</span> <span class="p">[</span><span class="n">State</span><span class="p">]</span>  <span class="p">;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Per un esempio di <code class="docutils literal notranslate"><span class="pre">TimeoutVar</span></code> si veda l’actor <em>sender</em> in <a class="reference internal" href="QakActors23Demo.html#qactor-sender-e-perceiver"><span class="std std-ref">demo0.qak</span></a>.</p></li>
+</ul>
+</section>
+</section>
+<section id="wheninterrupt">
+<h4>whenInterrupt<a class="headerlink" href="#wheninterrupt" title="Permalink to this headline">¶</a></h4>
+<p>Per la transzione da uno stato <code class="docutils literal notranslate"><span class="pre">SA</span></code> a uno stato <code class="docutils literal notranslate"><span class="pre">SB</span></code> con ritorno allo stato <code class="docutils literal notranslate"><span class="pre">SA</span></code>
+<span class="blue">whenInterrupt</span>.</p>
+<ul class="simple">
+<li><p>Per un esempio si veda</p></li>
+</ul>
+<p><span class="slide">Esempi di uso di Qak</span></p>
 <p>Esempi di modelli Qak sono disponibili nei seguenti progetti:</p>
 <ul class="simple">
+<li><p><a class="reference internal" href="QakActors23Demo.html#qakactors23demo"><span class="std std-ref">QakActors23Demo</span></a></p></li>
 <li><p><a class="reference internal" href="Appl1ActorsQak23.html#appl1actorsqak23"><span class="std std-ref">Appl1ActorsQak23</span></a> : <span class="slide2">Nuova versione di Appl1ActorsFsm23</span></p></li>
 </ul>
 <p>Riportiamo qui solo una considerazione preliminare.</p>
@@ -238,6 +379,9 @@ modello Qak venga definito organizzando la sua descrizione nel modo che segue:</
 <p>Il linguaggio Qak mira a esprimere modelli eseguibili, ma
 <strong>non è completo dal punto di vista computazionale</strong>.  Dunque, parte del comportamento potrebbe talvolta
 dover essere espresso direttamente in Kotlin. Ma occorre non  esagerare con l’uso di una tale possibilità.</p>
+</section>
+<section id="demonottodo-qak">
+<h4>demonottodo.qak<a class="headerlink" href="#demonottodo-qak" title="Permalink to this headline">¶</a></h4>
 <p>Questo esempio definisce un attore che, una volta attivato, calcola il numero di Fibonacci di posizione <code class="docutils literal notranslate"><span class="pre">7</span></code>
 usando codice Kotlin.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="n">demonottodo</span>
@@ -267,21 +411,31 @@ usando codice Kotlin.</p>
 <span class="n">qactor</span><span class="p">(</span> <span class="n">demonottodo</span><span class="p">,</span> <span class="n">ctxdemonottodo</span><span class="p">,</span> <span class="s2">&quot;it.unibo.demonottodo.Demonottodo&quot;</span><span class="p">)</span><span class="o">.</span>
 </pre></div>
 </div>
+</section>
+</section>
+<section id="qak-in-codice-kotlin">
+<h3>Qak in codice kotlin<a class="headerlink" href="#qak-in-codice-kotlin" title="Permalink to this headline">¶</a></h3>
+<p>L’esempio mostra come un attore possa esprimere le azioni di uno stato usando direttamete codice Kotlin
+compreso tra l parentesi <code class="docutils literal notranslate"><span class="pre">[#</span></code> e <code class="docutils literal notranslate"><span class="pre">#]</span></code>.</p>
 <p><span class="slide1">… meglio così</span></p>
+<section id="demobetter-qak">
+<h4>demobetter.qak<a class="headerlink" href="#demobetter-qak" title="Permalink to this headline">¶</a></h4>
 <p>Per limitare l’uso diretto di codice Kotlin, è opportuno introdurre classi di utilità e invocarne i metodi.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="n">demobetter</span>
 <span class="n">Context</span> <span class="n">ctxdemobetter</span> <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8055</span><span class="p">]</span>
 
 <span class="n">QActor</span> <span class="n">demobetter</span> <span class="n">context</span> <span class="n">ctxdemobetter</span><span class="p">{</span>
-  <span class="p">[</span><span class="c1"># var n = 7  #] //Global variable</span>
+  <span class="p">[</span><span class="c1"># val n = 7  #] //Global costant</span>
   <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span> <span class="p">{</span>
-    <span class="p">[</span><span class="c1">#  ut.outMsg( &quot;fibo($n)=&quot; + ut.fibo(n))    #]</span>
+    <span class="n">println</span><span class="p">(</span> <span class="s2">&quot;fibo($n)=${ut.fibo(n)}&quot;</span> <span class="p">)</span> <span class="n">color</span> <span class="n">magenta</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>La utility <strong>ut</strong> potrebbe essere codice scritto in Java o in Kotlin e inserito
-nella directory <span class="blue">resources</span> (si veda <a class="reference internal" href="#creazione-di-un-nuovo-progetto"><span class="std std-ref">Creazione di un nuovo progetto</span></a>) . Ad esempio:</p>
+<ul>
+<li><p>Per la notazione <span class="blue">$</span> si veda <a class="reference internal" href="#id2"><span class="std std-ref">Shortcut</span></a></p></li>
+<li><p>La utility <span class="blue">ut</span> potrebbe essere codice scritto in Java o in Kotlin e inserito
+nella directory <span class="blue">resources</span> (si veda <a class="reference internal" href="#creazione-di-un-nuovo-progetto"><span class="std std-ref">Creazione di un nuovo progetto</span></a>). Ad esempio:</p>
 <div class="highlight-kotlin notranslate"><div class="highlight"><pre><span></span><span class="kd">object</span> <span class="nc">ut</span> <span class="p">{</span>
   <span class="kd">fun</span> <span class="nf">fibo</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="p">:</span> <span class="kt">Int</span> <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="m">0</span> <span class="p">)</span> <span class="k">throw</span> <span class="n">Exception</span><span class="p">(</span><span class="s">&quot;fibo argument must be &gt;0&quot;</span><span class="p">)</span>
@@ -289,63 +443,226 @@ nella directory <span class="blue">resources</span> (si veda <a class="reference
     <span class="kd">var</span> <span class="nv">v</span> <span class="o">=</span> <span class="n">fibo</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="m">1</span><span class="p">)</span><span class="o">+</span><span class="n">fibo</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="m">2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">v</span>
   <span class="p">}</span>
-  <span class="kd">fun</span> <span class="nf">outMsg</span><span class="p">(</span> <span class="n">m</span><span class="p">:</span> <span class="kt">String</span> <span class="p">){</span>
-    <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outappl</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">GREEN</span><span class="p">);</span>
-  <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+</li>
+</ul>
+<p><span class="slide">Operazioni disponibili</span></p>
+</section>
+</section>
+</section>
+<section id="qak-primitive-disponibili">
+<h2>Qak primitive disponibili<a class="headerlink" href="#qak-primitive-disponibili" title="Permalink to this headline">¶</a></h2>
+<p>Ogni attore è una specializzazione della classe  <code class="docutils literal notranslate"><span class="pre">it.unibo.kactor.ActorBasicFsm</span></code>
+(che specializza <code class="docutils literal notranslate"><span class="pre">it.unibo.kactor.ActorBasic</span></code> del progetto ) da cui eredita
+un insieme di variabili e operazioni, tra cui quelle qui di seguito riportate.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 62%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Sostituto di <span class="blue">this</span></p></td>
+<td><ul class="simple">
+<li><p><span class="blue">myself</span>. Es.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Rif. allo stato corrente</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">curState</span>. Es.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Rif. al messaggio corrente</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">currentMsg</span>. Es.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Invio di messaggi</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">forward</span>. Invio di Dispatch. Es. actor <em>sender</em> in <a class="reference internal" href="QakActors23Demo.html#qactor-sender-e-perceiver"><span class="std std-ref">demo0</span></a></p></li>
+<li><p><span class="blue">request</span>. Invio di Request. Es. actor <em>caller</em> in <a class="reference internal" href="QakActors23Demo.html#demorequest-caller"><span class="std std-ref">demorequest</span></a></p></li>
+<li><p><span class="blue">reply</span>. Invio di Reply. Es. actor <em>called</em> in <a class="reference internal" href="QakActors23Demo.html#demorequest-called"><span class="std std-ref">demorequest</span></a></p></li>
+<li><p><span class="blue">askFor</span></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Emissione di eventi</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">emit</span>. Es. actor <em>sender</em> in <a class="reference internal" href="QakActors23Demo.html#qactor-sender-e-perceiver"><span class="std std-ref">demo0</span></a> e <a class="reference internal" href="QakActors23Demo.html#workactor"><span class="std std-ref">workactor</span></a></p></li>
+<li><p><span class="blue">emitLocal</span>.</p></li>
+<li><p><span class="blue">emitLocalStream</span>. Es. actor <em>sender</em> in <a class="reference internal" href="QakActors23Demo.html#actors-as-streams"><span class="std std-ref">Actors as streams</span></a></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Memorizzazione messaggi non attesi</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">discardMsg On/Off</span>.  Es. in <a class="reference internal" href="QakActors23Demo.html#qactor-demo0"><span class="std std-ref">QActor demo0</span></a></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Delega di messaggi</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">delegate</span></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Registraz. come local observer</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">subscribeTo</span></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Update rappresentaz. risorsa</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">updateResource</span></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Osservatore di risora</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">observeResource</span></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Accesso al contenuto dei messaggi</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">onMsg</span>.  Utilizza  unificazione  Prolog. Es. <a class="reference internal" href="QakActors23Demo.html#qactor-demo0"><span class="std std-ref">QActor demo0</span></a></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Show stato e messaggio corrente</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">printCurrentMessage</span>.  Es. <a class="reference internal" href="QakActors23Demo.html#qactor-demo0"><span class="std std-ref">QActor demo0</span></a></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Show stringa</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">println</span>.  Es. <a class="reference internal" href="QakActors23Demo.html#qactor-demo0"><span class="std std-ref">QActor demo0</span></a></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Memorizzazione tempo corrente</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">memoCurrentTime</span>. Es. <a class="reference internal" href="QakActors23Demo.html#datahandler"><span class="std std-ref">datahandler</span></a></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Determinazione della durata</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">setDuration</span>. Es. <a class="reference internal" href="QakActors23Demo.html#datahandler"><span class="std std-ref">datahandler</span></a></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Terminazione</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">terminate</span></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Dimostrazine Prolog</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">solve</span></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Esecuzione codice esterno</p></td>
+<td><ul class="simple">
+<li><p><span class="blue">run</span>: <code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">ccc.xxx()</span></code>  invoca  il metodo <em>static</em> <code class="docutils literal notranslate"><span class="pre">xxx</span></code> della classe <code class="docutils literal notranslate"><span class="pre">ccc</span></code>.
+Es. <a class="reference internal" href="QakActors23Demo.html#datahandler"><span class="std std-ref">datahandler</span></a></p></li>
+<li><p><span class="blue">machineExec</span>:  <code class="docutils literal notranslate"><span class="pre">machineExec(cmd:string)</span></code></p></li>
+<li><p><span class="blue">qrun</span> : <code class="docutils literal notranslate"><span class="pre">qrun</span> <span class="pre">ccc.xxx()</span></code>  invoca  il metodo <em>static</em>  <code class="docutils literal notranslate"><span class="pre">xxx</span></code> della classe <code class="docutils literal notranslate"><span class="pre">ccc</span></code>. Il
+metodo deve avere come primo argomento un riferimento all’attore corrente (<strong>myself</strong>).</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<section id="accesso-al-contenuto-dei-messaggi">
+<h3>Accesso al contenuto dei messaggi<a class="headerlink" href="#accesso-al-contenuto-dei-messaggi" title="Permalink to this headline">¶</a></h3>
+<p>Supponiamo di avere un messaggio dichiarato come segue:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Dispatch</span> <span class="n">m</span> <span class="p">:</span> <span class="n">m</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Lo stato relativo alla elaborazione di tale messaggio potrebbe voler accedere a un argomento
+specifico del suo payload.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>In tal caso si può usare la primitiva <span class="blue">onMsg</span> e la
+funzione  <code class="docutils literal notranslate"><span class="pre">payloadArg(N)</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">onMsg</span><span class="p">(</span> <span class="n">m</span> <span class="p">:</span> <span class="n">m</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z</span><span class="p">)</span> <span class="p">){</span>
+  <span class="n">println</span><span class="p">(</span><span class="s2">&quot;$payloadArg(1)&quot;</span><span class="p">)</span>  <span class="o">//</span><span class="n">stampa</span> <span class="n">Y</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</td>
+<td><p><span class="blue">payloadArg(N)</span></p>
+<p>Restituisce l’argomento di ordine N (convertito in  String) del payload di un messaggio.</p>
+<p>Esempio in <a class="reference internal" href="QakActors23Demo.html#qactor-demo0"><span class="std std-ref">QActor demo0</span></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id2">
+<h3>Shortcut<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Notazione <span class="blue">$</span> Kotlin-like</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">VarRef</span> <span class="p">:</span> <span class="s2">&quot;$&quot;</span> <span class="n">varName</span><span class="o">=</span> <span class="n">VARID</span> <span class="p">;</span>
+</pre></div>
+</div>
+</td>
+<td><p>Esempio in <a class="reference internal" href="#demobetter-qak"><span class="std std-ref">demobetter.qak</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Notazione <span class="blue">#</span> per accesso a una variabile logica (che inizia con maiuscola)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">VarRefInStr</span> <span class="p">:</span> <span class="s2">&quot;#&quot;</span> <span class="n">varName</span><span class="o">=</span> <span class="n">VARID</span> <span class="p">;</span>
+</pre></div>
+</div>
+</td>
+<td><p>Equivale a:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>${ getCurSol(&quot;&lt;VARID&gt;&quot;).toString() }
+solve(move(M));println( #M )
+</pre></div>
+</div>
+<p>Esempio in <a class="reference internal" href="#demobetter-qak"><span class="std std-ref">demobetter.qak</span></a> //TODO</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Notazione <span class="blue">&#64;</span> per accesso a una variabile logica (che inizia con maiuscola)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">VarSolRef</span>   <span class="p">:</span> <span class="s2">&quot;@&quot;</span> <span class="n">varName</span><span class="o">=</span> <span class="n">VARID</span> <span class="p">;</span>
+</pre></div>
+</div>
+</td>
+<td><p>Equivale a:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">getCurSol</span><span class="p">(</span><span class="s2">&quot;&lt;VARID&gt;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">()</span>
+<span class="n">solve</span><span class="p">(</span><span class="n">move</span><span class="p">(</span><span class="n">M</span><span class="p">));</span><span class="n">doMove</span><span class="p">(</span> <span class="nd">@M</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Esempio in <a class="reference internal" href="#demobetter-qak"><span class="std std-ref">demobetter.qak</span></a> //TODO</p>
+</td>
+</tr>
+</tbody>
+</table>
 <p><span class="worktodo">TODO</span>: scrivere il sistema produttori-consumatore in Qak</p>
-</section>
-<section id="qak-infrastructure">
-<h2>Qak infrastructure<a class="headerlink" href="#qak-infrastructure" title="Permalink to this headline">¶</a></h2>
-<p>La libreria <strong>unibo.qakactor23-3.5*.jar</strong> fornisce la <span class="blue">qak-infrastructure</span> e si appoggia
-al supporto <strong>unibo.basicomm23-1.0.jar</strong> introdotto nel progetto <a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23"><span class="std std-ref">unibo.basicomm23</span></a>,
-che implementa il concetto <a class="reference internal" href="Interaction.html#interaction"><span class="std std-ref">Interaction</span></a> per diversi protocolli (TCP, UDP, CoAP, …).</p>
-<section id="variabili">
-<h3>Variabili<a class="headerlink" href="#variabili" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>myself</p></li>
-<li><p>currentMsg</p></li>
-<li><p>curState</p></li>
-</ul>
-</section>
-<section id="esecuzione">
-<h3>Esecuzione<a class="headerlink" href="#esecuzione" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>qrun : <code class="docutils literal notranslate"><span class="pre">qrun</span> <span class="pre">ccc.xxx()</span></code>  invoca  il metodo <em>static</em>  <code class="docutils literal notranslate"><span class="pre">xxx</span></code> della classe <code class="docutils literal notranslate"><span class="pre">ccc</span></code>. Il
-metodo deve avere come primo argomento un riferimento all’attore corrente (ad esempio <strong>myself</strong>).</p></li>
-<li><p>run: <code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">ccc.xxx()</span></code>  invoca  il metodo <em>static</em> <code class="docutils literal notranslate"><span class="pre">xxx</span></code> della classe <code class="docutils literal notranslate"><span class="pre">ccc</span></code>.</p></li>
-</ul>
 <p><span class="slide">Attori particolari</span></p>
 </section>
-</section>
-<section id="externalqactor">
-<h2>ExternalQActor<a class="headerlink" href="#externalqactor" title="Permalink to this headline">¶</a></h2>
-<p>Un sistema software ad attori Qak può essere pensato come un organismo che comincia ad
-operare solo quando tutte le sue parti sono state costruite ed attivate.</p>
-<p>In molti casi però, come di solito accade nelle architetture a <a class="reference external" href="https://microservices.io/">Microservizi</a>,
-un sistema si configura e si costruisce ‘incrementalmente’, partendo da un <span class="blue">servizio iniziale</span>
-e poi aggiungendo ulteriori servizi, che interagiscono con quello iniziale e tra loro sempre
-solo mediante scambio di messaggi.</p>
-<p>Per un esempio introduttivo si veda: <strong>Progetto</strong>: <em>it.unibo.resourcecore</em></p>
-</section>
-<section id="streamedqactor">
-<h2>StreamedQActor<a class="headerlink" href="#streamedqactor" title="Permalink to this headline">¶</a></h2>
-<p>La <a class="reference external" href="https://en.wikipedia.org/wiki/Reactive_programming">Reactive programming</a> è una combinazione di idee riconducibili al modello <em>Observer</em>,
-al modello <em>Iterator</em> e alla <em>programmazione funzionale</em>.
-In questo stile di programmazione, un servizio-consumatore reagisce ai dati non appena arrivano, con la capacità
-anche di <em>propagare le modifiche come eventi</em> agli osservatori registrati.</p>
-<p>Un QAkActor può lavorare come un <em>produttore osservabile di dati</em>, cioè può
-inivare messaggi ad altri attori locali allo stesso contesto,
-che si sono (o vengono) ‘resistrati come osservatori’ presso di lui, con la primitiva <span class="blue">subscribeTo</span>.</p>
-<p>Ciascun attore-sottoscrittore elabora i dati ‘in parallelo’ con gli altri e può a sua volta funzionare come osservabile.</p>
-<p>Per un esempio introduttivo si veda:</p>
 </section>
 <section id="codedqactor">
 <h2>CodedQActor<a class="headerlink" href="#codedqactor" title="Permalink to this headline">¶</a></h2>
 <p>Vi sono situazioni in cui è preferibile introdurre attori scritti direttamente in Kotlin (o in Java)
-ed utlizzarli come una sorta di componenti predefiniti in modelli descritti in linguaggio QAk.</p>
+ed utlizzarli come una sorta di componenti predefiniti in modelli descritti in linguaggio Qak.</p>
 <ul>
 <li><p>A CodedQActor is an actor completely written in Kotlin that can be included in a QAk-model by specifying its class name.</p></li>
 <li><p>A CodedQActor is usually defined as a specilization of ActorBasic:</p>
@@ -359,56 +676,38 @@ ed utlizzarli come una sorta di componenti predefiniti in modelli descritti in l
 </li>
 <li><p>The <a class="reference internal" href="#qak-infrastructure"><span class="std std-ref">Qak infrastructure</span></a> handles a CodedQActor as a usual; in particular,
 it ‘injects’ into the CodedQActor the context specified by the model.</p></li>
+<li><p>Per un esempio si veda: <a class="reference internal" href="QakActors23Demo.html#democodedqactor-qak"><span class="std std-ref">democodedqactor.qak</span></a></p></li>
 </ul>
-<p>Per un esempio introduttivo si veda:</p>
+</section>
+<section id="externalqactor">
+<h2>ExternalQActor<a class="headerlink" href="#externalqactor" title="Permalink to this headline">¶</a></h2>
+<p>Un sistema software ad attori Qak può essere pensato come un organismo che comincia ad
+operare solo quando tutte le sue parti sono state costruite ed attivate.</p>
+<p>In molti casi però, come di solito accade nelle architetture a <a class="reference external" href="https://microservices.io/">Microservizi</a>,
+un sistema si configura e si costruisce ‘incrementalmente’, partendo da un <span class="blue">servizio iniziale</span>
+e poi aggiungendo ulteriori servizi, che interagiscono con quello iniziale e tra loro sempre
+solo mediante scambio di messaggi.</p>
+<ul class="simple">
+<li><p>Per un esempio si veda il <strong>Progetto</strong>: <em>it.unibo.resourcecore</em></p></li>
+</ul>
+</section>
+<section id="streamedqactor">
+<h2>StreamedQActor<a class="headerlink" href="#streamedqactor" title="Permalink to this headline">¶</a></h2>
+<p>La <a class="reference external" href="https://en.wikipedia.org/wiki/Reactive_programming">Reactive programming</a> è una combinazione di idee riconducibili al modello <em>Observer</em>,
+al modello <em>Iterator</em> e alla <em>programmazione funzionale</em>.
+In questo stile di programmazione, un servizio-consumatore reagisce ai dati non appena arrivano, con la capacità
+anche di <em>propagare le modifiche come eventi</em> agli osservatori registrati.</p>
+<p>Un QakActor può lavorare come un <em>produttore osservabile di dati</em>, cioè può
+inivare messaggi ad altri attori locali allo stesso contesto,
+che si sono (o vengono) ‘resistrati come osservatori’ presso di lui, con la primitiva <span class="blue">subscribeTo</span>.</p>
+<p>Ciascun attore-sottoscrittore elabora i dati ‘in parallelo’ con gli altri e può a sua volta funzionare come osservabile.</p>
+<ul class="simple">
+<li><p>Per un esempio si veda: <span class="xref std std-ref">streamdemo.qak</span></p></li>
+</ul>
 </section>
 <section id="attore-come-risorsa-coap">
 <h2>Attore come risorsa CoAP<a class="headerlink" href="#attore-come-risorsa-coap" title="Permalink to this headline">¶</a></h2>
 <p>In progress …</p>
-<p><span class="slide">Operazioni disponibili</span></p>
-</section>
-<section id="qak-primitive-disponibili">
-<h2>Qak primitive disponibili<a class="headerlink" href="#qak-primitive-disponibili" title="Permalink to this headline">¶</a></h2>
-<p>In progress ..</p>
-<section id="emissione-di-eventi">
-<h3>Emissione di eventi<a class="headerlink" href="#emissione-di-eventi" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>emit</p></li>
-<li><p>emitLocal</p></li>
-<li><p>emitLocalStream</p></li>
-</ul>
-</section>
-<section id="invio-di-messaggi">
-<h3>Invio di messaggi<a class="headerlink" href="#invio-di-messaggi" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>forward</p></li>
-<li><p>request</p></li>
-<li><p>reply</p></li>
-<li><p>askFor</p></li>
-</ul>
-</section>
-<section id="utilita">
-<h3>Utilità<a class="headerlink" href="#utilita" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>printCurrentMessage</p></li>
-<li><p>println</p></li>
-<li><p>solve</p></li>
-<li><p>discardMsg</p></li>
-<li><p>memoCurrentTime</p></li>
-<li><p>setDuration</p></li>
-<li><p>updateResource</p></li>
-<li><p>observeResource</p></li>
-<li><p>subscribeTo</p></li>
-<li><p>delegate</p></li>
-<li><p>payload</p></li>
-</ul>
-</section>
-<section id="whentime">
-<h3>whentime<a class="headerlink" href="#whentime" title="Permalink to this headline">¶</a></h3>
-</section>
-<section id="interrupt">
-<h3>interrupt<a class="headerlink" href="#interrupt" title="Permalink to this headline">¶</a></h3>
-</section>
 </section>
 </section>
 
@@ -427,7 +726,10 @@ it ‘injects’ into the CodedQActor the context specified by the model.</p></l
 <li><a class="reference internal" href="#qak-software-factory">Qak software factory</a><ul>
 <li><a class="reference internal" href="#qak-plugin">Qak plugin</a></li>
 <li><a class="reference internal" href="#qak-codice-e-risorse-generate">Qak codice e risorse generate</a></li>
+<li><a class="reference internal" href="#qak-factory">Qak factory</a></li>
+<li><a class="reference internal" href="#qak-infrastructure">Qak infrastructure</a></li>
 <li><a class="reference internal" href="#id1">Qak syntax</a><ul>
+<li><a class="reference internal" href="#dichiarazione-degli-attori">Dichiarazione degli attori</a></li>
 <li><a class="reference internal" href="#dichiarazione-dei-messaggi">Dichiarazione dei messaggi</a></li>
 <li><a class="reference internal" href="#operazioni-di-invio-messaggi">Operazioni di invio messaggi</a></li>
 </ul>
@@ -438,24 +740,35 @@ it ‘injects’ into the CodedQActor the context specified by the model.</p></l
 <li><a class="reference internal" href="#creazione-di-un-nuovo-progetto">Creazione di un nuovo progetto</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#qak-model-template">Qak model template</a></li>
-<li><a class="reference internal" href="#qak-infrastructure">Qak infrastructure</a><ul>
-<li><a class="reference internal" href="#variabili">Variabili</a></li>
-<li><a class="reference internal" href="#esecuzione">Esecuzione</a></li>
+<li><a class="reference internal" href="#qak-model-template">Qak model template</a><ul>
+<li><a class="reference internal" href="#dichiarazione-di-un-qactor">Dichiarazione di un QActor</a><ul>
+<li><a class="reference internal" href="#dichiarazione-delle-transizioni">Dichiarazione delle transizioni</a><ul>
+<li><a class="reference internal" href="#emptytransition">EmptyTransition</a></li>
+<li><a class="reference internal" href="#nonemptytransition">NonEmptyTransition</a></li>
+<li><a class="reference internal" href="#guardia">Guardia</a></li>
+<li><a class="reference internal" href="#whentime">whenTime</a></li>
+<li><a class="reference internal" href="#whentimevar-e-altre-forme">whenTimeVar e altre forme</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#wheninterrupt">whenInterrupt</a></li>
+<li><a class="reference internal" href="#demonottodo-qak">demonottodo.qak</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qak-in-codice-kotlin">Qak in codice kotlin</a><ul>
+<li><a class="reference internal" href="#demobetter-qak">demobetter.qak</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qak-primitive-disponibili">Qak primitive disponibili</a><ul>
+<li><a class="reference internal" href="#accesso-al-contenuto-dei-messaggi">Accesso al contenuto dei messaggi</a></li>
+<li><a class="reference internal" href="#id2">Shortcut</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#codedqactor">CodedQActor</a></li>
 <li><a class="reference internal" href="#externalqactor">ExternalQActor</a></li>
 <li><a class="reference internal" href="#streamedqactor">StreamedQActor</a></li>
-<li><a class="reference internal" href="#codedqactor">CodedQActor</a></li>
 <li><a class="reference internal" href="#attore-come-risorsa-coap">Attore come risorsa CoAP</a></li>
-<li><a class="reference internal" href="#qak-primitive-disponibili">Qak primitive disponibili</a><ul>
-<li><a class="reference internal" href="#emissione-di-eventi">Emissione di eventi</a></li>
-<li><a class="reference internal" href="#invio-di-messaggi">Invio di messaggi</a></li>
-<li><a class="reference internal" href="#utilita">Utilità</a></li>
-<li><a class="reference internal" href="#whentime">whentime</a></li>
-<li><a class="reference internal" href="#interrupt">interrupt</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>

@@ -20,8 +20,12 @@ with Diagram('basicrobot23Arch', show=False, outformat='png', graph_attr=graphat
   with Cluster('env'):
      sys = Custom('','./qakicons/system.png')
      with Cluster('ctxbasicrobot', graph_attr=nodeattr):
+          engager=Custom('engager','./qakicons/symActorSmall.png')
           basicrobot=Custom('basicrobot','./qakicons/symActorSmall.png')
-          eventobserver=Custom('eventobserver','./qakicons/symActorSmall.png')
-     sys >> Edge(color='red', style='dashed', xlabel='sonardata', fontcolor='red') >> eventobserver
-     sys >> Edge(color='red', style='dashed', xlabel='obstacle', fontcolor='red') >> eventobserver
+          basicrobotusage=Custom('basicrobotusage','./qakicons/symActorSmall.png')
+     sys >> Edge(color='red', style='dashed', xlabel='sonardata', fontcolor='red') >> engager
+     engager >> Edge(color='blue', style='solid', xlabel='engaged', fontcolor='blue') >> basicrobot
+     sys >> Edge(color='red', style='dashed', xlabel='obstacle', fontcolor='red') >> engager
+     basicrobotusage >> Edge(color='magenta', style='solid', xlabel='engage', fontcolor='magenta') >> basicrobot
+     basicrobotusage >> Edge(color='magenta', style='solid', xlabel='step', fontcolor='magenta') >> basicrobot
 diag

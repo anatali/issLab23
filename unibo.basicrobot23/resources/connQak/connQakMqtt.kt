@@ -64,9 +64,10 @@ class connQakMqtt( ) : connQakBase( ), MqttCallback{
  		publish(msg.toString(), mqtttopic)		
 	}
 	
-	override fun request(  msg: IApplMessage){
+	override fun request(  msg: IApplMessage) : String{
  		publish(msg.toString(), mqtttopic)
-		//The answer should be in ??? unibo/qak/clientmqtt		
+		//The answer should be in ??? unibo/qak/clientmqtt
+		return "unknown"
 	}
 	
 	override fun emit( msg: IApplMessage){

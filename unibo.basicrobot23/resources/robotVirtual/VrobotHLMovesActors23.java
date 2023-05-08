@@ -50,6 +50,7 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
         else if( cmd.equals("d") || cmd.equals("r")) turnRight(  );
         else if( cmd.equals("h")  ) halt(  );
         else if( cmd.equals("p") ) stepAsynch( 350 ); //TODO from file
+        //else if( cmd.equals("p") ) step( 350 );
     }
 
     @Override
@@ -112,10 +113,11 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
     public void update(String info) {
          try {
             elapsed = getDuration();
-            if( tracing )
-                CommUtils.outblack(
-                    "     VrobotHLMovesActors23 | update:" + info + " elapsed=" + elapsed +
-                            " " + Thread.currentThread().getName());
+            //if( tracing )
+                CommUtils.outcyan(
+                    "     VrobotHLMovesActors23 | update:" + info
+                            + " elapsed=" + elapsed + " doingStep=" + doingStep
+                            + " " + Thread.currentThread().getName());
 
              JSONObject jsonObj = CommUtils.parseForJson(info);
             if (jsonObj == null) {
@@ -131,13 +133,16 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
                 IApplMessage sonarEvent = CommUtils.buildEvent(
                         "vrhlsprt","sonardata","'"+"sonar(" +d + " )"+"'");
                 //Imviare un msg ad owner perchè generi un evento a favore di SonarObserverActor23
+
                 MsgUtil.emitLocalEvent(sonarEvent,owner,null);  //percepito da sonarobs
                 return;
             }
             if (jsonObj.get("collision") != null) {
+            /*
                 IApplMessage collisionEvent = CommUtils.buildEvent(
                         "vrhlsprt","obstacle","obstacle(unknown)" );
                 MsgUtil.emitLocalEvent(collisionEvent,owner,null);
+            */
                 return;
             }
             if (jsonObj.get("endmove") != null) {
@@ -147,7 +152,6 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
                 //CommUtils.outred("     VrobotHLMovesActors23 | update move=" + move);
                 //move moveForward-collision or moveBackward-collision
                 if (endmove) {
- 
                     if( ( move.equals("turnLeft") || move.equals("turnRight")) ){
                         activateWaiting("" + endmove);
                         return;
@@ -161,20 +165,23 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
                     }else{
                         activateWaiting("" + endmove);
                     }
+                    return;
                 } else if (move.contains("interrupted")) {/*
                     String wenvInfo = toApplMsg.replace("wenvinfo","stepfailed") //stepfailed
                             .replace("CONTENT", "stepfailed(" + elapsed + ", interrupt )");
                     IApplMessage msg = new ApplMessage(wenvInfo);
                     //TODO Actor23Utils.sendMsg(msg, owner);
-                    MsgUtil.sendMsg(msg,owner,null); //continuations
+                    MsgUtil.sendMsg(msg,owner,null);
                     */
+                    return;
                  }else if (move.contains("collision")) {
-                    String wenvInfo = toApplMsg.replace("wenvinfo","stepfailed") //stepfailed
+                    String wenvInfo = toApplMsg
+                            .replace("wenvinfo", "stepfailed") //stepfailed
                             .replace("CONTENT","stepfailed(" + elapsed + ", collision )");
                     IApplMessage msg = new ApplMessage(wenvInfo);
                     if( ! doingStep ) {
                         //TODO Actor23Utils.sendMsg(msg, owner);
-                        MsgUtil.sendMsg(msg, owner, null); //continuations }
+                        MsgUtil.sendMsg(msg, owner, null); //completion }
                     }
                     activateWaiting("false"  );
                     //CommUtils.outred("     VrobotHLMovesActors23 | update END move=" + move);
@@ -205,10 +212,12 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
     @Override
     public boolean step(long time) throws Exception {
         doingStep = true;
-        if( tracing ) CommUtils.outblack("     VrobotHLMovesActors23 | step time=" + time);
+        //if( tracing )
+            CommUtils.outgreen("     VrobotHLMovesActors23 | step time=" + time);
         String cmd    = VrobotMsgs.forwardcmd.replace("TIME", "" + time);
         String result = sendSynchToWenv(cmd);
-        if( tracing ) CommUtils.outblack("     VrobotHLMovesActors23 | step result="+result);
+        //if( tracing )
+            CommUtils.outgreen("     VrobotHLMovesActors23 | step result="+result);
         //result=true elapsed=... OPPURE collision elapsed=...
         doingStep = false;
         return result.contains("true");

@@ -35,7 +35,7 @@ lateinit var currQakConn  : connQakBase
 	
 	  abstract fun createConnection( )     
       abstract fun forward( msg : IApplMessage)
-      abstract fun request( msg : IApplMessage )
+      abstract fun request( msg : IApplMessage ) : String
       abstract fun emit( msg : IApplMessage )
 	
 }

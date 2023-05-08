@@ -18,16 +18,81 @@ Request step       : step(TIME)
 Reply stepdone     : stepdone(V)  
 Reply stepfailed   : stepfailed(DURATION, CAUSE)
 
+
 Event  sonardata   : sonar( DISTANCE ) 	    //for external components, not coap-observed
 Event obstacle     : obstacle(X) 
 
 
+Request engage        : engage(ARG)	
+Reply   engagedone    : engagedone(ARG)
+Reply   engagerefused : engagerefused(ARG)
+
+Dispatch disengage    : disengage(ARG)
+Dispatch engaged      : engaged(ARG)
+
+ 
 //Dispatch coapUpdate: coapUpdate(RESOURCE, VALUE)
 
 Context ctxbasicrobot ip [host="localhost" port=8020]  
 
 //CodedQActor datacleaner    context ctxbasicrobot className "rx.dataCleaner"
 //CodedQActor distancefilter context ctxbasicrobot className "rx.distanceFilter"
+
+QActor engager context ctxbasicrobot{
+[#     
+  var Owner = "unkknown"
+  var curConn : Interaction? = null 
+#]  	
+	State s0 initial { 	  
+		printCurrentMessage
+	}
+	Transition t0 whenRequest engage -> engageAccept
+	              whenEvent sonardata -> handleEvent
+	//whenRequest engage and [# Owner == "unknown" #] -> engageAccept  
+    			  //whenRequest engage and [# Owner != "unknown" #] -> engageRefuse  
+    			   
+    State handleEngage{
+    	printCurrentMessage
+    	replyTo engage with engagedone : engagedone(ok)    	
+    }
+    State engageRefuse{
+    	[# CommUtils.outmagenta("engagerefused since working for by $Owner" ) #]
+    	replyTo engage with engagerefused : engagerefused($Owner)
+    }
+    Goto s0  
+    
+    State engageAccept{	
+    	printCurrentMessage
+			onMsg( engage : engage(OWNER) ) {
+				[# if( currentMsg.conn != null ) curConn = currentMsg.conn					
+				   Owner  = payloadArg(0)
+				   if( curConn != null )
+				   CommUtils.outmagenta("engager | engaged by remote $Owner  on $curConn" )		
+				   else 		   
+				   CommUtils.outmagenta("engager | engaged by local $Owner = ${payloadArg(0)} " )	
+				#]
+				replyTo engage with engagedone : engagedone($Owner)
+				forward basicrobot    -m engaged : engaged($Owner)
+				 
+			}
+	} 
+	Goto s0
+	 
+	State handleEvent{
+		printCurrentMessage
+		[# CommUtils.outcyan("handleEvent $currentMsg") 
+		   //val Data = currentMsg.msgContent()
+		   val info = currentMsg.toString()
+		   if( curConn != null ) CommUtils.forwardOnInterconn(curConn,info) //invio l'evento al caller'
+		#]
+		//Invio l'evento a Owner (client caller ...) usando comunicazioni low-level => deve avere una connessione
+		//[# forward( "sonardata", currentMsg.msgContent(), Owner) #]
+		//replyTo engage with engagedone : engagedone( $Data )
+	}
+	
+	Transition t0 whenEvent sonardata -> handleEvent
+	              whenEvent obstacle  -> handleEvent
+}
  
 QActor basicrobot context ctxbasicrobot{
 [#  
@@ -37,10 +102,20 @@ QActor basicrobot context ctxbasicrobot{
   var RobotType     = "" 
   var CurrentMove   = "unkknown"
   var StepSynchRes  = false
-   
+  var Owner         = "unkknown"
+  
+  fun checkOwner() : Boolean {
+  	CommUtils.outblue("                    checkOwner $Owner ${currentMsg}")
+  	return ( currentMsg.msgContent().contains( Owner ) || currentMsg.isEvent() )
+  }
 #]   
- 	State s0 initial { 	       
- 		discardMsg Off  //WE want receive any msg
+ 	State ss0 initial { 	
+ 		printCurrentMessage       
+ 		discardMsg On  //In the intial phase ...
+ 		
+ 		delegate "engage" to engager
+ 		//delegate "engage" to eventobserver
+ 		
  		//[# unibo.comm22.utils.CommSystemConfig.tracing = false #]  //tracing at unibo.comm22 level
 		println("basicrobot | STARTS")	
 		//[# sysUtil.trace = true #]  //Trace the behavior of ActorBasic
@@ -51,26 +126,31 @@ QActor basicrobot context ctxbasicrobot{
  		run uniborobots.robotSupport.move( "d" )	//synch
         updateResource [# "basicrobot(started)" #]
  	} 
-	Goto work
-	
+	Transition t0 whenMsg engaged -> work
+ 	
 	State work{ 
+		printCurrentMessage
+		discardMsg Off //We want store the non-handled messages
+		onMsg( engaged : engaged(OWNER)){
+			[# Owner  = payloadArg(0) #]
+		}
 		println("basicrobot  | waiting .................. ")  
 	} 
-	Transition t1   whenRequest  step      -> doStep		
-					whenMsg     cmd       -> execcmd
-				  	whenMsg     end       -> endwork			  
+	Transition t0   whenRequest  step     -> doStep		
+					whenMsg     cmd   and [# checkOwner()  #]  -> execcmd
+				  	whenMsg     end   and [# checkOwner()  #]  -> endwork			  
 	
 	State execcmd{
 		printCurrentMessage
-		onMsg( cmd : cmd(MOVE) ){
-  			//activate the motors  
-  			[# CurrentMove = payloadArg(0) #]
-			run uniborobots.robotSupport.move( payloadArg(0 ) )
-			updateResource [# "moveactivated(${payloadArg(0)})" #]
-		}
+			onMsg( cmd : cmd(MOVE) ){
+	  			//activate the motors  
+	  			[# CurrentMove = payloadArg(0) #]
+				run uniborobots.robotSupport.move( payloadArg(0 ) )
+				updateResource [# "moveactivated(${payloadArg(0)})" #]
+			}
 	 }
 	 Goto work   
- 
+  
 	
    	State doStep{ 
  		printCurrentMessage  
@@ -83,10 +163,7 @@ QActor basicrobot context ctxbasicrobot{
         [# StepSynchRes = uniborobots.robotSupport.dostep( StepTime ) #]   
 	}  	
 		Goto stepok if [# StepSynchRes #] else stepKo 
-	//Transition t0 
-		//whenTimeVar StepTime  -> stepok  
-		//whenMsg stepdone   -> stepok
-     	//whenMsg stepfailed -> stepKo
+ 
      	 
 	State stepok{   
 		printCurrentMessage
@@ -112,30 +189,94 @@ QActor basicrobot context ctxbasicrobot{
     } 
 	Goto work
 
-
-
 					
 	State endwork{ 
 		updateResource [# "basicrobot(end)" #]	 		
  		terminate 1
 	}   
- 
+   
 }
-  
 
+QActor basicrobotusage context ctxbasicrobot{
+	State ss0 initial { 	
+		printCurrentMessage color black
+		delay 1000
+		request basicrobot -m engage : engage( basicrobotusage )
+	}
+	Transition t0 whenReply engagedone -> dowork
+	
+	State dowork{
+		//forward basicrobot -m cmd : cmd(p)
+		request basicrobot -m step : step(350)
+	}
+	Transition t0 whenReply stepdone   -> handleStepDone
+	              whenReply stepfailed -> handleStepFail
+	
+	State handleStepDone{
+		printCurrentMessage color black
+	}
+	Goto dowork
+	
+	State handleStepFail{
+		printCurrentMessage color black
+	}
+}
+/*
+ * Percepisce sonardata 
+ * Dovrebbe inviare un msg a Owner del basicrobot
+ */  
+/*  
 QActor eventobserver context ctxbasicrobot{
+	[# var Owner  = "unkknown" #]
 	State s0 initial{
-		
+		printCurrentMessage
+	}
+	Transition t0 whenRequest engage -> engageAccept
+	//whenRequest engage and [# Owner == "unknown" #] -> engageAccept  
+    			  //whenRequest engage and [# Owner != "unknown" #] -> engageRefuse  
+    			   
+    State handleEngage{
+    	printCurrentMessage
+    	replyTo engage with engagedone : engagedone(ok)    	
+    }
+    State engageRefuse{
+    	[# CommUtils.outmagenta("engagerefused since working for by $Owner" ) #]
+    	replyTo engage with engagerefused : engagerefused($Owner)
+    }
+    Goto s0
+    
+    State engageAccept{	
+    	printCurrentMessage
+			onMsg( engage : engage(OWNER) ) {
+				[# Owner  = payloadArg(0)
+				   CommUtils.outmagenta("engager | engaged by $Owner = ${payloadArg(0)}" )
+				#]
+			}
+	} 
+	Transition t0 whenEvent sonardata -> handleEvent
+	
+	
+	State work{
+		printCurrentMessage
+		onMsg( engaged : engaged(OWNER) ) {
+			[# Owner  = payloadArg(0)
+				 CommUtils.outmagenta("eventobserver | engaged with $Owner = ${payloadArg(0)}" )
+			#]	
+		}	
 	}
 	Transition t0 whenEvent sonardata -> handleEvent
-	              whenEvent obstacle  -> handleEvent
+	              //whenEvent obstacle  -> handleEvent
 	
 	State handleEvent{
 		printCurrentMessage
-		[# CommUtils.outcyan("handleEvent $currentMsg") #]
+		[# CommUtils.outcyan("handleEvent $currentMsg") 
+		var Data = currentMsg.msgContent()
+		#]
+		//Invio l'evento a Owner (client caller ...) usando comunicazioni low-level => deve avere una connessione
+		//[# forward( "sonardata", currentMsg.msgContent(), Owner) #]
+		replyTo engage with engagedone : engagedone( $Data )
 	}
 	Transition t0 whenEvent sonardata -> handleEvent
 	              whenEvent obstacle  -> handleEvent
-	
 }
-
+*/

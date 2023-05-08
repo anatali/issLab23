@@ -3,6 +3,8 @@ package it.unibo.basicrobot
 
 import it.unibo.kactor.*
 import alice.tuprolog.*
+import unibo.basicomm23.*
+import unibo.basicomm23.interfaces.*
 import unibo.basicomm23.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -12,7 +14,7 @@ import kotlinx.coroutines.runBlocking
 class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope ){
 
 	override fun getInitialState() : String{
-		return "s0"
+		return "ss0"
 	}
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		val interruptedStateTransitions = mutableListOf<Transition>()
@@ -23,12 +25,20 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 		  var RobotType     = "" 
 		  var CurrentMove   = "unkknown"
 		  var StepSynchRes  = false
-		   
+		  var Owner         = "unkknown"
+		  
+		  fun checkOwner() : Boolean {
+		  	CommUtils.outblue("                    checkOwner $Owner ${currentMsg}")
+		  	return ( currentMsg.msgContent().contains( Owner ) || currentMsg.isEvent() )
+		  }
 		return { //this:ActionBasciFsm
-				state("s0") { //this:State
+				state("ss0") { //this:State
 					action { //it:State
-						discardMessages = false
-						println("basicrobot | STARTS")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
+						discardMessages = true
+						delegate("engage", "engager") 
+						CommUtils.outblack("basicrobot | STARTS")
 						uniborobots.robotSupport.create(myself ,"basicrobotConfig.json" )
 						 RobotType = uniborobots.robotSupport.robotKind  
 						uniborobots.robotSupport.move( "a"  )
@@ -40,23 +50,33 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition( edgeName="goto",targetState="work", cond=doswitch() )
+					 transition(edgeName="t04",targetState="work",cond=whenDispatch("engaged"))
 				}	 
 				state("work") { //this:State
 					action { //it:State
-						println("basicrobot  | waiting .................. ")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
+						discardMessages = false
+						if( checkMsgContent( Term.createTerm("engaged(ARG)"), Term.createTerm("engaged(OWNER)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								 Owner  = payloadArg(0)  
+						}
+						CommUtils.outblack("basicrobot  | waiting .................. ")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t10",targetState="doStep",cond=whenRequest("step"))
-					transition(edgeName="t11",targetState="execcmd",cond=whenDispatch("cmd"))
-					transition(edgeName="t12",targetState="endwork",cond=whenDispatch("end"))
+					 transition(edgeName="t05",targetState="doStep",cond=whenRequest("step"))
+					transition(edgeName="t06",targetState="execcmd",cond=whenDispatchGuarded("cmd",{ checkOwner()   
+					}))
+					transition(edgeName="t07",targetState="endwork",cond=whenDispatchGuarded("end",{ checkOwner()   
+					}))
 				}	 
 				state("execcmd") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						if( checkMsgContent( Term.createTerm("cmd(MOVE)"), Term.createTerm("cmd(MOVE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 CurrentMove = payloadArg(0)  
@@ -73,7 +93,8 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("doStep") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						if( checkMsgContent( Term.createTerm("step(TIME)"), Term.createTerm("step(T)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 									StepTime     = payloadArg(0).toLong()  	 
@@ -81,7 +102,7 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 								)
 						}
 						StartTime = getCurrentTime()
-						println("basicrobot | doing doStep StepTime=$StepTime  ")
+						CommUtils.outblack("basicrobot | doing doStep StepTime=$StepTime  ")
 						 StepSynchRes = uniborobots.robotSupport.dostep( StepTime )  
 						//genTimer( actor, state )
 					}
@@ -95,12 +116,13 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("stepok") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						uniborobots.robotSupport.move( "h"  )
 						updateResourceRep( "stepDone($StepTime)"  
 						)
 						answer("step", "stepdone", "stepdone($StepTime)"   )  
-						println("basicrobot | stepDone reply done")
+						CommUtils.outblack("basicrobot | stepDone reply done")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -110,11 +132,12 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("stepKo") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						Duration = getDuration(StartTime)
 						uniborobots.robotSupport.move( "h"  )
 						 var TunedDuration   =  ((Duration * 0.80)).toLong()    
-						println("basicrobot | stepFail duration=$Duration  TunedDuration=$TunedDuration")
+						CommUtils.outblack("basicrobot | stepFail duration=$Duration  TunedDuration=$TunedDuration")
 						uniborobots.robotSupport.move( "s"  )
 						delay(TunedDuration)
 						uniborobots.robotSupport.move( "h"  )

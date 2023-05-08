@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>BasicRobot23 &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Appunti su tecnologie" href="AppuntiTecnologie.html" />
+    <link rel="prev" title="Appl1ActorsQak23" href="Appl1ActorsQak23.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Appl1ActorsQak23.html" title="Appl1ActorsQak23"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">BasicRobot23</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="basicrobot23">
+<h1>BasicRobot23<a class="headerlink" href="#basicrobot23" title="Permalink to this headline">¶</a></h1>
+<p>Obiettivo: introdurre un componente software che esegue comandi di spostamento di un DDR-robot
+in ‘modo indipendente dalla tecnologia’ con cui è realizzato del robot (virtuale o reale).</p>
+<section id="requisito-tipidirobot">
+<h2>requisito  <em>tipidirobot</em><a class="headerlink" href="#requisito-tipidirobot" title="Permalink to this headline">¶</a></h2>
+<p>Facciamo riferimento ad almeno tre diversi tipi di robot:</p>
+<ul class="simple">
+<li><p><span class="xref std std-ref">VirtualRobot</span></p></li>
+<li><p><a class="reference external" href="../../../../../it.unibo.qak21.basicrobot/userDocs/Mbot2020.html">Mbot</a> (realmbot)</p></li>
+<li><p><a class="reference external" href="../../../../../unibo.basicrobot22/userDocs/LabNanoRobot.html">NanoRobot</a> (realnano)</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/basicrobotComponent.PNG"><img alt="_images/basicrobotComponent.PNG" class="align-center" src="_images/basicrobotComponent.PNG" style="width: 60%;" /></a>
+<section id="una-prima-architettura">
+<h3>Una prima architettura<a class="headerlink" href="#una-prima-architettura" title="Permalink to this headline">¶</a></h3>
+<p>Si delinea una architettura come quella raffiguata:</p>
+<a class="reference internal image-reference" href="_images/basicrobotproject.PNG"><img alt="_images/basicrobotproject.PNG" class="align-center" src="_images/basicrobotproject.PNG" style="width: 50%;" /></a>
+</section>
+<section id="basicrobot23-configurazione">
+<h3>BasicRobot23: configurazione<a class="headerlink" href="#basicrobot23-configurazione" title="Permalink to this headline">¶</a></h3>
+<p>La utility class <code class="docutils literal notranslate"><span class="pre">unibo.robot.robotSupport.kt</span></code> si occupa dei dettagli tecnologici specifici di ogni
+<a class="reference internal" href="#requisito-tipidirobot"><span class="std std-ref">tipo di robot</span></a> utilizzando un supporto diverso per ciascun tipo.</p>
+<section id="basicrobot23-supporti">
+<h4>BasicRobot23: supporti<a class="headerlink" href="#basicrobot23-supporti" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/wenvscene1.PNG"><img alt="_images/wenvscene1.PNG" class="align-center" src="_images/wenvscene1.PNG" style="width: 90%;" /></a>
+</td>
+<td><p>per il VirtualRobot: <a class="reference external" href="../../../../../unibo.basicrobot22/resources/robotVirtual/virtualrobotSupport2021.kt">virtualrobotSupport</a></p></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal image-reference" href="_images/robotsUnibo.jpg"><img alt="_images/robotsUnibo.jpg" class="align-center" src="_images/robotsUnibo.jpg" style="width: 90%;" /></a>
+</td>
+<td><p>per il  NanoRobot: <a class="reference external" href="../../../../../unibo.basicrobot22/resources/robotNano/nanoSupport.kt">nanoSupport</a>, <a class="reference external" href="../../../../../unibo.basicrobot22/resources/robotNano/Motors.c">motors</a></p></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/mbot.PNG"><img alt="_images/mbot.PNG" class="align-center" src="_images/mbot.PNG" style="width: 90%;" /></a>
+</td>
+<td><p>per Mbot: <a class="reference external" href="../../../../../it.unibo.qak21.basicrobot/userDocs/Mbot2020.html">mbotSupport</a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="file-di-configurazione">
+<h4>File di configurazione<a class="headerlink" href="#file-di-configurazione" title="Permalink to this headline">¶</a></h4>
+<p>Il file di configurazione  è impostato su frasi JSon, come ad esempio il seguente
+<code class="docutils literal notranslate"><span class="pre">basicrobotConfig.json</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;virtual&quot;</span><span class="p">,</span><span class="s2">&quot;port&quot;</span><span class="p">:</span><span class="s2">&quot;8090&quot;</span><span class="p">,</span><span class="s2">&quot;ipvirtualrobot&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;realnano&quot;</span><span class="p">,</span><span class="s2">&quot;port&quot;</span><span class="p">:</span><span class="s2">&quot;8020&quot;</span><span class="p">,</span><span class="s2">&quot;ipvirtualrobot&quot;</span><span class="p">:</span><span class="s2">&quot;dontcare&quot;</span><span class="p">}</span>
+<span class="o">//</span><span class="n">Arduino</span> <span class="n">connesso</span> <span class="n">al</span> <span class="n">Raspberry</span><span class="p">:</span>
+<span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;realmbot&quot;</span><span class="p">,</span> <span class="s2">&quot;port&quot;</span><span class="p">:</span><span class="s2">&quot;/dev/ttyUSB0&quot;</span><span class="p">,</span> <span class="s2">&quot;ipvirtualrobot&quot;</span><span class="p">:</span><span class="s2">&quot;-&quot;</span><span class="p">}</span>
+<span class="o">//</span><span class="n">Arduino</span> <span class="n">connesso</span> <span class="n">al</span> <span class="n">PC</span><span class="p">:</span>
+<span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;realmbot&quot;</span><span class="p">,</span><span class="s2">&quot;port&quot;</span><span class="p">:</span><span class="s2">&quot;COM6&quot;</span><span class="p">,</span><span class="s2">&quot;ipvirtualrobot&quot;</span><span class="p">:</span><span class="s2">&quot;dontcare&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">BasicRobot23</a><ul>
+<li><a class="reference internal" href="#requisito-tipidirobot">requisito  <em>tipidirobot</em></a><ul>
+<li><a class="reference internal" href="#una-prima-architettura">Una prima architettura</a></li>
+<li><a class="reference internal" href="#basicrobot23-configurazione">BasicRobot23: configurazione</a><ul>
+<li><a class="reference internal" href="#basicrobot23-supporti">BasicRobot23: supporti</a></li>
+<li><a class="reference internal" href="#file-di-configurazione">File di configurazione</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Appl1ActorsQak23.html"
+                          title="previous chapter">Appl1ActorsQak23</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="AppuntiTecnologie.html"
+                          title="next chapter">Appunti su tecnologie</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/BasicRobot23.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Appl1ActorsQak23.html" title="Appl1ActorsQak23"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">BasicRobot23</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

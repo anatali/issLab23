@@ -7,9 +7,10 @@ import connQak.connQakBase
 import consolegui.ButtonAsGui
 import it.unibo.kactor.MsgUtil
 import consolegui.Utils
- 
- 
- 
+import unibo.basicomm23.msg.ApplMessage
+import unibo.basicomm23.utils.CommUtils
+
+
 class consoleGuiSimple( ) : IObserver {
 val stepTime = 350
 lateinit var connQakSupport : connQakBase
@@ -34,8 +35,19 @@ val buttonLabels = arrayOf( "w", "s", "l", "r",  "p", "h")
  	    concreteButton.addObserver( this )
 		connQakSupport = connQakBase.create( connType )
 		connQakSupport.createConnection()
+		
+		engageTheRobot()
 	}
 	
+	fun engageTheRobot() {
+		val msg = MsgUtil.buildRequest("console", "engage", "engage(console)", connQak.qakdestination )
+	    val answer = connQakSupport.request( msg )
+	    val m = ApplMessage(answer)
+		CommUtils.outred("console answer :  $m");
+		if( m.msgId() == "engagerefused") {
+			CommUtils.outred("WARNING: console not able to work");
+		}
+	}
 	override fun update(o: Observable, arg: Any) {
 		var move = arg as String
  		  if( move == "p" ){

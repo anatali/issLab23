@@ -1,0 +1,15 @@
+  System demobetter
+
+  Context ctxdemobetter ip [host="localhost" port=8045]
+
+  QActor demobetter context ctxdemobetter{
+  	[# var n = 7  #] //Global variable
+    State s0 initial { 	  
+    	printCurrentMessage
+    	[#  
+    		ut.outMsg( "fibo($n)=" + ut.fibo(n))
+    	#]
+    	//run utils.basicOps.outMsg(   "hello" )
+     
+    }   
+  }  

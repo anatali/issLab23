@@ -1,0 +1,92 @@
+//https://dl.bintray.com/jetbrains/kotlin/eclipse-plugin/0.8.19/
+
+System qakdemo23    
+//mqttBroker "localhost" : 1883 eventTopic "demo0/events"
+//mqttBroker "broker.hivemq.com" : 1883 eventTopic "demo0/events"
+   
+Dispatch msg1 : msg1(ARG)
+Dispatch msg2 : msg2(ARG) 
+Event alarm   : alarm( KIND )    
+ 
+Context ctxdemo0 ip [host="localhost" port=8095]
+  
+  
+QActor demo0 context ctxdemo0{
+	State s0 initial { 	    
+		printCurrentMessage color black
+		discardMsg Off
+		//[# sysUtil.logMsgs=true #]
+ 	}     
+ 	Goto s1  
+ 	
+ 	State s1{
+  		printCurrentMessage color blue
+ 	}
+ 	Transition t0 whenMsg msg1 -> s2
+ 				  whenMsg msg2 -> s3 
+
+ 	State s2{ 
+ 		printCurrentMessage color blue
+ 		onMsg( msg1:msg1(ARG) ){
+ 			println("demo0 in s2 | msg1:msg1(${payloadArg(0)})") color blue
+ 			delay 1000  
+ 		}
+   	}   
+ 	Transition t0 whenMsg msg2 -> s3
+
+ 	State s3{ 
+ 		printCurrentMessage color blue	//msg is received but not elaborated
+ 		onMsg( msg2:msg2(1) ){ 
+ 			println("demo0 in s3 | msg2:msg2(${payloadArg(0)})") color blue
+ 		} 
+   	}
+    Goto s1      
+ 
+}    
+   
+QActor perceiver context ctxdemo0{
+	State s0 initial { 	
+		printCurrentMessage color black
+	}
+	Transition t0 whenEvent alarm -> s1
+	
+	State s1{
+		printCurrentMessage color magenta
+	}
+	Transition t0 whenTime 100 -> s2  
+				  whenEvent alarm -> s1
+	
+	State s2{
+		printCurrentMessage color magenta
+		println("perceiver BYE") color magenta
+	}
+	
+}  
+ 
+      
+QActor sender context ctxdemo0{
+	[# var emitEvents = true   
+	   var DT         = 1000L; 
+	#]
+	State s0 initial { 	
+		printCurrentMessage color black
+		println( "sender sends ... ") color green
+ 		 forward demo0 -m msg1 : msg1(1)
+		 delay 300
+		 forward demo0 -m msg1 : msg1(2)
+	} 
+	Transition t0 whenTimeVar  DT -> sendothermsgs
+	
+	State sendothermsgs{
+		println( "sender sends again ... ") color green
+		 forward demo0 -m msg2 : msg2(1)		  
+//		 delay 300
+//		 forward demo0 -m msg2 : msg2(2)		  
+	 
+		 if [# emitEvents #] {emit alarm : alarm( fire )}
+//		 delay 1200 
+//		 emit alarm : alarm( tsunami )
+//		 delay 1000		
+	}
+}
+   

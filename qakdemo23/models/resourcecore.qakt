@@ -1,0 +1,39 @@
+System  resourcecore
+/*
+ * WARNING: use just one qak model in the project  
+ */
+Request cmd 		: cmd(X) // X =  w | s | a | d | h
+Reply   replytocmd  : replytocmd(X)
+Event    alarm      : alarm(V)
+
+Context ctxresourcecore ip [host="localhost" port=8045]
+ 
+  QActor resourcecore context ctxresourcecore{
+  	[# var n = 7  #] //Global variable
+    State s0 initial { 	  
+    	println("resourcecore READY")     
+    }   
+	Transition t0  
+		whenRequest cmd   -> handleRequestCmd
+		whenEvent   alarm -> handleAlarm
+
+State handleAlarm{
+		printCurrentMessage
+		//updateResource [# resourceInfo() #]
+ 	}
+	Transition t0  
+ 		whenRequest cmd -> handleRequestCmd
+		whenEvent   alarm -> handleAlarm
+	
+	
+	State handleRequestCmd{
+		printCurrentMessage
+		//updateResource [# resourceInfo() #]
+		onMsg( cmd : cmd(X) ){
+			[# val ANSW = "answerFor_${payloadArg(0)}" #]
+			replyTo cmd with replytocmd : replytocmd( $ANSW ) 
+		}		 		
+	}
+	Goto s0	
+
+  }   

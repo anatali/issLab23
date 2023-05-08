@@ -1,0 +1,47 @@
+System /*-msglog*/ qakdemo23
+
+Dispatch start       : start(V)
+Event    sonarRobot  : sonar(V)
+Event    obstacle    : obstacle(V) 
+  
+Context ctxstreamsdemo ip [host="localhost" port=8045]
+ 
+CodedQActor sonarsimulator context ctxstreamsdemo className "rx.sonarSimulator"
+CodedQActor datalogger     context ctxstreamsdemo className "rx.dataLogger"
+CodedQActor datacleaner    context ctxstreamsdemo className "rx.dataCleaner"
+CodedQActor distancefilter context ctxstreamsdemo className "rx.distanceFilter"
+  
+QActor qasink context ctxstreamsdemo{ 
+[#     
+   lateinit var firstActorInPipe : ActorBasic 
+#]	
+	State s0 initial{
+		//CREATE THE PIPE
+		[#  firstActorInPipe = sysUtil.getActor("sonarsimulator")!!
+			firstActorInPipe.
+			subscribeLocalActor("datalogger").
+			subscribeLocalActor("datacleaner").
+			//subscribeLocalActor("qasink"). 	//(1) QUITE INTERESTING  ...
+			subscribeLocalActor("distancefilter").
+			subscribeLocalActor("qasink") 
+		#] 
+		//ACTIVATE THE DATA SOURCE (simulator)
+		forward sonarsimulator -m start : start(qasource)
+	}
+	Goto work
+	
+	State work{}
+	Transition t0 whenEvent sonarRobot -> handleSonarData
+				  whenEvent obstacle   -> handleObstacle
+				  
+	State handleSonarData {	//called if we remove comment in (1)	
+		printCurrentMessage
+		[#  emitLocalStreamEvent( currentMsg )  #]  //propagates
+	}
+	Goto work
+	
+	State handleObstacle {
+		printCurrentMessage
+	}
+	Goto work
+}

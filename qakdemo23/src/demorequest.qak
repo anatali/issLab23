@@ -1,0 +1,50 @@
+System  /* -trace */ -msglog qakdemo23 
+//mqttBroker "broker.hivemq.com" : 1883
+
+Request r1 : r1(X) 
+Reply   a1 : a1(X)    //answer
+
+Context ctxdemoreq ip [host="localhost" port=8010]    
+ 
+QActor caller context ctxdemoreq { 
+	State init initial { 
+		//[# sysUtil.logMsgs = true #]
+		println("caller starts") color blue 
+		request called -m r1 : r1(hello(world))
+ 	}
+	Goto work    
+	  
+	State work{
+       //printCurrentMessage color blue
+	}
+	Transition t0 whenReply   a1 -> handleReply
+	
+	State handleReply{
+		printCurrentMessage color blue
+ 		onMsg( a1:a1(ARG) ){
+ 			println("answer=${payloadArg(0)}") color blue
+ 			delay 1000  
+ 		} 	
+ 	}
+	Goto work	
+} 
+
+
+ 
+QActor called context ctxdemoreq {
+ 
+	State init initial {
+ 		println("called waits ...") color green
+	}
+	Transition t0  
+		whenRequest r1 -> handleRequest
+ 
+	State handleRequest{  
+		printCurrentMessage	color green	 
+ 		onMsg( r1 : r1(X) ){  
+ 			[# val Answer = "${getName()}_${currentMsg.msgSender()}_${payloadArg(0)}" #]
+ 			replyTo r1 with a1 : a1( $Answer )  
+ 		} 
+	} 
+	Goto init   
+}   

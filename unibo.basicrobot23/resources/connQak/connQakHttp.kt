@@ -30,7 +30,8 @@ lateinit var hostAddr : String
  		 	
 	}
 	
-	override fun request(  msg: IApplMessage){
+	override fun request(  msg: IApplMessage) : String{
+		return "unknown"
  	}
 	
 	override fun emit( msg: IApplMessage ){

@@ -20,11 +20,12 @@ class connQakTcp(  ) : connQakBase( ){
  		conn.forward( msg.toString()  )
 	}
 	
-	override fun request( msg: IApplMessage ){
+	override fun request( msg: IApplMessage ) : String {
  		conn.forward( msg.toString()  )
 		//Acquire the answer	
 		val answer = conn.receiveMsg()
 		CommUtils.outmagenta("connQakTcp | answer= $answer")
+		return answer
 	}
 	
 	override fun emit( msg: IApplMessage ){

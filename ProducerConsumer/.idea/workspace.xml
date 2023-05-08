@@ -5,6 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="99989e2c-357a-4783-9ad9-184bdd8e35cc" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/Api_appl1qak.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/Api_appl1qak.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/build2022.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/build2022.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/appl/Appl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/appl/Appl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/console/Console.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/console/Console.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/consoleobs/Consoleobs.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/consoleobs/Consoleobs.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/ctxall/MainCtxall.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/ctxall/MainCtxall.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/obsforpath/Obsforpath.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/obsforpath/Obsforpath.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/sonarobs/Sonarobs.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Appl1ActorsQak23/src/it/unibo/sonarobs/Sonarobs.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../unibolibs/unibo.qakactor23-3.5.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../unibolibs/unibo.qakactor23-3.5.jar" afterDir="false" />
     </list>
@@ -38,7 +46,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../issLab2023/unibo.basicrobot23" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Appl1ActorsQak23" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.15174508" />

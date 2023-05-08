@@ -19,7 +19,8 @@ class Console ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						 gui.GuiUtils.createGui(myself)  
 						//genTimer( actor, state )
 					}
@@ -40,7 +41,8 @@ class Console ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				}	 
 				state("handleGuicmd") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						if( checkMsgContent( Term.createTerm("guicmd(ARG)"), Term.createTerm("guicmd(start)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 CommUtils.outmagenta("console start")  
@@ -75,10 +77,11 @@ class Console ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				}	 
 				state("handlepathanswer") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						if( checkMsgContent( Term.createTerm("pathamswer(ARG)"), Term.createTerm("pathamswer(A)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								println("PATH= ${payloadArg(0)}")
+								CommUtils.outblack("PATH= ${payloadArg(0)}")
 						}
 						//genTimer( actor, state )
 					}

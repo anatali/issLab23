@@ -30,9 +30,10 @@ class Consoleobs ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("handlestop") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						if(  Stopped  
-						 ){println("consoleobs: already stopped")
+						 ){CommUtils.outblack("consoleobs: already stopped")
 						}
 						else
 						 { Stopped = true  
@@ -52,7 +53,7 @@ class Consoleobs ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						 Stopped = false  
 						}
 						else
-						 {println("consoleobs: resume ignored")
+						 {CommUtils.outblack("consoleobs: resume ignored")
 						 }
 						//genTimer( actor, state )
 					}

@@ -20,7 +20,8 @@ class Obsforpath ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						subscribeToLocalActor("appl") 
 						//genTimer( actor, state )
 					}
@@ -31,7 +32,7 @@ class Obsforpath ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("waitmsgs") { //this:State
 					action { //it:State
-						println("obsforpath waiting ...")
+						CommUtils.outblack("obsforpath waiting ...")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -43,11 +44,12 @@ class Obsforpath ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("handleinfo") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						if( checkMsgContent( Term.createTerm("info(ARG)"), Term.createTerm("info(ARG)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 val move = payloadArg(0)  
-								println("obsforpath handleinfo ${payloadArg(0)} ")
+								CommUtils.outblack("obsforpath handleinfo ${payloadArg(0)} ")
 								 path.updatePath(  payloadArg(0)  )  
 						}
 						//genTimer( actor, state )
@@ -59,7 +61,8 @@ class Obsforpath ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("handleIsrunning") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						  val r = utils.Appl1StateObject.getIsRunning( )  
 						answer("isrunning", "runninganswer", "runninganswer(true)"   )  
 						//genTimer( actor, state )
@@ -72,7 +75,7 @@ class Obsforpath ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				state("handlegetpath") { //this:State
 					action { //it:State
 						 var Curpath = path.getCurrentPath()  
-						println("obsforpath | current path=$Curpath")
+						CommUtils.outblack("obsforpath | current path=$Curpath")
 						answer("getpath", "pathamswer", "pathamswer($Curpath)"   )  
 						//genTimer( actor, state )
 					}

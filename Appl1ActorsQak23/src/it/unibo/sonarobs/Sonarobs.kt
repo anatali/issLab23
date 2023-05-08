@@ -19,7 +19,8 @@ class Sonarobs ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -29,7 +30,8 @@ class Sonarobs ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 				}	 
 				state("handleSonarData") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						forward("stopcmd", "stop(0)" ,"appl" ) 
 						delay(2000) 
 						forward("resumecmd", "resume(0)" ,"appl" ) 
@@ -42,7 +44,8 @@ class Sonarobs ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 				}	 
 				state("ignoreSonarData") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

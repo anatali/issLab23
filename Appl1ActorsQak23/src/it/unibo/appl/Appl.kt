@@ -19,7 +19,7 @@ class Appl ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						println("&&&  appl ACTIVE ...")
+						CommUtils.outblack("&&&  appl ACTIVE ...")
 						  //unibo.basicomm23.utils.Connection.trace=true
 									utils.Appl1Startup.setConfigFilePath("./robotConfig.json");
 									CommUtils.outblue(name + " | init $currentMsg"   ) 
@@ -37,7 +37,7 @@ class Appl ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 				state("startboundary") { //this:State
 					action { //it:State
 						  utils.Appl1Startup.initappl(myself, currentMsg)  
-						println("startboundary  ")
+						CommUtils.outblack("startboundary  ")
 						  utils.Appl1Startup.doStepAsynch()  
 						//genTimer( actor, state )
 					}
@@ -67,7 +67,7 @@ class Appl ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 				}	 
 				state("stepko") { //this:State
 					action { //it:State
-						println("stepko ")
+						CommUtils.outblack("stepko ")
 						updateResourceRep( "robot-collision"  
 						)
 						emitLocalStreamEvent("info", "info(robotcollision)" ) 
@@ -95,7 +95,7 @@ class Appl ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 				}	 
 				state("stopped") { //this:State
 					action { //it:State
-						println("appl stopped ")
+						CommUtils.outblack("appl stopped ")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -105,7 +105,7 @@ class Appl ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 				}	 
 				state("resumed") { //this:State
 					action { //it:State
-						println("appl resumed ")
+						CommUtils.outblack("appl resumed ")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -116,7 +116,8 @@ class Appl ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 				}	 
 				state("consumePreviousStart") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -130,7 +131,7 @@ class Appl ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 				state("waittorestart") { //this:State
 					action { //it:State
 						  utils.Appl1StateObject.reset() 
-						println("waittorestart")
+						CommUtils.outblack("waittorestart")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -142,7 +143,7 @@ class Appl ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 					action { //it:State
 						  utils.Appl1StateObject.setIsRunning(true) 
 						         utils.Appl1Startup.doStepAsynch()  
-						println("restart")
+						CommUtils.outblack("restart")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

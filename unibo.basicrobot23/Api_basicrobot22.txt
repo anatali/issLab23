@@ -1,4 +1,0 @@
-{"actor":"envsonarhandler", "msgType":"eventtransition", "sender":"sys", "msgId":"sonar"}
-{"actor":"basicrobot", "msgType":"dispatch", "sender":"pathexec", "msgId":"cmd"}
-{"actor":"basicrobot", "msgType":"request", "sender":"pathexec", "msgId":"step"}
-{"actor":"pathexec", "msgType":"eventtransition", "sender":"sys", "msgId":"alarm"}

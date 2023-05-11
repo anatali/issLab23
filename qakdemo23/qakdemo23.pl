@@ -1,8 +1,8 @@
 %====================================================================================
 % qakdemo23 description   
 %====================================================================================
-context(ctxcallers, "localhost",  "TCP", "8072").
-context(ctxcalled, "localhost",  "TCP", "8074").
- qactor( caller, ctxcallers, "it.unibo.caller.Caller").
-  qactor( called, ctxcalled, "it.unibo.called.Called").
-msglogging.
+context(ctxdemocodedqactor, "localhost",  "TCP", "8065").
+ qactor( w1, ctxdemocodedqactor, "codedActor.workactor").
+  qactor( w2, ctxdemocodedqactor, "codedActor.workactor").
+  qactor( w3, ctxdemocodedqactor, "codedActor.workactor").
+  qactor( datahandler, ctxdemocodedqactor, "it.unibo.datahandler.Datahandler").

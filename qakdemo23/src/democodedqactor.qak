@@ -1,0 +1,47 @@
+System /*-trace*/ qakdemo23
+Dispatch start   : start( ARG )
+Event alarm      : alarm( DATA )   
+//Event sonarrobot : sonar( DATA ) 
+ 
+Context ctxdemocodedqactor ip [host="localhost" port=8065]
+
+  //CodedQActor sonargen  context ctxdemocodedqactor className "codedActor.sonarDataGen"
+  CodedQActor w1  context ctxdemocodedqactor className "codedActor.workactor"
+  CodedQActor w2  context ctxdemocodedqactor className "codedActor.workactor"
+  CodedQActor w3  context ctxdemocodedqactor className "codedActor.workactor"
+  
+  QActor datahandler context ctxdemocodedqactor{
+  	[# var StartTime = 0L #]
+     State s0 initial { 	  
+ 		printCurrentMessage 
+ 		//[# val cpus = Runtime.getRuntime().availableProcessors() #]
+ 		//println("cpus= $cpus") color red
+ 		run ut.showcNumCpus()
+ 		//machineExec "Runtime.getRuntime().availableProcessors()"
+ 		memoCurrentTime StartTime 		 
+ 		//forward sonargen -m start : start(do)
+ 		forward w1 -m start : start(do)
+ 		forward w2 -m start : start(do)
+ 		forward w3 -m start : start(do)
+    }   
+    Transition t0 whenEvent alarm -> handleAlarm
+     
+          
+    State handleAlarm { 
+    	printCurrentMessage color blue
+    	[# var Elapsed = 0L #]
+    	setDuration Elapsed from StartTime
+    	memoCurrentTime StartTime
+    	println("$name alarm after $Elapsed") color cyan
+    }
+    Transition t0 whenTime 2500 -> end  
+    			  whenEvent alarm -> handleAlarm
+    			 
+    State end{
+    	[# var Elapsed = 0L #]
+    	setDuration Elapsed from StartTime
+    	println("$name ENDS duration=$Elapsed") color blue
+    } 
+  }  
+  
+  

@@ -14,7 +14,7 @@ workactor
 -------------------------------------------------------------------------------------------------
  */
 
-class workactor ( name : String ) : ActorBasic( name, confined=true ) {
+class workactor ( name : String ) : ActorBasic( name, confined=false ) {
  	
  	var i = 0
      

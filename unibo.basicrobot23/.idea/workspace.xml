@@ -5,45 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c3c3110-410d-4cbf-9548-c0723381ed26" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/mapemptyroom23.qakt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/it/unibo/planexec/Planexec.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../unibolibs/unibo.planner23-1.0.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../iss23Material/LectureBologna2023.html" beforeDir="false" afterPath="$PROJECT_DIR$/../iss23Material/LectureBologna2023.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../qakdemo23/src/democodedqactor.qak" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../qakdemo23/src/it/unibo/ctxdemocodedqactor/MainCtxdemocodedqactor.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../qakdemo23/src/it/unibo/datahandler/Datahandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/.gradle/6.7.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/.gradle/6.7.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/.gradle/6.7.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/.gradle/6.7.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/.gradle/6.7.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/.gradle/6.7.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/.gradle/6.7.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/.gradle/6.7.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/.gradle/6.7.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/.gradle/6.7.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/.gradle/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../qakdemo23/Api_qakdemo23.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/Api_qakdemo23.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../qakdemo23/Arch_qakdemo23.py" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/Arch_qakdemo23.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../qakdemo23/build2022.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/build2022.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/build2022.gradle" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../qakdemo23/qakdemo23.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/qakdemo23.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../qakdemo23/src/it/unibo/called/Called.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/src/it/unibo/called/Called.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../qakdemo23/src/it/unibo/caller/Caller.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/src/it/unibo/caller/Caller.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/unibo.basicrobot23.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/unibo.basicrobot23.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/qakdemo23arch.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/resources/codedActor/workactor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/resources/codedActor/workactor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/src/demorequest.qak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/src/it/unibo/called/Called.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/src/it/unibo/caller/Caller.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/src/it/unibo/ctxcalled/MainCtxcalled.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/src/it/unibo/ctxcallers/MainCtxcallers.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/src/it/unibo/ctxdemoreq/MainCtxdemoreq.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api_basicrobot23.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Api_basicrobot23.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Arch_basicrobot23.py" beforeDir="false" afterPath="$PROJECT_DIR$/Arch_basicrobot23.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basicrobot23.pl" beforeDir="false" afterPath="$PROJECT_DIR$/basicrobot23.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build2022.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build2022.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/qakrestappl_Transitions.txt" beforeDir="false" afterPath="$PROJECT_DIR$/qakrestappl_Transitions.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotVirtual/VrobotHLMovesActors23.java" beforeDir="false" afterPath="$PROJECT_DIR$/resources/robotVirtual/VrobotHLMovesActors23.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotVirtual/VrobotMsgs.java" beforeDir="false" afterPath="$PROJECT_DIR$/resources/robotVirtual/VrobotMsgs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/uniborobots/robotSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/uniborobots/robotSupport.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basicrobot.qak" beforeDir="false" afterPath="$PROJECT_DIR$/src/basicrobot.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basicrobot2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/it/unibo/basicrobot/Basicrobot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/basicrobot/Basicrobot.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/it/unibo/basicrobotusage/Basicrobotusage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/basicrobotusage/Basicrobotusage.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/it/unibo/ctxbasicrobot/MainCtxbasicrobot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/ctxbasicrobot/MainCtxbasicrobot.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/it/unibo/engager/Engager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/engager/Engager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/it/unibo/eventobserver/Eventobserver.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibolibs/unibo.planner22-1.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibolibs/unibo.qakactor23-3.5.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../unibolibs/unibo.qakactor23-3.5.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -233,8 +221,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ConsoleGuiSimpleKt" />
         <item itemvalue="Application.MainCtxbasicrobotKt (2)" />
+        <item itemvalue="Application.ConsoleGuiSimpleKt" />
       </list>
     </recent_temporary>
   </component>

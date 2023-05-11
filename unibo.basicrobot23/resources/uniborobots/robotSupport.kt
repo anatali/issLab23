@@ -70,7 +70,7 @@ object robotSupport{
 
 
 	fun move( cmd : String ){ //cmd = w | a | s | d | h
- 		//println("robotSupport move cmd=$cmd robotKind=$robotKind" ) 
+ 		//CommUtils.outred("robotSupport move cmd=$cmd robotKind=$robotKind / $vr"  )
 		when( robotKind ){
 			//"mockrobot"  -> { robotMock.mockrobotSupport.move( cmd ) 					  }
 			"virtual"    -> { vr.move(  cmd ) 	  }
@@ -80,10 +80,10 @@ object robotSupport{
 		}		
 	}
 
-	fun dostep( time : Long ) : Boolean{ //cmd = w | a | s | d | h
+	fun dostep( time : Long, synch : Boolean = true ) : Boolean{ //cmd = w | a | s | d | h
 		//println("robotSupport move cmd=$cmd robotKind=$robotKind" )
 		when( robotKind ){
-			"virtual"    -> { return vr.step(  time  ) 	  } //synch
+			"virtual"    -> {  return vr.step(  time  ) 	  } //synch
 			//"realnano"   -> { return false	}   //TODO
 			//"realmbot"   -> { return false 	}	//TODO
 			else         -> {

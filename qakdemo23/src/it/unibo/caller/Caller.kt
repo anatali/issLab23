@@ -3,6 +3,8 @@ package it.unibo.caller
 
 import it.unibo.kactor.*
 import alice.tuprolog.*
+import unibo.basicomm23.*
+import unibo.basicomm23.interfaces.*
 import unibo.basicomm23.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay

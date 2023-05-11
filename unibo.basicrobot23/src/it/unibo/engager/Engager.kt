@@ -24,19 +24,22 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
-						 	   
+						if(  ! currentMsg.isEvent()  
+						 ){CommUtils.outblue("$name waiting ..")
+						}
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
 					 transition(edgeName="t00",targetState="engageAccept",cond=whenRequest("engage"))
-					transition(edgeName="t01",targetState="handleEvent",cond=whenEvent("sonardata"))
+					transition(edgeName="t01",targetState="disengageRobot",cond=whenDispatch("disengage"))
+					transition(edgeName="t02",targetState="handleEvent",cond=whenEvent("sonardata"))
+					transition(edgeName="t03",targetState="handleEvent",cond=whenEvent("obstacle"))
 				}	 
 				state("handleEngage") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						CommUtils.outblue("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
 						answer("engage", "engagedone", "engagedone(ok)"   )  
 						//genTimer( actor, state )
@@ -45,9 +48,23 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 					sysaction { //it:State
 					}	 	 
 				}	 
+				state("disengageRobot") { //this:State
+					action { //it:State
+						CommUtils.outblue("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
+						 Owner  = "unkknown"  
+						forward("disengaged", "disengaged($Owner)" ,"basicrobot" ) 
+						emitLocalStreamEvent("alarm", "alarm(disengaged)" ) 
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
+				}	 
 				state("engageRefuse") { //this:State
 					action { //it:State
-						 CommUtils.outmagenta("engagerefused since working for by $Owner" )  
+						CommUtils.outblue("$name engage refused since already working for $Owner")
 						answer("engage", "engagerefused", "engagerefused($Owner)"   )  
 						//genTimer( actor, state )
 					}
@@ -58,7 +75,7 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				}	 
 				state("engageAccept") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						CommUtils.outblue("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
 						if( checkMsgContent( Term.createTerm("engage(ARG)"), Term.createTerm("engage(OWNER)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
@@ -91,8 +108,7 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t02",targetState="handleEvent",cond=whenEvent("sonardata"))
-					transition(edgeName="t03",targetState="handleEvent",cond=whenEvent("obstacle"))
+					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 
 			}
 		}

@@ -19,8 +19,9 @@ eventedgeattr = {
 with Diagram('qakdemo23Arch', show=False, outformat='png', graph_attr=graphattr) as diag:
   with Cluster('env'):
      sys = Custom('','./qakicons/system.png')
-     with Cluster('ctxdemoreq', graph_attr=nodeattr):
+     with Cluster('ctxcallers', graph_attr=nodeattr):
           caller=Custom('caller','./qakicons/symActorSmall.png')
+     with Cluster('ctxcalled', graph_attr=nodeattr):
           called=Custom('called','./qakicons/symActorSmall.png')
      caller >> Edge(color='magenta', style='solid', xlabel='r1', fontcolor='magenta') >> called
 diag

@@ -44,6 +44,7 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
 
     @Override
     public void move( String cmd ) throws Exception{
+        //CommUtils.outred("move " + cmd);
         if( cmd.equals("w") ) forward( 5000 );
         else if( cmd.equals("s") ) backward( 5000 );
         else if( cmd.equals("a") || cmd.equals("l")) turnLeft(  );
@@ -55,6 +56,7 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
 
     @Override
     public void turnLeft() throws Exception {
+        //CommUtils.outred("turnLeft");
         sendSynchToWenv(VrobotMsgs.turnleftcmd);
     }
 
@@ -72,14 +74,14 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
     @Override
     public void backward(int time) throws Exception {
         startTimer();
-        wsCommSupport.forward(VrobotMsgs.forwardcmd.replace("TIME", "" + time));
+        wsCommSupport.forward(VrobotMsgs.backwardcmd.replace("TIME", "" + time));
     }
 
     @Override
     public void halt() throws Exception {
         CommUtils.outgreen("     VrobotHLMovesActors23 | halt");
         wsCommSupport.forward(VrobotMsgs.haltcmd);
-        CommUtils.delay(150); //wait for halt completion since halt on ws does not send answer
+        CommUtils.delay(50); //wait for halt completion since halt on ws does not send answer
         //CommUtils.outgreen("     VrobotHLMovesActors23 | halt done " + moveResult );
     }
 // Observer part
@@ -113,7 +115,7 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
     public void update(String info) {
          try {
             elapsed = getDuration();
-            //if( tracing )
+            if( tracing )
                 CommUtils.outcyan(
                     "     VrobotHLMovesActors23 | update:" + info
                             + " elapsed=" + elapsed + " doingStep=" + doingStep

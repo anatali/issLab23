@@ -1,0 +1,53 @@
+/*
+================================================================================
+build_ctxbasicrobot.gradle
+GENERATED ONLY ONCE
+================================================================================
+*/
+plugins {
+    // Apply the application plugin to add support for building a CLI application in Java.
+    id 'application'
+    id 'java'
+    id 'eclipse'
+}
+
+version '1.0'
+sourceCompatibility = 1.8
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+    //flatDir {   dirs '../unibolibs'	 }
+}
+
+dependencies {
+    /* AIMA **************************************************************************************************************** */
+    implementation group: 'com.googlecode.aima-java', name: 'aima-core', version: '3.0.0'
+}
+
+sourceSets {
+    main.java.srcDirs += 'src'
+    main.java.srcDirs += 'resources'
+    test.java.srcDirs += 'test'		//test is specific
+}
+  
+
+eclipse {
+    classpath {
+        sourceSets -= [sourceSets.main, sourceSets.test]	
+    }	
+ }
+
+
+application {
+    // Define the main class for the application.
+    mainClass = 'unibo.planner23.MainPlannerdemo'
+}
+
+ jar {
+    println("building jar")
+    from sourceSets.main.allSource
+    manifest {
+        attributes 'Main-Class': "$mainClassName"
+    }
+}

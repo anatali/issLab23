@@ -3,7 +3,7 @@ package robotVirtual;
 public class VrobotMsgs {
     public final static String turnrightcmd  = "{\"robotmove\":\"turnRight\",\"time\":\"300\"}";
     public final static String turnRightMsg  = turnrightcmd;
-    public final static String turnleftcmd  = "{\"robotmove\":\"turnLeft\",\"time\":\"300\"}";  //300 bad for update
+    public final static String turnleftcmd  = "{\"robotmove\":\"turnLeft\",\"time\":\"300\"}";
     public final static String turnLeftMsg  =   turnleftcmd;
     public final static String forwardcmd   = "{\"robotmove\":\"moveForward\",\"time\":TIME}";
     public final static String backwardcmd  = "{\"robotmove\":\"moveBackward\",\"time\":TIME}";

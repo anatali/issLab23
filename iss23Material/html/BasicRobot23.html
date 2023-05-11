@@ -124,12 +124,63 @@ in ‘modo indipendente dalla tecnologia’ con cui è realizzato del robot (vir
 <ul class="simple">
 <li><p><span class="blue">uniborobots.robotSupport</span> che usa</p></li>
 <li><p><span class="blue">robotVirtual.VrobotHLMovesActors23</span> che esegue</p></li>
-<li><p>emitLocalEvent <span class="brown">sonarEvent</span></p></li>
+<li><p>emitLocalEvent <span class="brown">sonarData</span></p></li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
+<p><span class="slide1">Evoluzione del May 11</span></p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/basicrobot23WithPathexec.PNG"><img alt="_images/basicrobot23WithPathexec.PNG" class="align-center" src="_images/basicrobot23WithPathexec.PNG" style="width: 90%;" /></a>
+</td>
+<td><ul class="simple">
+<li><p><span class="blue">basicrobot</span></p></li>
+<li><p><span class="blue">engager</span></p></li>
+<li><p><span class="blue">pathexec</span></p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Si veda il progetto <span class="blue">unibo.basicrobot23</span>, che fornisce il modello eseguibile <span class="blue">basicrobot.qak</span>.</p>
+<p><span class="slide">Movimenti pianificati</span></p>
+</section>
+<section id="uso-del-planner">
+<h2>Uso del planner<a class="headerlink" href="#uso-del-planner" title="Permalink to this headline">¶</a></h2>
+<p>Il robot (virtuale o reale) viene considerato un oggetto inscrivibile in un cerchio di raggio <code class="docutils literal notranslate"><span class="pre">R</span></code>.</p>
+<p>Muovere il robot con mossa <code class="docutils literal notranslate"><span class="pre">step(T)</span></code> con tempo <code class="docutils literal notranslate"><span class="pre">T</span></code> tale da spostare il robot (con velocità prefissata)
+di uno spazio <code class="docutils literal notranslate"><span class="pre">R</span></code>, permette di costruire una mappa della stanza formata da celle quadrate <code class="docutils literal notranslate"><span class="pre">RxR</span></code>.
+Ad esempio:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">3</span>  <span class="mi">4</span>  <span class="mi">5</span>  <span class="mi">6</span>  <span class="mi">7</span> <span class="o">....</span> <span class="n">x</span>
+  <span class="mi">0</span> <span class="o">|</span><span class="n">r</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
+  <span class="mi">1</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
+  <span class="mi">2</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
+  <span class="mi">3</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
+  <span class="mi">4</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
+  <span class="mi">5</span> <span class="o">|</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
+  <span class="o">.</span>
+  <span class="n">y</span>
+
+<span class="n">RobotPos</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="n">direction</span><span class="o">=</span><span class="n">downDir</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>0</strong> denoita una cella mai percorsa</p></li>
+<li><p><strong>1</strong> denota una cella libreria</p></li>
+<li><p><strong>X</strong> denota una cella occupata da un ostacolo</p></li>
+<li><p><strong>r</strong> denota la posizione corrente del robot</p></li>
+</ul>
+<p>L’uso di un <em>planner</em> come quello fornito in <code class="docutils literal notranslate"><span class="pre">unibo.planner23-1.0.jar</span></code> permette di
+calcolare una sequenza delle mosse con cui il robot può muoversi dalla posizione corrente <strong>r</strong>
+a un’altra posizione sulla mappa.</p>
+<p>Si veda il progetto <span class="blue">unibo.planner23</span>, che fornisce la classe <span class="blue">Planner23Util</span>
+e l’esempio di uso <em>MainPlannerdemo</em>.</p>
 </section>
 </section>
 
@@ -154,6 +205,7 @@ in ‘modo indipendente dalla tecnologia’ con cui è realizzato del robot (vir
 </ul>
 </li>
 <li><a class="reference internal" href="#basicrobot23-model">basicrobot23 model</a></li>
+<li><a class="reference internal" href="#uso-del-planner">Uso del planner</a></li>
 </ul>
 </li>
 </ul>

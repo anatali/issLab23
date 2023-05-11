@@ -5,46 +5,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c3c3110-410d-4cbf-9548-c0723381ed26" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/unibo.basicrobot23.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/basicrobotarch.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/mapemptyroom23.qakt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/it/unibo/planexec/Planexec.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibolibs/unibo.planner23-1.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../iss23Material/LectureBologna2023.html" beforeDir="false" afterPath="$PROJECT_DIR$/../iss23Material/LectureBologna2023.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/Api_qakdemo23.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/Api_qakdemo23.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/Arch_qakdemo23.py" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/Arch_qakdemo23.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/build2022.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/build2022.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/qakdemo23.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/qakdemo23.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/src/it/unibo/called/Called.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/src/it/unibo/called/Called.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../qakdemo23/src/it/unibo/caller/Caller.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../qakdemo23/src/it/unibo/caller/Caller.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/unibo.basicrobot23.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/unibo.basicrobot23.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" afterPath="$PROJECT_DIR$/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api_basicrobot23.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Api_basicrobot23.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/jupyter/.ipynb_checkpoints/Archbasicrobot23-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/jupyter/.ipynb_checkpoints/Untitled-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/jupyter/.ipynb_checkpoints/qakbasicrobotcallerMQTT-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/jupyter/.ipynb_checkpoints/qakbasicrobotcallerTCP-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/jupyter/Archbasicrobot23.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/jupyter/Untitled.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/jupyter/basicrobot23arch.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/jupyter/boundarywalker23arch.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/jupyter/qakbasicrobotcallerMQTT.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/jupyter/qakbasicrobotcallerTCP.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/jupyter/qakicons/codedQActor.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/jupyter/qakicons/externalQActor.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/jupyter/qakicons/symActor.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/jupyter/qakicons/symActorSmall.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/jupyter/qakicons/system.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotMbot/ISensorObserverFromArduino.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotMbot/JSSCSerialComm.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotMbot/SerialPortConnSupport.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotMbot/globalTimer.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotMbot/logDevice.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotMbot/mbotSupport.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotMbot/robotDataSourceArduino.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotMbot/webcam.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotNano/CodedQaSonar.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotNano/Motors.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotNano/SonarAlone.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotNano/legonanoMotors.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotNano/nanoMotorDriveA.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotNano/nanoMotorDriveB.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotNano/nanoSupport.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotNano/nanoSupportSam.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotNano/sonarHCSR04Support.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/robotNano/sonarHCSR04SupportActor.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Arch_basicrobot23.py" beforeDir="false" afterPath="$PROJECT_DIR$/Arch_basicrobot23.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basicrobot23.pl" beforeDir="false" afterPath="$PROJECT_DIR$/basicrobot23.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build2022.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build2022.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/qakrestappl_Transitions.txt" beforeDir="false" afterPath="$PROJECT_DIR$/qakrestappl_Transitions.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/robotVirtual/VrobotHLMovesActors23.java" beforeDir="false" afterPath="$PROJECT_DIR$/resources/robotVirtual/VrobotHLMovesActors23.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/robotVirtual/VrobotMsgs.java" beforeDir="false" afterPath="$PROJECT_DIR$/resources/robotVirtual/VrobotMsgs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/uniborobots/robotSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/uniborobots/robotSupport.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/basicrobot.qak" beforeDir="false" afterPath="$PROJECT_DIR$/src/basicrobot.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basicrobot2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/it/unibo/basicrobot/Basicrobot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/basicrobot/Basicrobot.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/it/unibo/basicrobotusage/Basicrobotusage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/basicrobotusage/Basicrobotusage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/it/unibo/ctxbasicrobot/MainCtxbasicrobot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/ctxbasicrobot/MainCtxbasicrobot.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/it/unibo/engager/Engager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/engager/Engager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/it/unibo/eventobserver/Eventobserver.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibolibs/unibo.planner22-1.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibolibs/unibo.qakactor23-3.5.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../unibolibs/unibo.qakactor23-3.5.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +96,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.27586207" />
@@ -105,11 +104,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Didattica2023\issLab23\unibo.basicrobot23\resources" />
       <recent name="C:\Didattica2023\issLab2023\unibo.basicrobot23\resourcestodo" />
       <recent name="C:\Didattica2023\issLab2023\unibo.basicrobot23" />
       <recent name="C:\Didattica2023\issLab2023\unibo.basicrobot23\resources\jupyter" />
       <recent name="C:\Didattica2023\issLab2023\unibo.basicrobot23\qakicons" />
-      <recent name="C:\Didattica2023\issLab2023\unibo.basicrobot23\resources\console" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Didattica2023\issLab2023\unibo.basicrobot23\resourcestodo" />
@@ -119,7 +118,7 @@
       <recent name="robotVirtual" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.WsServer">
+  <component name="RunManager" selected="Application.ConsoleGuiSimpleKt">
     <configuration name="WsServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="uniborobots.WsServer" />
       <module name="unibo.basicrobot23.main" />
@@ -232,6 +231,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.ConsoleGuiSimpleKt" />
+        <item itemvalue="Application.MainCtxbasicrobotKt (2)" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

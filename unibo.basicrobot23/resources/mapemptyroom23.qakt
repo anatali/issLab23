@@ -1,0 +1,74 @@
+/*
+ *  
+ */
+System mapemptyroom23 //-msglog  
+ 
+Dispatch cmd       : cmd(MOVE)  
+Request step       : step(TIME)	  
+Reply stepdone     : stepdone(V)  
+Reply stepfailed   : stepfailed(DURATION, CAUSE)
+Event alarm        : alarm(X)
+
+Request engage        : engage(ARG)	
+Reply   engagedone    : engagedone(ARG)
+Reply   engagerefused : engagerefused(ARG)
+
+Dispatch disengage    : disengage(ARG)
+
+
+Context ctxbasicrobot      ip [host="127.0.0.1" port=8020]   
+Context ctxmapemptyroom22  ip [host="localhost" port=8032]
+
+ExternalQActor basicrobot context ctxbasicrobot  
+
+/*  
+ * ------------------------------------------------------------------
+ *  mapemptyroom23
+ * ------------------------------------------------------------------
+*/     
+QActor mapemptyroom23 context ctxmapemptyroom22{    
+	[# var StepTime = 345
+	   var NumStep   = 0 
+	   val MapName   = "mapEmpty23"
+	   val planner   = unibo.planner23.Planner23Util()
+	#]
+	State s0 initial{  	  	
+		println("mapperbuilder starts") 
+		[# planner.initAI()  #]
+		[# planner.showMap()  #]
+		//run  unibo.planner23.Planner23Util.showMap()
+		request basicrobot -m engage : engage(mapemptyroom23)
+	}	
+	Transition t0 whenReply engagedone -> doAheadMove
+ 
+	
+	State doAheadMove {
+ 		request basicrobot -m step : step($StepTime)
+	}
+	Transition t0 whenReply stepdone   -> continue
+	              whenReply stepfailed -> turn
+	
+	State continue{
+		[# planner.updateMap(  "w", "" ) #]
+	}  
+	Goto doAheadMove     
+	              
+	State turn {
+		[# NumStep = NumStep + 1 #]
+		forward basicrobot -m cmd : cmd(l)
+		[#  planner.updateMap(  "l", "" ) 
+			planner.showMap()		 
+		#]
+	}
+    Goto doAheadMove if [# NumStep < 4 #]  else endwork
+    
+    State endwork{ 
+ 		[# 	planner.showMap();
+ 			planner.saveRoomMap("$MapName");
+		#]
+		forward basicrobot -m  disengage : disengage(mapemptyroom23)
+		println("mapperbuilder BYE") 
+ 		terminate 1
+	}  
+	              
+}

@@ -1,3 +1,5 @@
-{"actor":"basicrobot", "msgType":"dispatch", "curstate":"ss0", "nextstate":"work", "msgId":"engaged"}
+{"actor":"engager", "msgType":"dispatch", "curstate":"s0", "nextstate":"disengageRobot", "msgId":"disengage"}
+{"actor":"basicrobot", "msgType":"dispatch", "curstate":"waitForOwner", "nextstate":"work", "msgId":"engaged"}
 {"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"execcmd", "msgId":"cmd"}
 {"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"endwork", "msgId":"end"}
+{"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"waitForOwner", "msgId":"disengaged"}

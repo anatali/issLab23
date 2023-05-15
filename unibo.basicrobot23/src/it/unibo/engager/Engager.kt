@@ -34,8 +34,6 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 					}	 	 
 					 transition(edgeName="t00",targetState="engageAccept",cond=whenRequest("engage"))
 					transition(edgeName="t01",targetState="disengageRobot",cond=whenDispatch("disengage"))
-					transition(edgeName="t02",targetState="handleEvent",cond=whenEvent("sonardata"))
-					transition(edgeName="t03",targetState="handleEvent",cond=whenEvent("obstacle"))
 				}	 
 				state("handleEngage") { //this:State
 					action { //it:State

@@ -1,4 +1,4 @@
-package unibo.planner23;
+package unibo.planner23;  
 
 import aima.core.agent.Action;
 import aima.core.search.framework.SearchAgent;
@@ -7,6 +7,7 @@ import aima.core.search.framework.problem.Problem;
 import aima.core.search.framework.qsearch.GraphSearch;
 import aima.core.search.uninformed.BreadthFirstSearch;
 import aima.core.util.datastructure.Pair;
+import unibo.basicomm23.utils.CommUtils;
 import unibo.planner23.model.Box;
 import unibo.planner23.model.RobotAction;
 import unibo.planner23.model.RobotState;
@@ -14,23 +15,20 @@ import unibo.planner23.model.RoomMap;
 import unibo.planner23.model.Functions;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+ 
 
+/*
+ * Planner23Util dovrebbe essere un servizio stateless ...
+ * Lo stato è in RobotState 
+ */
 public class Planner23Util {
     private RobotState robotState;
-    private List<Action> actions;
-//    private Iterator<Action> actionSequence;
-//    private Iterator<Action> storedactionSequence;
+    //private List<Action> actions;
     private BreadthFirstSearch search;
-    private Pair<Integer,Integer> curPos  = new Pair<Integer,Integer>(0,0);
-    private RobotState.Direction curDir   = RobotState.Direction.DOWN;
+    //private Pair<Integer,Integer> curPos  = new Pair<Integer,Integer>(0,0);
     private GoalTest curGoal              = new Functions();
-    private Pair<Integer,Integer> mapDims = new Pair(0,0);
-    private String direction              = "downDir";
     private	boolean currentGoalApplicable = true;
-    private Pair<Integer,Integer> storedPos= new Pair(0,0);
-    private Long timeStart                 = 0L;
 
 /*
  * ------------------------------------------------
@@ -44,12 +42,11 @@ public class Planner23Util {
     }
     public void setGoal( Integer x, Integer y) {
         try {
-            println("setGoal x=" +x + " y=" + y + " " + robotPosInfo());
+            //CommUtils.outyellow("Planner23Util | setGoal x=" +x + " y=" + y + " while:" + robotPosInfo());
             if( RoomMap.getRoomMap().isObstacle(x,y) ) {
-                println("ATTEMPT TO GO INTO AN OBSTACLE ");
+            	CommUtils.outred("Planner23Util | ATTEMPT TO GO INTO AN OBSTACLE ");
                 currentGoalApplicable = false;
-//                resetActions();  //Gen23
-                return;
+                 return;
             }else currentGoalApplicable = true;
 
             RoomMap.getRoomMap().put(x, y, new Box(false, true, false));  //set dirty
@@ -67,15 +64,13 @@ public class Planner23Util {
         }
     }
     
-    public String nextMove() {
-    	if( actions.size() > 0 ) return actions.remove(0).toString();
-    	else return "";
-    }
+ 
 
     public List<Action> doPlan() throws Exception {
         //println("Planner23Util doPlan curGoal=" + curGoal)
+    	List<Action> actions;
         if( ! currentGoalApplicable ){
-            println("Planner23Util doPlan cannot go into an obstacle");
+        	CommUtils.outred("Planner23Util | doPlan cannot go into an obstacle");
             actions = new ArrayList<Action>();  //TOCHECK
             return actions;		//empty list
         }
@@ -94,11 +89,16 @@ public class Planner23Util {
             if (! RoomMap.getRoomMap().isClean()) RoomMap.getRoomMap().setObstacles();
             return new ArrayList<Action>();
         } else if (actions.get(0).isNoOp() ) {
-            println("Planner23Util doPlan NoOp");
+        	CommUtils.outyellow("Planner23Util | doPlan NoOp");
             return new ArrayList<Action>();
         }
-//        setActionMoveSequence();  //Gen23
+         
         return actions;
+    }
+    
+    public String doPlanCompact() throws Exception {
+    	String p = doPlan().toString().replace("[","").replace("]","").replace(",","").replace(" ","");
+    	return p;
     }
 
     public List<Action> planForGoal(  String x ,  String y) throws Exception {
@@ -113,12 +113,12 @@ public class Planner23Util {
         RoomMap rmap = RoomMap.getRoomMap();
         int dimX = getMapDimX( );
         int dimY = getMapDimY( );
-println( "... planForNextDirty dimX="+ dimX + " dimY=" + dimY );
-        showCurrentRobotState();
+//println( "... planForNextDirty dimX="+ dimX + " dimY=" + dimY );
+        //showCurrentRobotState();
         for( int i = 0; i<=dimX-1 ; i++ ){
             for( int j= 0; j<=dimY-1;j++ ){
                 if( rmap.isDirty(i,j)  ){
-println( "... planForNextDirty "+ i + "," + j + " at " + getPosX() + "," + getPosY() );
+CommUtils.outyellow( "... planForNextDirty "+ i + "," + j + " curpos= " + getPosX() + "," + getPosY() );
                     setGoal( i,j ) ;
                     actions = doPlan();
                     return actions;
@@ -127,57 +127,31 @@ println( "... planForNextDirty "+ i + "," + j + " at " + getPosX() + "," + getPo
         }
         return actions;
     }
-/*
-    public void memoCurentPlan(){
-        storedPos            = curPos;
-        storedactionSequence = actionSequence;
+    
+    public String planForNextDirtyCompact( ) throws Exception {
+    	return planForNextDirty( ).toString().replace("[","").replace("]","").replace(",","").replace(" ","");
     }
-
-    public void restorePlan(){
-        //Goto storedcurPos
-        actionSequence = storedactionSequence;
-    }
-*/
+ 
+ 
+ 
 /*
  * ------------------------------------------------
  * MANAGE PLANS AS ACTION SEQUENCES
  * ------------------------------------------------
 */
-    /*
-    public void setActionMoveSequence(){
-        if( actions != null ) {
-            actionSequence = actions.iterator();
-        }
-    }
+     
+ 
 
+ 
 
-    public String getNextPlannedMove() {
-        if( actionSequence == null ) return "";
-        else if( actionSequence.hasNext()) return actionSequence.next().toString();
-             else return "";
-    }
-
-    public List<Action> getActions() {
-        return actions;
-    }
-    public boolean existActions(){
-         return actions.size()>0;
-    }
-
-    public void  resetActions(){
-        actions = new ArrayList<Action>();  //TOCHECK
-    }
-
-    public Iterator<Action> get_actionSequence(){
-        return actionSequence;
-    }*/
+ 
 /*
  * ------------------------------------------------
  * INSPECTING ROBOT POSITION AND DIRECTION
  * ------------------------------------------------
 */
     public Pair<Integer,Integer> get_curPos(){
-        return curPos;
+        return new Pair(robotState.getX(),robotState.getY());
     }
     public Integer getPosX(){ return robotState.getX(); }
     public Integer getPosY(){ return robotState.getY(); }
@@ -195,11 +169,12 @@ println( "... planForNextDirty "+ i + "," + j + " at " + getPosX() + "," + getPo
     }
 
     public boolean atHome() {
-        return curPos.getFirst() == 0 && curPos.getSecond() == 0;
+    	//Pair<Integer,Integer> curPos = new Pair(robotState.getX(),robotState.getY());
+        return robotState.getX() == 0 && robotState.getY() == 0;
     }
 
     public boolean atPos(  Integer x, Integer y ) {
-        return curPos.getFirst() == x && curPos.getSecond() == y;
+        return robotState.getX() == x && robotState.getY() == y;
     }
 
     public void showCurrentRobotState(){
@@ -209,15 +184,15 @@ println( "... planForNextDirty "+ i + "," + j + " at " + getPosX() + "," + getPo
         println(" =================================================== |");
     }
     public String robotPosInfo(){
-         return "RobotPos=("+ curPos.getFirst() + "," + curPos.getSecond() + ") direction="+ getDirection() ;
+         return "RobotPos=("+ robotState.getX() + "," + robotState.getY() + ") direction="+ robotState.getDirection() ;
     }
 /*
  * ------------------------------------------------
  * MANAGING THE ROOM MAP
  * ------------------------------------------------
 */
-    public Integer getMapDimX( ) { return mapDims.getFirst(); }
-    public Integer getMapDimY( ) { return mapDims.getSecond(); }
+    public Integer getMapDimX( ) { return RoomMap.getRoomMap().getDimX(); }
+    public Integer getMapDimY( ) { return RoomMap.getRoomMap().getDimY(); }
     public boolean mapIsEmpty() {return (getMapDimX( )==0 &&  getMapDimY( )==0 ); }
     public void showMap() { println( RoomMap.getRoomMap().toString() ); }
 
@@ -243,7 +218,7 @@ println( "... planForNextDirty "+ i + "," + j + " at " + getPosX() + "," + getPo
         }catch(Exception e){
             println("loadRoomMap FAILURE "+ e.getMessage());
         }
-        mapDims = getMapDims(); //Pair(dimMapx,dimMapy)
+        //mapDims = getMapDims(); //Pair(dimMapx,dimMapy)
     }
     public void saveRoomMap(  String fname  ) throws IOException {
         println("saveMap in "+ fname);
@@ -255,7 +230,7 @@ println( "... planForNextDirty "+ i + "," + j + " at " + getPosX() + "," + getPo
         os.writeObject(RoomMap.getRoomMap());
         os.flush();
         os.close();
-        mapDims = getMapDims();
+        //mapDims = getMapDims();
     }
 /*
  * ------------------------------------------------
@@ -263,15 +238,15 @@ println( "... planForNextDirty "+ i + "," + j + " at " + getPosX() + "," + getPo
  * ------------------------------------------------
 */
     public void moveRobotInTheMap(){
-        curPos = new Pair(robotState.getX(),robotState.getY());
+        //curPos = new Pair(robotState.getX(),robotState.getY());
         RoomMap.getRoomMap().put(robotState.getX(), robotState.getY(),
                 new Box(false, false, true));
     }
     public void doMove(String move) {
         Integer x   = getPosX();
         Integer y   = getPosY();
-        RoomMap map = RoomMap.getRoomMap();
-        //println("Planner23Util: doMove move="+move);
+        RoomMap map = RoomMap.getRoomMap(); 
+        //CommUtils.outyellow("Planner23Util: doMove move="+move + " x=" + x + " y=" + y + " dir=" + robotState.getDirection());
         try {
             switch (move) {
                 case "w" : {
@@ -280,62 +255,64 @@ println( "... planForNextDirty "+ i + "," + j + " at " + getPosX() + "," + getPo
                     robotState = (RobotState) new Functions().result(robotState, RobotAction.wAction) ;
                     //map.put(robotState!!.x, robotState!!.y, Box(false, false, true))
                     moveRobotInTheMap();
-                    break;
+                    return;
                 }
                 case "s": {
                     robotState = (RobotState) new Functions().result(robotState, RobotAction.sAction) ;
                     //map.put(robotState!!.x, robotState!!.y, Box(false, false, true))
                     moveRobotInTheMap();
-                    break;
+                    return;
                 }
                 case "a"  : {
                     robotState = (RobotState) new Functions().result(robotState, RobotAction.lAction);
                     //map.put(robotState!!.x, robotState!!.y, Box(false, false, true))
                     moveRobotInTheMap();
-                    break;
+                    return;
                 }
                 case "l" : {
                     robotState = (RobotState) new Functions().result(robotState, RobotAction.lAction) ;
-                    //map.put(robotState!!.x, robotState!!.y, Box(false, false, true))
+                    //map.put(robotState!!.x, robotState!!.y, Box(false, false, true))                     
                     moveRobotInTheMap();
-                    break;
+                    return;
                 }
                 case "d" : {
                     robotState = (RobotState) new Functions().result(robotState, RobotAction.rAction) ;
                     //map.put(robotState!!.x, robotState!!.y, Box(false, false, true))
                     moveRobotInTheMap();
-                    break;
+                    return;
                 }
                 case "r" : {
                     robotState = (RobotState) new Functions().result(robotState, RobotAction.rAction) ;
                     //map.put(robotState!!.x, robotState!!.y, Box(false, false, true))
                     moveRobotInTheMap();
-                    break;
+                    return;
                 }
                 //Used by WALL-UPDATING
                 //Box(boolean isObstacle, boolean isDirty, boolean isRobot)
-                case "rightDir" : map.put(x + 1, y, new Box(true, false, false));
-                case "leftDir"  : map.put(x - 1, y, new Box(true, false, false));
-                case"upDir"    : map.put(x, y - 1, new Box(true, false, false));
-                case"downDir"  : map.put(x, y + 1, new Box(true, false, false));
+                case "rightDir" : {map.put(x + 1, y, new Box(true, false, false));return;}
+                case "leftDir"  : {map.put(x - 1, y, new Box(true, false, false));return;}
+                case "upDir"    : {CommUtils.outred(" upDir ");map.put(x, y - 1, new Box(true, false, false));return;}
+                case "downDir"  : {CommUtils.outred(" downDir ");map.put(x, y + 1, new Box(true, false, false));return;}
             }//when
         } catch (Exception e ) {
-            println("Planner23Util doMove:" + move + " ERROR:" + e.getMessage());
+            CommUtils.outred("Planner23Util doMove:" + move + " ERROR:" + e.getMessage());
         }
     }
-    
+    /*
     public void  setPositionOnMap( ){
         direction     =  getDirection();
         curPos        =  new Pair( getPosX(),getPosY() );
-    }
+    }*/
+
     public void updateMap( String move , String msg ){
         doMove( move );
-        setPositionOnMap( );
+        //setPositionOnMap( );
         if( msg.length() > 0 ) println(msg);
     }
     public void  updateMapObstacleOnCurrentDirection(   ){
-		doMove( direction );
-		setPositionOnMap( );
+    	CommUtils.outyellow("updateMapObstacleOnCurrentDirection " + robotState.getDirection());
+		doMove( getDirection() );
+		//setPositionOnMap( );
 	}
 /*
  * ------------------------------------------------
@@ -343,21 +320,21 @@ println( "... planForNextDirty "+ i + "," + j + " at " + getPosX() + "," + getPo
  * ------------------------------------------------
 */
     public void setObstacleUp(){
-        if( curPos.getSecond() > 0 )
-        RoomMap.getRoomMap().put(curPos.getFirst(), curPos.getSecond()-1,
+        if( robotState.getY() > 0 )
+        RoomMap.getRoomMap().put(robotState.getX(), robotState.getY()-1,
                 new Box(true, false, false));
     }
     public void setObstacleDown(){
-        RoomMap.getRoomMap().put(curPos.getFirst(), curPos.getSecond()+1,
+        RoomMap.getRoomMap().put(robotState.getX(), robotState.getY()+1,
                 new Box(true, false, false));
     }
     public void setObstacleLeft(){
-        if( curPos.getFirst() > 0 )
-        RoomMap.getRoomMap().put(curPos.getFirst()-1, curPos.getSecond() ,
+        if( robotState.getX() > 0 )
+        RoomMap.getRoomMap().put(robotState.getX()-1, robotState.getY() ,
                 new Box(true, false, false));
     }
     public void setObstacleRight(){
-        RoomMap.getRoomMap().put(curPos.getFirst()+1, curPos.getSecond(),
+        RoomMap.getRoomMap().put(robotState.getX()+1, robotState.getY(),
                 new Box(true, false, false));
     }
     public void setObstacleWall(  RobotState.Direction dir, Integer x , Integer y ){
@@ -388,7 +365,7 @@ println( "... planForNextDirty "+ i + "," + j + " at " + getPosX() + "," + getPo
         Integer x       = getPosX();
         Integer y       = getPosY();
         setObstacleWall( dir,x,y );
-        println("Planner23Util wallFound dir="+dir );
+        CommUtils.outyellow("Planner23Util wallFound dir="+dir );
         doMove( dir.toString() );  //set cell
         if( dir == RobotState.Direction.RIGHT) setWallDown(dimMapx,y);
         if( dir == RobotState.Direction.UP)    setWallRight(dimMapy,x);
@@ -403,12 +380,23 @@ println( "... planForNextDirty "+ i + "," + j + " at " + getPosX() + "," + getPo
         System.out.println( msg );
     }
 
-    public void startTimer() {
-        timeStart = System.currentTimeMillis();
-    }
-   public int getDuration() {
-        long duration = (System.currentTimeMillis() - timeStart) ;
-        //println("DURATION = "+ duration);
-        return (int)duration;
-    }
+ 
+   
+    
+   
+   public void doPathOnMap(String pathlist) {
+	   String Path = pathlist.replace("[","").replace("]","").replace(",","").replace(" ","");
+	   //CommUtils.outblue("doPathOnMap " + Path);
+	   while( Path.length() > 0 )  {
+		   String curMove =  ""+Path.charAt(0);
+		   //CommUtils.outblue("doPathOnMap curMove=" + curMove + " Path=" + Path);
+		   doMove( curMove );
+		   //showCurrentRobotState();
+		   Path = Path.substring(1,Path.length());
+		   //if( Path.length() > 1) Path = Path.substring(1,Path.length());
+		   //else Path = "";		     
+	   }
+	   
+   }
+ 
 }

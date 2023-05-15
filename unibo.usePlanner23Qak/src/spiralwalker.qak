@@ -1,0 +1,46 @@
+System spiralwalker
+
+Context ctxspiralwalker  ip [host="localhost" port=8038]    
+
+QActor spiralwalker context ctxspiralwalker{     
+[#  var stepCounter        = 0
+	val mapname            = "roomMapSquare"
+	val maxNumSteps        = 4	 
+	val planner            = unibo.planner23.Planner23Util() 
+#]	   
+	State s0 initial {	     
+		run planner.initAI()
+		println("INITIAL MAP") color blue
+ 		run planner.showMap() 
+ 	} 
+	Goto  exploreStep  
+	
+	State exploreStep{
+		[# stepCounter = stepCounter + 1 #]
+		[# val actions =  planner.planForGoal("$stepCounter","$stepCounter")
+			CommUtils.outgreen("exploreStep $stepCounter path=$actions")
+			planner.doPathOnMap(actions.toString())
+		#]
+		println("AFTER exploreStep $stepCounter ") color blue
+		run planner.showCurrentRobotState()
+ 	} 
+	Goto backToHome
+  	
+	State backToHome{
+		println("backToHome") color blue 
+		[# val actions = planner.planForGoal("0","0") 
+		   CommUtils.outgreen("backToHome path=$actions")
+		   planner.doPathOnMap(actions.toString())
+		   planner.doMove("l")
+	    #]
+	    run planner.showCurrentRobotState()
+	} 
+ 	Goto exploreStep if [# planner.atHome() && stepCounter < maxNumSteps #] else endOfJob 
+	   	
+	State endOfJob{ 		 
+		println("BYE.  ") color blue
+		//terminate 1 
+		[# System.exit(0) #]
+	}
+ 	 
+}    

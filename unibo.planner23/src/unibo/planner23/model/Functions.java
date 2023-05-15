@@ -23,16 +23,16 @@ public class Functions implements ActionsFunction, ResultFunction, StepCostFunct
 
 	@Override
 	public Object result(Object arg0, Action arg1) {
-		RobotState state = (RobotState) arg0;
+		RobotState state   = (RobotState) arg0;
 		RobotAction action = (RobotAction) arg1;
 		RobotState result;
 		
 		switch(action.getAction()) {
-		case RobotAction.FORWARD:   result = state.forward(); break;
-		case RobotAction.BACKWARD:  result = state.backward(); break;
-		case RobotAction.TURNLEFT:  result = state.turnLeft(); break;
-		case RobotAction.TURNRIGHT: result = state.turnRight(); break;
-		default: throw new IllegalArgumentException("Not a valid RobotAction");
+			case RobotAction.FORWARD:   result = state.forward(); break;
+			case RobotAction.BACKWARD:  result = state.backward(); break;
+			case RobotAction.TURNLEFT:  result = state.turnLeft(); break;
+			case RobotAction.TURNRIGHT: result = state.turnRight(); break;
+			default: throw new IllegalArgumentException("Not a valid RobotAction");
 		}
 		return result;
 	}

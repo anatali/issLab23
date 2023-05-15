@@ -13,10 +13,10 @@ Request step       : step(TIME)
 Reply stepdone     : stepdone(V)  
 Reply stepfailed   : stepfailed(DURATION, CAUSE)	
 
-Event  sonardata   : sonar( DISTANCE ) 	     
+Event  sonardata   : sonar( DISTANCE ) 	  //percepito da sonarobs/engager   
 Event obstacle     : obstacle(X) 
 
-Request  dopath   : dopath( PATH, OWNER )
+Request  dopath   : dopath( PATH, OWNER, STEPTIME )
 Reply dopathdone  : dopathdone( ARG ) 
 Reply dopathfailed  : dopathfailed( ARG )
 
@@ -29,6 +29,8 @@ Dispatch engaged      : engaged(ARG)
 Dispatch disengaged   : disengage(ARG)
 
 Event alarm           : alarm(X)
+Dispatch nextmove     : nextmove(M)
+Dispatch nomoremove   : nomoremove(M)
 
 Context ctxbasicrobot ip [host="localhost" port=8020]  
 
@@ -37,7 +39,7 @@ Context ctxbasicrobot ip [host="localhost" port=8020]
 
 /*
  * ------------------------------
- * engager
+ * engager 
  * ------------------------------
  */ 
 QActor engager context ctxbasicrobot{
@@ -51,8 +53,8 @@ QActor engager context ctxbasicrobot{
 	}
 	Transition t0 whenRequest engage -> engageAccept
 		          whenMsg disengage ->  disengageRobot
-	              whenEvent sonardata -> handleEvent
-	              whenEvent obstacle  -> handleEvent
+	              //whenEvent sonardata -> handleEvent
+	              //whenEvent obstacle  -> handleEvent
      			   
     State handleEngage{
     	printCurrentMessage color blue
@@ -72,7 +74,7 @@ QActor engager context ctxbasicrobot{
      	replyTo engage with engagerefused : engagerefused($Owner)
     }
     Goto s0  
-    
+     
     State engageAccept{	
     	printCurrentMessage color blue
 			onMsg( engage : engage(OWNER) ) {
@@ -114,6 +116,7 @@ QActor basicrobot context ctxbasicrobot{
   var CurrentMove   = "unkknown"
   var StepSynchRes  = false
   var Owner         = "unkknown"
+  val planner       = unibo.planner23.Planner23Util() 
   
   fun checkOwner() : Boolean {
   	if( currentMsg.isEvent()  ) return true
@@ -134,7 +137,7 @@ QActor basicrobot context ctxbasicrobot{
 		//[# sysUtil.trace = true #]  //Trace the behavior of ActorBasic
  		qrun uniborobots.robotSupport.create(myself,"basicrobotConfig.json")	
  		
- 		[# RobotType = uniborobots.robotSupport.robotKind #]
+ 		[# RobotType = uniborobots.robotSupport.robotKind #]  
   		run uniborobots.robotSupport.move( "a" )    //synch
  		run uniborobots.robotSupport.move( "d" )	//synch
         updateResource [# "basicrobot(started)" #]
@@ -165,7 +168,7 @@ QActor basicrobot context ctxbasicrobot{
 		if [#   checkOwner() #] {   
 			onMsg( cmd : cmd(MOVE) ){
 	  			//activate the motors  
-	  			[# CurrentMove = payloadArg(0) #]
+	  			[# CurrentMove = payloadArg(0) #] 
 				run uniborobots.robotSupport.move( payloadArg(0 ) )
 				updateResource [# "moveactivated(${payloadArg(0)})" #]
 			}
@@ -180,8 +183,8 @@ QActor basicrobot context ctxbasicrobot{
 			[#	StepTime     = payloadArg(0).toLong()  	#]    
 			updateResource [# "step(${StepTime})" #]
   		}  
-        memoCurrentTime StartTime  
         println("basicrobot | doing doStep StepTime=$StepTime  ")        
+        memoCurrentTime StartTime  
         [# StepSynchRes = uniborobots.robotSupport.dostep( StepTime ) #]   
 	}  	
 	Goto stepok if [# StepSynchRes #] else stepKo 
@@ -198,19 +201,21 @@ QActor basicrobot context ctxbasicrobot{
 	Goto work  
  
 	State stepKo{  	 	
-		printCurrentMessage
 		setDuration Duration from StartTime
+		printCurrentMessage
 		run uniborobots.robotSupport.move( "h" )  //stop the (real) robot
-		[# var TunedDuration   = StepTime - ((Duration * 0.80)).toLong()   #]
+		[# var TunedDuration   = StepTime - ((Duration * 0.90)).toLong()   #]
+		if [# TunedDuration > 10 #]{
 		println("basicrobot | $StepTime stepFail duration=$Duration  TunedDuration=$TunedDuration")
 			run uniborobots.robotSupport.move( "s" )
 			delayVar TunedDuration 
 			run uniborobots.robotSupport.move( "h" ) 
+		}
  		updateResource [# "stepFail($Duration)" #] 
  		delay 300
  		replyTo step with stepfailed : stepfailed($Duration, obst)
     } 
-	Goto work
+	Goto work 
 
 					
 	State endwork{ 
@@ -220,91 +225,147 @@ QActor basicrobot context ctxbasicrobot{
 	}   
    
 } 
-
+  
 /*
  * ------------------------------
  * planexec
  * ------------------------------
  */
 QActor planexec context ctxbasicrobot{
-	[# var CurMoveTodo = ""
-		var Path  = ""
-		var Owner = "unknown"
-	#]
+	[# var Path = ""
+		var CurMoveTodo   = ""		
+		var StepSynchRes  = false
+		var StepTime      = 345L
+		var Owner         = "unknown"
+   	#]
 	State s0 initial{
 		subscribeTo engager 
 	}
 	Goto work
 
 	State work{
-		println("planexec | waiting ...") color blue 
+		//println("planexec | waiting ...") color blue 
 	}
-	Transition t0 whenRequest dopath -> execpath
+	Transition t0 whenRequest dopath -> dopath
 
-	State execpath{
-		printCurrentMessage
-		onMsg( dopath : dopath(PLAN, OWNER)){
+	State dopath{
+		printCurrentMessage color red
+		onMsg( dopath : dopath(PLAN, OWNER, STEPTIME)){
 		    println("$name | ${payloadArg(0)}") color blue
-			[# Path = payloadArg(0).replace("[","").replace("]","").replace(", ","")
-				Owner = payloadArg(1)
+			[#  Path  = payloadArg(0).replace("[","").replace("]","").replace(",","").replace(" ","")
+				Owner    = payloadArg(1)
+				StepTime = payloadArg(2).toLong()
 			 #]
-			  println("$name | Path=$Path") color blue		
-		replyTo dopath with dopathfailed : dopathfailed($Path)
- 		}
-    }
-    Goto work	  
+			 println("$name | Path=$Path") color blue
+		} 
+	}  
+	Transition t0 
+		whenTime 100    -> nextMove
+		whenEvent alarm -> pathinterrupted
+	  
 	
-  
+	State nextMove{ 
+		[# 
+		   if( Path.length > 0  ){
+		   	CurMoveTodo =  Path.elementAt(0).toString() 
+		   	Path        =  Path.removePrefix(CurMoveTodo)
+		   }else CurMoveTodo = ""		   
+		#]
+		println("planexec CurMoveTodo= $CurMoveTodo remain:$Path" ) color blue
+		forward planexec -m nextmove : nextmove($CurMoveTodo)
+	} 	 
+	Transition t0  whenEvent alarm   -> pathinterrupted
+		           whenMsg nextmove  -> doMove
+	
+	State doMove{
+		println("domove $CurMoveTodo") color blue
+ 		if [# CurMoveTodo == "" #] { 
+ 			forward planexec -m nomoremove : nomoremove(end)
+ 		}
+		else{ if [# CurMoveTodo == "w" #] {
+ 			delay 300  //avoid too fast ...
+ 			[# StepSynchRes = uniborobots.robotSupport.dostep( StepTime ) #]			
+			}else{
+				println("doMoveTurn $CurMoveTodo") color blue
+				run uniborobots.robotSupport.move(  CurMoveTodo )
+			}
+			forward planexec -m nextmove : nextmove(goon)
+		}
+ 	}
+	//Goto doMoveW if [# CurMoveTodo == "w" #] else doMoveTurn
+	Transition t0  whenEvent alarm     -> pathinterrupted
+	               whenMsg nomoremove  -> pathend
+	               whenMsg nextmove    -> nextMove 
+
  	
 	State pathend{
-		printCurrentMessage
- 	}
+		printCurrentMessage color red
+		if [# currentMsg.msgContent() == "alarm(disengaged)" #]{}
+		else{ 
+			if [# currentMsg.msgId() == "alarm" #]{
+		 		println("pathend  ")	color blue
+		 		[# val Pathtodo = CurMoveTodo + Path #]
+		 		replyTo dopath with dopathfailed : dopathfailed( $Pathtodo )			
+			}else{ 
+				println("pathend StepSynchRes=$StepSynchRes ")	color blue
+				if [# StepSynchRes #]{ replyTo dopath with dopathdone : dopathdone(ok)}
+				else{ 
+					[# var Pathtodo = CurMoveTodo + Path 
+					   if( Pathtodo.length == 0 ) Pathtodo="e"
+					#]
+					println("pathend Pathtodo=$Pathtodo ")	color blue
+					replyTo dopath with dopathfailed : dopathfailed( $Pathtodo )
+				}
+			}
+		}
+	}
 	Goto work
 	
- 
+	State pathinterrupted{  
+		printCurrentMessage
+ 		println("pathinterrupted  ")	color blue
+ 		[# val Pathtodo = CurMoveTodo + Path #]
+ 		replyTo dopath with dopathfailed : dopathfailed( $Pathtodo )
+ 	}	
+ 	Goto work
 }
+
 
 /*
  * ------------------------------
- * basicrobotusage
+ * basicrobotusage (tester)
  * ------------------------------
  */
- 
-
+ /* 
 QActor basicrobotusage context ctxbasicrobot{
-	[# val Path    = "\"[l, l, w, w]\""
+	[# val Path    = "\"[l, w, w]\"" //Come quello restituito da dopath
 		val MyName = name 
 	#] 
-	State s0 initial { 	
+	State ss0 initial { 	
 		printCurrentMessage color black
 		//delay 1000
 		[# CommUtils.waitTheUser("basicrobotusage, please hit 1CR")	 #]
 		request basicrobot -m engage : engage( MyName )
 	}
-	Transition t0 whenReply engagedone -> dowork
-	//Transition t0 whenReply engagedone -> testDopath
-		
+	//Transition t0 whenReply engagedone -> dowork
+	Transition t0 whenReply engagedone -> testDopath
+	
+ 	
 	State dowork{
 		//forward basicrobot -m cmd : cmd(p)
-		request basicrobot -m step : step(350)
+		request basicrobot -m step : step(350) 
 	}
 	Transition t0 whenReply stepdone   -> handleStepDone
 	              whenReply stepfailed -> handleStepFail
 	
 	State handleStepDone{
-		printCurrentMessage color green
+		printCurrentMessage color black
 	}
-	Goto endwork
+	Goto dowork
 	
 	State handleStepFail{
-		printCurrentMessage color red
+		printCurrentMessage color black
 	}
-	Goto endwork
-	
-	State endwork{
-		forward basicrobot -m disengage : disengage( $MyName )
-	}
-	Goto s0
 	
 //Testdopoath	
 	State testDopath{
@@ -313,8 +374,8 @@ QActor basicrobotusage context ctxbasicrobot{
 	Transition t0 whenReply dopathdone   -> testDopathEnd
 				  whenReply dopathfailed -> testDopathEnd
 	State testDopathEnd{
-		printCurrentMessage 
+		printCurrentMessage color magenta
 		forward basicrobot -m disengage :  disengage($MyName)
-	}
-	
+	}	
 }
+*/ 

@@ -1,0 +1,6 @@
+{"actor":"basicrobot", "msgType":"request", "sender":"mapemptyroom23", "msgId":"step"}
+{"actor":"basicrobot", "msgType":"dispatch", "sender":"mapemptyroom23", "msgId":"cmd"}
+{"actor":"basicrobot", "msgType":"request", "sender":"mapemptyroom23", "msgId":"engage"}
+{"actor":"basicrobot", "msgType":"request", "sender":"mapemptyroom23", "msgId":"step"}
+{"actor":"basicrobot", "msgType":"dispatch", "sender":"mapemptyroom23", "msgId":"cmd"}
+{"actor":"basicrobot", "msgType":"dispatch", "sender":"mapemptyroom23", "msgId":"disengage"}

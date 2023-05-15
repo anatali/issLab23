@@ -76,11 +76,11 @@ public class RobotState {
 	public RobotState turnLeft() {
 		RobotState result = new RobotState(this.x, this.y, this.direction);
 		switch(result.direction) {
-		case UP: result.direction = Direction.LEFT; break;
-		case RIGHT: result.direction = Direction.UP; break;
-		case DOWN: result.direction = Direction.RIGHT; break;
-		case LEFT: result.direction = Direction.DOWN; break;
-		default: throw new IllegalArgumentException("Not a valid direction");
+			case UP: result.direction = Direction.LEFT; break;
+			case RIGHT: result.direction = Direction.UP; break;
+			case DOWN: result.direction = Direction.RIGHT; break;
+			case LEFT: result.direction = Direction.DOWN; break;
+			default: throw new IllegalArgumentException("Not a valid direction");
 		}
 		return result;
 	}
@@ -88,11 +88,11 @@ public class RobotState {
 	public RobotState forward() {
 		RobotState result = new RobotState(this.x, this.y, this.direction);
 		switch(result.direction) {
-		case UP: result.y--; break;
-		case DOWN: result.y++; break;
-		case LEFT: result.x--; break;
-		case RIGHT: result.x++; break;
-		default: throw new IllegalArgumentException("Direction not valid");
+			case UP: result.y--; break;
+			case DOWN: result.y++; break;
+			case LEFT: result.x--; break;
+			case RIGHT: result.x++; break;
+			default: throw new IllegalArgumentException("Direction not valid");
 		}
 		return result;
 	}

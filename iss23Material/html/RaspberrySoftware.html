@@ -1,0 +1,632 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>RaspberrySoftware &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RaspBasicCode" href="RaspBasicCode.html" />
+    <link rel="prev" title="Uso di un planner" href="UsoDiunPlanner.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="RaspBasicCode.html" title="RaspBasicCode"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="UsoDiunPlanner.html" title="Uso di un planner"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">RaspberrySoftware</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="contents topic" id="overview">
+<p class="topic-title">Overview</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#raspberrysoftware" id="id2">RaspberrySoftware</a></p>
+<ul>
+<li><p><a class="reference internal" href="#azioni-preliminari" id="id3">Azioni Preliminari</a></p>
+<ul>
+<li><p><a class="reference internal" href="#se-non-abbiamo-wifi" id="id4">Se non abbiamo WIFI</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#uno-sguardo-al-sistema" id="id5">Uno sguardo al sistema</a></p></li>
+<li><p><a class="reference internal" href="#abilitazione" id="id6">Abilitazione</a></p></li>
+<li><p><a class="reference internal" href="#installazione-base-2022" id="id7">Installazione-base 2022</a></p>
+<ul>
+<li><p><a class="reference internal" href="#java" id="id8">Java</a></p></li>
+<li><p><a class="reference internal" href="#git" id="id9">GIT</a></p></li>
+<li><p><a class="reference internal" href="#cmake" id="id10">cmake</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#altre-installazioni" id="id11">Altre Installazioni</a></p>
+<ul>
+<li><p><a class="reference internal" href="#node-ed-express" id="id12">Node ed Express</a></p></li>
+<li><p><a class="reference internal" href="#samba" id="id13">Samba</a></p></li>
+<li><p><a class="reference internal" href="#aiocoap" id="id14">aiocoap</a></p></li>
+<li><p><a class="reference internal" href="#shellinabox" id="id15">Shellinabox</a></p></li>
+<li><p><a class="reference internal" href="#ambiente-virtuale-python" id="id16">Ambiente virtuale Python</a></p>
+<ul>
+<li><p><a class="reference internal" href="#installezione-di-virtualenv" id="id17">Installezione di virtualenv</a></p></li>
+<li><p><a class="reference internal" href="#installezione-di-virtualenvwrapper" id="id18">Installezione di virtualenvwrapper</a></p></li>
+<li><p><a class="reference internal" href="#creazione-di-un-virtual-environment" id="id19">Creazione di un virtual environment</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#multi-media" id="id20">Multi-Media</a></p>
+<ul>
+<li><p><a class="reference internal" href="#audio-con-alsa" id="id21">Audio con alsa</a></p></li>
+<li><p><a class="reference internal" href="#raspicam" id="id22">RaspiCam</a></p></li>
+<li><p><a class="reference internal" href="#webcam" id="id23">WebCam</a></p></li>
+<li><p><a class="reference internal" href="#mjpg-streamer" id="id24">mjpg-streamer</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#pygame" id="id25">pygame</a></p></li>
+<li><p><a class="reference internal" href="#opencv" id="id26">opencv</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#ngrok" id="id27">ngrok</a></p></li>
+<li><p><a class="reference internal" href="#wiringpi-on-bullseye" id="id28">wiringpi on Bullseye</a></p></li>
+<li><p><a class="reference internal" href="#websocket" id="id29">websocket</a></p></li>
+<li><p><a class="reference internal" href="#docker" id="id30">Docker</a></p></li>
+<li><p><a class="reference internal" href="#docker-compose" id="id31">Docker-compose</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="raspberrysoftware">
+<h1><a class="toc-backref" href="#id2">RaspberrySoftware</a><a class="headerlink" href="#raspberrysoftware" title="Permalink to this headline">¶</a></h1>
+<p><span class="remark">Costa poco e permette di fare (e di imparare) molto.</span></p>
+<p>Riportiamo alcuni appunti per rendere più agevole l’attivazione e l’uso del RaspberryPi.
+Il modello di riferimento è il <code class="docutils literal notranslate"><span class="pre">RaspberryPi</span> <span class="pre">3</span> <span class="pre">B+</span></code> ma possono essere usati anche anche modelli
+precedenti e ovviamente il <code class="docutils literal notranslate"><span class="pre">RaspberryPi</span> <span class="pre">4</span> <span class="pre">B</span></code>.</p>
+<section id="azioni-preliminari">
+<h2><a class="toc-backref" href="#id3">Azioni Preliminari</a><a class="headerlink" href="#azioni-preliminari" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Crea scheda <em>SecureDigital</em> (SD) (usando <a class="reference external" href="https://www.raspberrypi.com/software/">RpiImager</a>) con <code class="docutils literal notranslate"><span class="pre">2020-02-13-raspbian-buster-lite</span></code>
+o con il più recente <a class="reference external" href="http://www.raspberrypi.com/news/raspberry-pi-os-debian-bullseye/">Bullseye</a>.</p></li>
+<li><p>Con la scheda inserita in un PC, crea un file vuoto <code class="docutils literal notranslate"><span class="pre">boot/ssh</span></code>.</p></li>
+<li><p>Crea un file <code class="docutils literal notranslate"><span class="pre">boot/wpa_supplicant.conf</span></code> con il seguente contenuto</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ctrl_interface</span><span class="o">=</span><span class="n">DIR</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">wpa_supplicant</span> <span class="n">GROUP</span><span class="o">=</span><span class="n">netdev</span>
+<span class="n">update_config</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">country</span><span class="o">=</span><span class="n">IT</span>
+<span class="n">network</span><span class="o">=</span><span class="p">{</span>
+    <span class="n">ssid</span><span class="o">=</span><span class="s2">&quot;... Your_ESSID &quot;</span>
+    <span class="n">psk</span><span class="o">=</span><span class="s2">&quot;... Your_wifi_password&quot;</span>
+    <span class="n">key_mgmt</span><span class="o">=</span><span class="n">WPA</span><span class="o">-</span><span class="n">PSK</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>A questo punto inserisci la scheda SD sul Raspberry, alimentalo
+con <code class="docutils literal notranslate"><span class="pre">5VDC</span> <span class="pre">700mA</span></code> e poi
+(Si veda anche <a class="reference external" href="https://www.digikey.com/en/maker/blogs/raspberry-pi-wi-fi-bluetooth-setup-how-to-configure-your-pi-4-model-b-3-model-b">Raspberry Pi Wi-Fi &amp; Bluetooth Setup</a>):</p>
+<ol class="arabic simple">
+<li><p>Leggi (opzionalmente collega il Rasperry con un cavo Ethernet) l’indirizzo IP del Raspberry sul Modem-HUB di casa.</p></li>
+<li><p>Connetti il Raspberry via <code class="docutils literal notranslate"><span class="pre">ssh</span></code> usando <code class="docutils literal notranslate"><span class="pre">Putty</span></code>.</p></li>
+</ol>
+<dl class="simple">
+<dt>Quando il sistema si attiva i file in boot è trasferito in</dt><dd><p><code class="docutils literal notranslate"><span class="pre">etc/wpa_supplicant/wpa_supplicant.conf</span></code></p>
+</dd>
+</dl>
+<section id="se-non-abbiamo-wifi">
+<h3><a class="toc-backref" href="#id4">Se non abbiamo WIFI</a><a class="headerlink" href="#se-non-abbiamo-wifi" title="Permalink to this headline">¶</a></h3>
+<p>Inseriamo la SD nel PC, apriamo con un editor il file <code class="docutils literal notranslate"><span class="pre">boot/cmdline.txt</span></code> e scriviamo in fondo alla
+linea di comando:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ip</span><span class="o">=</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">137.2</span>
+</pre></div>
+</div>
+<p>Salviamo e reiseriamo la SD nel RasperryPi e in Windows <code class="docutils literal notranslate"><span class="pre">Network</span> <span class="pre">and</span> <span class="pre">Sharing</span> <span class="pre">Center</span></code>
+di <em>Control Panel/Network and Internet/</em> vediamo:</p>
+<a class="reference internal image-reference" href="_images/Windows10Ethernet.PNG"><img alt="_images/Windows10Ethernet.PNG" class="align-center" src="_images/Windows10Ethernet.PNG" style="width: 60%;" /></a>
+<p>Accendiamo il Raspberry, che dovrebbe essere accessibile all’indirizzo <code class="docutils literal notranslate"><span class="pre">192.168.137.2</span></code>.</p>
+</section>
+</section>
+<section id="uno-sguardo-al-sistema">
+<h2><a class="toc-backref" href="#id5">Uno sguardo al sistema</a><a class="headerlink" href="#uno-sguardo-al-sistema" title="Permalink to this headline">¶</a></h2>
+<p>Prima di procedere alla installazione di nuovo software, conviene dare un’occhiata alla versione iniziale</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">os</span><span class="o">-</span><span class="n">release</span>
+    <span class="n">PRETTY_NAME</span><span class="o">=</span><span class="s2">&quot;Raspbian GNU/Linux 10 (buster)&quot;</span>
+    <span class="n">NAME</span><span class="o">=</span><span class="s2">&quot;Raspbian GNU/Linux&quot;</span>
+    <span class="n">VERSION_ID</span><span class="o">=</span><span class="s2">&quot;10&quot;</span>
+    <span class="o">...</span>
+
+<span class="n">uname</span> <span class="o">-</span><span class="n">a</span>
+    <span class="n">Linux</span> <span class="n">raspberrypi</span> <span class="mf">4.19</span><span class="o">.</span><span class="mi">118</span><span class="o">-</span><span class="n">v7</span><span class="o">+</span> <span class="c1">#1311 SMP Mon Apr 27 14:21:24 BST 2020 armv7l GNU/Linux</span>
+</pre></div>
+</div>
+<p>Visualizziamo i dispositivi</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">arecord</span> <span class="o">-</span><span class="n">l</span>   <span class="c1">#visualizza i dispositivi</span>
+    <span class="o">****</span> <span class="n">List</span> <span class="n">of</span> <span class="n">CAPTURE</span> <span class="n">Hardware</span> <span class="n">Devices</span> <span class="o">****</span>
+    <span class="n">card</span> <span class="mi">1</span><span class="p">:</span> <span class="n">Camera</span> <span class="p">[</span><span class="n">HD</span> <span class="n">Web</span> <span class="n">Camera</span><span class="p">],</span> <span class="n">device</span> <span class="mi">0</span><span class="p">:</span> <span class="n">USB</span> <span class="n">Audio</span> <span class="p">[</span><span class="n">USB</span> <span class="n">Audio</span><span class="p">]</span>
+
+<span class="n">arecord</span> <span class="o">-</span><span class="n">L</span>  <span class="c1">#visualizza in modo esteso</span>
+    <span class="n">plughw</span><span class="p">:</span><span class="n">CARD</span><span class="o">=</span><span class="n">Camera</span><span class="p">,</span><span class="n">DEV</span><span class="o">=</span><span class="mi">0</span>
+        <span class="n">HD</span> <span class="n">Web</span> <span class="n">Camera</span><span class="p">,</span> <span class="n">USB</span> <span class="n">Audio</span>
+        <span class="n">Hardware</span> <span class="n">device</span> <span class="k">with</span> <span class="nb">all</span> <span class="n">software</span> <span class="n">conversions</span>
+</pre></div>
+</div>
+</section>
+<section id="abilitazione">
+<h2><a class="toc-backref" href="#id6">Abilitazione</a><a class="headerlink" href="#abilitazione" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">raspi</span><span class="o">-</span><span class="n">config</span>
+</pre></div>
+</div>
+</section>
+<section id="installazione-base-2022">
+<h2><a class="toc-backref" href="#id7">Installazione-base 2022</a><a class="headerlink" href="#installazione-base-2022" title="Permalink to this headline">¶</a></h2>
+<section id="java">
+<h3><a class="toc-backref" href="#id8">Java</a><a class="headerlink" href="#java" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">openjdk</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="n">jdk</span> <span class="n">openjdk</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="n">jre</span>
+<span class="n">update</span><span class="o">-</span><span class="n">alternatives</span> <span class="o">--</span><span class="n">config</span> <span class="n">java</span>
+<span class="n">java</span> <span class="o">-</span><span class="n">version</span>
+<span class="o">-------------------</span><span class="n">JAVA</span> <span class="n">HOME</span> <span class="o">-----------------</span>
+<span class="n">Include</span> <span class="ow">in</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">environment</span>
+<span class="n">JRE_HOME</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jvm</span><span class="o">/</span><span class="n">java</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="n">openjdk</span><span class="o">-</span><span class="n">armhf</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">java</span>
+</pre></div>
+</div>
+<p>Installazione di <code class="docutils literal notranslate"><span class="pre">OpenJDK</span> <span class="pre">11</span></code>, il default Java development e runtime nell’ultima versione di Raspbian OS,
+basata su Debian 10, Buster.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">default</span><span class="o">-</span><span class="n">jdk</span>
+<span class="n">java</span> <span class="o">-</span><span class="n">version</span>
+</pre></div>
+</div>
+</section>
+<section id="git">
+<h3><a class="toc-backref" href="#id9">GIT</a><a class="headerlink" href="#git" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">git</span>
+<span class="n">git</span> <span class="o">--</span><span class="n">version</span>           <span class="c1">#git version 2.20.1</span>
+</pre></div>
+</div>
+</section>
+<section id="cmake">
+<h3><a class="toc-backref" href="#id10">cmake</a><a class="headerlink" href="#cmake" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">cmake</span></code> è un software multipiattaforma gratuito e open source per l’automazione della build,
+il test, il confezionamento e l’installazione di software utilizzando un metodo indipendente dal compilatore.
+Ha dipendenze minime, richiedendo solo un compilatore C++ sul proprio sistema di compilazione.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">cmake</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="altre-installazioni">
+<h2><a class="toc-backref" href="#id11">Altre Installazioni</a><a class="headerlink" href="#altre-installazioni" title="Permalink to this headline">¶</a></h2>
+<section id="node-ed-express">
+<h3><a class="toc-backref" href="#id12">Node ed Express</a><a class="headerlink" href="#node-ed-express" title="Permalink to this headline">¶</a></h3>
+<p>Node.js è un runtime system open source multipiattaforma orientato agli eventi per l’esecuzione di codice JavaScript,
+costruita sul motore JavaScript V8 di Google Chrome.
+Molti dei suoi moduli base sono scritti in JavaScript, e gli sviluppatori possono scrivere nuovi moduli in JavaScript.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">remove</span> <span class="n">nodejs</span> <span class="n">nodejs</span><span class="o">-</span><span class="n">legacy</span> <span class="o">-</span><span class="n">y</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">remove</span> <span class="n">npm</span> <span class="o">-</span><span class="n">y</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">remove</span> <span class="o">--</span><span class="n">purge</span> <span class="n">node</span>
+
+<span class="o">//</span><span class="n">updates</span> <span class="n">our</span> <span class="n">Debian</span> <span class="n">apt</span> <span class="n">package</span> <span class="n">repository</span>
+<span class="o">//</span><span class="n">to</span> <span class="n">include</span> <span class="n">the</span> <span class="n">NodeSource</span> <span class="n">packages</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">sL</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">deb</span><span class="o">.</span><span class="n">nodesource</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">setup_13</span><span class="o">.</span><span class="n">x</span> <span class="o">|</span> <span class="n">sudo</span> <span class="o">-</span><span class="n">E</span> <span class="n">bash</span> <span class="o">-</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">nodejs</span>  <span class="o">//</span> <span class="n">to</span> <span class="n">install</span> <span class="n">Node</span><span class="o">.</span><span class="n">js</span> <span class="mf">13.</span><span class="n">x</span> <span class="ow">and</span> <span class="n">npm</span>
+
+<span class="n">node</span> <span class="o">-</span><span class="n">v</span>                             <span class="o">//</span><span class="n">v13</span><span class="o">.</span><span class="mf">7.0</span>
+<span class="n">npm</span> <span class="o">--</span><span class="n">version</span>               <span class="o">//</span><span class="mf">6.13</span><span class="o">.</span><span class="mi">6</span>
+
+<span class="n">npm</span> <span class="n">init</span>                    <span class="o">//</span><span class="n">create</span> <span class="n">package</span><span class="o">.</span><span class="n">json</span>
+<span class="n">npm</span> <span class="n">install</span> <span class="n">serialport</span>      <span class="o">//--</span><span class="n">save</span> <span class="ow">is</span> <span class="n">implicit</span>
+
+<span class="n">npm</span> <span class="n">install</span> <span class="n">express</span>
+</pre></div>
+</div>
+</section>
+<section id="samba">
+<h3><a class="toc-backref" href="#id13">Samba</a><a class="headerlink" href="#samba" title="Permalink to this headline">¶</a></h3>
+<p>Samba consente la condivisione di file e stampe tra computer che eseguono Microsoft Windows e computer che eseguono Unix.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">samba</span>
+</pre></div>
+</div>
+</section>
+<section id="aiocoap">
+<h3><a class="toc-backref" href="#id14">aiocoap</a><a class="headerlink" href="#aiocoap" title="Permalink to this headline">¶</a></h3>
+<p>Il package <code class="docutils literal notranslate"><span class="pre">aiocoap</span></code> è un’implementazione di <code class="docutils literal notranslate"><span class="pre">CoAP</span></code> (<em>Constrained Application Protocol</em>).
+È scritto in Python 3 utilizzando i suoi metodi <code class="docutils literal notranslate"><span class="pre">asyncio</span></code> nativi per facilitare le operazioni simultanee
+mantenendo un’interfaccia facile da usare.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">aiocoap</span>
+</pre></div>
+</div>
+<p>Si veda anche <a class="reference external" href="https://github.com/mkovatsc/Copper4Cr">Copper for Chrome (Cu4Cr) CoAP user-agent</a></p>
+</section>
+<section id="shellinabox">
+<h3><a class="toc-backref" href="#id15">Shellinabox</a><a class="headerlink" href="#shellinabox" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://github.com/shellinabox/shellinabox">Shellinabox</a>
+utilizza la tecnologia <code class="docutils literal notranslate"><span class="pre">AJAX</span></code> per fornire l’aspetto di una shell nativa tramite un browser web.
+Il demone  <code class="docutils literal notranslate"><span class="pre">shellinaboxd</span></code> implementa un server web che ascolta sulla porta specificata
+(il defualt è <code class="docutils literal notranslate"><span class="pre">4200</span></code>).
+Il server web pubblica uno o più servizi che verranno visualizzati in un  emulatore <code class="docutils literal notranslate"><span class="pre">VT100</span></code>
+implementato come applicazione web <code class="docutils literal notranslate"><span class="pre">AJAX</span></code>.</p>
+<p>Shellinabox è incluso in molte distribuzioni Linux tramite repository predefiniti.
+Per motivi di sicurezza, è bene cambiare la porta predefinita (ad esempio in 6754)
+per rendere difficile a chiunque raggiungere la casella SSH.</p>
+<p>Durante l’installazione viene creato automaticamente un nuovo certificato SSL autofirmato in
+<code class="docutils literal notranslate"><span class="pre">/var/lib/shellinabox</span></code> per utilizzare il protocollo <cite>HTTPS</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">cache</span> <span class="n">search</span> <span class="n">shellinabox</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">openssl</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">shellinabox</span>
+
+<span class="n">SHELLINABOX_PORT</span><span class="o">=</span><span class="mi">6754</span>                 <span class="c1">#Cambio della porta</span>
+<span class="n">sudo</span> <span class="n">service</span> <span class="n">shellinaboxd</span> <span class="n">start</span>       <span class="c1">#Attiva il servizio</span>
+<span class="n">sudo</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">shellinabox</span> <span class="n">restart</span>
+
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">shellinabox</span> <span class="n">status</span>
+<span class="n">sudo</span> <span class="n">service</span> <span class="o">--</span><span class="n">status</span><span class="o">-</span><span class="nb">all</span>             <span class="c1">#visualizza i servizi</span>
+<span class="n">sudo</span> <span class="n">netstat</span> <span class="o">-</span><span class="n">tlpn</span>                    <span class="c1">#visualizza i servizi and le porte TCP in ascolto</span>
+<span class="n">sudo</span> <span class="n">netstat</span> <span class="o">-</span><span class="n">nap</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">shellinabox</span>  <span class="c1">#verifica</span>
+
+<span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">4200</span>
+</pre></div>
+</div>
+</section>
+<section id="ambiente-virtuale-python">
+<h3><a class="toc-backref" href="#id16">Ambiente virtuale Python</a><a class="headerlink" href="#ambiente-virtuale-python" title="Permalink to this headline">¶</a></h3>
+<p>Una volta installato, Python3 si trova in <code class="docutils literal notranslate"><span class="pre">/usr/bin/</span></code> ed è un symlink di <code class="docutils literal notranslate"><span class="pre">/usr/bin/python3</span></code>,
+che a sua volta è un symlink di <code class="docutils literal notranslate"><span class="pre">/usr/bin/python3.7</span></code> (il vero binario).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">which</span> <span class="n">python3</span>
+     <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python3</span>
+<span class="n">ls</span> <span class="o">-</span><span class="n">lart</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python3</span>
+    <span class="n">lrwxrwxrwx</span> <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">9</span> <span class="n">Mar</span> <span class="mi">26</span>  <span class="mi">2019</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python3</span> <span class="o">-&gt;</span> <span class="n">python3</span><span class="o">.</span><span class="mi">7</span>
+<span class="n">ls</span> <span class="o">-</span><span class="n">lart</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python3</span><span class="o">.</span><span class="mi">7</span>
+    <span class="o">-</span><span class="n">rwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span> <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">4275580</span> <span class="n">Dec</span> <span class="mi">20</span>  <span class="mi">2019</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python3</span><span class="o">.</span><span class="mi">7</span>
+</pre></div>
+</div>
+<p>Un ambiente virtuale è uno strumento Python per la gestione delle dipendenze e
+l’ isolamento del progetto. Consentono ai Package del sito Python (librerie di terze parti)
+di essere installati localmente in una directory isolata per un particolare progetto,
+invece di essere installati globalmente (cioè come parte di un Python a livello di sistema).</p>
+<section id="installezione-di-virtualenv">
+<h4><a class="toc-backref" href="#id17">Installezione di virtualenv</a><a class="headerlink" href="#installezione-di-virtualenv" title="Permalink to this headline">¶</a></h4>
+<p>Fase 1: aggiungiamo un opzione di configurazione al file hidden denominato <cite>.bashrc</cite> aggiungendo il comando
+(alias) <cite>myenv</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span> <span class="n">echo</span><span class="p">;</span> <span class="n">echo</span> <span class="s1">&#39;##### added for myenv #####&#39;</span><span class="p">;</span> <span class="n">echo</span> <span class="s1">&#39;export PATH=/home/pi/.local/bin:$PATH&#39;</span><span class="p">;</span> <span class="n">echo</span> <span class="s2">&quot;alias myenv=&#39;source ~/myenv/bin/activate&#39;&quot;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="o">~/.</span><span class="n">bashrc</span>
+<span class="o">.</span> <span class="o">~/.</span><span class="n">bashrc</span>
+</pre></div>
+</div>
+<p>Fase 2: attiviamo il nuovo virtualenv e entriamo in esso:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip3</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">pip</span>
+<span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">virtualenv</span>
+<span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">virtualenv</span> <span class="n">myenv</span>
+</pre></div>
+</div>
+<p>In coppia con <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code>, è consigliabile l’installazione del modulo <code class="docutils literal notranslate"><span class="pre">virtualenvwrapper</span></code>
+che contiene una sere di utilities per facilitare la gestione degli ambienti virtuali.</p>
+</section>
+<section id="installezione-di-virtualenvwrapper">
+<h4><a class="toc-backref" href="#id18">Installezione di virtualenvwrapper</a><a class="headerlink" href="#installezione-di-virtualenvwrapper" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">pip3</span> <span class="n">install</span> <span class="n">virtualenv</span> <span class="n">virtualenvwrapper</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">virtualenvwrapper</span><span class="o">-</span><span class="n">win</span>  <span class="o">//</span><span class="n">su</span> <span class="n">Windows10</span>
+</pre></div>
+</div>
+<p>Verifichiamo  l’avvenuta installazione e la relativa versione:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">virtualenv</span> <span class="o">--</span><span class="n">version</span>
+    <span class="n">virtualenv</span> <span class="mf">20.10</span><span class="o">.</span><span class="mi">0</span> <span class="kn">from</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">pi</span><span class="o">/.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">virtualenv</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>Per fruire degli ambienti aggiungiamo i riferimenti e le risorse nel profilo</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>nano ~/.profile
+--------------------------------------------------
+# virtualenv and virtualenvwrapper
+export WORKON_HOME=$HOME/.virtualenvs
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+source /usr/local/bin/virtualenvwrapper.sh
+--------------------------------------------------
+</pre></div>
+</div>
+<p>Ricarichiamo le risorse del profilo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">~/.</span><span class="n">profile</span>
+</pre></div>
+</div>
+</section>
+<section id="creazione-di-un-virtual-environment">
+<h4><a class="toc-backref" href="#id19">Creazione di un virtual environment</a><a class="headerlink" href="#creazione-di-un-virtual-environment" title="Permalink to this headline">¶</a></h4>
+<p>Posizionamoci in una drectory di lavoro e
+creiamo un ambiente per Python 3 denominato <strong>myenv</strong>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkvirtualenv</span> <span class="n">myenv</span>
+</pre></div>
+</div>
+<p>Per entrare nel virtualenv appena creato basta digitare:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">myenv</span></code></p>
+</div></blockquote>
+<p>Per uscire dal virtualenv:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">deactivate</span></code>.</p>
+</div></blockquote>
+<p>Per visualizzare gli ambienti virtuali creati, occoorre avere installato <cite>virtualenvwrapper`</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lsvirtualenv</span> <span class="o">-</span><span class="n">l</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="multi-media">
+<h3><a class="toc-backref" href="#id20">Multi-Media</a><a class="headerlink" href="#multi-media" title="Permalink to this headline">¶</a></h3>
+<section id="audio-con-alsa">
+<h4><a class="toc-backref" href="#id21">Audio con alsa</a><a class="headerlink" href="#audio-con-alsa" title="Permalink to this headline">¶</a></h4>
+<p>Nella directory <cite>/home/pi/nat</cite> inseriamo file wav ed mp3 ed eseguiamo (per sentire audio mediante cell-phone TRRS Headset):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">aplay</span> <span class="n">example_WAV</span><span class="o">.</span><span class="n">wav</span>         <span class="c1">#(non usare per mp3)</span>
+<span class="n">omxplayer</span> <span class="n">Oratore</span><span class="o">.</span><span class="n">mp3</span>         <span class="c1">#(- + regola volume)</span>
+<span class="n">omxplayer</span> <span class="n">example_WAV</span><span class="o">.</span><span class="n">wav</span>     <span class="c1">#riproduce - + modifica volumer</span>
+<span class="n">omxplayer</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">pi</span><span class="o">/</span><span class="n">Music</span><span class="o">/</span><span class="n">Ella_Fitzgerald_Summertime</span><span class="o">.</span><span class="n">mp3</span>
+
+<span class="n">speaker</span><span class="o">-</span><span class="n">test</span> <span class="o">-</span><span class="n">c2</span> <span class="o">--</span><span class="n">test</span><span class="o">=</span><span class="n">wav</span> <span class="o">-</span><span class="n">w</span> <span class="n">Rear_Center</span><span class="o">.</span><span class="n">wav</span>
+<span class="p">(</span><span class="n">cerca</span> <span class="ow">in</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">sounds</span><span class="o">/</span><span class="n">alsa</span><span class="o">/</span><span class="n">xxx</span><span class="o">.</span><span class="n">wav</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Una libreria di suoni: <a class="reference external" href="https://pdsounds.org/">https://pdsounds.org/</a></p>
+</section>
+<section id="raspicam">
+<h4><a class="toc-backref" href="#id22">RaspiCam</a><a class="headerlink" href="#raspicam" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">raspistill</span> <span class="o">-</span><span class="n">o</span> <span class="n">image</span><span class="o">.</span><span class="n">jpg</span>             <span class="c1">#scatta immagine</span>
+<span class="n">raspivid</span> <span class="o">-</span><span class="n">o</span> <span class="n">video</span><span class="o">.</span><span class="n">h264</span> <span class="o">-</span><span class="n">t</span> <span class="mi">5000</span>              <span class="c1">#crea video (in msecs)</span>
+</pre></div>
+</div>
+</section>
+<section id="webcam">
+<h4><a class="toc-backref" href="#id23">WebCam</a><a class="headerlink" href="#webcam" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo apt install fswebcam
+fswebcam image1.jpg                #crea immagine 640x320
+fswebcam -r 1280x720 image2.jpg    #crea immagine 1280x720
+fswebcam -r 320×240 image3.jpg     #crea immagine 320×240
+</pre></div>
+</div>
+<p>Se abbiamo installato una WebCam con microfono, controlliamone il funzionamento</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">arecord</span> <span class="o">-</span><span class="n">D</span> <span class="n">plughw</span><span class="p">:</span><span class="n">Camera</span> <span class="n">test</span><span class="o">.</span><span class="n">wav</span>
+<span class="n">arecord</span> <span class="o">-</span><span class="n">D</span> <span class="n">plughw</span><span class="p">:</span><span class="n">Camera</span><span class="p">,</span><span class="mi">0</span> <span class="o">-</span><span class="n">d</span> <span class="mi">5</span> <span class="o">-</span><span class="n">f</span> <span class="n">cd</span> <span class="n">test</span><span class="o">.</span><span class="n">wav</span> <span class="o">-</span><span class="n">c</span> <span class="mi">2</span>
+<span class="n">omxplayer</span> <span class="n">test</span><span class="o">.</span><span class="n">wav</span>      <span class="c1">#riproduce - + modifica volumer</span>
+
+<span class="n">alsamixer</span> <span class="c1">#F6 seleziona la scheda</span>
+</pre></div>
+</div>
+</section>
+<section id="mjpg-streamer">
+<h4><a class="toc-backref" href="#id24">mjpg-streamer</a><a class="headerlink" href="#mjpg-streamer" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">jacksonliam</span><span class="o">/</span><span class="n">mjpg</span><span class="o">-</span><span class="n">streamer</span><span class="o">.</span><span class="n">git</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">cmake</span> <span class="n">libjpeg9</span><span class="o">-</span><span class="n">dev</span>
+<span class="n">cd</span> <span class="n">mjpg</span><span class="o">-</span><span class="n">streamer</span><span class="o">-</span><span class="n">experimental</span>
+<span class="n">make</span>
+<span class="n">sudo</span> <span class="n">make</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>Attivazione e prova:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">start</span><span class="o">.</span><span class="n">sh</span>     <span class="ow">or</span> <span class="n">bash</span> <span class="n">start</span><span class="o">.</span><span class="n">sh</span>
+
+<span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span><span class="n">stream</span><span class="o">.</span><span class="n">html</span>
+</pre></div>
+</div>
+<p>Se la <span class="red">webcam si ferma</span> dopo qualche secondo, modificare
+in <code class="docutils literal notranslate"><span class="pre">/boot/config.txt</span></code>  da gpu_mem=128 a <span class="blue">gpu_mem=256</span>.</p>
+<p>Altro codice di attivazione:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">mjpg_streamer</span> <span class="o">-</span><span class="n">i</span> <span class="s2">&quot;input_uvc.so -r 1280x720  -d /dev/video0 -f 30&quot;</span> <span class="o">-</span><span class="n">o</span> <span class="s2">&quot;output_http.so -p 8085  -w /usr/local/share/mjpg-streamer/www&quot;</span>
+
+<span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8085</span><span class="o">/</span><span class="n">stream</span><span class="o">.</span><span class="n">html</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="pygame">
+<h3><a class="toc-backref" href="#id25">pygame</a><a class="headerlink" href="#pygame" title="Permalink to this headline">¶</a></h3>
+<p>PyGame di solito viene installato con l’ultima distribuzione Raspbian
+Pygame v1.9 is in raspi os at install.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span> <span class="c1">#directory delle librerie</span>
+
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">libsdl</span><span class="o">-</span><span class="n">ttf2</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mi">0</span>
+<span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">pygame</span> <span class="o">--</span><span class="n">user</span> <span class="c1">#install in the home directory</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">music</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;/home/pi/Music/Oratore.mp3&quot;</span><span class="p">)</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">music</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">python</span>
+</pre></div>
+</div>
+</section>
+<section id="opencv">
+<h3><a class="toc-backref" href="#id26">opencv</a><a class="headerlink" href="#opencv" title="Permalink to this headline">¶</a></h3>
+<p>L’ultima versione non sembra facilmente caricabile.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">libatlas3</span><span class="o">-</span><span class="n">base</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">opencv</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">4.4</span><span class="o">.</span><span class="mf">0.42</span>
+
+<span class="n">python</span> <span class="n">face_detection</span><span class="o">.</span><span class="n">py</span>    <span class="c1">#da: https://www.html.it/articoli/face-detection-python-10-linee-di-codice/</span>
+<span class="n">Necessita</span> <span class="n">scaricare</span>         <span class="c1">#da: https://github.com/opencv/opencv/tree/master/data/haarcascades</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="ngrok">
+<h2><a class="toc-backref" href="#id27">ngrok</a><a class="headerlink" href="#ngrok" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Download di ngrok (tar -xvzf  ngrok-stable-linux-arm.tgz)</p></li>
+<li><p>Acquisire account (ad es. con Google)</p></li>
+<li><p>Acquisire authtoken (xxx)</p></li>
+<li><p>ngrok authtoken xxx (salvato in /home/pi/.ngrok2/ngrok.yml)</p></li>
+<li><p>ngrok http 8081</p></li>
+<li><p>usare il forqarding proposto (<a class="reference external" href="http://1eaa-95-249-218-184.ngrok.io">http://1eaa-95-249-218-184.ngrok.io</a>)</p></li>
+</ol>
+</section>
+<section id="wiringpi-on-bullseye">
+<h2><a class="toc-backref" href="#id28">wiringpi on Bullseye</a><a class="headerlink" href="#wiringpi-on-bullseye" title="Permalink to this headline">¶</a></h2>
+<p>Su Bullseye <a class="reference external" href="http://wiringpi.com/">wiringPi</a> è deprecated. Possiamo però  ricaricarlo come segue:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">tmp</span>
+<span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">project</span><span class="o">-</span><span class="n">downloads</span><span class="o">.</span><span class="n">drogon</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">wiringpi</span><span class="o">-</span><span class="n">latest</span><span class="o">.</span><span class="n">deb</span>
+<span class="n">sudo</span> <span class="n">dpkg</span> <span class="o">-</span><span class="n">i</span> <span class="n">wiringpi</span><span class="o">-</span><span class="n">latest</span><span class="o">.</span><span class="n">deb</span>
+</pre></div>
+</div>
+</section>
+<section id="websocket">
+<h2><a class="toc-backref" href="#id29">websocket</a><a class="headerlink" href="#websocket" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://spring.io/guides/gs/messaging-stomp-websocket/">https://spring.io/guides/gs/messaging-stomp-websocket/</a></p>
+</section>
+<section id="docker">
+<h2><a class="toc-backref" href="#id30">Docker</a><a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Installazione
+
+    sudo curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
+    sudo chmod +x /tmp/get-docker.sh
+    sudo sh /tmp/get-docker.sh
+
+Aggiunta permessi per eseguire comandi
+    sudo usermod -aG docker pi
+        reboot !!!
+
+
+    sudo dockerd &amp;     #daemon runs with default configuration
+    docker version     #20.10.6
+    docker info
+
+Test
+
+    docker run hello-world
+</pre></div>
+</div>
+</section>
+<section id="docker-compose">
+<h2><a class="toc-backref" href="#id31">Docker-compose</a><a class="headerlink" href="#docker-compose" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Installazione</span> <span class="n">dipendenze</span>
+    <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">libffi</span><span class="o">-</span><span class="n">dev</span> <span class="n">libssl</span><span class="o">-</span><span class="n">dev</span>
+    <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">python3</span> <span class="n">python3</span><span class="o">-</span><span class="n">pip</span>
+    <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">remove</span> <span class="n">python</span><span class="o">-</span><span class="n">configparser</span>
+
+<span class="n">Installazione</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span>
+    <span class="n">sudo</span> <span class="n">pip3</span> <span class="n">install</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">RaspberrySoftware</a><ul>
+<li><a class="reference internal" href="#azioni-preliminari">Azioni Preliminari</a><ul>
+<li><a class="reference internal" href="#se-non-abbiamo-wifi">Se non abbiamo WIFI</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#uno-sguardo-al-sistema">Uno sguardo al sistema</a></li>
+<li><a class="reference internal" href="#abilitazione">Abilitazione</a></li>
+<li><a class="reference internal" href="#installazione-base-2022">Installazione-base 2022</a><ul>
+<li><a class="reference internal" href="#java">Java</a></li>
+<li><a class="reference internal" href="#git">GIT</a></li>
+<li><a class="reference internal" href="#cmake">cmake</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#altre-installazioni">Altre Installazioni</a><ul>
+<li><a class="reference internal" href="#node-ed-express">Node ed Express</a></li>
+<li><a class="reference internal" href="#samba">Samba</a></li>
+<li><a class="reference internal" href="#aiocoap">aiocoap</a></li>
+<li><a class="reference internal" href="#shellinabox">Shellinabox</a></li>
+<li><a class="reference internal" href="#ambiente-virtuale-python">Ambiente virtuale Python</a><ul>
+<li><a class="reference internal" href="#installezione-di-virtualenv">Installezione di virtualenv</a></li>
+<li><a class="reference internal" href="#installezione-di-virtualenvwrapper">Installezione di virtualenvwrapper</a></li>
+<li><a class="reference internal" href="#creazione-di-un-virtual-environment">Creazione di un virtual environment</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#multi-media">Multi-Media</a><ul>
+<li><a class="reference internal" href="#audio-con-alsa">Audio con alsa</a></li>
+<li><a class="reference internal" href="#raspicam">RaspiCam</a></li>
+<li><a class="reference internal" href="#webcam">WebCam</a></li>
+<li><a class="reference internal" href="#mjpg-streamer">mjpg-streamer</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pygame">pygame</a></li>
+<li><a class="reference internal" href="#opencv">opencv</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ngrok">ngrok</a></li>
+<li><a class="reference internal" href="#wiringpi-on-bullseye">wiringpi on Bullseye</a></li>
+<li><a class="reference internal" href="#websocket">websocket</a></li>
+<li><a class="reference internal" href="#docker">Docker</a></li>
+<li><a class="reference internal" href="#docker-compose">Docker-compose</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="UsoDiunPlanner.html"
+                          title="previous chapter">Uso di un planner</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="RaspBasicCode.html"
+                          title="next chapter">RaspBasicCode</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/RaspberrySoftware.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="RaspBasicCode.html" title="RaspBasicCode"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="UsoDiunPlanner.html" title="Uso di un planner"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">RaspberrySoftware</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

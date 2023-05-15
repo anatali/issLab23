@@ -1,0 +1,367 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+k{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #990000;
+	 
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	 
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	 
+}
+pre{
+	font-family: "Helvetica";
+	font-size: 70%;
+	background-color: #fcf8c7; 
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}    
+div.remark{
+	background-color: #FFFC33;     
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+  -->
+</style>
+    
+<head>
+   
+<title>LabPlanner</title></head>
+    
+<body>
+
+<div class="body"> 
+
+<h1>LabISS | Exploiting Planning Tools</h1> 
+ 
+ 
+ <h2>Overview</h2>
+ In many ddr-robot applications, there is the need to discovery the topology of the floor and to define test plans to check
+ that the robot covers all the free-areas of the floor.
+ 
+ In these applications, the robot control software could logically operate in two phases:
+ <div class="remark">
+<center><bc>plan-first - schedule later</bc>, 
+ sez. <tt>11.1</tt> of <a href="#AIBook">AIBook</a></center>
+ </div>
+ <ol>
+ <li>first, the robot <ks>detects</ks> (by using a planner) a proper sequence of moves according its current position 
+ and the current state of the world  (the room in which it is working. </li>
+ <li>next, the robot <ks>actuates</ks> the move sequence, with the caution the the execution of a <em>basicStep</em> in the forward directio
+should work also as a <bc>'discovery action'</bc> that could lead to the interruption of the sequence for the presence of a (fixed or mobile) <b>obstacle</b>.</li>
+</ol>
+
+To promote the development of plan-based applications, it is wise to encapsulate the planning activity into a specialized component, 
+named, from now on, 'the <bc>planner</bc>'.
+
+ At this level of analysis, the details of the behavior of the planner can be ignored. 
+In fact, we will exploit a set of available supports built upon the <a href="https://github.com/aimacode/aima-java" target="web">AIMA3e-Java</a>
+library:  	
+<br/><br/>
+
+  	<center><table style="width:98%">
+ 
+	<tr>
+	<td style="width:40%">
+	<h3>AIMA library</h3>
+    <a href="https://github.com/aimacode/aima-java" target="web">AIMA3e-Java</a> <br/> <br/>
+	<m>
+	In particular, the Best-first search algorithm (sez. <tt>3.5.2</tt> of the book) as a support for search-based problem-solving agents:<br/>
+	<a href="https://github.com/aimacode/aima-java/blob/AIMA3e/aima-core/src/main/java/aima/core/search/informed/AStarSearch.java" 
+	target="web">AStarSearch</a><br/><br/>
+	The initial proposal for introducing a planner has been done by the student Federico Stella; see
+	<a href="./NotesStellaR-Map.pdf" target="code">NotesStellaR-Map.pdf</a>.
+	</m>
+	</td> 
+	<td>
+ 	Java implementation of algorithms from: <br/>
+	<h4 id="AIBook">AIBook</h4>
+	Russell and Norvig: Artificial Intelligence - A Modern Approach 3rd Edition.
+	<center><img src="./img/Planner/AIBookRusselNorvig.png" alt="AIBookRusselNorvig" width="45%" height="45%"/></center><br/>  
+ 	</td>
+	</tr>
+ 	</table>
+	</center> 	 
+	
+ <h2>The support for planning</h2>
+In the project <bc>unibo.planner23</bc>, we introduce a support 
+(<tt>src/unibo/planner23/Planner23Util.java</tt>) 
+for planning the actions of a robot
+working in logical space (a <bc>map</bc>) composed of a set of square cells, each large as the robot.
+<m>
+<div class="remark">
+<center>The planner-support is deployed in the file 
+<a href="../../../unibolibs/unibo.planner23-1.0.jar" target="code">unibo.planner23-1.0.jar</a>.</center>
+</div>
+</m>
+	
+	
+  	<center><table style="width:98%">
+	<tbody>	
+	<tr>
+ 	<td style="width:35%">
+	<h3>The logical move-space</h3>
+	<m>The robot is supposed to be a square device, large as a cell.</m>
+ 	</td> 	
+	<td>
+    <center><img src="./img/Planner/plant0.png" alt="plant0" width="25%" height="32%"/></center>
+	<m>
+    </m>
+ 	</td>
+	</tr>
+	
+	<tr>
+ 	<td>
+	<h3 id="plannerUtil">The utility  <tt>Planner23Util.kt</tt></h3>
+	<m>The content of a cell has the following meaning:</m>
+	<pre>
+	<k>r</k>: 		cell occupied by the robot
+	<k>1</k>:		cell free, explored by the robot
+	<k>0</k>:		cell not yet explored
+	<k>X</k>:		cell that contains an obstacle	</pre>
+	<m>
+	The tool provides operations for:
+	<ul>
+	<li>Creating plans</li>
+	<li>Managing plans as action sequences</li>
+	<li>Inspecting robot position and direction</li>
+	<li>Managing the room-map</li>
+	</ul></m>
+ 	</td> 	
+	<td>
+ 	In particular:
+	<ul>
+	<li>The operation  <tt><k>initAI</k>( )</tt>: initializes the planner with a <i>BreadthFirstSearch</i> algorithm, assuming a robot in
+<bc>home position</bc> (<m><ks>(0,0)</k>,  direction='down'</ks></m> - see the picture above). <br/>
+	The possible robot directions are: <m><kc>down | right | up | left</kc></m>. <br/><br/>
+	</li>	
+	
+	<li>The operation <tt>fun <k>setGoal</k>( x: Int, y: Int)</tt> sets the current goal, i.e. a <m><ks><i>target position</i></ks></m> 
+	in the room to be reached.<br/><br/>
+	
+	<li>The operation <tt>fun <k>doPlan()</k>: List&lt;Action> </tt>
+	creates a plan as a list of actions (<m><ks><i>robot moves</i></ks></m> <tt>w | s | r | l | h | ...</tt>) 
+	to move the robot form its current position 
+	to the current <m><ks><i>target position</i></ks></m>.<br/><br/>
+	
+	</li>
+	<li>The operation <tt>fun <k>doMove</k>(move: String)</tt> performs a <m><ks><i>robot move</i></ks></m> 
+	by changing the robot position in the map and the robot direction.
+	</li>
+	</ul>
+	 
+   <center></center>
+	<m>
+    </m>
+ 	</td>
+	</tr>
+	 </table>
+	</center> 	
+	
+<h2>Experiment (without any robot)</h2>	
+  	<center><table style="width:98%">
+	<tbody>	
+	<tr>
+ 	<td style="width:45%">
+    <h3 id="spiralwalkernorobot">Spiral walker</h3>
+	 	<center><img src="./img/Planner/spiralmove0.png" alt="spiralmove0" width="45%" height="32%"/></center>
+	The robot starts within an empty, rectangular room with unlimited surface.
+<br/><br/>
+	The only fact known is that the robot is positioned in the cell <tt>(0,0)</tt> (its 'home').
+	</td>
+	<td>
+	Write a model <tt>spiralwalker.qak</tt>, where:
+	<ul>
+	<li>the robot starts from its <bc>home position</bc> and performs a sequence of <m><ks>n, n=1..4</ks></m> tours. At each tour <m><ks>n</ks></m>, 
+	it creates a plan 	to reach the cell <m><ks>(n,n)</ks></m> (<m><k>SUPPOSED free</k></m>) and executes it; <br/><br/>
+	<li>when the target cell <m><ks>(n,n)</ks></m> is reached, the robot executes a plan to return to its home; 
+	afterwards it attempt to reach the cell <m><ks>(n+1,n+1)</ks></m>.<br/><br/></li>
+	<li>at the end, the robot stores the current map in a binary file named <bc>roomMapSquare.bin</bc>; 
+	    the representation of the map as a String is:
+	<pre>
+|r, 1, 1, 1, 1, 
+|1, 1, 1, 1, 1, 
+|1, 1, 1, 1, 1, 
+|1, 1, 1, 1, 1, 
+|1, 1, 1, 1, 1, 	</pre>
+	
+	</li>
+	</ul>
+ 
+	</td>
+	</tr>
+ 
+ <!--
+ <tr>
+ <td>
+ <h3 id="resumablewalkernorobot">Resumable walker</h3>
+ 
+<center><img src="./img/Planner/butlermove0.png" alt="butlermove0.png" width="45%" height="32%"/></center><br/>
+ 	<ol>
+	<li>we assume that the robot will move in an empty, rectangular room of limited surface and that map of the room is 
+	already available in a binary file named <bc>roomMap.bin</bc> (and in the textual form in the file <a href="../roomMap.txt" target="code">roomMap.txt</a>);<br/><br/></li>
+	<li>the robot starts at its <bc>home position</bc> and creates a plan to reach a <bc>target cell</bc> cell (e.g. <m><ks> (4,4)</ks></m>);<br/><br/>
+	</li>
+	</ol>
+
+	</m>
+	</td> 
+	<td>In the example <a href="../src/resumablewalker.qak" target="code">resumablewalker.qak</a>:
+ 	<ul>
+	<li>while executing the plan, the robot reacts to an <bc>alarm</bc> event. Before handling the alarm, the robot
+	<ks>saves</ks> its current position and the sequence of planned moves not yet done; afterwards, it handles the alarm by creating a plan to return to its home; <br/><br/>
+	</li>
+	<li>the robot executes the plan to return to its home  without sensing any event;<br/><br/></li>
+	<li>when the robot is returned to home, it creates a plan to return to the saved position and then executes this plan without sensing any event;<br/><br/
+	</li>
+	<li>when the robot has reached its old position, it continues to execute the saved sequence of moves, being prepared to handle some other alarm.
+	</li>
+	</ul>
+	
+	Another strategy could be to save just the current position at <tt>point 3</tt>, when an <bc>alarm</bc> is perceived  and to <i>create a new plan</i> at 
+	 <tt>point 6</tt>, 	to reach the  <bc>target cell</bc>.
+	
+	</td>
+	</tr>
+-->
+ 	 </table>
+	</center> 	
+
+<!--
+<h2>Examples with a robot </h2>	
+
+See <a href="../../it.unibo.qak20.robotroommap/userdocs/LabRobotPlanned.html" target="code">
+LabRobotPlanned | Moving a robot with plans</a>
+in the project <a href="../../it.unibo.qak20.robotroommap/userdocs/LabRobotPlanned.html" target="code">
+it.unibo.qak20.robotroommap</a>.
+ 	
+--> 	
+<br/><br/> 	
+ 	
+ 
+ 	
+</div>
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div> 
+</body>
+</html>

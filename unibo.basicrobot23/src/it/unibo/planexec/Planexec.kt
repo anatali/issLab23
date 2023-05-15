@@ -18,9 +18,11 @@ class Planexec ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 	}
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		val interruptedStateTransitions = mutableListOf<Transition>()
-		 var CurMoveTodo = ""
-				var Path  = ""
-				var Owner = "unknown"
+		 var Path = ""
+				var CurMoveTodo   = ""		
+				var StepSynchRes  = false
+				var StepTime      = 345L
+				var Owner         = "unknown"
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -34,26 +36,103 @@ class Planexec ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 				}	 
 				state("work") { //this:State
 					action { //it:State
-						CommUtils.outblue("planexec | waiting ...")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t09",targetState="execpath",cond=whenRequest("dopath"))
+					 transition(edgeName="t07",targetState="dopath",cond=whenRequest("dopath"))
 				}	 
-				state("execpath") { //this:State
+				state("dopath") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						CommUtils.outred("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
-						if( checkMsgContent( Term.createTerm("dopath(PATH,OWNER)"), Term.createTerm("dopath(PLAN,OWNER)"), 
+						if( checkMsgContent( Term.createTerm("dopath(PATH,OWNER,STEPTIME)"), Term.createTerm("dopath(PLAN,OWNER,STEPTIME)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								CommUtils.outblue("$name | ${payloadArg(0)}")
-								 Path = payloadArg(0).replace("[","").replace("]","").replace(", ","")
-												Owner = payloadArg(1)
+								  Path  = payloadArg(0).replace("[","").replace("]","").replace(",","").replace(" ","")
+												Owner    = payloadArg(1)
+												StepTime = payloadArg(2).toLong()
 								CommUtils.outblue("$name | Path=$Path")
-								answer("dopath", "dopathfailed", "dopathfailed($Path)"   )  
 						}
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+				 	 		stateTimer = TimerActor("timer_dopath", 
+				 	 					  scope, context!!, "local_tout_planexec_dopath", 100.toLong() )
+					}	 	 
+					 transition(edgeName="t08",targetState="nextMove",cond=whenTimeout("local_tout_planexec_dopath"))   
+					transition(edgeName="t09",targetState="pathinterrupted",cond=whenEvent("alarm"))
+				}	 
+				state("nextMove") { //this:State
+					action { //it:State
+						 
+								   if( Path.length > 0  ){
+								   	CurMoveTodo =  Path.elementAt(0).toString() 
+								   	Path        =  Path.removePrefix(CurMoveTodo)
+								   }else CurMoveTodo = ""		   
+						CommUtils.outblue("planexec CurMoveTodo= $CurMoveTodo remain:$Path")
+						forward("nextmove", "nextmove($CurMoveTodo)" ,"planexec" ) 
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t010",targetState="pathinterrupted",cond=whenEvent("alarm"))
+					transition(edgeName="t011",targetState="doMove",cond=whenDispatch("nextmove"))
+				}	 
+				state("doMove") { //this:State
+					action { //it:State
+						CommUtils.outblue("domove $CurMoveTodo")
+						if(  CurMoveTodo == ""  
+						 ){forward("nomoremove", "nomoremove(end)" ,"planexec" ) 
+						}
+						else
+						 {if(  CurMoveTodo == "w"  
+						  ){delay(300) 
+						  StepSynchRes = uniborobots.robotSupport.dostep( StepTime )  
+						 }
+						 else
+						  {CommUtils.outblue("doMoveTurn $CurMoveTodo")
+						  uniborobots.robotSupport.move( CurMoveTodo  )
+						  }
+						 forward("nextmove", "nextmove(goon)" ,"planexec" ) 
+						 }
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t012",targetState="pathinterrupted",cond=whenEvent("alarm"))
+					transition(edgeName="t013",targetState="pathend",cond=whenDispatch("nomoremove"))
+					transition(edgeName="t014",targetState="nextMove",cond=whenDispatch("nextmove"))
+				}	 
+				state("pathend") { //this:State
+					action { //it:State
+						CommUtils.outred("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
+						if(  currentMsg.msgContent() == "alarm(disengaged)"  
+						 ){}
+						else
+						 {if(  currentMsg.msgId() == "alarm"  
+						  ){CommUtils.outblue("pathend  ")
+						  val Pathtodo = CurMoveTodo + Path  
+						 answer("dopath", "dopathfailed", "dopathfailed($Pathtodo)"   )  
+						 }
+						 else
+						  {CommUtils.outblue("pathend StepSynchRes=$StepSynchRes ")
+						  if(  StepSynchRes  
+						   ){answer("dopath", "dopathdone", "dopathdone(ok)"   )  
+						  }
+						  else
+						   { var Pathtodo = CurMoveTodo + Path 
+						   					   if( Pathtodo.length == 0 ) Pathtodo="e"
+						   CommUtils.outblue("pathend Pathtodo=$Pathtodo ")
+						   answer("dopath", "dopathfailed", "dopathfailed($Pathtodo)"   )  
+						   }
+						  }
+						 }
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -61,10 +140,13 @@ class Planexec ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 					}	 	 
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
-				state("pathend") { //this:State
+				state("pathinterrupted") { //this:State
 					action { //it:State
 						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
+						CommUtils.outblue("pathinterrupted  ")
+						 val Pathtodo = CurMoveTodo + Path  
+						answer("dopath", "dopathfailed", "dopathfailed($Pathtodo)"   )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

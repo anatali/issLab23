@@ -2,6 +2,7 @@ package unibo.planner23;
 
 import java.util.List;
 import aima.core.agent.Action;
+import unibo.basicomm23.utils.CommUtils;
 
 
 public class MainPlannerdemo {
@@ -15,7 +16,7 @@ private Planner23Util pu = new Planner23Util();
 		try {
 			pu.initAI();
  			pu.showMap();
-			pu.startTimer();
+			 
 			for( int i=1; i<=4; i++) {
 				List<Action> actions = pu.doPlan();
 				println("===== plan actions for next move: " + actions);
@@ -24,7 +25,7 @@ private Planner23Util pu = new Planner23Util();
 				;
 				pu.showMap();
 			}
-			pu.getDuration();
+			 
 		}catch ( Exception e) {
 			 e.printStackTrace();
 		}
@@ -34,7 +35,7 @@ private Planner23Util pu = new Planner23Util();
 			pu.initAI();
 			println("===== map at start");
  			pu.showMap();
-			pu.startTimer();
+			 
 			doSomeMOve();
 			println("===== map after some move");
 			pu.showMap();
@@ -47,7 +48,7 @@ private Planner23Util pu = new Planner23Util();
 			println("===== map after plan for home");;
 			pu.showMap();
 
-			pu.getDuration();
+			 
 
 		} catch ( Exception e) {
 			//e.printStackTrace()
@@ -74,9 +75,17 @@ private Planner23Util pu = new Planner23Util();
         }*/
 	}
 	public static void main( String[] args) throws Exception {
+		/*
  		MainPlannerdemo appl = new MainPlannerdemo( );
 		appl.doJob();
 		//appl.terminate();
+		 */
+		   Planner23Util planner = new Planner23Util();
+		   planner.initAI();
+		   planner.showMap(); 
+		   planner.doPathOnMap("[l, w, w, w, w, w, w]");
+		   CommUtils.outgreen("RESULT:");
+		   planner.showMap();
 	}
 
 }

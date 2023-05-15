@@ -14,14 +14,14 @@ import kotlinx.coroutines.runBlocking
 class Basicrobotusage ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope ){
 
 	override fun getInitialState() : String{
-		return "s0"
+		return "ss0"
 	}
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		val interruptedStateTransitions = mutableListOf<Transition>()
-		 val Path    = "\"[l, l, w, w]\""
+		 val Path    = "\"[l, w, w]\"" //Come quello restituito da dopath
 				val MyName = name 
 		return { //this:ActionBasciFsm
-				state("s0") { //this:State
+				state("ss0") { //this:State
 					action { //it:State
 						CommUtils.outblack("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
@@ -32,7 +32,7 @@ class Basicrobotusage ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t010",targetState="dowork",cond=whenReply("engagedone"))
+					 transition(edgeName="t017",targetState="testDopath",cond=whenReply("engagedone"))
 				}	 
 				state("dowork") { //this:State
 					action { //it:State
@@ -42,40 +42,29 @@ class Basicrobotusage ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t011",targetState="handleStepDone",cond=whenReply("stepdone"))
-					transition(edgeName="t012",targetState="handleStepFail",cond=whenReply("stepfailed"))
+					 transition(edgeName="t018",targetState="handleStepDone",cond=whenReply("stepdone"))
+					transition(edgeName="t019",targetState="handleStepFail",cond=whenReply("stepfailed"))
 				}	 
 				state("handleStepDone") { //this:State
 					action { //it:State
-						CommUtils.outgreen("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						CommUtils.outblack("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition( edgeName="goto",targetState="endwork", cond=doswitch() )
+					 transition( edgeName="goto",targetState="dowork", cond=doswitch() )
 				}	 
 				state("handleStepFail") { //this:State
 					action { //it:State
-						CommUtils.outred("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						CommUtils.outblack("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition( edgeName="goto",targetState="endwork", cond=doswitch() )
-				}	 
-				state("endwork") { //this:State
-					action { //it:State
-						forward("disengage", "disengage($MyName)" ,"basicrobot" ) 
-						//genTimer( actor, state )
-					}
-					//After Lenzi Aug2002
-					sysaction { //it:State
-					}	 	 
-					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 
 				state("testDopath") { //this:State
 					action { //it:State
@@ -85,12 +74,12 @@ class Basicrobotusage ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t013",targetState="testDopathEnd",cond=whenReply("dopathdone"))
-					transition(edgeName="t014",targetState="testDopathEnd",cond=whenReply("dopathfailed"))
+					 transition(edgeName="t020",targetState="testDopathEnd",cond=whenReply("dopathdone"))
+					transition(edgeName="t021",targetState="testDopathEnd",cond=whenReply("dopathfailed"))
 				}	 
 				state("testDopathEnd") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						CommUtils.outmagenta("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
 						forward("disengage", "disengage($MyName)" ,"basicrobot" ) 
 						//genTimer( actor, state )

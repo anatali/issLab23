@@ -1,8 +1,8 @@
 /*
- *  
+ *  Crea una mappa di una stanza vuota
  */
 System mapemptyroom23 //-msglog  
- 
+  
 Dispatch cmd       : cmd(MOVE)  
 Request step       : step(TIME)	  
 Reply stepdone     : stepdone(V)  
@@ -14,19 +14,20 @@ Reply   engagedone    : engagedone(ARG)
 Reply   engagerefused : engagerefused(ARG)
 
 Dispatch disengage    : disengage(ARG)
+//Dispatch engaged      : engaged(ARG)
 
 
 Context ctxbasicrobot      ip [host="127.0.0.1" port=8020]   
-Context ctxmapemptyroom22  ip [host="localhost" port=8032]
+Context ctxmapemptyroom23  ip [host="localhost" port=8032]
 
 ExternalQActor basicrobot context ctxbasicrobot  
 
-/*  
+/*   
  * ------------------------------------------------------------------
- *  mapemptyroom23
+ *  cleanerwalker 
  * ------------------------------------------------------------------
 */     
-QActor mapemptyroom23 context ctxmapemptyroom22{    
+QActor mapemptyroom23 context ctxmapemptyroom23{    
 	[# var StepTime = 345
 	   var NumStep   = 0 
 	   val MapName   = "mapEmpty23"
@@ -59,7 +60,7 @@ QActor mapemptyroom23 context ctxmapemptyroom22{
 		[#  planner.updateMap(  "l", "" ) 
 			planner.showMap()		 
 		#]
-	}
+	} 
     Goto doAheadMove if [# NumStep < 4 #]  else endwork
     
     State endwork{ 
@@ -68,7 +69,8 @@ QActor mapemptyroom23 context ctxmapemptyroom22{
 		#]
 		forward basicrobot -m  disengage : disengage(mapemptyroom23)
 		println("mapperbuilder BYE") 
- 		terminate 1
+ 		//terminate 1
+ 		[# System.exit(0) #]
 	}  
 	              
 }

@@ -1,0 +1,188 @@
+System resumablewalker
+
+Event    alarm      : alarm(V)
+Dispatch doMove     : doMove(V)
+Request  movetoCell : movetoCell(X,Y)
+Reply    atcell     : atcell(X,Y)
+
+Context ctxresumablewalker  ip [host="localhost" port=8038]    
+
+QActor resumablewalker context ctxresumablewalker{     
+[#  var CurrentPlannedMove = ""
+	val mapname                    = "roomMap"
+	var storedPos  : Pair<Int,Int> = Pair(0,0)
+	var planInterrupted            = false
+	var StepTime                   = 500L
+	val TargetPos                  = Pair(4,4)
+	val  GoalX                     = TargetPos.first
+	val  GoalY                     = TargetPos.second 
+#]	  
+	State s0 initial {	     
+		println("&&&  resumablewalker STARTED")
+		run itunibo.planner.plannerUtil.initAI()
+		run itunibo.planner.plannerUtil.loadRoomMap( mapname )
+		println("INITIAL MAP") 
+ 		run itunibo.planner.plannerUtil.showMap() 
+		[# 
+			emitWithDelay("alarm", "alarm(fire)",500L)
+		#]
+ 	} 
+	Goto  moveToTargetPoint  
+	
+	State moveToTargetPoint{
+		run itunibo.planner.plannerUtil.planForGoal("${GoalX}","${GoalY}")
+	}
+	Goto  execPlannedMoves
+ 
+	State execPlannedMoves{ 
+ 		[#  CurrentPlannedMove = itunibo.planner.plannerUtil.getNextPlannedMove() #]
+ 		if [# CurrentPlannedMove.length > 0 # ]{
+ 			forward resumablewalker -m doMove : doMove($CurrentPlannedMove)
+ 		}
+// 		else{
+// 			println("&&&  resumablewalker POINT ${GoalX},${GoalY} REACHED")  
+// 			run itunibo.planner.plannerUtil.showCurrentRobotState()
+// 		}
+ 	}
+ 	Transition t0 whenTime 100    -> endJob
+ 	              whenEvent alarm -> handleAlarm
+ 				  whenMsg doMove  -> execTheMove
+  	
+ 	State handleAlarm {
+ 		printCurrentMessage 		
+ 		[# planInterrupted = true
+ 			storedPos = itunibo.planner.plannerUtil.get_curPos() 
+ 			itunibo.planner.plannerUtil.memoCurentPlan()
+ 		#]
+ 		run itunibo.planner.plannerUtil.showCurrentRobotState() 
+ 		if[# ! itunibo.planner.plannerUtil.atPos(GoalX, GoalY) #]{
+ 			request insensitivewalker -m movetoCell : movetoCell(0,0)}
+ 		}
+ 	Goto endJob if [#  itunibo.planner.plannerUtil.atPos(GoalX, GoalY) #] else waitBackHome 
+ 	
+ 	State endJob{ 
+ 		println("&&&  resumablewalker POINT ${GoalX},${GoalY} REACHED")  
+ 		run itunibo.planner.plannerUtil.showCurrentRobotState()
+ 	}
+ 	State waitBackHome {}
+ 	Transition t0  whenReply atcell -> atHomeAgain  	  			   
+ 	
+	State atHomeAgain{
+		println("resumablewalker atHomeAgain")
+		if [# planInterrupted #]{
+			[# val XOLD = storedPos.first
+			   val YOLD = storedPos.second	
+			#]
+			request insensitivewalker -m movetoCell : movetoCell($XOLD,$YOLD)
+		}		
+	} 
+	Transition t0 whenReply atcell -> resumeOldPlan
+	
+  	State execTheMove{
+  		//printCurrentMessage
+  		onMsg( doMove : doMove(M) ){ 			
+   			delayVar StepTime //simulate some real movement ...
+  			[# val move = payloadArg(0)
+  			   itunibo.planner.plannerUtil.updateMap(move,"resumablewalker: exec $move") 			   
+  			#]
+  		}
+  	} 
+     Goto execPlannedMoves  
+  
+/*
+ * We could:
+ * 1) replan from here to the target
+ * 2) continue the 'interrupted' (stored) plan as it were a 'TASK' to complete
+ */  	
+  	State resumeOldPlan{  		
+  		println("-------------------------------------------------------------------")
+  		println("resumablewalker resumeOldPlan to reach POINT ${TargetPos.first},${TargetPos.second}")
+   		println("-------------------------------------------------------------------")
+  		run itunibo.planner.plannerUtil.showCurrentRobotState() 
+  		run itunibo.planner.plannerUtil.restorePlan()							//RESUME THE 'interrupted' 'TASK'
+  		//run itunibo.planner.plannerUtil.planForGoal("${TargetPos.first}","${TargetPos.second}")  //REPLAN
+  		[# readLine() #]
+		[# 
+			emitWithDelay("alarm", "alarm(fire)",3000L)
+		#]
+  	}		
+ 	Transition t0 whenTime 50     -> execPlannedMoves 
+ 				  whenMsg doMove  -> execTheOldMove		//execTheOldMove if RESUME , discardOldMoveTodo if REPLAN 
+
+  	State execTheOldMove{
+  		//printCurrentMessage 
+  		onMsg( doMove : doMove(M) ){ 			
+   			delayVar StepTime //simulate some real movement ...
+  			[# val move = payloadArg(0)
+  			   itunibo.planner.plannerUtil.updateMap(move,"resumablewalker: OLD MOVE $move")
+  			#]
+  		}
+  	} 
+ 	Transition t0 whenTime 50     -> execPlannedMoves  
+ 				  whenMsg doMove  -> execTheOldMove		 
+
+ 	State execOldPlannedMove{
+ 		println("resumablewalker execOldPlannedMove")
+  		[# readLine() #]
+ 	}
+ 	Transition t0 whenTime 50     -> execPlannedMoves
+ 				  whenMsg doMove  -> execOldPlannedMove
+
+ 	
+ 	State discardOldMoveTodo{
+ 		println("resumablewalker discardOldMovesTodo")
+ 	}
+ 	Transition t0 whenTime 50     -> execPlannedMoves
+ 				  whenMsg doMove  -> discardOldMoveTodo
+ 	
+}    
+/*
+ * excutes a plan without 'interruption'
+ */
+QActor insensitivewalker context ctxresumablewalker{  
+[#
+	var XT = "0"
+	var YT = "0"
+	var CurrentPlannedMove = ""
+	var StepTime    	   = 100L
+#]
+	State s0 initial {	     
+		//println("&&&  insensitivewalker STARTED")
+	}	
+	Transition t0 whenRequest movetoCell -> walk
+	
+	State walk{
+		onMsg( movetoCell : movetoCell(X,Y) ){
+			[# XT = payloadArg(0)
+			   YT = payloadArg(1)			  
+			 #]
+			println("&&&  insensitivewalker  MOVING to ($XT,$YT)")
+			run itunibo.planner.plannerUtil.planForGoal("$XT","$YT")
+		}
+	}
+	Goto execPlannedMoves
+	
+	
+	State execPlannedMoves{ 
+ 		[#  CurrentPlannedMove = itunibo.planner.plannerUtil.getNextPlannedMove() #]
+ 		if [# CurrentPlannedMove.length > 0 # ]{
+ 			forward insensitivewalker -m doMove : doMove($CurrentPlannedMove)
+ 		}else{
+	     	println("&&&  insensitivewalker POINT ($XT,$YT) REACHED")
+	     	replyTo movetoCell with atcell : atcell($XT,$YT) 			
+ 		}
+ 	}
+ 	Transition t0 whenMsg doMove  -> execTheMove
+ 				  whenRequest movetoCell and [# CurrentPlannedMove.length == 0 #]-> walk
+ 				  
+ 	State execTheMove{ 
+  		onMsg( doMove : doMove(M) ){ 			
+   			delayVar StepTime //simulate some real movement ...
+  			[# val move = payloadArg(0)
+  			   itunibo.planner.plannerUtil.updateMap(move,"resumablewalker: OLD MOVE $move")
+  			#]
+  		}	 			
+ 	 } 
+     Goto execPlannedMoves    
+     
+ }

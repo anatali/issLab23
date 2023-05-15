@@ -44,7 +44,7 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
 
     @Override
     public void move( String cmd ) throws Exception{
-        //CommUtils.outred("move " + cmd);
+        //CommUtils.outred("VrobotHLMovesActors23 move " + cmd);
         if( cmd.equals("w") ) forward( 5000 );
         else if( cmd.equals("s") ) backward( 5000 );
         else if( cmd.equals("a") || cmd.equals("l")) turnLeft(  );
@@ -115,7 +115,7 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
     public void update(String info) {
          try {
             elapsed = getDuration();
-            if( tracing )
+            //if( tracing )
                 CommUtils.outcyan(
                     "     VrobotHLMovesActors23 | update:" + info
                             + " elapsed=" + elapsed + " doingStep=" + doingStep
@@ -128,14 +128,14 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
             }
             if (info.contains("_notallowed")) {
                 CommUtils.outred("     VrobotHLMovesActors23 | update WARNING!!! _notallowed unexpected in " + info);
+                halt();
                 return;
             }
             if (jsonObj.get("sonarName") != null) {
                 long d = (long) jsonObj.get("distance") ;
                 IApplMessage sonarEvent = CommUtils.buildEvent(
                         "vrhlsprt","sonardata","'"+"sonar(" +d + " )"+"'");
-                //Imviare un msg ad owner perchè generi un evento a favore di SonarObserverActor23
-
+                //Imviare un msg ad owner perchè generi un evento a favore di sonarobs/engager
                 MsgUtil.emitLocalEvent(sonarEvent,owner,null);  //percepito da sonarobs/engager
                 return;
             }

@@ -23,13 +23,9 @@ with Diagram('basicrobot23Arch', show=False, outformat='png', graph_attr=graphat
           engager=Custom('engager','./qakicons/symActorSmall.png')
           basicrobot=Custom('basicrobot','./qakicons/symActorSmall.png')
           planexec=Custom('planexec','./qakicons/symActorSmall.png')
-          basicrobotusage=Custom('basicrobotusage','./qakicons/symActorSmall.png')
-     sys >> Edge(color='red', style='dashed', xlabel='sonardata', fontcolor='red') >> engager
-     sys >> Edge(color='red', style='dashed', xlabel='obstacle', fontcolor='red') >> engager
      engager >> Edge(color='blue', style='solid', xlabel='disengaged', fontcolor='blue') >> basicrobot
      engager >> Edge(color='blue', style='solid', xlabel='engaged', fontcolor='blue') >> basicrobot
-     basicrobotusage >> Edge(color='magenta', style='solid', xlabel='engage', fontcolor='magenta') >> basicrobot
-     basicrobotusage >> Edge(color='magenta', style='solid', xlabel='step', fontcolor='magenta') >> basicrobot
-     basicrobotusage >> Edge(color='blue', style='solid', xlabel='disengage', fontcolor='blue') >> basicrobot
-     basicrobotusage >> Edge(color='magenta', style='solid', xlabel='dopath', fontcolor='magenta') >> basicrobot
+     sys >> Edge(color='red', style='dashed', xlabel='alarm', fontcolor='red') >> planexec
+     planexec >> Edge(color='blue', style='solid', xlabel='nextmove', fontcolor='blue') >> planexec
+     planexec >> Edge(color='blue', style='solid', xlabel='nomoremove', fontcolor='blue') >> planexec
 diag

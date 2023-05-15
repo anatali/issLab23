@@ -17,15 +17,20 @@ sourceCompatibility = 1.8
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
-    //flatDir {   dirs '../unibolibs'	 }
+    flatDir {   dirs '../unibolibs'	 }
 }
 
 dependencies {
+    /* JSON **************************************************************************************************************** */
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
     /* AIMA **************************************************************************************************************** */
     implementation group: 'com.googlecode.aima-java', name: 'aima-core', version: '3.0.0'
+    /* UNIBO *************************************************************************************************************** */
+    implementation name: 'unibo.basicomm23-1.0'
 }
 
-sourceSets {
+sourceSets { 
     main.java.srcDirs += 'src'
     main.java.srcDirs += 'resources'
     test.java.srcDirs += 'test'		//test is specific
@@ -41,7 +46,7 @@ eclipse {
 
 application {
     // Define the main class for the application.
-    mainClass = 'unibo.planner23.MainPlannerdemo'
+    mainClass = 'unibo.planner23.MainPLannerdemo'
 }
 
  jar {

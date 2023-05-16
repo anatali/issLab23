@@ -1,0 +1,621 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	 
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	 
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #ffffcc;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 700px;
+    font-size: 15px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px; 
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #C0F0E0;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+	
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}       
+div.remark{
+	background-color: #ffffff;	
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+} 
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}     
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+	
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+    
+  -->
+</style>
+    
+<head>
+   
+<title>LabRaspiWeb</title></head>
+    
+<body>
+<div id="body">
+<h1>LabRaspiWebi | Using the Raspberry</h1>
+
+<a href="../it.unibo.issLabStart/userDocs/Dispense/html/RaspberryPi.html">
+Dispense2022</a>
+
+<h2>Overview</h2>
+
+<ol>
+<li><a href="#busterlite">Setup Buster Lite</a></li>
+	<ul>
+		<li>Download <a href="https://www.raspberrypi.org/downloads/raspbian/" tagrget="web">Raspbian Buster Lite</a></li>
+		<li><a href="#startconfig">Start Configuration</a></li>
+		<li><a href="#i2c">Enable I2C</a></li>
+		<li><a href="#git">Install GIT</a></li>
+		<li><a href="#java">Install Java</a></li> 
+		<li><a href="#testcam">Test the camera</a></li>
+		<li><a href="#mjpg">Install mjpg-streamer</a></li>
+		<li><a href="#webiopi">Install WebIOPi</a></li>
+		<li><a href="#automate">Automate</a></li>
+	</ul>
+
+
+<li><a href="#launchapp">Launch the built-in application</a></li>	
+<li><a href="#native">Native interaction</a></li>	
+<li><a href="#coap">CoAP interaction</a></li>	
+<li><a href="#userapp">User-defined applications</a></li>
+	
+<li>	
+</ol>
+
+
+<table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:50%">
+<ol>	
+	<li>See <a href="https://www.digikey.com/en/maker/blogs/raspberry-pi-wi-fi-bluetooth-setup-how-to-configure-your-pi-4-model-b-3-model-b" target="web">
+B+ Connectivity</a>. <br/><br/>
+</li>
+	<li>Create on a SD (min 8GB) the image from file:<br/>  <ks>2020-02-13-raspbian-buster-lite</ks> <!-- <ks>2019-09-26-raspbian-buster-lite.zip</ks> --> 
+	and Insert the SD on your PC <br/><br/> </li>
+	<li>create an empty file <ks>boot/ssh</ks><br/><br/> 	
+	</li>
+	<li>Create also a file <ks>boot/wpa_supplicant.conf</ks> with content:
+<pre>ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=IT
+network={
+     ssid="... Your_ESSID "
+     psk="... Your_wifi_password"
+     key_mgmt=WPA-PSK
+}
+</pre></li>
+	<li>Insert the SD into the RaspberryPi </li>
+	<li>on your <tt>MODEM HUB</tt> look at the <bc>Raspberry IP address</bc> (optionally, connect the RaspberryPi with an Ethernet cable to the <tt>MODEM</tt>) 
+	<li>Connect via ssh (by using <a href="https://www.putty.org/" target="web">Putty</a> ) 
+</ol>
+
+</td>
+<td>
+If the connection does not work ...<br/>
+see <a href="https://www.raspberrypi.org/forums/viewtopic.php?t=253702" target="web">
+Network does not come up when restarting ...</a>
+
+<pre>
+sudo route add default gw 192.168.1.1 wlan0   <kc>//if required</kc>
+</pre> 
+
+<h3>/etc/network/interfaces (to set a static IP)</h3>
+<pre>
+auto eth0
+allow-hotplug eth0
+iface eth0 inet dhcp
+iface eth0 inet static
+  address 192.168.1.23
+  netwmask 255.255.255.0
+  gateway 192.168.1.1
+allow-hotplug wlan0
+iface wlan0 inet dhcp
+wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+dns-nameservers 8.8.8.8
+dns-search domain-name</pre>
+
+<h3>/usr/local/bin/checkwifi.sh (to restart wlan0)</h3>
+<pre>
+ping -c4 192.168.1.1 > /dev/null
+ 
+if [ $? != 0 ] 
+then
+  echo "No network connection, restarting wlan0"
+  /sbin/ifdown 'wlan0'
+  sleep 5
+  /sbin/ifup --force 'wlan0'
+fi
+
+------------------------------------------------------------------------------
+crontab -e
+*/5 * * * * /usr/bin/sudo -H /usr/local/bin/checkwifi.sh >> /dev/null 2>&1
+------------------------------------------------------------------------------
+sudo chmod 775 /usr/local/bin/checkwifi.sh
+</pre>
+
+</td>
+</tr>
+
+
+<tr>
+<td style="width:50%" >
+<h3 id="busterlite">About Buster Lite</h3> 
+<pre>
+<ks>cat /etc/os-release</ks>
+<m>
+PRETTY_NAME="Raspbian GNU/Linux 10 (buster)"
+NAME="Raspbian GNU/Linux"
+VERSION_ID="10"
+VERSION="10 (buster)"
+VERSION_CODENAME=buster
+ID=raspbian
+ID_LIKE=debian
+HOME_URL="http://www.raspbian.org/"
+SUPPORT_URL="http://www.raspbian.org/RaspbianForums"
+BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
+</m>
+
+<ks>python3 -V</ks>
+<m>Python 3.7.3</m>
+</pre>
+
+
+<h3>About Python</h3>   
+On the RaspberriPi B+ pre-Buster Lite, there are pre-installed Python <tt>2.7.13</tt> and <tt>Python 3.5.3</tt>. <br/>  
+On Buster Lite, there is <ks>Python 3.7.3</ks> and we wiil use it.
+
+<pre>
+sudo apt-get install python3-pip
+</pre> 
+<b>View processes and kill</b>   
+<pre>
+ps -fA | grep python
+sudo kill -s KILL &lt;process number>
+</pre>
+
+
+
+</td>
+<td>
+<h3 id="startconfig">Start Configuration</h3> 
+<ks>First of all ...</ks>
+<pre>
+sudo apt-get update -y
+sudo apt-get upgrade -y   	<kc>or</kc>  sudo apt full-upgrade
+</pre>
+
+<ks>Enable some device ...</ks>
+
+<pre>
+sudo raspi-config  (interfacing options)
+<div class="remark"><k>Enable Cam, I2C, UART</k></div>
+sudo reboot
+</pre>
+ 
+<ks>Install standard USB webcam</ks>
+<pre>
+sudo apt install fswebcam	 
+</pre>
+
+<ks>Install cmake</ks>
+<pre>
+sudo apt-get install cmake
+</pre>
+
+
+</td>
+</tr>
+
+<tr>
+<td style="width:50%" >
+
+ 
+</td>
+<td>
+ 
+</td>
+</tr>
+
+<tr>
+<td>
+<h3 id="testcam">Test the camera</h3> </td>
+<td><pre>
+raspistill -o image.jpg
+raspivid -o video.h264 -t 5000		<kc>//in msecs</kc>
+
+fswebcam -r 1280x720 image2.jpg		<kc>//USB camera</kc>
+</pre>
+</td>
+</tr>
+
+<tr>
+<td>
+<h3 id="java">Install Java</h3> </td>
+<td><pre> 
+sudo apt install openjdk-8-jdk openjdk-8-jre
+update-alternatives --config java
+java -version
+<kc>-------------------JAVA HOME -----------------</kc>
+Include in <ks>/etc/environment</ks>
+JRE_HOME=/usr/lib/jvm/java-8-openjdk-armhf/jre/bin/java
+                        
+</pre>
+</td>
+</tr>
+
+
+
+
+
+<tr>
+<td >
+<h3 id="git">Install GIT</h3> </td>
+<td><pre>sudo apt-get install git
+git --version 	<kc>//git version 2.20.1</kc>
+</pre>
+</td>
+</tr>
+
+
+<tr>
+<td>
+<h3 id="i2c">Enable I2C</h3> </td>
+<td><pre>
+sudo nano /boot/config.txt
+	<kc>Add the line</kc>
+	dtparam=i2c_baudrate=10000
+sudo apt-get install i2c-tools
+sudo i2cdetect -y 1
+</pre>
+</td>
+</tr>
+
+
+
+
+<tr>
+<td>
+<h3 id="mjpg">Install mjpg-streamer</h3> 
+<ul>
+<li><a href="https://github.com/cncjs/cncjs/wiki/Setup-Guide:-Raspberry-Pi-%7C-MJPEG-Streamer-Install-&-Setup-&-FFMpeg-Recording" target="web">
+Setup Guide: Raspberry Pi | MJPEG Streamer Install & Setup & FFMpeg Recording</a><br/><br/>
+</li>
+<li><a href="https://en.wikipedi0.org/wiki/Motion_JPEG" target="web">Motion JPEG</a><br/><br/>
+</li>
+
+<li><a href="https://whatismyipaddress.com/" target="web">My IP Address</a></li>
+</ul>
+</td>
+<td><pre><!-- sudo apt-get install build-essential libjpeg8-dev imagemagick libv4l-dev cmake -y -->
+sudo apt-get install cmake libjpeg8-dev
+
+git clone https://github.com/jacksonliam/mjpg-streamer.git
+cd /home/pi/nat/mjpg-streamer/mjpg-streamer-experimental
+make all
+sudo make install
+
+ls   /dev/video*      <kc>//the device is on /dev/video0</kc>
+
+./start.sh 			<kc>or</kc> bash start.sh
+<ks>http://192.168.x.y:8080/stream.html</ks>   
+--------------------------------------------------------------------------
+/usr/local/bin/mjpg_streamer -i "input_uvc.so -r 1280x720 
+	-d /dev/video0 -f 30" -o "output_http.so -p 8080 
+	-w /usr/local/share/mjpg-streamer/www"
+ 	
+</pre>
+</td>
+</tr>
+
+ 
+ 
+
+ </tbody>
+</table>
+ <br/><br/>
+ 
+ 
+
+ 
+<!-- 
+
+<h1>A front-end for the BasicRobot </h1>
+
+<h2>Starting</h2>
+On the Raspberry:
+<ol>
+
+<li><ks>Launch the mjpg streamer</ks>: 
+<pre>
+cd /home/pi/nat/mjpg-streamer/mjpg-streamer-experimental
+
+ 
+<kc># RUN</kc>
+export LD_LIBRARY_PATH=.
+./mjpg_streamer -i "input_uvc.so" -o "output_http.so -p 8090 -w /usr/local/share/mjpg-streamer/www" &
+
+<kc># TEST</kc>
+http://192.168.1.8:8090/stream.html 
+http://192.168.1.8:8090/?action=stream
+</pre>
+
+</li>
+
+<li><ks>Launch the basic robot application</ks>:  
+<pre>
+ cd /home/pi/nat/it.unibo.basicrobot2020-1.0/bin
+
+nohup  bash  it.unibo.basicrobot2020 &
+
+</pre>
+</li>
+
+-->
+ 
+
+
+ 
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%" >
+ 
+
+</td>
+<td>
+</td>
+</tr>
+ </tbody>
+</table>
+ <br/><br/>
+</div>  
+
+ 
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI  
+</div> 
+
+</body>
+</html>
+
+<!--
+<h2>INSTALL PYTHON</h2>
+ <br/><br/>
+
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:70%" > 
+ <pre>
+---------------------  INSTALL PYTHON
+DEPENDENCIES
+sudo apt-get install -y build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev 
+libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev libffi-dev 
+
+
+wget https://www.python.org/ftp/python/3.7.6/Python-3.7.6.tar.xz
+tar xf Python-3.7.6.tar.xz
+cd Python-3.7.6
+./configure --enable-optimizations
+make -j 4
+sudo make altinstall
+# It will created the binary and lib dirs with the version in /usr/local. 
+# This way you can choose which python you want at run time.
+python3.7 -V       #check the version
+
+sudo ./configure --enable-optimizations
+sudo make -j 4
+sudo make altinstall 
+# It will created the binary and lib dirs with the version in /usr/local. 
+# This way you can choose which python you want at run time.
+python3.8 -V #check the version 
+
+
+
+wget https://www.python.org/ftp/python/3.8.1/Python-3.8.1.tar.xz
+tar xf Python-3.8.1.tar.xz
+cd Python-3.8.1
+//To overcome the problem No module named '_ctypes'.
+git clone https://github.com/python/cpython.git
+
+ 
+ 
+</pre>
+<pre> 
+/home/pi/nat/cam-robot/WebIOPi-0.7.1/<ks>python/webiopi/__main__.py</ks>
+
+
+	server = Server(port=8000, configfile=configfile, scriptfile=scriptfile)
+Configuration file in <ks>python/config</ks>  (<kc>HTTP, COAP</kc> enabled) See also <kc>python\webiopi\utils\config.py</kc>
+			self.restHandler = <ks>rest.RESTHandler()</ks>   //in <kc>python\webiopi\protocols</kc>
+			<ks>http.HTTPServer</ks>(self.host, http_port, self.restHandler, context, docroot, index, auth, realm)
+			<ks>coap.COAPServer</ks>(self.host, coap_port, self.restHandler)
+	runLoop()
+	server.stop()
+
+sudo python3 __main__.py -c /etc/webiopi/config
+
+
+</pre>
+</td>
+<td>
+
+</td>
+</tr>
+
+<tr>
+<td>
+ 
+</td>
+<td></td>
+</tr>
+ </tbody>
+</table>
+ <br/><br/> 
+ -->
+ 

@@ -231,6 +231,7 @@ QActor basicrobot context ctxbasicrobot{
  * planexec
  * ------------------------------
  */
+ /* 
 QActor planexec context ctxbasicrobot{
 	[# var Path = ""
 		var CurMoveTodo   = ""		
@@ -288,6 +289,7 @@ QActor planexec context ctxbasicrobot{
 			}else{
 				println("doMoveTurn $CurMoveTodo") color blue
 				run uniborobots.robotSupport.move(  CurMoveTodo )
+				//[# uniborobots.robotSupport.move(  CurMoveTodo ) #]
 			}
 			forward planexec -m nextmove : nextmove(goon)
 		}
@@ -329,17 +331,17 @@ QActor planexec context ctxbasicrobot{
  	}	
  	Goto work
 }
-
+*/
 
 /*
  * ------------------------------
  * basicrobotusage (tester)
  * ------------------------------
  */
- /* 
+
 QActor basicrobotusage context ctxbasicrobot{
 	[#  val Path    = "\"[l, w, w]\"" //Come quello restituito da dopath
-		//val Path    = "wwl"
+		//val Path    = "lww"
 		val MyName = name 
 	#] 
 	State ss0 initial { 	
@@ -348,8 +350,8 @@ QActor basicrobotusage context ctxbasicrobot{
 		[# CommUtils.waitTheUser("basicrobotusage, please hit 1CR")	 #]
 		request basicrobot -m engage : engage( MyName )
 	}
-	Transition t0 whenReply engagedone -> dowork
-	//Transition t0 whenReply engagedone -> testDopath
+	//Transition t0 whenReply engagedone -> dowork
+	Transition t0 whenReply engagedone -> testDopath
 	
  	
 	State dowork{
@@ -370,7 +372,7 @@ QActor basicrobotusage context ctxbasicrobot{
 	
 //Testdopoath	
 	State testDopath{
-		request basicrobot -m dopath : dopath($Path,$MyName)
+		request basicrobot -m dopath : dopath($Path,$MyName,345)
 	}
 	Transition t0 whenReply dopathdone   -> testDopathEnd
 				  whenReply dopathfailed -> testDopathEnd
@@ -379,4 +381,3 @@ QActor basicrobotusage context ctxbasicrobot{
 		forward basicrobot -m disengage :  disengage($MyName)
 	}	
 }
-*/

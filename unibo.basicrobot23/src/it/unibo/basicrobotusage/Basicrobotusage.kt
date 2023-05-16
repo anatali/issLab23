@@ -19,7 +19,7 @@ class Basicrobotusage ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		val interruptedStateTransitions = mutableListOf<Transition>()
 		  val Path    = "\"[l, w, w]\"" //Come quello restituito da dopath
-				//val Path    = "wwl"
+				//val Path    = "lww"
 				val MyName = name 
 		return { //this:ActionBasciFsm
 				state("ss0") { //this:State
@@ -33,7 +33,7 @@ class Basicrobotusage ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t015",targetState="dowork",cond=whenReply("engagedone"))
+					 transition(edgeName="t015",targetState="testDopath",cond=whenReply("engagedone"))
 				}	 
 				state("dowork") { //this:State
 					action { //it:State
@@ -69,7 +69,7 @@ class Basicrobotusage ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 				}	 
 				state("testDopath") { //this:State
 					action { //it:State
-						request("dopath", "dopath($Path,$MyName)" ,"basicrobot" )  
+						request("dopath", "dopath($Path,$MyName,345)" ,"basicrobot" )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

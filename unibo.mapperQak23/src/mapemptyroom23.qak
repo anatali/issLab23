@@ -51,6 +51,7 @@ QActor mapemptyroom23 context ctxmapemptyroom23{
 	
 	State continue{
 		[# planner.updateMap(  "w", "" ) #]
+		//[# CommUtils.waitTheUser("continue. Please 1CR") #]
 	}  
 	Goto doAheadMove     
 	              
@@ -58,13 +59,16 @@ QActor mapemptyroom23 context ctxmapemptyroom23{
 		[# NumStep = NumStep + 1 #]
 		forward basicrobot -m cmd : cmd(l)
 		[#  planner.updateMap(  "l", "" ) 
-			planner.showMap()		 
+			planner.showMap()	
+			//planner.showCurrentRobotState();
+			//CommUtils.waitTheUser("turn. Please 1CR")	 
 		#]
 	} 
     Goto doAheadMove if [# NumStep < 4 #]  else endwork
     
     State endwork{ 
- 		[# 	planner.showMap();
+ 		[# 	//planner.showMap();
+ 			planner.showCurrentRobotState();
  			planner.saveRoomMap("$MapName");
 		#]
 		forward basicrobot -m  disengage : disengage(mapemptyroom23)

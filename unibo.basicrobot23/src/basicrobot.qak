@@ -338,7 +338,8 @@ QActor planexec context ctxbasicrobot{
  */
  /* 
 QActor basicrobotusage context ctxbasicrobot{
-	[# val Path    = "\"[l, w, w]\"" //Come quello restituito da dopath
+	[#  val Path    = "\"[l, w, w]\"" //Come quello restituito da dopath
+		//val Path    = "wwl"
 		val MyName = name 
 	#] 
 	State ss0 initial { 	
@@ -347,8 +348,8 @@ QActor basicrobotusage context ctxbasicrobot{
 		[# CommUtils.waitTheUser("basicrobotusage, please hit 1CR")	 #]
 		request basicrobot -m engage : engage( MyName )
 	}
-	//Transition t0 whenReply engagedone -> dowork
-	Transition t0 whenReply engagedone -> testDopath
+	Transition t0 whenReply engagedone -> dowork
+	//Transition t0 whenReply engagedone -> testDopath
 	
  	
 	State dowork{
@@ -361,7 +362,7 @@ QActor basicrobotusage context ctxbasicrobot{
 	State handleStepDone{
 		printCurrentMessage color black
 	}
-	Goto dowork
+	Goto dowork 
 	
 	State handleStepFail{
 		printCurrentMessage color black
@@ -378,4 +379,4 @@ QActor basicrobotusage context ctxbasicrobot{
 		forward basicrobot -m disengage :  disengage($MyName)
 	}	
 }
-*/ 
+*/

@@ -20,7 +20,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Appunti su tecnologie" href="AppuntiTecnologie.html" />
+    <link rel="next" title="Uso di un planner" href="UsoDiunPlanner.html" />
     <link rel="prev" title="Appl1ActorsQak23" href="Appl1ActorsQak23.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,7 +30,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="UsoDiunPlanner.html" title="Uso di un planner"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="Appl1ActorsQak23.html" title="Appl1ActorsQak23"
@@ -157,34 +157,42 @@ in ‘modo indipendente dalla tecnologia’ con cui è realizzato del robot (vir
 <p>Muovere il robot con mossa <code class="docutils literal notranslate"><span class="pre">step(T)</span></code> con tempo <code class="docutils literal notranslate"><span class="pre">T</span></code> tale da spostare il robot (con velocità prefissata)
 di uno spazio <code class="docutils literal notranslate"><span class="pre">R</span></code>, permette di costruire una mappa della stanza formata da celle quadrate <code class="docutils literal notranslate"><span class="pre">RxR</span></code>.
 Ad esempio:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">3</span>  <span class="mi">4</span>  <span class="mi">5</span>  <span class="mi">6</span>  <span class="mi">7</span> <span class="o">....</span> <span class="n">x</span>
-  <span class="mi">0</span> <span class="o">|</span><span class="n">r</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
-  <span class="mi">1</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
-  <span class="mi">2</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
-  <span class="mi">3</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
-  <span class="mi">4</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
-  <span class="mi">5</span> <span class="o">|</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
-  <span class="o">.</span>
-  <span class="n">y</span>
-
-<span class="n">RobotPos</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="n">direction</span><span class="o">=</span><span class="n">downDir</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">3</span>  <span class="mi">4</span>  <span class="mi">5</span>  <span class="mi">6</span>  <span class="mi">7</span>  <span class="n">x</span>
+<span class="mi">0</span> <span class="o">|</span><span class="n">r</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+<span class="mi">1</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+<span class="mi">2</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+<span class="mi">3</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+<span class="mi">4</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+<span class="mi">5</span>  <span class="o">|</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
+<span class="n">y</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p><strong>0</strong> denoita una cella mai percorsa</p></li>
+<li><p><strong>0</strong> denota una cella mai percorsa</p></li>
 <li><p><strong>1</strong> denota una cella libreria</p></li>
 <li><p><strong>X</strong> denota una cella occupata da un ostacolo</p></li>
 <li><p><strong>r</strong> denota la posizione corrente del robot</p></li>
 </ul>
-<p>L’uso di un <em>planner</em> come quello fornito in <code class="docutils literal notranslate"><span class="pre">unibo.planner23-1.0.jar</span></code> permette di
-calcolare una sequenza delle mosse con cui il robot può muoversi dalla posizione corrente <strong>r</strong>
-a un’altra posizione sulla mappa.</p>
-<p>Si veda il progetto <span class="blue">unibo.planner23</span>, che fornisce la classe <span class="blue">Planner23Util</span>
-e l’esempio di uso <em>MainPlannerdemo</em>.</p>
+<p>Un modo per costruire dinamicamente una sequenza di mosse con cui il robot può muoversi dalla posizione
+corrente <strong>r</strong> a un’altra posizione (libera) sulla mappa, consiste
+nell’utilizzo di un pianificatore (si veda <a class="reference external" href="./_static/LabPlanner.html">Planning</a>)
+come quello fornito in <code class="docutils literal notranslate"><span class="pre">unibo.planner23-1.0.jar</span></code>.</p>
+<p>Il progetto <span class="blue">unibo.planner23</span>,  fornisce la classe <span class="blue">Planner23Util</span> che realizza
+le operazioni-base descritte in <a class="reference external" href="./_static/LabPlanner.html">Planning</a> e varie altre utlità.</p>
 <p><span class="worktodo">TODO map</span></p>
 <p>map) creare la mappa della stanza vuota</p>
 <p><span class="worktodo">TODO position</span></p>
 <p>position) posizionare il robot al centro della stanza</p>
+<p><span class="slide">Applicazioni</span></p>
+<ol class="arabic simple">
+<li><p>Realizzare l’esperimento <a class="reference external" href="./_static/LabPlanner.html#spiralwalkernorobot">spiralwalker</a> (progetto <span class="brown">unibo.usePlanner23Qak</span>).</p></li>
+<li><p>Creare una mappa della stanza vuota (<span class="blue">mapemptyroom23</span>).  (progetto <span class="brown">unibo.mapperQak23</span>).</p></li>
+<li><p>Spostare il robot da HOME a una locazione scelta dall’utente ( )</p></li>
+<li><p><em>mapemptyroom23</em> con console start/stop/resume e un Led che si accende quando il robot è stopped.</p></li>
+<li><p><em>mapemptyroom23</em> con Sonar esterno che blocca il robot quando rileva distanza inferiore a un limite dato.</p></li>
+<li><p>Creare una mappa della stanza con ostacoli interni <span class="blue">mapwithobstqak23</span> nella ipotesi che il bordo superiore
+sia libero.</p></li>
+</ol>
 </section>
 </section>
 
@@ -222,8 +230,8 @@ e l’esempio di uso <em>MainPlannerdemo</em>.</p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="AppuntiTecnologie.html"
-                          title="next chapter">Appunti su tecnologie</a></p>
+    <p class="topless"><a href="UsoDiunPlanner.html"
+                          title="next chapter">Uso di un planner</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -253,7 +261,7 @@ e l’esempio di uso <em>MainPlannerdemo</em>.</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="UsoDiunPlanner.html" title="Uso di un planner"
              >next</a> |</li>
         <li class="right" >
           <a href="Appl1ActorsQak23.html" title="Appl1ActorsQak23"

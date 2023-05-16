@@ -1,5 +1,8 @@
+{"actor":"engager", "msgType":"dispatch", "curstate":"s0", "nextstate":"disengageRobot", "msgId":"disengage"}
+{"actor":"basicrobot", "msgType":"dispatch", "curstate":"waitForOwner", "nextstate":"work", "msgId":"engaged"}
 {"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"execcmd", "msgId":"cmd"}
-{"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"handleObstacle", "msgId":"obstacle"}
 {"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"endwork", "msgId":"end"}
-{"actor":"basicrobot", "msgType":"dispatch", "curstate":"doStep", "nextstate":"stepFail", "msgId":"obstacle"}
-{"actor":"envsonarhandler", "msgType":"dispatch", "curstate":"s0", "nextstate":"dontcare", "msgId":"cmd"}
+{"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"waitForOwner", "msgId":"disengaged"}
+{"actor":"planexec", "msgType":"dispatch", "curstate":"nextMove", "nextstate":"doMove", "msgId":"nextmove"}
+{"actor":"planexec", "msgType":"dispatch", "curstate":"doMove", "nextstate":"pathend", "msgId":"nomoremove"}
+{"actor":"planexec", "msgType":"dispatch", "curstate":"doMove", "nextstate":"nextMove", "msgId":"nextmove"}

@@ -62,7 +62,9 @@ class Mapemptyroom23 ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( n
 						 NumStep = NumStep + 1  
 						forward("cmd", "cmd(l)" ,"basicrobot" ) 
 						  planner.updateMap(  "l", "" ) 
-									planner.showMap()		 
+									planner.showMap()	
+									//planner.showCurrentRobotState();
+									//CommUtils.waitTheUser("turn. Please 1CR")	 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -75,7 +77,8 @@ class Mapemptyroom23 ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( n
 				}	 
 				state("endwork") { //this:State
 					action { //it:State
-						 	planner.showMap();
+						 	//planner.showMap();
+						 			planner.showCurrentRobotState();
 						 			planner.saveRoomMap("$MapName");
 						forward("disengage", "disengage(mapemptyroom23)" ,"basicrobot" ) 
 						CommUtils.outblack("mapperbuilder BYE")

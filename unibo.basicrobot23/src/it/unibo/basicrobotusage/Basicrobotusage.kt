@@ -18,7 +18,8 @@ class Basicrobotusage ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 	}
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		val interruptedStateTransitions = mutableListOf<Transition>()
-		 val Path    = "\"[l, w, w]\"" //Come quello restituito da dopath
+		  val Path    = "\"[l, w, w]\"" //Come quello restituito da dopath
+				//val Path    = "wwl"
 				val MyName = name 
 		return { //this:ActionBasciFsm
 				state("ss0") { //this:State
@@ -32,7 +33,7 @@ class Basicrobotusage ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t017",targetState="testDopath",cond=whenReply("engagedone"))
+					 transition(edgeName="t015",targetState="dowork",cond=whenReply("engagedone"))
 				}	 
 				state("dowork") { //this:State
 					action { //it:State
@@ -42,8 +43,8 @@ class Basicrobotusage ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t018",targetState="handleStepDone",cond=whenReply("stepdone"))
-					transition(edgeName="t019",targetState="handleStepFail",cond=whenReply("stepfailed"))
+					 transition(edgeName="t016",targetState="handleStepDone",cond=whenReply("stepdone"))
+					transition(edgeName="t017",targetState="handleStepFail",cond=whenReply("stepfailed"))
 				}	 
 				state("handleStepDone") { //this:State
 					action { //it:State
@@ -74,8 +75,8 @@ class Basicrobotusage ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t020",targetState="testDopathEnd",cond=whenReply("dopathdone"))
-					transition(edgeName="t021",targetState="testDopathEnd",cond=whenReply("dopathfailed"))
+					 transition(edgeName="t018",targetState="testDopathEnd",cond=whenReply("dopathdone"))
+					transition(edgeName="t019",targetState="testDopathEnd",cond=whenReply("dopathfailed"))
 				}	 
 				state("testDopathEnd") { //this:State
 					action { //it:State

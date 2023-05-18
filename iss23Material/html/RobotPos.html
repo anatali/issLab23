@@ -1,0 +1,591 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Posizionamento del robot &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Uso di un planner" href="UsoDiunPlanner.html" />
+    <link rel="prev" title="BasicRobot23" href="BasicRobot23.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="UsoDiunPlanner.html" title="Uso di un planner"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="BasicRobot23.html" title="BasicRobot23"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Posizionamento del robot</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="posizionamento-del-robot">
+<h1>Posizionamento del robot<a class="headerlink" href="#posizionamento-del-robot" title="Permalink to this headline">¶</a></h1>
+<p>Consideriamo il seguente problema.</p>
+<section id="robotpos">
+<h2>robotpos<a class="headerlink" href="#robotpos" title="Permalink to this headline">¶</a></h2>
+<p>Realizzare un servizio che offra a un client  la possibilità di muovere un DDR robot dalla sua posizione corrente
+in una posizione precisata dal client.</p>
+<p><span class="slide">Analisi dei requisiti</span></p>
+<section id="analisi-dei-requisiti">
+<h3>Analisi dei requisiti<a class="headerlink" href="#analisi-dei-requisiti" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><span class="blue">servizio</span>: …</p></li>
+<li><p><span class="blue">DDR robot</span>: …</p></li>
+<li><p><span class="blue">posizione</span>: …</p></li>
+<li><p><span class="blue">posizione corrente</span>: …</p></li>
+</ul>
+<section id="modello-del-sistema-sprint0">
+<h4>Modello del sistema (Sprint0)<a class="headerlink" href="#modello-del-sistema-sprint0" title="Permalink to this headline">¶</a></h4>
+<p>Il sistema è costutuito da tre macro-componenti, come espresso dal seguente modello:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="n">robotpos</span>
+
+<span class="n">Request</span> <span class="n">engage</span>        <span class="p">:</span> <span class="n">engage</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+<span class="n">Reply</span>   <span class="n">engagedone</span>    <span class="p">:</span> <span class="n">engagedone</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+<span class="n">Reply</span>   <span class="n">engagerefused</span> <span class="p">:</span> <span class="n">engagerefused</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+
+<span class="n">Request</span>  <span class="n">doplan</span>   <span class="p">:</span> <span class="n">doplan</span><span class="p">(</span> <span class="n">PATH</span><span class="p">,</span> <span class="n">OWNER</span><span class="p">,</span> <span class="n">STEPTIME</span> <span class="p">)</span>
+<span class="n">Reply</span> <span class="n">doplandone</span>  <span class="p">:</span> <span class="n">doplandone</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+<span class="n">Reply</span> <span class="n">doplanfailed</span>  <span class="p">:</span> <span class="n">doplanfailed</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+
+
+<span class="n">Context</span> <span class="n">ctxrobotpos</span> <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span>   <span class="n">port</span><span class="o">=</span><span class="mi">8111</span><span class="p">]</span>
+<span class="n">Context</span> <span class="n">ctxbasicrobot</span> <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8020</span><span class="p">]</span>
+<span class="n">Context</span> <span class="n">ctxclient</span>     <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;ipclient&quot;</span>  <span class="n">port</span><span class="o">=</span><span class="mi">9020</span><span class="p">]</span>
+
+<span class="n">ExternalQActor</span> <span class="n">basicrobot</span> <span class="n">context</span> <span class="n">ctxbasicrobot</span>
+
+<span class="n">QActor</span> <span class="n">worker</span> <span class="n">context</span> <span class="n">ctxrobotpos</span><span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/robotpos0.PNG"><img alt="_images/robotpos0.PNG" class="align-center" src="_images/robotpos0.PNG" style="width: 100%;" /></a>
+</td>
+<td><ul class="simple">
+<li><p>L’attore <span class="blue">client</span> è introdotto per completeza (e per testing) ma non fa parte del sistema da realizzare.</p></li>
+<li><p>L’attore <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a> viene fornito dal committente.</p></li>
+<li><p>I messaggi di richiesta indicati derivano dal <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a>.</p></li>
+</ul>
+<p><span class="slide2">BasicRobot</span></p>
+<p>Il  <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">sistema basicrobot</span></a> include tre attori, tra dui <span class="xref std std-ref">L’attore planexec</span>.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 70%" />
+<col style="width: 30%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/basicrobot23WithPathexec.PNG"><img alt="_images/basicrobot23WithPathexec.PNG" class="align-center" src="_images/basicrobot23WithPathexec.PNG" style="width: 100%;" /></a>
+</td>
+<td><ul class="simple">
+<li><p><span class="blue">basicrobot</span></p></li>
+<li><p><span class="blue">engager</span></p></li>
+<li><p><span class="blue">planexec</span></p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="slide">Analisi del problema</span></p>
+</section>
+</section>
+<section id="il-basicrobot-come-esecutore">
+<h3>Il basicrobot come esecutore<a class="headerlink" href="#il-basicrobot-come-esecutore" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>Il robot è un oggetto di dimensioni fiite, inscrivibile in un cerchio di diametro <code class="docutils literal notranslate"><span class="pre">D</span></code> (unità robotica) ed esegue
+movimenti a velocità costante.</p></li>
+<li><p>Il <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a> fornito dal committente è un puro <span class="remark">esecutore di comandi</span>, con cui il robot
+può effettuare singole mosse o sequenze di mosse, a seguito di messaggi di richiesta.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><span class="blue">Dispatch cmd:cmd(M)</span></p></td>
+<td><p>Il robot cerca di eseguire la mossa <code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">(w|s|a|d|l|r|h)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="blue">Request step:step(T)</span></p></td>
+<td><p>Il robot cerca di fare un movimento in avanti di durata <code class="docutils literal notranslate"><span class="pre">T</span></code> e risponde con:</p>
+<ul class="simple">
+<li><p><span class="blue">Reply stepdon:stepdon(ok)</span> in caso di successo</p></li>
+<li><p><span class="blue">Reply stepfailed:stepfailed(DURATION,CAUSE)</span> in caso di fallimento</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p><span class="blue">Request doplan:doplan( PLAN, OWNER, STEPTIME )</span></p></td>
+<td><p>Il robot cerca di eseguire (via <a class="reference internal" href="#planexec"><span class="std std-ref">planexec</span></a>) la sequenza di mosse <code class="docutils literal notranslate"><span class="pre">PLAN</span></code>
+e risponde con:</p>
+<ul class="simple">
+<li><p><span class="blue">Reply doplandone:doplandone(ok)</span> in caso di successo</p></li>
+<li><p><span class="blue">Reply doplanfailed:doplanfailed(PLANTODO)</span> in caso di fallimento</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</section>
+<section id="dal-robot-alla-mappa">
+<h3>Dal robot alla mappa<a class="headerlink" href="#dal-robot-alla-mappa" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 65%" />
+<col style="width: 35%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Il comando <code class="docutils literal notranslate"><span class="pre">step:step(T)</span></code> con <code class="docutils literal notranslate"><span class="pre">T</span></code> opportuno, permette di spostare il robot in avanti di una lunghezza <code class="docutils literal notranslate"><span class="pre">D</span></code>
+(unità robotica) e permette di costruire una <span class="slide2">mappa della stanza</span> formata da celle quadrate di lato <code class="docutils literal notranslate"><span class="pre">D</span></code> .</p>
+<p>Il concetto di <span class="slide2">posizione</span> viene formalizato introducendo una coppia di coordinate cartesiane che identifica
+una cella della mappa.</p>
+</td>
+<td><a class="reference internal image-reference" href="_images/griglia.PNG"><img alt="_images/griglia.PNG" class="align-center" src="_images/griglia.PNG" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="slide1">Una dicotomia corpo-mente</span></p>
+</section>
+<section id="il-pianificatore-come-mente">
+<h3>Il pianificatore come ‘mente’<a class="headerlink" href="#il-pianificatore-come-mente" title="Permalink to this headline">¶</a></h3>
+<p>Se il robot svolge il ruolo di un puro esecutore di (sequenze di) comandi, l’uso di un <a class="reference external" href="./_static/LabPlanner.html">Planner</a>
+come quello realizzato nel progetto <a class="reference external" href="../../../../unibo.planner23">unibo.planner23</a>
+può essere visto come l’introduzione di una ‘mente’ capace di decidere quale sequenza di mosse induce
+il robot a spostarsi dalla posizione corrente a un’altra posizione data.</p>
+<p>Il percorso del robot viene costruito dal <em>planner</em> specificando le coordinate della cella target.</p>
+</section>
+<section id="operazioni-di-pianificazione">
+<h3>Operazioni di pianificazione<a class="headerlink" href="#operazioni-di-pianificazione" title="Permalink to this headline">¶</a></h3>
+<p>Tra le operazioni offerte dal <a class="reference external" href="./_static/LabPlanner.html">Planner</a>  del progetto  <a href="#id3"><span class="problematic" id="id4">`planner23`_</span></a>   vi sono le seguenti:</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><span class="blue">void setGoal( Integer x, Integer y)</span></p></td>
+<td><p>Fissa le coordinate (in unità robotiche) della posizione (cella) da raggiungere (<em>target</em>).</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="blue">List&lt;Action&gt; doPlan()</span></p></td>
+<td><p>Restituisce una sequenza di mosse (<em>plan</em>) per muovere il robot dalla sua posizione corrente al <em>target</em>.
+La rapprsentazione in forma di <code class="docutils literal notranslate"><span class="pre">String</span></code> di questa sequenza produce la <em>forma verbosa</em> del plan).</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="blue">String doPlanCompact()</span></p></td>
+<td><p>Restituisce una  <code class="docutils literal notranslate"><span class="pre">String</span></code> che rappresenta, in <em>forma compatta</em>, il plan da seguire per raggiungere il <em>target</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="blue">String planCompacted(String Plan)</span></p></td>
+<td><p>Restituisce la <em>forma compatta</em>  della rappresentazione testuale verbosa di un plan.</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="blue">void doPathOnMap(String planrep)</span></p></td>
+<td><p>Muove il robot nella mappa, in accordo alla rappresentazione testuale planrep (in forma <em>verbosa</em> o <em>compatta</em>).</p></td>
+</tr>
+</tbody>
+</table>
+<p><span class="slide1">La esecuzione di un piano</span></p>
+</section>
+<section id="planexec">
+<h3>planexec<a class="headerlink" href="#planexec" title="Permalink to this headline">¶</a></h3>
+<p>Il <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a> delega all’attore <span class="blue">planexec</span> il compito di eseguire un piano definito come una sequenza di mosse.</p>
+<section id="sequenza-di-mosse-in-forma-verbosa-compatta">
+<h4>Sequenza di mosse in forma verbosa/compatta<a class="headerlink" href="#sequenza-di-mosse-in-forma-verbosa-compatta" title="Permalink to this headline">¶</a></h4>
+<p>La sequenza di mosse che definisce un piano può essere espressa in  <strong>forma verbosa</strong> (ad esempio <code class="docutils literal notranslate"><span class="pre">[w,</span> <span class="pre">w,</span> <span class="pre">l,</span> <span class="pre">w,</span> <span class="pre">w]</span></code>) oppure
+in <strong>forma compatta</strong>  (ad esempio <code class="docutils literal notranslate"><span class="pre">wwlww</span></code>).</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Il  messaggio di richiesta di esecuzione di un piano ha la forma:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Request</span> <span class="n">doplan</span><span class="p">:</span><span class="n">doplan</span><span class="p">(</span><span class="n">PLAN</span><span class="p">,</span><span class="n">OWNER</span><span class="p">,</span><span class="n">STEPTIME</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+<td><ul class="simple">
+<li><p><span class="blue">PLAN</span>: la sequenza di mosse da eseguire, espressa in <em>forma verbosa</em> oppure
+in <em>forma compatta</em> ;</p></li>
+<li><p><span class="blue">OWNER</span>:  il nome dell’attore chiamante (che ha ingaggiato il <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a>);</p></li>
+<li><p><span class="blue">STEPTIME</span>: il tempo (in msec) di esecuzione dello <a class="reference internal" href="Appl1-HTTPSprint1.html#step"><span class="std std-ref">step</span></a> da parte del <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a>.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>A questa richiesta, il <span class="blue">planexec</span> risponde con due possibili messaggi di risposta:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Reply</span> <span class="n">doplandone</span>    <span class="p">:</span> <span class="n">doplandone</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+<span class="n">Reply</span> <span class="n">doplanfailed</span>  <span class="p">:</span> <span class="n">doplanfailed</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+</pre></div>
+</div>
+</td>
+<td><ul class="simple">
+<li><p>Nel caso di successo (<strong>doplandone</strong>) l’argomento <code class="docutils literal notranslate"><span class="pre">ARG</span></code> del payload della reply non è significativo. In futuro potrebbe rappresentare
+il tempo di esecuzione.</p></li>
+<li><p>Nel caso di fallimento (<strong>doplanfailed</strong>) l’argomento <code class="docutils literal notranslate"><span class="pre">ARG</span></code> del payload della reply rappresenta la porzione di
+PLAN che è stata eseguita prima del fallimento (per allarme o per l’incontro di un ostacolo).</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="slide">Progetto</span></p>
+</section>
+</section>
+</section>
+<section id="robotpos-un-primo-prototipo">
+<h2>robotpos: un primo prototipo<a class="headerlink" href="#robotpos-un-primo-prototipo" title="Permalink to this headline">¶</a></h2>
+<p>Iniziamo l’<span class="blue">evoluzione incrementale</span> del modello (eseguibile) del sistema impostato nella fase di
+<a class="reference internal" href="#analisi-dei-requisiti"><span class="std std-ref">analisi dei requisiti e del probelma</span></a>:</p>
+<ol class="arabic simple">
+<li><p>Definiamo i contesti che rappresentano i <a class="reference internal" href="#robotpos-i-macro-nodi"><span class="std std-ref">macro-nodi logici</span></a>.</p></li>
+<li><p>Definiamo <a class="reference internal" href="#robotpos-gli-attori"><span class="std std-ref">gli attori</span></a> principali del sistema.</p></li>
+<li><p>Definiamo i <a class="reference internal" href="#robotpos-i-messaggi"><span class="std std-ref">messaggi</span></a> per la interazione tra gli attori.</p></li>
+<li><p>Impostiamo il comportamento logico degli attori.</p></li>
+<li><p>Eseguiamo i test.</p></li>
+<li><p>Aggiorniamo il  <a class="reference internal" href="Template23.html#il-template"><span class="std std-ref">diario del progetto</span></a> con i key-points che emergono dal modello.</p></li>
+</ol>
+<p><span class="slide1">L’impostazione architetturale</span></p>
+<section id="robotpos-i-macro-nodi">
+<h3>robotpos: i macro-nodi<a class="headerlink" href="#robotpos-i-macro-nodi" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Context</span> <span class="n">ctxrobotpos</span>   <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8111</span><span class="p">]</span>
+<span class="n">Context</span> <span class="n">ctxbasicrobot</span> <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8020</span><span class="p">]</span>
+<span class="n">Context</span> <span class="n">ctxclient</span>     <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;ipclient&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8113</span><span class="p">]</span>
+</pre></div>
+</div>
+</td>
+<td><a class="reference internal image-reference" href="_images/robotpos0.PNG"><img alt="_images/robotpos0.PNG" class="align-center" src="_images/robotpos0.PNG" style="width: 50%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="robotpos-gli-attori">
+<h3>robotpos: gli attori<a class="headerlink" href="#robotpos-gli-attori" title="Permalink to this headline">¶</a></h3>
+<p>Nel primo prototipo inseriamo un actor locale <span class="blue">client</span> che cattura le interazioni tra il client e il servizio.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ExternalQActor</span> <span class="n">basicrobot</span> <span class="n">context</span> <span class="n">ctxbasicrobot</span>
+
+<span class="n">QActor</span> <span class="n">worker</span> <span class="n">context</span> <span class="n">ctxrobotpos</span><span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+
+<span class="n">QActor</span> <span class="n">client</span> <span class="n">context</span> <span class="n">ctxrobotpos</span><span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="robotpos-i-messaggi">
+<h3>robotpos: i messaggi<a class="headerlink" href="#robotpos-i-messaggi" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="n">robotpos</span>
+
+<span class="o">//</span><span class="n">Per</span> <span class="n">acquisizione</span> <span class="k">del</span> <span class="n">robot</span> <span class="p">(</span><span class="n">DEFINITI</span> <span class="n">da</span> <span class="n">basicrobot</span><span class="p">)</span>
+<span class="n">Request</span> <span class="n">engage</span>        <span class="p">:</span> <span class="n">engage</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+<span class="n">Reply</span>   <span class="n">engagedone</span>    <span class="p">:</span> <span class="n">engagedone</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+<span class="n">Reply</span>   <span class="n">engagerefused</span> <span class="p">:</span> <span class="n">engagerefused</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+
+<span class="o">//</span><span class="n">Per</span> <span class="n">esecuzione</span> <span class="n">di</span> <span class="n">un</span> <span class="n">piano</span> <span class="p">(</span><span class="n">DEFINITI</span> <span class="n">da</span> <span class="n">basicrobot</span><span class="p">)</span>
+<span class="n">Request</span>  <span class="n">doplan</span>   <span class="p">:</span> <span class="n">doplan</span><span class="p">(</span> <span class="n">PATH</span><span class="p">,</span> <span class="n">OWNER</span><span class="p">,</span> <span class="n">STEPTIME</span> <span class="p">)</span>
+<span class="n">Reply</span> <span class="n">doplandone</span>  <span class="p">:</span> <span class="n">doplandone</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+<span class="n">Reply</span> <span class="n">doplanfailed</span>  <span class="p">:</span> <span class="n">doplanfailed</span><span class="p">(</span> <span class="n">PLANDONE</span><span class="p">,</span> <span class="n">PLANTODO</span> <span class="p">)</span>
+
+<span class="o">//</span><span class="n">Per</span> <span class="n">richiesta</span> <span class="k">del</span> <span class="n">client</span> <span class="p">(</span><span class="n">CONCORDATI</span> <span class="n">con</span> <span class="n">il</span> <span class="n">commitente</span><span class="p">)</span>
+<span class="n">Request</span> <span class="n">moverobot</span>    <span class="p">:</span>  <span class="n">moverobot</span><span class="p">(</span><span class="n">TARGETX</span><span class="p">,</span> <span class="n">TARGETY</span><span class="p">)</span>
+<span class="n">Reply</span> <span class="n">moverobotdone</span>  <span class="p">:</span>  <span class="n">moverobotok</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+<span class="n">Reply</span> <span class="n">moverobotfailed</span><span class="p">:</span>  <span class="n">moverobotfailed</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><span class="slide1">Il comportamento degli attori</span></p>
+<p><span class="slide2">Il worker</span></p>
+</section>
+<section id="worker-fasi-iniziali">
+<h3>worker: fasi iniziali<a class="headerlink" href="#worker-fasi-iniziali" title="Permalink to this headline">¶</a></h3>
+<p>Nell fasi iniziali, il <span class="blue">worker</span> tenta di ingaggiare il <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">QActor</span> <span class="n">worker</span> <span class="n">context</span> <span class="n">ctxrobotpos</span><span class="p">{</span>
+
+<span class="p">[</span><span class="c1"># val planner = unibo.planner23.Planner23Util()</span>
+    <span class="n">val</span> <span class="n">MyName</span>    <span class="o">=</span> <span class="n">name</span> <span class="o">//</span><span class="n">upcase</span> <span class="n">var</span>
+    <span class="n">val</span> <span class="n">MapName</span>   <span class="o">=</span> <span class="s2">&quot;mapEmpty23&quot;</span>
+    <span class="o">//</span><span class="n">val</span> <span class="n">MapName</span> <span class="o">=</span> <span class="s2">&quot;mapCompleteWithObst23ok&quot;</span>
+    <span class="n">val</span> <span class="n">StepTime</span>  <span class="o">=</span> <span class="mi">345</span>
+    <span class="n">var</span> <span class="n">Plan</span>      <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">var</span> <span class="n">TargetX</span>   <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">var</span> <span class="n">TargetY</span>   <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="c1">#]</span>
+
+
+  <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span><span class="p">{</span>
+    <span class="o">//</span><span class="n">Acquisizione</span> <span class="k">del</span> <span class="n">basicrobot</span>
+    <span class="n">request</span> <span class="n">basicrobot</span> <span class="o">-</span><span class="n">m</span> <span class="n">engage</span> <span class="p">:</span> <span class="n">engage</span><span class="p">(</span> <span class="n">worker</span> <span class="p">)</span>
+  <span class="p">}</span>
+  <span class="n">Transition</span> <span class="n">t0</span> <span class="n">whenReply</span> <span class="n">engagedone</span>    <span class="o">-&gt;</span> <span class="n">waitclientrequest</span>
+                <span class="n">whenReply</span> <span class="n">engagerefused</span> <span class="o">-&gt;</span> <span class="n">waitrobotfree</span>
+</pre></div>
+</div>
+<p>Dopo avere acquisito l’accesso al <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a>, il <span class="blue">worker</span> inizializza
+il <em>planner</em>  e carica la mappa della stanza. Quindi attende (per un certo tempo)
+una richiesta da parte del <span class="blue">client</span>.</p>
+<p>Se la richiesta non arriva entro un tempo prefissato, il <span class="blue">worker</span> termina,
+liberando il <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>State waitclientrequest{
+  [# planner.initAI()
+    planner.loadRoomMap(MapName)
+    planner.showMap()
+  #]
+  println(&quot;$name | waiting the client request...&quot;)
+}
+Transition t0 whenTime 5000        -&gt;  endofwork
+              whenRequest moverobot -&gt; moveTheRobot
+
+State endofwork{
+              println(&quot;$name ENDS&quot;)
+  forward basicrobot -m disengage : disengage($MyName)
+}
+</pre></div>
+</div>
+</section>
+<section id="worker-gestione-della-richiesta-del-client">
+<h3>worker: gestione della richiesta del client<a class="headerlink" href="#worker-gestione-della-richiesta-del-client" title="Permalink to this headline">¶</a></h3>
+<p>Il payload della richiesta del client contiene le coordinate della cella target,
+che il <span class="blue">worker</span> memorizza in due variabili interne.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">State</span> <span class="n">elabClientRequest</span><span class="p">{</span>
+  <span class="n">onMsg</span><span class="p">(</span> <span class="n">moverobot</span> <span class="p">:</span> <span class="n">moverobot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)){</span>
+    <span class="p">[</span><span class="c1"># TargetX = payloadArg(0)</span>
+      <span class="n">TargetY</span> <span class="o">=</span> <span class="n">payloadArg</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+      <span class="c1">#]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">Goto</span> <span class="n">moveTheRobot</span>
+</pre></div>
+</div>
+<p>Successivamente, il <span class="blue">worker</span> usa il <em>planner</em> per determinare un piano
+per muovere il robot dalla posizione corrente alla
+cella target, e poi chiede al <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a> di eseguire il piano.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    State planTheRobotmoves{
+            printCurrentMessage color blue
+            [#
+               Plan = planner.planForGoal(&quot;&quot;+TargetX,&quot;&quot;+TargetY).toString()
+               Plan = planner.planCompacted(Plan)
+            #]
+            request basicrobot -m doplan : doplan($Plan, worker, $StepTime)
+}
+Transition t0 whenReply doplandone   -&gt; endok
+              whenReply doplanfailed -&gt; endko
+</pre></div>
+</div>
+<p>Il piano viene memorizzato in <strong>forma compatta</strong> per rendere più agevole l’elaborazione
+in <a class="reference internal" href="#worker-piano-che-fallisce"><span class="std std-ref">caso di fallimento</span></a>.</p>
+</section>
+<section id="worker-piano-esguito-con-sucesso">
+<h3>worker: piano esguito con sucesso<a class="headerlink" href="#worker-piano-esguito-con-sucesso" title="Permalink to this headline">¶</a></h3>
+<p>Se il piano viene eseguito con successo, il <span class="blue">worker</span> dice al <em>planner</em> di aggiornare la
+posizione del robot sulla mappa. Infatti:</p>
+<p><span class="slide1">Il robot non conosce le mappe della ‘mente’</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">State</span> <span class="n">endok</span><span class="p">{</span>
+  <span class="o">//</span><span class="n">Aggiorno</span> <span class="n">il</span> <span class="n">path</span> <span class="n">sulla</span> <span class="n">mappa</span>
+  <span class="p">[</span><span class="c1"># planner.doPathOnMap(Plan) #]</span>
+  <span class="p">[</span><span class="c1"># planner.showCurrentRobotState(); #]</span>
+  <span class="n">replyTo</span> <span class="n">moverobot</span> <span class="k">with</span> <span class="n">moverobotdone</span> <span class="p">:</span> <span class="n">moverobotdone</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+<span class="p">}</span>
+      <span class="n">Goto</span> <span class="n">endofwork</span>
+</pre></div>
+</div>
+<p>Dopo avere inviato la risposta al client,  il <span class="blue">worker</span> termina.</p>
+</section>
+<section id="worker-piano-che-fallisce">
+<h3>worker: piano che fallisce<a class="headerlink" href="#worker-piano-che-fallisce" title="Permalink to this headline">¶</a></h3>
+<p>Se il piano fallisce,  la risposta del <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a> contiene
+<a href="#id1"><span class="problematic" id="id2">:reamrk:`la parte  di piano non eseguita`</span></a>.
+Il <span class="blue">worker</span> usa questa informazione per  dire al <em>planner</em> di aggiornare la
+posizione del robot sulla mappa per quanto riguarda la parte di paino eseguita con successo.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>State endko{
+  onMsg( doplanfailed : doplanfailed(ARG) ){
+    [# val PathTodo = payloadArg(0) #]
+    println(&quot;pos NOT reached - PathTodo = ${PathTodo} vs. $Plan&quot;) color red
+    println(&quot;${Plan.substring(0, Plan.lastIndexOf(PathTodo))}&quot;) color blue
+    [#   val PathDone = Plan.substring(0, Plan.lastIndexOf(PathTodo))
+
+    #]
+    [# planner.doPathOnMap(PathDone) #]
+    [# planner.showCurrentRobotState(); #]
+    replyTo moverobot with moverobotfailed : moverobotfailed($PathDone,$PathTodo)
+  }
+}
+</pre></div>
+</div>
+<p>Dopo avere inviato la risposta al client,  il <span class="blue">worker</span> termina.</p>
+<p><span class="slide2">Il client</span></p>
+</section>
+<section id="client-for-first-test">
+<h3>client for first test<a class="headerlink" href="#client-for-first-test" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">QActor</span> <span class="n">client</span> <span class="n">context</span> <span class="n">ctxrobotpos</span><span class="p">{</span>
+  <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span><span class="p">{</span>
+    <span class="p">[</span><span class="c1"># CommUtils.waitTheUser(&quot;$name | hit 1CR&quot;) #]</span>
+    <span class="n">request</span> <span class="n">worker</span> <span class="o">-</span><span class="n">m</span> <span class="n">moverobot</span> <span class="p">:</span> <span class="n">moverobot</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+    <span class="o">//</span><span class="p">[</span><span class="c1"># emitWithDelay(&quot;alarm&quot;,&quot;alarm(fire)&quot;, 1400)   #]</span>
+  <span class="p">}</span>
+  <span class="n">Transition</span> <span class="n">t0</span> <span class="n">whenReply</span> <span class="n">moverobotdone</span>   <span class="o">-&gt;</span> <span class="n">handleAnswer</span>
+                <span class="n">whenReply</span> <span class="n">moverobotfailed</span> <span class="o">-&gt;</span> <span class="n">handleAnswer</span>
+
+  <span class="n">State</span> <span class="n">handleAnswer</span><span class="p">{</span>
+    <span class="n">printCurrentMessage</span> <span class="n">color</span> <span class="n">cyan</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="emitwithdelay">
+<h4>emitWithDelay<a class="headerlink" href="#emitwithdelay" title="Permalink to this headline">¶</a></h4>
+<p>L’operazione <span class="blue">emitWithDelay</span> emetete un evento dopo il tempo specificato come terzo pargomento.</p>
+</section>
+</section>
+</section>
+<section id="considerazioni-finali">
+<h2>Considerazioni finali<a class="headerlink" href="#considerazioni-finali" title="Permalink to this headline">¶</a></h2>
+<p>Un processo di sviluppo incrementale basato su modelli eseguibili (Qak) consente di:</p>
+<ol class="arabic simple">
+<li><p>interagire in tempi brevi con il committente, al fine di chiarire e stabilizzare i requisiti</p></li>
+<li><p>impostare in modo strutturato e dichiarativo la architettura logica del sistema</p></li>
+<li><p>pervenire alla architattura finale del sistema in modo incrementale attraverso una sequenza di
+SPRINT, in stile SCRUM, ciascuno dei quali definisce in modo preciso il GOAL da raggiungere
+in relazione ai requisiti inizali</p></li>
+<li><p>impostare i primi SPRINT all’interno di un unico nodo (contesto) per realizzare prototipi
+volti ad assestare la corretteza del core-business applicativo, da valutare insieme
+al committente nella varie SPRINT review</p></li>
+<li><p>abbattere i costi dovuti alla transizione da sistema concentrato al sistema distribuito
+(ed eterogeneo).</p></li>
+</ol>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Posizionamento del robot</a><ul>
+<li><a class="reference internal" href="#robotpos">robotpos</a><ul>
+<li><a class="reference internal" href="#analisi-dei-requisiti">Analisi dei requisiti</a><ul>
+<li><a class="reference internal" href="#modello-del-sistema-sprint0">Modello del sistema (Sprint0)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#il-basicrobot-come-esecutore">Il basicrobot come esecutore</a></li>
+<li><a class="reference internal" href="#dal-robot-alla-mappa">Dal robot alla mappa</a></li>
+<li><a class="reference internal" href="#il-pianificatore-come-mente">Il pianificatore come ‘mente’</a></li>
+<li><a class="reference internal" href="#operazioni-di-pianificazione">Operazioni di pianificazione</a></li>
+<li><a class="reference internal" href="#planexec">planexec</a><ul>
+<li><a class="reference internal" href="#sequenza-di-mosse-in-forma-verbosa-compatta">Sequenza di mosse in forma verbosa/compatta</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#robotpos-un-primo-prototipo">robotpos: un primo prototipo</a><ul>
+<li><a class="reference internal" href="#robotpos-i-macro-nodi">robotpos: i macro-nodi</a></li>
+<li><a class="reference internal" href="#robotpos-gli-attori">robotpos: gli attori</a></li>
+<li><a class="reference internal" href="#robotpos-i-messaggi">robotpos: i messaggi</a></li>
+<li><a class="reference internal" href="#worker-fasi-iniziali">worker: fasi iniziali</a></li>
+<li><a class="reference internal" href="#worker-gestione-della-richiesta-del-client">worker: gestione della richiesta del client</a></li>
+<li><a class="reference internal" href="#worker-piano-esguito-con-sucesso">worker: piano esguito con sucesso</a></li>
+<li><a class="reference internal" href="#worker-piano-che-fallisce">worker: piano che fallisce</a></li>
+<li><a class="reference internal" href="#client-for-first-test">client for first test</a><ul>
+<li><a class="reference internal" href="#emitwithdelay">emitWithDelay</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#considerazioni-finali">Considerazioni finali</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="BasicRobot23.html"
+                          title="previous chapter">BasicRobot23</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="UsoDiunPlanner.html"
+                          title="next chapter">Uso di un planner</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/RobotPos.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="UsoDiunPlanner.html" title="Uso di un planner"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="BasicRobot23.html" title="BasicRobot23"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Posizionamento del robot</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

@@ -18,14 +18,14 @@ class Mapemptyroom23 ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( n
 	}
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		val interruptedStateTransitions = mutableListOf<Transition>()
-		 var StepTime = 345
+		 var StepTime = 300L
 			   var NumStep   = 0 
 			   val MapName   = "mapEmpty23"
 			   val planner   = unibo.planner23.Planner23Util()
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						CommUtils.outblack("mapperbuilder starts")
+						CommUtils.outblue("mapperbuilder starts")
 						 planner.initAI()   
 						 planner.showMap()   
 						request("engage", "engage(mapemptyroom23)" ,"basicrobot" )  
@@ -65,6 +65,7 @@ class Mapemptyroom23 ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( n
 									planner.showMap()	
 									//planner.showCurrentRobotState();
 									//CommUtils.waitTheUser("turn. Please 1CR")	 
+						CommUtils.outblue("mapperbuilder turn NumStep=$NumStep")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

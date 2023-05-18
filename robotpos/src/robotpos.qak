@@ -1,0 +1,130 @@
+System robotpos 
+
+Request engage        : engage(ARG)	
+Reply   engagedone    : engagedone(ARG)
+Reply   engagerefused : engagerefused(ARG)
+Dispatch disengage    : disengage(ARG)
+
+Request  doplan     : doplan( PATH, OWNER, STEPTIME )
+Reply doplandone    : doplandone( ARG ) 
+Reply doplanfailed  : doplanfailed( ARG )
+
+Request moverobot    :  moverobot(TARGETX, TARGETY)
+Reply moverobotdone  :  moverobotok(ARG)
+Reply moverobotfailed:  moverobotfailed(PLANDONE, PLANTODO)
+
+Context ctxrobotpos   ip [host="localhost" port=8111] 
+//Struttura: quanti nodi? => anche il basicrobot
+Context ctxbasicrobot ip [host="127.0.0.1" port=8020] 
+//Context ctxclient     ip [host="ipclient" port=8113] 
+ 
+ExternalQActor basicrobot context ctxbasicrobot
+
+QActor worker context ctxrobotpos{
+	[# val planner = unibo.planner23.Planner23Util()
+	    val MapName = "mapEmpty23"
+	    //val MapName = "mapCompleteWithObst23ok"
+	    val MyName    = name //upcase var
+	    val StepTime  = 345
+		var Plan      = ""	
+		var TargetX   = ""
+		var TargetY   = ""
+	#]
+	State s0 initial{
+		printCurrentMessage color blue
+		request basicrobot -m engage : engage( worker )
+	}
+	Transition t0 whenReply engagedone    -> waitclientrequest
+	              whenReply engagerefused -> waitrobotfree
+
+	State endofwork{
+		println("$name ENDS")
+		forward basicrobot -m disengage : disengage($MyName)
+	}
+		
+	State waitrobotfree{
+		println("$name: Sorry, the robot is already engaged.") color blue
+	}
+		              
+	State waitclientrequest{
+        println("$name loading $MapName") color blue
+		[# planner.initAI()  
+		   planner.loadRoomMap(MapName) 
+		   planner.showMap()
+		#]
+		println("$name | waiting the client request...")
+	}              
+	Transition t0 whenTime 5000        ->  endofwork
+	              whenRequest moverobot -> elabClientRequest
+	
+	State elabClientRequest{
+		printCurrentMessage color blue
+		onMsg( moverobot : moverobot(X,Y)){
+			[# TargetX = payloadArg(0)
+			   TargetY = payloadArg(1)
+		    #]
+		}
+	}
+	Goto planTheRobotmoves
+	
+	
+	/* 
+	 * Uso il planner per gestire il robot
+	*/
+	State planTheRobotmoves{
+		printCurrentMessage color blue
+		[#  
+		   Plan = planner.planForGoal(""+TargetX,""+TargetY).toString()
+		   println(Plan)
+		   Plan = planner.planCompacted(Plan) 
+		   CommUtils.outblue("name | Plan to reach pos: $Plan")
+		#]
+		//chiedo al basicrobot di eseguire  Plan
+		request basicrobot -m doplan : doplan($Plan, worker, $StepTime)
+	}
+	Transition t0 whenReply doplandone   -> endok
+	              whenReply doplanfailed -> endko
+	
+	State endok{
+		println("pos reached") color blue
+		//Aggiorno il path sulla mappa
+		[# planner.doPathOnMap(Plan) #]
+		[# planner.showCurrentRobotState(); #]
+		replyTo moverobot with moverobotdone : moverobotdone(ok)
+	}
+	Goto endofwork
+	
+	State endko{
+		onMsg( doplanfailed : doplanfailed(ARG) ){
+			[# val PathTodo = payloadArg(0) #]
+			println("pos NOT reached - PathTodo = ${PathTodo} vs. $Plan") color red	
+			println("${Plan.substring(0, Plan.lastIndexOf(PathTodo))}") color blue
+			[#   val PathDone = Plan.substring(0, Plan.lastIndexOf(PathTodo))
+				
+			#]
+			//println("pos NOT reached - ${PathTodo}  done:${PathDone}  ") color red
+			[# planner.doPathOnMap(PathDone) #]
+			[# planner.showCurrentRobotState(); #]
+			replyTo moverobot with moverobotfailed : moverobotfailed($PathDone,$PathTodo)
+		}
+	}
+	Goto endofwork
+}
+
+/*
+ * client (for prototype0 testing)
+ */
+ 
+QActor client context ctxrobotpos{
+	State s0 initial{
+		[# CommUtils.waitTheUser("$name | hit 1CR") #]
+		request worker -m moverobot : moverobot(6,4)  //6,4
+		//[# emitWithDelay("alarm","alarm(fire)", 1400)   #] 
+	}
+	Transition t0 whenReply moverobotdone   -> handleAnswer
+	              whenReply moverobotfailed -> handleAnswer
+	
+	State handleAnswer{
+		printCurrentMessage color magenta
+	}
+}

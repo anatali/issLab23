@@ -20,7 +20,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Uso di un planner" href="UsoDiunPlanner.html" />
+    <link rel="next" title="Posizionamento del robot" href="RobotPos.html" />
     <link rel="prev" title="Appl1ActorsQak23" href="Appl1ActorsQak23.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,7 +30,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="UsoDiunPlanner.html" title="Uso di un planner"
+          <a href="RobotPos.html" title="Posizionamento del robot"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="Appl1ActorsQak23.html" title="Appl1ActorsQak23"
@@ -142,7 +142,7 @@ in ‘modo indipendente dalla tecnologia’ con cui è realizzato del robot (vir
 <td><ul class="simple">
 <li><p><span class="blue">basicrobot</span></p></li>
 <li><p><span class="blue">engager</span></p></li>
-<li><p><span class="blue">pathexec</span></p></li>
+<li><p><span class="blue">planexec</span></p></li>
 </ul>
 </td>
 </tr>
@@ -153,9 +153,9 @@ in ‘modo indipendente dalla tecnologia’ con cui è realizzato del robot (vir
 </section>
 <section id="uso-del-planner">
 <h2>Uso del planner<a class="headerlink" href="#uso-del-planner" title="Permalink to this headline">¶</a></h2>
-<p>Il robot (virtuale o reale) viene considerato un oggetto inscrivibile in un cerchio di raggio <code class="docutils literal notranslate"><span class="pre">R</span></code>.</p>
+<p>Il robot (virtuale o reale) viene considerato un oggetto inscrivibile in un cerchio di diametro <code class="docutils literal notranslate"><span class="pre">D</span></code>.</p>
 <p>Muovere il robot con mossa <code class="docutils literal notranslate"><span class="pre">step(T)</span></code> con tempo <code class="docutils literal notranslate"><span class="pre">T</span></code> tale da spostare il robot (con velocità prefissata)
-di uno spazio <code class="docutils literal notranslate"><span class="pre">R</span></code>, permette di costruire una mappa della stanza formata da celle quadrate <code class="docutils literal notranslate"><span class="pre">RxR</span></code>.
+di uno spazio <code class="docutils literal notranslate"><span class="pre">D</span></code>, permette di costruire una mappa della stanza formata da celle quadrate <code class="docutils literal notranslate"><span class="pre">DxD</span></code>.
 Ad esempio:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">3</span>  <span class="mi">4</span>  <span class="mi">5</span>  <span class="mi">6</span>  <span class="mi">7</span>  <span class="n">x</span>
 <span class="mi">0</span> <span class="o">|</span><span class="n">r</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
@@ -176,9 +176,11 @@ Ad esempio:</p>
 <p>Un modo per costruire dinamicamente una sequenza di mosse con cui il robot può muoversi dalla posizione
 corrente <strong>r</strong> a un’altra posizione (libera) sulla mappa, consiste
 nell’utilizzo di un pianificatore (si veda <a class="reference external" href="./_static/LabPlanner.html">Planning</a>)
-come quello fornito in <code class="docutils literal notranslate"><span class="pre">unibo.planner23-1.0.jar</span></code>.</p>
-<p>Il progetto <span class="blue">unibo.planner23</span>,  fornisce la classe <span class="blue">Planner23Util</span> che realizza
+come quello fornito  in <code class="docutils literal notranslate"><span class="pre">unibo.planner23-1.0.jar</span></code>.</p>
+<p>Il progetto   <a class="reference external" href="../../../../unibo.planner23">unibo.planner23</a>,  fornisce la classe <span class="blue">Planner23Util</span> che realizza
 le operazioni-base descritte in <a class="reference external" href="./_static/LabPlanner.html">Planning</a> e varie altre utlità.</p>
+<p><span class="slide1">Costruzione ed esecuzione di piani</span></p>
+<p>Si veda: <a class="reference internal" href="RobotPos.html#planexec"><span class="std std-ref">planexec</span></a>.</p>
 <p><span class="worktodo">TODO map</span></p>
 <p>map) creare la mappa della stanza vuota</p>
 <p><span class="worktodo">TODO position</span></p>
@@ -230,8 +232,8 @@ sia libero.</p></li>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="UsoDiunPlanner.html"
-                          title="next chapter">Uso di un planner</a></p>
+    <p class="topless"><a href="RobotPos.html"
+                          title="next chapter">Posizionamento del robot</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -261,7 +263,7 @@ sia libero.</p></li>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="UsoDiunPlanner.html" title="Uso di un planner"
+          <a href="RobotPos.html" title="Posizionamento del robot"
              >next</a> |</li>
         <li class="right" >
           <a href="Appl1ActorsQak23.html" title="Appl1ActorsQak23"

@@ -41,7 +41,7 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						discardMessages = true
 						delegate("engage", "engager") 
 						delegate("disengage", "engager") 
-						delegate("dopath", "planexec") 
+						delegate("doplan", "planexec") 
 						CommUtils.outblack("basicrobot | STARTS")
 						uniborobots.robotSupport.create(myself ,"basicrobotConfig.json" )
 						 RobotType = uniborobots.robotSupport.robotKind  

@@ -28,20 +28,20 @@ ExternalQActor basicrobot context ctxbasicrobot
  * ------------------------------------------------------------------
 */     
 QActor mapemptyroom23 context ctxmapemptyroom23{    
-	[# var StepTime = 345
+	[# var StepTime = 300L
 	   var NumStep   = 0 
 	   val MapName   = "mapEmpty23"
 	   val planner   = unibo.planner23.Planner23Util()
 	#]
 	State s0 initial{  	  	
-		println("mapperbuilder starts") 
+		println("mapperbuilder starts") color blue
 		[# planner.initAI()  #]
 		[# planner.showMap()  #]
 		//run  unibo.planner23.Planner23Util.showMap()
 		request basicrobot -m engage : engage(mapemptyroom23)
 	}	
 	Transition t0 whenReply engagedone -> doAheadMove
- 
+  
 	
 	State doAheadMove {
  		request basicrobot -m step : step($StepTime)
@@ -63,6 +63,7 @@ QActor mapemptyroom23 context ctxmapemptyroom23{
 			//planner.showCurrentRobotState();
 			//CommUtils.waitTheUser("turn. Please 1CR")	 
 		#]
+		println("mapperbuilder turn NumStep=$NumStep") color blue
 	} 
     Goto doAheadMove if [# NumStep < 4 #]  else endwork
     

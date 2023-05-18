@@ -1,0 +1,40 @@
+<html>
+<head><!--
+    <style>
+        .messageAreaStyle {
+            text-align: left;
+            width: 80%;
+            padding: 1em;
+            border: 1px solid black;
+        }
+    </style>-->
+
+    <!--  <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+      <link href="/main.css" rel="stylesheet"> -->
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+
+    <title>GuiStompMinimal</title>
+</head>
+
+<body>
+<h1>GuiSTOMP</h1>
+
+
+<p>Welcome to <b><span th:text="${arg}">Our Arg</span></b>.</p>
+<textarea id="messageArea" name="messageArea" rows="10" cols="60">
+</textarea>
+
+<div>
+    <p>Type a message and hit send:</p>
+    <input id="inputmessage"/><button id="sendMessage">Send</button>
+</div>
+
+
+
+<!--
+Put here and not in head
+-->
+<script src="wsStompMinimal.js"></script>
+
+</body>
+</html>

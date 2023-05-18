@@ -1,0 +1,80 @@
+<html>
+<head>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- see https://getbootstrap.com/docs/4.4/getting-started/introduction/
+             https://getbootstrap.com/docs/4.0/getting-started/download/
+             https://getbootstrap.com/docs/5.0/getting-started/download/
+             https://getbootstrap.com/ -->
+    <script src="/webjars/jquery/jquery.min.js"></script>
+
+    <title>wsdemoNoStomp-images</title>
+</head>
+<body>
+<noscript>
+<h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+enabled. Please enable Javascript and reload this page!</h2>
+</noscript>
+
+<div id="main-content" class="container-fluid pt-3">
+
+<h1>wsdemoNoStomp</h1>
+     
+<h2>Version with bootstrap and images</h2>
+     <div class="row">   
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="connect">WebSocket connection:</label>
+                    <button id="connect" class="btn btn-default" type="submit">Connect</button>
+                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
+                    </button>
+                </div>
+            </form>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="inputmsg">Input (text)</label>
+                    <input type="text" id="inputmsg" class="form-control" placeholder="Input here...">
+                </div>
+                  <button id="sendmsg" class="btn btn-default" type="submit">Send text</button>
+             </form>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="myfile">Input (image)</label>
+                    <input type="file" id="myfile" name="myfile" class="form-control" accept="image/*"/>
+                  </div>
+                  <button id="sendImage" class="btn btn-default" type="submit">Send Image</button>
+              </form>
+        </div>    
+    </div>   
+    
+    
+        <div class="row">
+            <div class="col-md-12">
+                <table id="conversation" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Output Area</th>
+                    </tr>
+                    </thead>
+                    <tbody id="output">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+    
+    
+</div>
+</body>
+<script src="wwsalsoimages.js"></script>
+</html>

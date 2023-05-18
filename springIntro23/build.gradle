@@ -1,0 +1,54 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.8'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'unibo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+	flatDir { dirs '../unibolibs' }
+}
+
+dependencies {
+//STARTUP
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//ADDED for WebSocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	//implementation("org.springframework:spring-websocket:5.3.14")
+	//ADDED for JSON
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+	//ADDED for WebJars - bootstrap
+	implementation 'org.webjars:webjars-locator-core'
+	implementation 'org.webjars:bootstrap:5.1.3'
+	implementation 'org.webjars:jquery:3.6.0'
+
+	//ADDED for STOMP
+	implementation 'org.webjars:stomp-websocket:2.3.4'
+	/*
+// EXTENSIONS
+	//Added for
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	//Added for HAL explorer
+	implementation 'org.springframework.data:spring-data-rest-hal-explorer'
+	//Added for OpenAPI (ex Swagger)
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
+	//Added for actuator
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+*/
+
+	//CUSTOM unibo
+	implementation name: 'unibo.basicomm23-1.0'
+	//implementation name: '2p301'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

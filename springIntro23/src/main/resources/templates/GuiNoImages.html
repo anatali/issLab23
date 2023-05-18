@@ -1,0 +1,22 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>GuiNoImages</title>
+</head>
+
+<body>
+<h1>GuiNoImages</h1>
+
+<p>Welcome to <b><span th:text="${arg}">Our Arg</span></b>.</p>
+<textarea id="messageArea" name="messageArea" rows="10" cols="60">
+</textarea>
+
+<div>
+    <p>Type a message and hit send:</p>
+    <input id="inputmessage"/><button id="sendMessage">Send</button>
+</div>
+
+<!-- <script src="vendors/jquery/jquery.min.js"></script>-->
+<script src="../wsminimal.js"></script>
+
+</body>
+</html>

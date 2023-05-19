@@ -125,9 +125,9 @@ class Planexec ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 						 answer("doplan", "doplanfailed", "doplanfailed($Pathtodo)"   )  
 						 }
 						 else
-						  {CommUtils.outblue("pathend StepSynchRes=$StepSynchRes ")
-						  if(  StepSynchRes  
-						   ){answer("doplan", "doplandone", "doplandone(ok)"   )  
+						  {if(  StepSynchRes  
+						   ){CommUtils.outblue("pathend ok since StepSynchRes=$StepSynchRes ")
+						  answer("doplan", "doplandone", "doplandone(ok)"   )  
 						  }
 						  else
 						   { var Pathtodo = CurMoveTodo + Path 

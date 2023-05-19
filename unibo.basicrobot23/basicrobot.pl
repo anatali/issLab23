@@ -7,3 +7,4 @@ context(ctxbasicrobot, "localhost",  "TCP", "8020").
   qactor( basicrobot, ctxbasicrobot, "it.unibo.basicrobot.Basicrobot").
   qactor( envsonarhandler, ctxbasicrobot, "it.unibo.envsonarhandler.Envsonarhandler").
   qactor( pathexec, ctxbasicrobot, "it.unibo.pathexec.Pathexec").
+tracing.

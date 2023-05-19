@@ -309,8 +309,10 @@ QActor planexec context ctxbasicrobot{
 		 		[# val Pathtodo = CurMoveTodo + Path #]
 		 		replyTo doplan with doplanfailed : doplanfailed( $Pathtodo )			
 			}else{ 
-				println("pathend StepSynchRes=$StepSynchRes ")	color blue
-				if [# StepSynchRes #]{ replyTo doplan with doplandone : doplandone(ok)}
+				if [# StepSynchRes #]{ 
+				    println("pathend ok since StepSynchRes=$StepSynchRes ")	color blue
+					replyTo doplan with doplandone : doplandone(ok)
+				}
 				else{ 
 					[# var Pathtodo = CurMoveTodo + Path 
 					   if( Pathtodo.length == 0 ) Pathtodo="e"

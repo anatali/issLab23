@@ -4,7 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c3c3110-410d-4cbf-9548-c0723381ed26" name="Default Changelist" comment="" />
+    <list default="true" id="4c3c3110-410d-4cbf-9548-c0723381ed26" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../robotpos/src/robotpos.qakincremental" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../iss23Material/html/RobotPos.html" beforeDir="false" afterPath="$PROJECT_DIR$/../iss23Material/html/RobotPos.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robotpos/.gradle/7.4.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../robotpos/.gradle/7.4.2/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robotpos/.gradle/7.4.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../robotpos/.gradle/7.4.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robotpos/.gradle/7.4.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../robotpos/.gradle/7.4.2/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robotpos/.gradle/7.4.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../robotpos/.gradle/7.4.2/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robotpos/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../robotpos/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robotpos/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/../robotpos/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robotpos/Api_robotpos.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../robotpos/Api_robotpos.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robotpos/robotposarch.png" beforeDir="false" afterPath="$PROJECT_DIR$/../robotpos/robotposarch.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robotpos/src/it/unibo/client/Client.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robotpos/src/it/unibo/ctxbasicrobot/MainCtxbasicrobot.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robotpos/src/it/unibo/ctxclient/MainCtxclient.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robotpos/src/it/unibo/ctxrobotpos/MainCtxrobotpos.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robotpos/src/it/unibo/worker/Worker.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robotpos/src/robotpos.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../robotpos/src/robotpos.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/it/unibo/pathexec/Pathexec.kt" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

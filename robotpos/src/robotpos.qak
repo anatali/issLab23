@@ -13,6 +13,8 @@ Request moverobot    :  moverobot(TARGETX, TARGETY)
 Reply moverobotdone  :  moverobotok(ARG)
 Reply moverobotfailed:  moverobotfailed(PLANDONE, PLANTODO)
 
+Event alarm          : alarm(ARG)
+
 Context ctxrobotpos   ip [host="localhost" port=8111] 
 //Struttura: quanti nodi? => anche il basicrobot
 Context ctxbasicrobot ip [host="127.0.0.1" port=8020] 
@@ -22,10 +24,10 @@ ExternalQActor basicrobot context ctxbasicrobot
 
 QActor worker context ctxrobotpos{
 	[# val planner = unibo.planner23.Planner23Util()
-	    val MapName = "mapEmpty23"
-	    //val MapName = "mapCompleteWithObst23ok"
+	    //val MapName   = "mapEmpty23"
+	    val MapName = "mapCompleteWithObst23ok"
 	    val MyName    = name //upcase var
-	    val StepTime  = 345
+	    val StepTime  = 300
 		var Plan      = ""	
 		var TargetX   = ""
 		var TargetY   = ""
@@ -59,6 +61,7 @@ QActor worker context ctxrobotpos{
 	
 	State elabClientRequest{
 		printCurrentMessage color blue
+		//[# CommUtils.waitTheUser("$name | elabClientRequest hit 1CR") #]
 		onMsg( moverobot : moverobot(X,Y)){
 			[# TargetX = payloadArg(0)
 			   TargetY = payloadArg(1)
@@ -97,7 +100,7 @@ QActor worker context ctxrobotpos{
 	State endko{
 		onMsg( doplanfailed : doplanfailed(ARG) ){
 			[# val PathTodo = payloadArg(0) #]
-			println("pos NOT reached - PathTodo = ${PathTodo} vs. $Plan") color red	
+			println("pos NOT reached - PlanTodo = ${PathTodo} vs. $Plan") color red	
 			println("${Plan.substring(0, Plan.lastIndexOf(PathTodo))}") color blue
 			[#   val PathDone = Plan.substring(0, Plan.lastIndexOf(PathTodo))
 				
@@ -107,19 +110,21 @@ QActor worker context ctxrobotpos{
 			[# planner.showCurrentRobotState(); #]
 			replyTo moverobot with moverobotfailed : moverobotfailed($PathDone,$PathTodo)
 		}
-	}
+	} 
 	Goto endofwork
 }
-
+ 
 /*
  * client (for prototype0 testing)
  */
  
 QActor client context ctxrobotpos{
 	State s0 initial{
-		[# CommUtils.waitTheUser("$name | hit 1CR") #]
+		//[# CommUtils.waitTheUser("$name | hit 1CR") #]
 		request worker -m moverobot : moverobot(6,4)  //6,4
-		//[# emitWithDelay("alarm","alarm(fire)", 1400)   #] 
+		println("emitWithDelay") color red
+		//emit alarm : alarm(fire)
+		[# emitWithDelay("alarm","alarm(fire)", 1500)   #]  
 	}
 	Transition t0 whenReply moverobotdone   -> handleAnswer
 	              whenReply moverobotfailed -> handleAnswer

@@ -66,15 +66,6 @@ in una posizione precisata dal client.</p>
 <p>Il sistema è costutuito da tre macro-componenti, come espresso dal seguente modello:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="n">robotpos</span>
 
-<span class="n">Request</span> <span class="n">engage</span>        <span class="p">:</span> <span class="n">engage</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
-<span class="n">Reply</span>   <span class="n">engagedone</span>    <span class="p">:</span> <span class="n">engagedone</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
-<span class="n">Reply</span>   <span class="n">engagerefused</span> <span class="p">:</span> <span class="n">engagerefused</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
-
-<span class="n">Request</span>  <span class="n">doplan</span>   <span class="p">:</span> <span class="n">doplan</span><span class="p">(</span> <span class="n">PATH</span><span class="p">,</span> <span class="n">OWNER</span><span class="p">,</span> <span class="n">STEPTIME</span> <span class="p">)</span>
-<span class="n">Reply</span> <span class="n">doplandone</span>  <span class="p">:</span> <span class="n">doplandone</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
-<span class="n">Reply</span> <span class="n">doplanfailed</span>  <span class="p">:</span> <span class="n">doplanfailed</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
-
-
 <span class="n">Context</span> <span class="n">ctxrobotpos</span> <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span>   <span class="n">port</span><span class="o">=</span><span class="mi">8111</span><span class="p">]</span>
 <span class="n">Context</span> <span class="n">ctxbasicrobot</span> <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8020</span><span class="p">]</span>
 <span class="n">Context</span> <span class="n">ctxclient</span>     <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;ipclient&quot;</span>  <span class="n">port</span><span class="o">=</span><span class="mi">9020</span><span class="p">]</span>
@@ -93,7 +84,7 @@ in una posizione precisata dal client.</p>
 <tr class="row-odd"><td><a class="reference internal image-reference" href="_images/robotpos0.PNG"><img alt="_images/robotpos0.PNG" class="align-center" src="_images/robotpos0.PNG" style="width: 100%;" /></a>
 </td>
 <td><ul class="simple">
-<li><p>L’attore <span class="blue">client</span> è introdotto per completeza (e per testing) ma non fa parte del sistema da realizzare.</p></li>
+<li><p>L’attore <span class="blue">client</span> è introdotto per completezza (e per testing) ma non fa parte del sistema da realizzare.</p></li>
 <li><p>L’attore <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a> viene fornito dal committente.</p></li>
 <li><p>I messaggi di richiesta indicati derivano dal <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a>.</p></li>
 </ul>
@@ -126,7 +117,7 @@ in una posizione precisata dal client.</p>
 <section id="il-basicrobot-come-esecutore">
 <h3>Il basicrobot come esecutore<a class="headerlink" href="#il-basicrobot-come-esecutore" title="Permalink to this headline">¶</a></h3>
 <ul>
-<li><p>Il robot è un oggetto di dimensioni fiite, inscrivibile in un cerchio di diametro <code class="docutils literal notranslate"><span class="pre">D</span></code> (unità robotica) ed esegue
+<li><p>Il robot è un oggetto di dimensioni finite, inscrivibile in un cerchio di diametro <code class="docutils literal notranslate"><span class="pre">D</span></code> (<strong>unità robotica</strong>) ed esegue
 movimenti a velocità costante.</p></li>
 <li><p>Il <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a> fornito dal committente è un puro <span class="remark">esecutore di comandi</span>, con cui il robot
 può effettuare singole mosse o sequenze di mosse, a seguito di messaggi di richiesta.</p>
@@ -191,7 +182,7 @@ il robot a spostarsi dalla posizione corrente a un’altra posizione data.</p>
 </section>
 <section id="operazioni-di-pianificazione">
 <h3>Operazioni di pianificazione<a class="headerlink" href="#operazioni-di-pianificazione" title="Permalink to this headline">¶</a></h3>
-<p>Tra le operazioni offerte dal <a class="reference external" href="./_static/LabPlanner.html">Planner</a>  del progetto  <a href="#id3"><span class="problematic" id="id4">`planner23`_</span></a>   vi sono le seguenti:</p>
+<p>Tra le operazioni offerte dal <a class="reference external" href="./_static/LabPlanner.html">Planner</a>  del progetto  <a class="reference external" href="../../unibo.planner23">unibo.planner23</a>   vi sono le seguenti:</p>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
 <col style="width: 40%" />
@@ -203,7 +194,7 @@ il robot a spostarsi dalla posizione corrente a un’altra posizione data.</p>
 </tr>
 <tr class="row-even"><td><p><span class="blue">List&lt;Action&gt; doPlan()</span></p></td>
 <td><p>Restituisce una sequenza di mosse (<em>plan</em>) per muovere il robot dalla sua posizione corrente al <em>target</em>.
-La rapprsentazione in forma di <code class="docutils literal notranslate"><span class="pre">String</span></code> di questa sequenza produce la <em>forma verbosa</em> del plan).</p></td>
+La rappresentazione in forma di <code class="docutils literal notranslate"><span class="pre">String</span></code> di questa sequenza produce la <em>forma verbosa</em> del plan).</p></td>
 </tr>
 <tr class="row-odd"><td><p><span class="blue">String doPlanCompact()</span></p></td>
 <td><p>Restituisce una  <code class="docutils literal notranslate"><span class="pre">String</span></code> che rappresenta, in <em>forma compatta</em>, il plan da seguire per raggiungere il <em>target</em>.</p></td>
@@ -254,7 +245,7 @@ in <em>forma compatta</em> ;</p></li>
 <li><p>Nel caso di successo (<strong>doplandone</strong>) l’argomento <code class="docutils literal notranslate"><span class="pre">ARG</span></code> del payload della reply non è significativo. In futuro potrebbe rappresentare
 il tempo di esecuzione.</p></li>
 <li><p>Nel caso di fallimento (<strong>doplanfailed</strong>) l’argomento <code class="docutils literal notranslate"><span class="pre">ARG</span></code> del payload della reply rappresenta la porzione di
-PLAN che è stata eseguita prima del fallimento (per allarme o per l’incontro di un ostacolo).</p></li>
+PLAN che è stata eseguita prima del fallimento (per allarme o per l’incontro di un ostacoloooo).</p></li>
 </ul>
 </td>
 </tr>
@@ -279,34 +270,36 @@ PLAN che è stata eseguita prima del fallimento (per allarme o per l’incontro 
 <p><span class="slide1">L’impostazione architetturale</span></p>
 <section id="robotpos-i-macro-nodi">
 <h3>robotpos: i macro-nodi<a class="headerlink" href="#robotpos-i-macro-nodi" title="Permalink to this headline">¶</a></h3>
-<table class="colwidths-given docutils align-default" style="width: 100%">
-<colgroup>
-<col style="width: 60%" />
-<col style="width: 40%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Context</span> <span class="n">ctxrobotpos</span>   <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8111</span><span class="p">]</span>
+<p>Eliminiamo il nodo <code class="docutils literal notranslate"><span class="pre">ctxclient</span></code> per rendere più agevole il testing del prototipo.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Context</span> <span class="n">ctxrobotpos</span>   <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8111</span><span class="p">]</span>
 <span class="n">Context</span> <span class="n">ctxbasicrobot</span> <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8020</span><span class="p">]</span>
-<span class="n">Context</span> <span class="n">ctxclient</span>     <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;ipclient&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8113</span><span class="p">]</span>
+<span class="o">//</span><span class="n">Context</span> <span class="n">ctxclient</span>     <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;ipclient&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8113</span><span class="p">]</span>
 </pre></div>
 </div>
-</td>
-<td><a class="reference internal image-reference" href="_images/robotpos0.PNG"><img alt="_images/robotpos0.PNG" class="align-center" src="_images/robotpos0.PNG" style="width: 50%;" /></a>
-</td>
-</tr>
-</tbody>
-</table>
 </section>
 <section id="robotpos-gli-attori">
 <h3>robotpos: gli attori<a class="headerlink" href="#robotpos-gli-attori" title="Permalink to this headline">¶</a></h3>
 <p>Nel primo prototipo inseriamo un actor locale <span class="blue">client</span> che cattura le interazioni tra il client e il servizio.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ExternalQActor</span> <span class="n">basicrobot</span> <span class="n">context</span> <span class="n">ctxbasicrobot</span>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ExternalQActor</span> <span class="n">basicrobot</span> <span class="n">context</span> <span class="n">ctxbasicrobot</span>
 
 <span class="n">QActor</span> <span class="n">worker</span> <span class="n">context</span> <span class="n">ctxrobotpos</span><span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
 
 <span class="n">QActor</span> <span class="n">client</span> <span class="n">context</span> <span class="n">ctxrobotpos</span><span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
 </pre></div>
 </div>
+<p>Il client può anche emettere un evento di <em>allarme</em>, per verificare il caso di interruzzione della esecuzione di un piano.</p>
+</td>
+<td><a class="reference internal image-reference" href="_images/robotpos1.PNG"><img alt="_images/robotpos1.PNG" class="align-center" src="_images/robotpos1.PNG" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="robotpos-i-messaggi">
 <h3>robotpos: i messaggi<a class="headerlink" href="#robotpos-i-messaggi" title="Permalink to this headline">¶</a></h3>
@@ -326,6 +319,9 @@ PLAN che è stata eseguita prima del fallimento (per allarme o per l’incontro 
 <span class="n">Request</span> <span class="n">moverobot</span>    <span class="p">:</span>  <span class="n">moverobot</span><span class="p">(</span><span class="n">TARGETX</span><span class="p">,</span> <span class="n">TARGETY</span><span class="p">)</span>
 <span class="n">Reply</span> <span class="n">moverobotdone</span>  <span class="p">:</span>  <span class="n">moverobotok</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
 <span class="n">Reply</span> <span class="n">moverobotfailed</span><span class="p">:</span>  <span class="n">moverobotfailed</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+
+<span class="o">//</span><span class="n">Evento</span> <span class="n">di</span> <span class="n">allarme</span>
+<span class="n">Event</span> <span class="n">alarm</span>          <span class="p">:</span> <span class="n">alarm</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><span class="slide1">Il comportamento degli attori</span></p>
@@ -346,20 +342,21 @@ PLAN che è stata eseguita prima del fallimento (per allarme o per l’incontro 
     <span class="n">var</span> <span class="n">TargetY</span>   <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="c1">#]</span>
 
-
-  <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span><span class="p">{</span>
+ <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span><span class="p">{</span>
     <span class="o">//</span><span class="n">Acquisizione</span> <span class="k">del</span> <span class="n">basicrobot</span>
     <span class="n">request</span> <span class="n">basicrobot</span> <span class="o">-</span><span class="n">m</span> <span class="n">engage</span> <span class="p">:</span> <span class="n">engage</span><span class="p">(</span> <span class="n">worker</span> <span class="p">)</span>
   <span class="p">}</span>
   <span class="n">Transition</span> <span class="n">t0</span> <span class="n">whenReply</span> <span class="n">engagedone</span>    <span class="o">-&gt;</span> <span class="n">waitclientrequest</span>
                 <span class="n">whenReply</span> <span class="n">engagerefused</span> <span class="o">-&gt;</span> <span class="n">waitrobotfree</span>
+
+ <span class="n">State</span> <span class="n">waitrobotfree</span><span class="p">{</span>
+     <span class="o">//</span><span class="n">TODO</span> <span class="o">...</span>
+ <span class="p">}</span>
 </pre></div>
 </div>
 <p>Dopo avere acquisito l’accesso al <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a>, il <span class="blue">worker</span> inizializza
 il <em>planner</em>  e carica la mappa della stanza. Quindi attende (per un certo tempo)
 una richiesta da parte del <span class="blue">client</span>.</p>
-<p>Se la richiesta non arriva entro un tempo prefissato, il <span class="blue">worker</span> termina,
-liberando il <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>State waitclientrequest{
   [# planner.initAI()
     planner.loadRoomMap(MapName)
@@ -368,14 +365,16 @@ liberando il <a class="reference internal" href="BasicRobot23.html#basicrobot23"
   println(&quot;$name | waiting the client request...&quot;)
 }
 Transition t0 whenTime 5000        -&gt;  endofwork
-              whenRequest moverobot -&gt; moveTheRobot
+              whenRequest moverobot -&gt; elabClientRequest
 
 State endofwork{
-              println(&quot;$name ENDS&quot;)
+  println(&quot;$name ENDS&quot;)
   forward basicrobot -m disengage : disengage($MyName)
 }
 </pre></div>
 </div>
+<p>Se la richiesta non arriva entro un tempo prefissato, il <span class="blue">worker</span> termina,
+liberando il <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a>.</p>
 </section>
 <section id="worker-gestione-della-richiesta-del-client">
 <h3>worker: gestione della richiesta del client<a class="headerlink" href="#worker-gestione-della-richiesta-del-client" title="Permalink to this headline">¶</a></h3>
@@ -388,19 +387,18 @@ che il <span class="blue">worker</span> memorizza in due variabili interne.</p>
       <span class="c1">#]</span>
   <span class="p">}</span>
 <span class="p">}</span>
-<span class="n">Goto</span> <span class="n">moveTheRobot</span>
+<span class="n">Goto</span> <span class="n">planTheRobotmoves</span>
 </pre></div>
 </div>
 <p>Successivamente, il <span class="blue">worker</span> usa il <em>planner</em> per determinare un piano
 per muovere il robot dalla posizione corrente alla
 cella target, e poi chiede al <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a> di eseguire il piano.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    State planTheRobotmoves{
-            printCurrentMessage color blue
-            [#
-               Plan = planner.planForGoal(&quot;&quot;+TargetX,&quot;&quot;+TargetY).toString()
-               Plan = planner.planCompacted(Plan)
-            #]
-            request basicrobot -m doplan : doplan($Plan, worker, $StepTime)
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>State planTheRobotmoves{
+[#
+  Plan = planner.planForGoal(&quot;&quot;+TargetX,&quot;&quot;+TargetY).toString()
+  Plan = planner.planCompacted(Plan)
+#]
+request basicrobot -m doplan : doplan($Plan, worker, $StepTime)
 }
 Transition t0 whenReply doplandone   -&gt; endok
               whenReply doplanfailed -&gt; endko
@@ -420,7 +418,7 @@ posizione del robot sulla mappa. Infatti:</p>
   <span class="p">[</span><span class="c1"># planner.showCurrentRobotState(); #]</span>
   <span class="n">replyTo</span> <span class="n">moverobot</span> <span class="k">with</span> <span class="n">moverobotdone</span> <span class="p">:</span> <span class="n">moverobotdone</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
 <span class="p">}</span>
-      <span class="n">Goto</span> <span class="n">endofwork</span>
+<span class="n">Goto</span> <span class="n">endofwork</span>
 </pre></div>
 </div>
 <p>Dopo avere inviato la risposta al client,  il <span class="blue">worker</span> termina.</p>
@@ -428,32 +426,30 @@ posizione del robot sulla mappa. Infatti:</p>
 <section id="worker-piano-che-fallisce">
 <h3>worker: piano che fallisce<a class="headerlink" href="#worker-piano-che-fallisce" title="Permalink to this headline">¶</a></h3>
 <p>Se il piano fallisce,  la risposta del <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">basicrobot</span></a> contiene
-<a href="#id1"><span class="problematic" id="id2">:reamrk:`la parte  di piano non eseguita`</span></a>.
+<span class="remark">la parte  di piano non eseguita</span>.
 Il <span class="blue">worker</span> usa questa informazione per  dire al <em>planner</em> di aggiornare la
-posizione del robot sulla mappa per quanto riguarda la parte di paino eseguita con successo.</p>
+posizione del robot sulla mappa per quanto riguarda la parte di piano eseguita con successo.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>State endko{
   onMsg( doplanfailed : doplanfailed(ARG) ){
-    [# val PathTodo = payloadArg(0) #]
-    println(&quot;pos NOT reached - PathTodo = ${PathTodo} vs. $Plan&quot;) color red
-    println(&quot;${Plan.substring(0, Plan.lastIndexOf(PathTodo))}&quot;) color blue
-    [#   val PathDone = Plan.substring(0, Plan.lastIndexOf(PathTodo))
-
+    [# val PathTodo = payloadArg(0)
+       val PathDone = Plan.substring(0, Plan.lastIndexOf(PathTodo))
     #]
     [# planner.doPathOnMap(PathDone) #]
     [# planner.showCurrentRobotState(); #]
     replyTo moverobot with moverobotfailed : moverobotfailed($PathDone,$PathTodo)
   }
 }
+Goto endofwork
 </pre></div>
 </div>
 <p>Dopo avere inviato la risposta al client,  il <span class="blue">worker</span> termina.</p>
 <p><span class="slide2">Il client</span></p>
 </section>
-<section id="client-for-first-test">
-<h3>client for first test<a class="headerlink" href="#client-for-first-test" title="Permalink to this headline">¶</a></h3>
+<section id="client-per-primo-test">
+<h3>client per primo test<a class="headerlink" href="#client-per-primo-test" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">QActor</span> <span class="n">client</span> <span class="n">context</span> <span class="n">ctxrobotpos</span><span class="p">{</span>
   <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span><span class="p">{</span>
-    <span class="p">[</span><span class="c1"># CommUtils.waitTheUser(&quot;$name | hit 1CR&quot;) #]</span>
+    <span class="o">//</span><span class="p">[</span><span class="c1"># CommUtils.waitTheUser(&quot;$name | hit 1CR&quot;) #]</span>
     <span class="n">request</span> <span class="n">worker</span> <span class="o">-</span><span class="n">m</span> <span class="n">moverobot</span> <span class="p">:</span> <span class="n">moverobot</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
     <span class="o">//</span><span class="p">[</span><span class="c1"># emitWithDelay(&quot;alarm&quot;,&quot;alarm(fire)&quot;, 1400)   #]</span>
   <span class="p">}</span>
@@ -468,7 +464,7 @@ posizione del robot sulla mappa per quanto riguarda la parte di paino eseguita c
 </div>
 <section id="emitwithdelay">
 <h4>emitWithDelay<a class="headerlink" href="#emitwithdelay" title="Permalink to this headline">¶</a></h4>
-<p>L’operazione <span class="blue">emitWithDelay</span> emetete un evento dopo il tempo specificato come terzo pargomento.</p>
+<p>L’operazione <span class="blue">emitWithDelay</span> emette un evento dopo il tempo specificato come terzo argomento.</p>
 </section>
 </section>
 </section>
@@ -476,15 +472,15 @@ posizione del robot sulla mappa per quanto riguarda la parte di paino eseguita c
 <h2>Considerazioni finali<a class="headerlink" href="#considerazioni-finali" title="Permalink to this headline">¶</a></h2>
 <p>Un processo di sviluppo incrementale basato su modelli eseguibili (Qak) consente di:</p>
 <ol class="arabic simple">
-<li><p>interagire in tempi brevi con il committente, al fine di chiarire e stabilizzare i requisiti</p></li>
-<li><p>impostare in modo strutturato e dichiarativo la architettura logica del sistema</p></li>
-<li><p>pervenire alla architattura finale del sistema in modo incrementale attraverso una sequenza di
+<li><p>Interagire in tempi brevi con il committente, al fine di chiarire e stabilizzare i requisiti.</p></li>
+<li><p>Impostare in modo strutturato e dichiarativo l’architettura logica del sistema.</p></li>
+<li><p>Pervenire alla architattura finale del sistema in modo incrementale attraverso una sequenza di
 SPRINT, in stile SCRUM, ciascuno dei quali definisce in modo preciso il GOAL da raggiungere
-in relazione ai requisiti inizali</p></li>
-<li><p>impostare i primi SPRINT all’interno di un unico nodo (contesto) per realizzare prototipi
+in relazione ai requisiti inizali.</p></li>
+<li><p>Impostare i primi SPRINT all’interno di un unico nodo (contesto) per realizzare prototipi
 volti ad assestare la corretteza del core-business applicativo, da valutare insieme
-al committente nella varie SPRINT review</p></li>
-<li><p>abbattere i costi dovuti alla transizione da sistema concentrato al sistema distribuito
+al committente nella varie SPRINT review.</p></li>
+<li><p>Abbattere i costi dovuti alla transizione da sistema concentrato al sistema distribuito
 (ed eterogeneo).</p></li>
 </ol>
 </section>
@@ -524,7 +520,7 @@ al committente nella varie SPRINT review</p></li>
 <li><a class="reference internal" href="#worker-gestione-della-richiesta-del-client">worker: gestione della richiesta del client</a></li>
 <li><a class="reference internal" href="#worker-piano-esguito-con-sucesso">worker: piano esguito con sucesso</a></li>
 <li><a class="reference internal" href="#worker-piano-che-fallisce">worker: piano che fallisce</a></li>
-<li><a class="reference internal" href="#client-for-first-test">client for first test</a><ul>
+<li><a class="reference internal" href="#client-per-primo-test">client per primo test</a><ul>
 <li><a class="reference internal" href="#emitwithdelay">emitWithDelay</a></li>
 </ul>
 </li>

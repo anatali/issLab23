@@ -19,10 +19,10 @@ class Worker ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sco
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		val interruptedStateTransitions = mutableListOf<Transition>()
 		 val planner = unibo.planner23.Planner23Util()
-			    val MapName = "mapEmpty23"
-			    //val MapName = "mapCompleteWithObst23ok"
+			    //val MapName   = "mapEmpty23"
+			    val MapName = "mapCompleteWithObst23ok"
 			    val MyName    = name //upcase var
-			    val StepTime  = 345
+			    val StepTime  = 300
 				var Plan      = ""	
 				var TargetX   = ""
 				var TargetY   = ""
@@ -128,7 +128,7 @@ class Worker ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sco
 						if( checkMsgContent( Term.createTerm("doplanfailed(ARG)"), Term.createTerm("doplanfailed(ARG)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 val PathTodo = payloadArg(0)  
-								CommUtils.outred("pos NOT reached - PathTodo = ${PathTodo} vs. $Plan")
+								CommUtils.outred("pos NOT reached - PlanTodo = ${PathTodo} vs. $Plan")
 								CommUtils.outblue("${Plan.substring(0, Plan.lastIndexOf(PathTodo))}")
 								   val PathDone = Plan.substring(0, Plan.lastIndexOf(PathTodo))
 												

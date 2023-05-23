@@ -18,22 +18,20 @@ class Basicrobotusage ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 	}
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		val interruptedStateTransitions = mutableListOf<Transition>()
-		  val Path    = "\"[l, w, w]\"" //Come quello restituito da dopath
-				//val Path    = "lww"
+		 val Path    = "\"[w, w, l, w, w, w, w]\"" //Come quello restituito da dopath
 				val MyName = name 
 		return { //this:ActionBasciFsm
 				state("ss0") { //this:State
 					action { //it:State
 						CommUtils.outblack("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
-						 CommUtils.waitTheUser("basicrobotusage, please hit 1CR")	  
 						request("engage", "engage(MyName)" ,"basicrobot" )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t015",targetState="testDopath",cond=whenReply("engagedone"))
+					 transition(edgeName="t016",targetState="testDopath",cond=whenReply("engagedone"))
 				}	 
 				state("dowork") { //this:State
 					action { //it:State
@@ -43,8 +41,8 @@ class Basicrobotusage ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t016",targetState="handleStepDone",cond=whenReply("stepdone"))
-					transition(edgeName="t017",targetState="handleStepFail",cond=whenReply("stepfailed"))
+					 transition(edgeName="t017",targetState="handleStepDone",cond=whenReply("stepdone"))
+					transition(edgeName="t018",targetState="handleStepFail",cond=whenReply("stepfailed"))
 				}	 
 				state("handleStepDone") { //this:State
 					action { //it:State
@@ -75,8 +73,8 @@ class Basicrobotusage ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t018",targetState="testDopathEnd",cond=whenReply("dopathdone"))
-					transition(edgeName="t019",targetState="testDopathEnd",cond=whenReply("dopathfailed"))
+					 transition(edgeName="t019",targetState="testDopathEnd",cond=whenReply("dopathdone"))
+					transition(edgeName="t020",targetState="testDopathEnd",cond=whenReply("dopathfailed"))
 				}	 
 				state("testDopathEnd") { //this:State
 					action { //it:State

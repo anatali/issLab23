@@ -21,9 +21,9 @@ class Client ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sco
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						request("moverobot", "moverobot(6,4)" ,"worker" )  
-						CommUtils.outred("emitWithDelay")
-						 emitWithDelay("alarm","alarm(fire)", 1500)    
+						 CommUtils.waitTheUser("$name | hit 1CR")  
+						request("moverobot", "moverobot(2,2)" ,"worker" )  
+						 emitWithDelay("alarm","alarm(fire)", 1400)    
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

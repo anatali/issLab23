@@ -18,9 +18,9 @@ class Planexec ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 	}
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		val interruptedStateTransitions = mutableListOf<Transition>()
-		 var Path = ""
+		  var Plan          = ""
 				var CurMoveTodo   = ""		
-				var StepSynchRes  = false
+				//var StepSynchRes  = false
 				var StepTime      = 345L
 				var Owner         = "unknown"
 		return { //this:ActionBasciFsm
@@ -41,78 +41,76 @@ class Planexec ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t07",targetState="doplan",cond=whenRequest("doplan"))
+					 transition(edgeName="t08",targetState="execplan",cond=whenRequest("doplan"))
 				}	 
-				state("doplan") { //this:State
+				state("execplan") { //this:State
 					action { //it:State
 						CommUtils.outred("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
 						if( checkMsgContent( Term.createTerm("doplan(PATH,OWNER,STEPTIME)"), Term.createTerm("doplan(PLAN,OWNER,STEPTIME)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								CommUtils.outblue("$name | ${payloadArg(0)}")
-								  Path  = payloadArg(0).replace("[","").replace("]","").replace(",","").replace(" ","")
+								  Plan     = payloadArg(0).replace("[","").replace("]","").replace(",","").replace(" ","")
 												Owner    = payloadArg(1)
 												StepTime = payloadArg(2).toLong()
-								CommUtils.outblue("$name | Path=$Path")
+								CommUtils.outblue("$name | Plan=$Plan StepTime=$StepTime")
 						}
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
-				 	 		stateTimer = TimerActor("timer_doplan", 
-				 	 					  scope, context!!, "local_tout_planexec_doplan", 100.toLong() )
+				 	 		stateTimer = TimerActor("timer_execplan", 
+				 	 					  scope, context!!, "local_tout_planexec_execplan", 100.toLong() )
 					}	 	 
-					 transition(edgeName="t08",targetState="nextMove",cond=whenTimeout("local_tout_planexec_doplan"))   
-					transition(edgeName="t09",targetState="pathinterrupted",cond=whenEvent("alarm"))
+					 transition(edgeName="t09",targetState="nextMove",cond=whenTimeout("local_tout_planexec_execplan"))   
+					transition(edgeName="t010",targetState="planinterrupted",cond=whenEvent("alarm"))
 				}	 
 				state("nextMove") { //this:State
 					action { //it:State
 						 
-								   if( Path.length > 0  ){
-								   	CurMoveTodo =  Path.elementAt(0).toString() 
-								   	Path        =  Path.removePrefix(CurMoveTodo)
+								   if( Plan.length > 0  ){
+								   	CurMoveTodo =  Plan.elementAt(0).toString() 
+								   	Plan        =  Plan.removePrefix(CurMoveTodo)
 								   }else CurMoveTodo = ""		   
-						CommUtils.outblue("planexec CurMoveTodo= $CurMoveTodo remain:$Path")
+						CommUtils.outblue("$name | CurMoveTodo= $CurMoveTodo remain:$Plan")
 						forward("nextmove", "nextmove($CurMoveTodo)" ,"planexec" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t010",targetState="pathinterrupted",cond=whenEvent("alarm"))
-					transition(edgeName="t011",targetState="doMove",cond=whenDispatch("nextmove"))
+					 transition(edgeName="t011",targetState="planinterrupted",cond=whenEvent("alarm"))
+					transition(edgeName="t012",targetState="doMove",cond=whenDispatch("nextmove"))
 				}	 
 				state("doMove") { //this:State
 					action { //it:State
-						CommUtils.outblue("domove $CurMoveTodo")
+						CommUtils.outblue("$name | domove $CurMoveTodo")
 						if(  CurMoveTodo == ""  
 						 ){forward("nomoremove", "nomoremove(end)" ,"planexec" ) 
 						}
 						else
 						 {if(  CurMoveTodo == "w"  
 						  ){delay(300) 
-						  StepSynchRes = uniborobots.robotSupport.dostep( StepTime )  
+						 request("step", "step($StepTime)" ,"basicrobot" )  
 						 }
 						 else
 						  {CommUtils.outblue("doMoveTurn $CurMoveTodo")
 						  uniborobots.robotSupport.move( CurMoveTodo  )
-						   StepSynchRes = true  
+						  forward("nextmove", "nextmove(goon)" ,"planexec" ) 
 						  }
-						 forward("nextmove", "nextmove(goon)" ,"planexec" ) 
 						 }
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t012",targetState="pathinterrupted",cond=whenEvent("alarm"))
-					transition(edgeName="t013",targetState="pathend",cond=whenDispatch("nomoremove"))
-					transition(edgeName="t014",targetState="nextMove",cond=whenDispatchGuarded("nextmove",{ StepSynchRes  
-					}))
-					transition(edgeName="t015",targetState="pathinterrupted",cond=whenDispatchGuarded("nextmove",{ ! StepSynchRes  
-					}))
+					 transition(edgeName="t013",targetState="planinterrupted",cond=whenEvent("alarm"))
+					transition(edgeName="t014",targetState="planend",cond=whenDispatch("nomoremove"))
+					transition(edgeName="t015",targetState="nextMove",cond=whenDispatch("nextmove"))
+					transition(edgeName="t016",targetState="nextMove",cond=whenReply("stepdone"))
+					transition(edgeName="t017",targetState="planinterrupted",cond=whenReply("stepfailed"))
 				}	 
-				state("pathend") { //this:State
+				state("planend") { //this:State
 					action { //it:State
 						CommUtils.outred("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
@@ -120,21 +118,15 @@ class Planexec ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 						 ){}
 						else
 						 {if(  currentMsg.msgId() == "alarm"  
-						  ){CommUtils.outblue("pathend  ")
-						  val Pathtodo = CurMoveTodo + Path  
+						  ){CommUtils.outblue("planend alarm ")
+						  val Pathtodo = CurMoveTodo + Plan  
 						 answer("doplan", "doplanfailed", "doplanfailed($Pathtodo)"   )  
 						 }
 						 else
-						  {if(  StepSynchRes  
-						   ){CommUtils.outblue("pathend ok since StepSynchRes=$StepSynchRes ")
+						  {CommUtils.outblue("planend ok ")
 						  answer("doplan", "doplandone", "doplandone(ok)"   )  
-						  }
-						  else
-						   { var Pathtodo = CurMoveTodo + Path 
-						   					   if( Pathtodo.length == 0 ) Pathtodo="e"
-						   CommUtils.outblue("pathend Pathtodo=$Pathtodo ")
-						   answer("doplan", "doplanfailed", "doplanfailed($Pathtodo)"   )  
-						   }
+						  updateResourceRep( "plandone($Plan)"  
+						  )
 						  }
 						 }
 						//genTimer( actor, state )
@@ -144,12 +136,15 @@ class Planexec ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 					}	 	 
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
-				state("pathinterrupted") { //this:State
+				state("planinterrupted") { //this:State
 					action { //it:State
 						CommUtils.outmagenta("pathinterrupted  ")
 						 var Pathtodo = "" 
-						 		   if( StepSynchRes ) Pathtodo = Path  
-						 		   else Pathtodo = CurMoveTodo + Path 	
+						 		   //if( StepSynchRes ) Pathtodo = Plan  
+						 		   //else Pathtodo = CurMoveTodo + Plan 	
+						 		   Pathtodo = CurMoveTodo + Plan
+						updateResourceRep( "planfailed($Plan,$Pathtodo )"  
+						)
 						answer("doplan", "doplanfailed", "doplanfailed($Pathtodo)"   )  
 						//genTimer( actor, state )
 					}

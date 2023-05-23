@@ -80,7 +80,7 @@
       <recent name="robotVirtual" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.WsServer">
+  <component name="RunManager" selected="Kotlin.MainCtxbasicrobotKt (2)">
     <configuration name="WsServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="uniborobots.WsServer" />
       <module name="unibo.basicrobot23.main" />
@@ -135,6 +135,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Kotlin.MainCtxbasicrobotKt (2)" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

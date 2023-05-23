@@ -1,0 +1,41 @@
+.btn-block {
+	width: 100%
+}
+
+.bg-warning{
+    background-color: #ffff99;
+}
+
+.iss-bg-inputarea{
+    background-color: #ffffe6;
+}
+
+.iss-bg-cmdarea{
+    background-color: #f2f2f2;
+}
+
+.iss-bg-webcamarea{
+    background-color: #ffffe6;
+}
+
+.iss-bg-infoarea{
+    background-color: #ffffe6;
+}
+.iss-bg-robotarea{
+    background-color: #ffffe6;
+}
+.iss-bg-pathexecarea{
+    background-color: #ffb3ff;
+}
+.iss-btn-ligthblue{
+	background-color: #b3ffff;
+	color: #002152
+}
+.iss-btn-ligthgreen{
+	background-color: #b3ff99;
+	color: #002152
+}
+
+.font-bold {
+	font-weight: 700
+}

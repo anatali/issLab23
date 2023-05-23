@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TeaRoom Dashboard</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="vendors/fontawesome/css/all.css">
+    <link rel="stylesheet" href="vendors/toastify/toastify.css">
+    <link rel="stylesheet" href="vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="shortcut icon" href="images/favicon.svg" type="image/x-icon">
+</head>
+
+<body>
+    <div id="app">
+        <div id="sidebar" class="active">
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="logo">
+                            <a th:href="@{/index}"><img src="images/logo/logo.png" alt="Logo"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar-menu">
+                    <ul class="menu">
+                        <li class="sidebar-title">Menu</li>
+                        
+                        <li class="sidebar-item active">
+                            <a th:href="@{/index}" class='sidebar-link'>
+                                <i class="fa-regular fa-grid-horizontal"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="fa-regular fa-map"></i>
+                                <span>Map</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item ">
+                                    <a th:href="@{/virtual_robot}">Virtual Robot</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a th:href="@{/physical_robot}">Physical Robot</a>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <li class="sidebar-item">
+                            <a th:href="@{/}" class='sidebar-link'>
+                                <i class="fa-regular fa-arrow-right-from-bracket"></i>
+                                <span>Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+            </div>
+        </div> <!-- app -->
+        <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+
+            <div class="page-heading">
+                <h3>Dashboard</h3>
+            </div>
+            <div class="page-content">
+                <section class="row">
+                    <div class="col-12 col-lg-9">
+                        <div class="row">
+                            <div class="col-6 col-lg-3 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-3 py-4-5">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="stats-icon blue">
+                                                    <i class="fa-regular fa-user-robot"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h6 class="text-muted font-semibold">Waiter state</h6>
+                                                <div id="divWaiter">
+                                                    <h6 class="text-overflow font-extrabold mb-0" id="statewaiter">home</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-3 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-3 py-4-5">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="stats-icon purple">
+                                                    <i class="fa-regular fa-martini-glass"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h6 class="text-muted font-semibold">Barman state</h6>
+                                                <div id="divBarman">
+                                                    <h6 class="text-overflow font-extrabold mb-0" id="statebarman">waitOrder</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-3 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-3 py-4-5">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="stats-icon green" id="iconTable1">
+                                                    <i class="fa-regular fa-table-picnic"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h6 class="text-muted font-semibold">Table1 state</h6>
+                                                <div id="divTable1">
+                                                    <h6 class="text-overflow font-extrabold mb-0" id="statetable1">tableSanitized</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-3 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-3 py-4-5">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="stats-icon green" id="iconTable2">
+                                                    <i class="fa-regular fa-table-picnic"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h6 class="text-muted font-semibold">Table2 state</h6>
+                                                <div id="divTable2">
+                                                    <h6 class="text-overflow font-extrabold mb-0" id="statetable2">tableSanitized</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+	                                        <li class="nav-item" role="presentation">
+	                                            <a class="nav-link active" id="virtual-tab" data-bs-toggle="tab" href="#virtual"
+	                                                role="tab" aria-controls="virtual" aria-selected="true">Virtual Robot</a>
+	                                        </li>
+	                                        <li class="nav-item" role="presentation">
+	                                            <a class="nav-link" id="physical-tab" data-bs-toggle="tab" href="#physical"
+	                                                role="tab" aria-controls="physical" aria-selected="false">Physical Robot</a>
+	                                        </li>
+	                                    </ul>
+                                    </div>
+                                    <div class="card-body">
+	                                    <div class="tab-content" id="myTabContent">
+	                                    	<div class="tab-pane fade show active" id="virtual" role="tabpanel" aria-labelledby="home-tab">
+                                        		<iframe style="border-spacing: 0; width: 100%; height: 400px; border: none;" th:src="@{${'http://' + ip_virtual_robot + ':8090'}}"></iframe>
+                                        	</div>
+                                        	<div class="tab-pane fade" id="physical" role="tabpanel" aria-labelledby="profile-tab">
+                                        		<img th:src="@{${'http://' + ip_basic_robot + ':8080/?action=stream'}}" alt="" style="border-spacing: 0; width: 100%; height: 300px; border: none;">
+                                        	</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Client</h4>
+                                    </div>
+                                    <div class="card-body">
+                                    <button class='btn btn-block btn-light-primary font-bold' onclick='newClient()'><i class="fa-regular fa-circle-plus"></i> Add Client</button>
+                                        <div class="table-responsive">
+                                            <table class="table table-hover" id="clientStateTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>State</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="clientStateBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3">
+                        <div class="card">
+                            <div class="card-body py-4 px-5">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-xl">
+                                        <img src="images/faces/2.jpg" alt="Face 1">
+                                    </div>
+                                    <div class="ms-3 name">
+                                        <h5 class="font-bold">Giulio Tommasi</h5>
+                                        <h6 class="text-muted mb-0">@gtommasi</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Commands</h4>
+                            </div>
+                            <div class="card-content pb-4">
+                                <div class="px-4">
+                                    <button class='btn btn-block btn-light-primary font-bold' id='w'><i class="fa-regular fa-arrow-up"></i> Step Ahead</button>
+                                </div>
+                                <div class="row px-4">
+	                                <div class="col-6">
+	                                    <button class='btn btn-block btn-light-primary font-bold mt-3' id='l'><i class="fa-regular fa-rotate-left"></i> Turn Left</button>
+	                                    <button class='btn btn-block btn-light-primary font-bold mt-3' id='z'><i class="fa-regular fa-arrow-rotate-left"></i> Turn Left 90</button>
+	                                    <button class='btn btn-block btn-light-primary font-bold mt-3' id='s'><i class="fa-regular fa-arrow-down"></i> Backward</button>
+	                                </div>
+	                                <div class="col-6">
+	                                    <button class='btn btn-block btn-light-primary font-bold mt-3' id="r">Turn Right <i class="fa-regular fa-rotate-right"></i></button>
+	                                    <button class='btn btn-block btn-light-primary font-bold mt-3' id='x'>Turn Right 90 <i class="fa-regular fa-arrow-rotate-right"></i></button>
+	                                    <button class='btn btn-block btn-light-primary font-bold mt-3' id='h'>Stop <i class="fa-regular fa-ban"></i></button>
+	                                </div>
+	                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <footer>
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p>Final Project for exam of Software Systems Engineering M - Ing. Informatica Magistrale - UniBO 2020</p>
+                    </div>
+                    <div class="float-end">
+                        <p>Crafted by <a href="https://github.com/VittorioCorsale-1">Vittorio Corsale</a> and <a href="https://github.com/it9tst">Gabriele Tornatore</a></p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="vendors/toastify/toastify.js"></script>
+    <script src="js/extensions/toastify.js"></script>
+    <script src="js/main.js"></script>
+    <script src="vendors/jquery/jquery.min.js"></script>
+    <script src="vendors/jquery/jquery.slimscroll.js"></script>
+    <script src="vendors/jquery/jquery.blockUI.js"></script>
+    <script src="vendors/jquery/jquery.nicescroll.js"></script>
+    <script src="vendors/jquery/jquery.scrollTo.min.js"></script>
+    <script src="sockjs.min.js"></script>
+	<script src="stomp.min.js"></script>
+	
+    <script src="app.js"></script>
+    <script>connect()</script>
+</body>
+
+</html>

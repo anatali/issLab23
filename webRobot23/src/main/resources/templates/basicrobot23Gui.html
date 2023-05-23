@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- bootstrap: ensure proper rendering -->
+ <title>basicrobot23Gui</title>
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="css/issSpec.css"> <!-- -->
+  <link rel="shortcut icon" href="images/mbotIot.png" type="image/x-icon">
+</head>
+
+<body>
+
+<div class="container-fluid bg-primary text-white text-center">
+ <h1>basicrobot23 console</h1>
+</div>
+
+<!-- CONTAINER del contenuto di pagina -->
+<div class="container-fluid">
+ <div class="row"> <!-- Page main row -->
+
+  <!-- PRIMA COLONNA (Input/Output area) -->
+  <div class="col-7 px-1">  <!-- I/O area col  -->
+
+   <!-- CONFIGURATION Area and Data -->
+   <div class="card iss-bg-inputarea">  <!-- I/O area card -->
+    <div class="card-body">
+     <!-- AREA PROTOCOL -->
+     <div class="row"> <!-- protocol row in I/O area card -->
+      <div class="col-7">
+       <!--   PROTOCOL InputArea   -->
+       <form action="setprotocol" method="post">
+        <!-- the form-data is sent to the path specified in the action attribute -->
+           <select name="protocol" id="protocols">
+               <option value="coap">coap</option>
+               <option value="tcp">tcp</option>
+           </select>
+        <!-- <input type="text" size="10" id="protocolspec" name="protocol" value="coap"> -->
+        <input type="submit" value="protocolRobot">
+       </form>
+      </div>
+         <!--   PROTOCOL DataArea   -->
+      <div class="col-5 text-primary">
+       <b><span th:text="${protocol}">tcp</span></b>
+      </div>
+     </div> <!--  row protocol in I/O area card -->
+
+     <!-- AREA WEBCAM Android -->
+        <div class="row" > <!-- camip row in I/O area card  -->
+      <div class="col-7">
+          <!--   WEBCAM Android InputArea   -->
+        <form action="setwebcamip" method="post">
+         <!-- the form-data is sent to the path specified in the action attribute -->
+         <input type="text" size="10" id="webcamspec" name="ipaddr" value="">
+         <input type="submit" value="camip">
+        </form>
+      </div>
+        <!--   WEBCAM Android DataArea   -->
+      <div class="col-5 text-info">
+       <b><span th:text="${webcamip}" id="webcamipaddr">unknown</span></b>
+      </div>
+     </div> <!-- row webcamip in card in I/O area card  -->
+
+     <!-- AREA ROBOT ADDRESS -->
+     <div class="row"> <!-- row robotip in card in I/O area card  -->
+      <div class="col-7">
+          <!--   ROBOT ADDRESS InputArea   -->
+          <form action="setrobotip" method="post">
+         <!-- the form-data is sent to the path specified in the action attribute -->
+         <input type="text" size="10" id="configurespec" name="ipaddr" value="localhost">
+         <input type="submit" value="robotip">
+         </form>
+      </div>
+         <!--   ROBOT ADDRESS DataArea   -->
+         <div class="col-5 text-danger">
+            <b><span th:text="${robotip}">not connected</span></b>
+         </div>
+     </div> <!-- row robotip in card in I/O area card  -->
+
+     </div> <!-- I/O area card body -->
+    </div>  <!-- I/O area card -->
+
+    <!--  RobotCmdArea -->
+      <div class="card  iss-bg-cmdarea text-primary"> <!--  command card -->
+         <div class="card-header">
+          <h6>Commands</h6>
+         </div>
+        <div class="card-content"> <!--  pb-4 -->
+         <!--  See https://getbootstrap.com/docs/4.1/components/buttons/ -->
+         <div class="row">  <!-- w,s,h commands row -->
+           <div class="col"><button class="btn btn-block iss-btn-ligthblue border" id='w'>w <i>(ahead)</i></button></div> <!--class='btn btn-block btn-light-primary font-bold border' -->
+           <div class="col"><button class='btn btn-block iss-btn-ligthblue  border' id='s'>s (back) </button></div>
+           <div class="col"><button class='btn btn-danger  btn-block border' id='h'>h (halt) </button></div>
+          </div> <!-- w,s,h commands row -->
+
+         <div class="row"> <!-- p,l,r commands row -->
+             <div class="col"><button class='btn btn-block iss-btn-ligthgreen border' id='l'>l (left)  </button></div>
+             <div class="col"><button class='btn btn-block iss-btn-ligthgreen border' id='r'>r (rigth) </button></div>
+             <div class="col"><button class='btn btn-warning btn-block border' id='p'>p (step) </button></div>
+         </div> <!--p,l,r commands row -->
+
+            <div class="row"> <!-- p,l,r commands row -->
+                <form action="dorobotpos" method="post">
+                <div class="col">
+                    x <input type="text" size="4" name="x" />
+                    y <input type="text" size="4" name="y" />
+                    <input type="submit" value="dorobotpos"></div>
+
+                  </form>
+            </div> <!--p,l,r commands row -->
+
+
+        </div> <!-- command card-content -->
+      </div> <!--  command card -->
+
+      <!-- infoDisplay -->
+         <div class="card iss-bg-infoarea text-primary">
+             <div class="card-header px-1">Info display:</div>
+             <div class="card-content px-1">
+                <span id="infoDisplay">...</span>
+            </div>
+         </div>
+      <!-- robotDisplay -->
+      <div class="card iss-bg-robotarea text-dark">
+          <div class="card-header px-1">Robot Display (Coap updated):</div>
+          <div class="card-content px-1">
+             <span id="robotDisplay" >...</span>
+          </div>
+      </div>
+
+      <!-- pathexectDisplay -->
+      <div class="card iss-bg-pathexecarea text-dark">
+          <div class="card-header px-1">Path executor</div>
+          <div class="card-content px-1">
+              <div class="row"> <!-- path row -->
+
+                  <form action="doplan" method="post">
+                      <!-- the form-data is sent to the path specified in the action attribute -->
+                      <input type="text" size="20" name="plan" >
+                      <input type="submit" value="doplan">
+                      plantodo=<span th:text="${plantodo}" id="plantoexec"></span>
+                  </form>
+              </div> <!-- path row -->
+              <span id="pathexecDisplay" >...</span>
+          </div>
+      </div>
+
+  </div><!-- I/O area col  -->
+
+<!-- SECONDA COLONNA (webcam e robot messages) -->
+  <!-- Responsive images automatically adjust to fit the size of the screen. -->
+  <div class="col-5">  <!-- webcam col -->
+    <div class="card iss-bg-webcamarea px-1 border">
+     <div class="card-body">
+      <div class="row">
+        <img class="img-fluid" th:src="@{${ 'http://'+webcamip+':8000/video'} }"
+               alt="androidcammmm" style="border-spacing: 0; border: 1px solid black;">
+        </div>
+         <!--  LO STREAM DEVE ESSERE SU UN ALTRO PC
+               <img class="img-fluid" th:src="@{${ 'http://192.168.1.214:8000/video'} }" -->
+         <div class="row">
+         <img class="img-fluid" th:src="@{${ 'http://'+robotip+':8080/?action=stream'}}"
+              alt="raspicam" style="border-spacing: 0; border: 1px solid black;">
+         <!--  <a th:href="@{${'http://'+webcamip+':8080'}}">Android ipwebcam</a> -->
+      </div>
+     </div>
+     </div> <!-- card -->
+   </div><!-- webcam col -->
+
+</div> <!-- Page main row  -->
+
+
+ <footer>
+  <hr/>
+  <div class="footer clearfix mb-0 text-muted">
+   <div class="float-start">
+    <p>basicrobot23 console</p>
+   </div>
+   <div class="float-end">
+    <p>By <a href="https://www.unibo.it/sitoweb/antonio.natali">AN-DISI</a> </p>
+   </div>
+  </div>
+ </footer>
+
+
+</div> <!-- container -->
+
+
+<script src="vendors/jquery/jquery.min.js"></script>
+<script src="sockjs.min.js"></script>
+<!-- <script src="app.js"></script> -->
+<script src="ioutils.js"></script>
+<script src="wsminimal.js"></script>
+<script>connect()</script>  <!-- connect definita in wsminimal-->
+</body>
+</html>

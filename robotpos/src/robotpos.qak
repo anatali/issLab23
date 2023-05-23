@@ -9,6 +9,7 @@ Request  doplan     : doplan( PATH, OWNER, STEPTIME )
 Reply doplandone    : doplandone( ARG ) 
 Reply doplanfailed  : doplanfailed( ARG )
 
+
 Request moverobot    :  moverobot(TARGETX, TARGETY)
 Reply moverobotdone  :  moverobotok(ARG)
 Reply moverobotfailed:  moverobotfailed(PLANDONE, PLANTODO)

@@ -415,6 +415,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-coap-coapconnection">unibo.basicomm23.coap.CoapConnection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="unibo.basicomm23.html#altri-contratti-e-supporti">Altri contratti e supporti</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-interfaces-iobserver">unibo.basicomm23.interfaces.IObserver</a></li>
 <li class="toctree-l3"><a class="reference internal" href="unibo.basicomm23.html#unibo-basicomm23-interfaces-iobservable">unibo.basicomm23.interfaces.IObservable</a></li>
@@ -875,7 +876,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="RobotPos.html">Posizionamento del robot</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="RobotPos.html#robotpos">robotpos</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="RobotPos.html#analisi-dei-requisiti">Analisi dei requisiti</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RobotPos.html#robotpos-analisi-dei-requisiti">robotpos Analisi dei requisiti</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="RobotPos.html#modello-del-sistema-sprint0">Modello del sistema (Sprint0)</a></li>
 </ul>
 </li>
@@ -897,13 +898,66 @@
 <li class="toctree-l3"><a class="reference internal" href="RobotPos.html#worker-gestione-della-richiesta-del-client">worker: gestione della richiesta del client</a></li>
 <li class="toctree-l3"><a class="reference internal" href="RobotPos.html#worker-piano-esguito-con-sucesso">worker: piano esguito con sucesso</a></li>
 <li class="toctree-l3"><a class="reference internal" href="RobotPos.html#worker-piano-che-fallisce">worker: piano che fallisce</a></li>
-<li class="toctree-l3"><a class="reference internal" href="RobotPos.html#client-for-first-test">client for first test</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RobotPos.html#client-per-primo-test">client per primo test</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="RobotPos.html#emitwithdelay">emitWithDelay</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="RobotPos.html#considerazioni-finali">Considerazioni finali</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RobotPosWeb.html">robotposweb</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RobotPosWeb.html#posizionamento-robot-come-webappl">Posizionamento robot come webappl</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#robotposweb-analisi-dei-requisiti">robotposweb Analisi dei requisiti</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#robotposweb-analisi-del-problema">robotposweb Analisi del problema</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RobotPosWeb.html#robotposweb-progetto">robotposweb Progetto</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#fasi-preliminari">Fasi preliminari</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#enable-springboot-live-devtools">Enable SpringBoot live DevTools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#build-gradle-di-robotposweb">build.gradle di robotposweb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#una-prima-pagina-html">Una prima pagina HTML</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RobotPosWeb.html#progettazione">Progettazione</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#supporti-lato-client-e-lato-server">Supporti lato client e lato server</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RobotPosWeb.html#robothicontroller">RobotHIController</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#viewmodel">viewmodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#chiamate-http-al-controller">Chiamate HTTP al Controller</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RobotPosWeb.html#buildthepage-e-setconfigparams">buildThePage e setConfigParams</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#setrobotip">setrobotip</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RobotPosWeb.html#robotutils-java">RobotUtils.java</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#interazione-rctobr-robothicontroller-robotpos">Interazione RcToBr (RobotHIController-robotpos)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RobotPosWeb.html#dorobotpos">dorobotpos</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#interazione-brtorc-robotpos-robothicontroller">Interazione BrToRc (robotpos-RobotHIController)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#robotposcoapobserver">RobotposCoapObserver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#interazione-rctopg-robothicontroller-pagina">Interazione RcToPg (RobotHIController-Pagina)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RobotPosWeb.html#robotposgui-html">robotposGui.html</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#infodisplay-e-robotdisplay">infoDisplay e robotDisplay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#usiamo-bootstrap5">Usiamo Bootstrap5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#contenuto-della-pagina">Contenuto della pagina</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RobotPosWeb.html#interazione-pgtorc-pagina-robothicontroller">Interazione PgToRc (Pagina-RobotHIController)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RobotPosWeb.html#javascript-di-supporto-nella-pagina">JavaScript di supporto nella pagina</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="RobotPosWeb.html#ioutils-js">ioutils.js</a></li>
+<li class="toctree-l5"><a class="reference internal" href="RobotPosWeb.html#wsminimal-js-for-ws">wsminimal.js for WS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="RobotPosWeb.html#stili-custom-issspec-css">Stili custom: issSpec.css</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="UsoDiunPlanner.html">Uso di un planner</a><ul>
@@ -985,7 +1039,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="AppuntiTecnologie.html">Appunti su tecnologie</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="AppuntiTecnologie.html#annotazioni-java">Annotazioni Java</a></li>
-<li class="toctree-l2"><a class="reference internal" href="AppuntiTecnologie.html#coap">Coap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AppuntiTecnologie.html#coap">CoAP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="AppuntiTecnologie.html#docker">Docker</a></li>
 <li class="toctree-l2"><a class="reference internal" href="AppuntiTecnologie.html#gradle">Gradle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="AppuntiTecnologie.html#mps">MPS</a></li>
@@ -997,7 +1051,52 @@
 <li class="toctree-l2"><a class="reference internal" href="AppuntiTecnologie.html#id2">WebSocket</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="AppuntiAPIRest.html">Appunti API Rest</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AppuntiAPIRest.html#api-intro">API intro</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="AppuntiAPIRest.html#client">Client</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AppuntiAPIRest.html#risorse">Risorse</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AppuntiAPIRest.html#id1">REST</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="AppuntiAPIRest.html#uri">URI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AppuntiAPIRest.html#hateoas">HATEOAS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AppuntiAPIRest.html#api-rest">API REST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AppuntiAPIRest.html#apolidia">Apolidia</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AppuntiAPIRest.html#cacheability">Cacheability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AppuntiAPIRest.html#contenuto-di-una-richiesta">Contenuto di una richiesta</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="AppuntiAPIRest.html#identificatore-unico-di-risorse">Identificatore unico di risorse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="AppuntiAPIRest.html#metodo">Metodo</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="AppuntiAPIRest.html#get">GET</a></li>
+<li class="toctree-l5"><a class="reference internal" href="AppuntiAPIRest.html#post">POST</a></li>
+<li class="toctree-l5"><a class="reference internal" href="AppuntiAPIRest.html#put">PUT</a></li>
+<li class="toctree-l5"><a class="reference internal" href="AppuntiAPIRest.html#delete">DELETE</a></li>
+<li class="toctree-l5"><a class="reference internal" href="AppuntiAPIRest.html#header-http">Header HTTP</a></li>
+<li class="toctree-l5"><a class="reference internal" href="AppuntiAPIRest.html#dati">Dati</a></li>
+<li class="toctree-l5"><a class="reference internal" href="AppuntiAPIRest.html#parametri">Parametri</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="AppuntiAPIRest.html#autenticazione">Autenticazione</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="AppuntiAPIRest.html#autenticazione-http">Autenticazione HTTP</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="AppuntiAPIRest.html#autenticazione-di-base">Autenticazione di base</a></li>
+<li class="toctree-l5"><a class="reference internal" href="AppuntiAPIRest.html#autenticazione-bearer">Autenticazione bearer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="AppuntiAPIRest.html#chiavi-api">Chiavi API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="AppuntiAPIRest.html#oauth">OAuth</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="AppuntiAPIRest.html#apirest-generic">APIREST generic</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="SpringBootIntro.html">SpringBootIntro</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SpringBootIntro.html#concetti-di-base">Concetti di base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SpringBootIntro.html#modello-della-pagina">Modello della pagina</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="SpringBootIntro.html#architettura-del-webserver">Architettura del WebServer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SpringBootIntro.html#primi-passi-con-springboot">Primi passi con SpringBoot</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="SpringBootIntro.html#progetto-springintro23">Progetto springIntro23</a></li>

@@ -20,8 +20,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="SpringDataRest" href="SpringDataRest.html" />
-    <link rel="prev" title="Appunti su tecnologie" href="AppuntiTecnologie.html" /> 
+    <link rel="next" title="Actors23Facade" href="Actors23Facade.html" />
+    <link rel="prev" title="Appunti API Rest" href="AppuntiAPIRest.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,10 +30,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="SpringDataRest.html" title="SpringDataRest"
+          <a href="Actors23Facade.html" title="Actors23Facade"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="AppuntiAPIRest.html" title="Appunti API Rest"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">SpringBootIntro</a></li> 
@@ -56,6 +56,8 @@ riferimento a <a class="reference external" href="https://spring.io/">Springio</
 impone precise regole per l’introduzione di componenti applicativi
 nel contesto dello schema architetturale che il framework utilizza per supportare le sue funzionalità.</p>
 <p><span class="slide">Applicazioni Web: concetti di base</span></p>
+<section id="concetti-di-base">
+<h2>Concetti di base<a class="headerlink" href="#concetti-di-base" title="Permalink to this headline">¶</a></h2>
 <p>Nel caso dei framework nel dominio delle applicazioni Web, troviamo un insieme di concetti e modi di operare comuni:</p>
 <ul class="simple">
 <li><p>l’uso di un WebServer (spesso Apache Tomcat) che rimane nascosto al livello applicativo;</p></li>
@@ -69,7 +71,7 @@ che possono essere fissati dal <span class="blue">Controller</span>;</p></li>
 <li><p>l’abilitazione all’uso delle WebSocket per interazioni asincrone con i Client</p></li>
 </ul>
 <p>Lo schema di funzionamento può essere riassunto come segue:</p>
-<ol class="arabic">
+<ol class="arabic simple">
 <li><p>un operatore umano usa un Browser per collegarsi  (<span class="blue">Human-Machine interaction</span> <span class="slide2">HMI</span>) via HTTP
 a una certa porta di un nodo remoto, usata come porta di ingresso dal WebServer</p></li>
 <li><p>l’infrastruttura del framework effettua una prima gestione del messaggio in arrivo in modo da confezionare
@@ -78,18 +80,25 @@ per agevolare la stesura del codice di gestione da parte dell’Application Desi
 è organizzata secondo una <strong>pipeline</strong> che permette all’Application Designer di introdurre parti di elaborazione
 a questo livello</p></li>
 <li><p>i metodi del <span class="blue">Controller</span> realizzano la gestione dei messaggi in funzione dei i ‘verbi’ HTTP (GET,PUT,POST,DELETE)
-con cui sono stati inviati e prepara una pagina HTML di risposta, sfruttando opportuni template predefiniti di pagine.</p>
-<p>I <span class="brown">parametri dei template</span> vengono fissati utilizzando un <strong>Modello della pagina</strong> secondo un classico
+con cui sono stati inviati e prepara una pagina HTML di risposta, sfruttando opportuni template predefiniti di pagine.</p></li>
+</ol>
+<section id="modello-della-pagina">
+<h3>Modello della pagina<a class="headerlink" href="#modello-della-pagina" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>I <span class="brown">parametri dei template</span> vengono fissati utilizzando un <strong>Modello della pagina</strong> secondo un classico
 <span class="slide2">schema Model View Controller</span>.</p>
 <p>In SpringBoot, il modello fornisce attributi utilizzati per il rendering delle viste: si veda
 <a class="reference external" href="https://www.baeldung.com/spring-mvc-model-model-map-model-view">SpringMVCModel</a>.</p>
-</li>
+</div></blockquote>
+<ol class="arabic simple">
 <li><p>il <span class="blue">Controller</span> restituisce la pagina alla parte infrastruttrale che l’aveva chiamato, la quale provvede a inviare
 la pagina al Client che aveva effettuato la richiesta HTTP;</p></li>
 <li><p>se l’operatore umano è sostituito da una macchina  si parla di <span class="blue">Machine-To-Machine</span> (<span class="slide2">M2M</span>) interaction.
 I messaggi vengono girati a un <span class="blue">Controller</span> specializato per inviare ripsoste in forma di dati, molto spesso
 in formato XML o JSon.</p></li>
 </ol>
+</section>
+</section>
 <section id="architettura-del-webserver">
 <h2>Architettura del WebServer<a class="headerlink" href="#architettura-del-webserver" title="Permalink to this headline">¶</a></h2>
 <p>Dal punto di vista architetturale, l’organizzazione interna del codice del WebServer dovrà essere ispirata ai principi della
@@ -946,6 +955,10 @@ la navigazione verso l’URL da parte del browser.</p>
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">SpringBootIntro</a><ul>
+<li><a class="reference internal" href="#concetti-di-base">Concetti di base</a><ul>
+<li><a class="reference internal" href="#modello-della-pagina">Modello della pagina</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#architettura-del-webserver">Architettura del WebServer</a></li>
 <li><a class="reference internal" href="#primi-passi-con-springboot">Primi passi con SpringBoot</a><ul>
 <li><a class="reference internal" href="#progetto-springintro23">Progetto springIntro23</a></li>
@@ -1000,13 +1013,13 @@ la navigazione verso l’URL da parte del browser.</p>
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="AppuntiTecnologie.html"
-                          title="previous chapter">Appunti su tecnologie</a></p>
+    <p class="topless"><a href="AppuntiAPIRest.html"
+                          title="previous chapter">Appunti API Rest</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="SpringDataRest.html"
-                          title="next chapter">SpringDataRest</a></p>
+    <p class="topless"><a href="Actors23Facade.html"
+                          title="next chapter">Actors23Facade</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -1036,10 +1049,10 @@ la navigazione verso l’URL da parte del browser.</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="SpringDataRest.html" title="SpringDataRest"
+          <a href="Actors23Facade.html" title="Actors23Facade"
              >next</a> |</li>
         <li class="right" >
-          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+          <a href="AppuntiAPIRest.html" title="Appunti API Rest"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">SpringBootIntro</a></li> 

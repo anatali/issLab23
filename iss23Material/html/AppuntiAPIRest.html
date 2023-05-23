@@ -19,7 +19,9 @@
     <script src="_static/sidebar.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SpringBootIntro" href="SpringBootIntro.html" />
+    <link rel="prev" title="Appunti su tecnologie" href="AppuntiTecnologie.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -27,6 +29,12 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="SpringBootIntro.html" title="SpringBootIntro"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Appunti API Rest</a></li> 
       </ul>
@@ -39,6 +47,7 @@
             
   <section id="appunti-api-rest">
 <h1>Appunti API Rest<a class="headerlink" href="#appunti-api-rest" title="Permalink to this headline">¶</a></h1>
+<p><span class="slide">Le API</span></p>
 <section id="api-intro">
 <h2>API intro<a class="headerlink" href="#api-intro" title="Permalink to this headline">¶</a></h2>
 <p>Un’API, o application programming interface, è una serie di regole che definisce il modo
@@ -61,6 +70,48 @@ La macchina che fornisce le risorse al client è chiamata anche server.
 Le organizzazioni utilizzano le API per condividere risorse e fornire servizi Web garantendo sicurezza,
 controllo e autenticazione. Inoltre, le API le aiutano a determinare quale client esegue
 l’accesso a determinate risorse interne.</p>
+<p><span class="slide">REST</span></p>
+</section>
+</section>
+<section id="id1">
+<h2>REST<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://it.wikipedia.org/wiki/Representational_state_transfer">REST</a> (<em>Representational State Transfer</em>) è un’architettura orientata alle risorse (ROA) ,
+dove ogni componente di un sistema o di un’applicazione è chiamato risorsa .</p>
+<p>Una <span class="blue">risorsa</span> è identificata in modo esplicito e può essere indirizzata individualmente.</p>
+<p>L’utilizzo dello stesso identico schema di denominazione standard di tutte le altre risorse Web consente
+di integrare senza problemi le cose e le loro proprietà nel Web perché le loro funzioni, dati o sensori
+possono essere collegati, condivisi, inseriti nei segnalibri e utilizzati come qualsiasi altra cosa sul Web .</p>
+<p>Ricordiamo i concetti di base:</p>
+<ul class="simple">
+<li><p>Le interazioni tra i componenti si basano sul modello richiesta-risposta,
+in cui un client invia una richiesta a un server e riceve una risposta</p></li>
+<li><p>L’accoppiamento libero tra i componenti può essere ottenuto utilizzando un’interfaccia uniforme
+che tutti i componenti del sistema rispettano.</p></li>
+<li><p>Le interfacce uniformi semplificano la progettazione di un sistema a più livelli,
+il che significa che diversi componenti intermedi possono nascondere ciò che c’è dietro.</p></li>
+<li><p>La memorizzazione nella cache (Chaching) è un elemento chiave nelle prestazioni.</p></li>
+<li><p>Una <strong>risorsa</strong> è qualsiasi concetto o pezzo di dati in un’applicazione che deve essere referenziato
+o utilizzato.
+Ogni risorsa deve avere un <strong>identificatore univoco</strong> e dovrebbe essere indirizzabile utilizzando un meccanismo
+di riferimento univoco. Sul web, questo viene fatto assegnando a ogni risorsa un unico <code class="docutils literal notranslate"><span class="pre">URL</span></code> .</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/thingURL.PNG"><img alt="_images/thingURL.PNG" class="align-center" src="_images/thingURL.PNG" style="width: 70%;" /></a>
+<p>Un localizzatore di risorse uniforme (URL) è un tipo di Uniform Resource Identifier (URI) che identifica una risorsa tramite una rappresentazione del suo meccanismo di accesso primario. Sul Web, un URL è un URI che inizia con lo schema <a class="reference external" href="http://">http://</a></p>
+<section id="uri">
+<h3>URI<a class="headerlink" href="#uri" title="Permalink to this headline">¶</a></h3>
+<p>Un URI (schema standard definito in RFC 3986.4 ) è una sequenza di caratteri che identifica inequivocabilmente una risorsa astratta o fisica.</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">&lt;schema&gt;</span> <span class="pre">&quot;:&quot;[</span> <span class="pre">&quot;?&quot;</span> <span class="pre">query</span> <span class="pre">]</span> <span class="pre">[</span> <span class="pre">frammento</span> <span class="pre">&quot;#&quot;</span> <span class="pre">]</span></code></p>
+</div></blockquote>
+</section>
+<section id="hateoas">
+<h3>HATEOAS<a class="headerlink" href="#hateoas" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="#hateoas">HATEOAS</a> (Hypermedia as the Engine of Application State)</p>
+<p><span class="remark">Servers shouldn’t keep track of each client’s state because stateless applications are easier to scale.</span></p>
+<p>Invece, lo stato dell’applicazione dovrebbe essere indirizzabile tramite il proprio URL
+e ogni risorsa dovrebbe contenere collegamenti e informazioni su quali operazioni sono possibili
+in ogni stato e su come navigare tra gli stati.</p>
+<p><span class="slide">API RESTFUL</span></p>
 </section>
 <section id="api-rest">
 <h3>API REST<a class="headerlink" href="#api-rest" title="Permalink to this headline">¶</a></h3>
@@ -145,6 +196,7 @@ Di seguito alcuni tipi di parametri:</p>
 <li><p>I parametri query che richiedono più informazioni sulla risorsa.</p></li>
 <li><p>I parametri cookie che autenticano rapidamente il client.</p></li>
 </ul>
+<p><span class="slide1">Autenticazione</span></p>
 </section>
 </section>
 </section>
@@ -217,6 +269,11 @@ sono utilizzate all’interno di API REST ben progettate.</p>
 <li><a class="reference internal" href="#api-intro">API intro</a><ul>
 <li><a class="reference internal" href="#client">Client</a></li>
 <li><a class="reference internal" href="#risorse">Risorse</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id1">REST</a><ul>
+<li><a class="reference internal" href="#uri">URI</a></li>
+<li><a class="reference internal" href="#hateoas">HATEOAS</a></li>
 <li><a class="reference internal" href="#api-rest">API REST</a></li>
 <li><a class="reference internal" href="#apolidia">Apolidia</a></li>
 <li><a class="reference internal" href="#cacheability">Cacheability</a></li>
@@ -252,6 +309,16 @@ sono utilizzate all’interno di API REST ben progettate.</p>
 </ul>
 
   </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="AppuntiTecnologie.html"
+                          title="previous chapter">Appunti su tecnologie</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="SpringBootIntro.html"
+                          title="next chapter">SpringBootIntro</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -279,6 +346,12 @@ sono utilizzate all’interno di API REST ben progettate.</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="SpringBootIntro.html" title="SpringBootIntro"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Appunti API Rest</a></li> 
       </ul>

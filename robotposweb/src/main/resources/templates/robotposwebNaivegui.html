@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>robotposwebNaivegui</title>
+</head>
+
+
+<body>
+<h2>robotposweb console</h2>
+
+<form action="setrobotip" method="post">
+    <!-- the form-data is sent to the path specified in the action attribute -->
+    <input type="text" size="10" name="ipaddr" value="localhost">
+    <input type="submit" value="robotip">
+</form>
+
+<form action="dorobotpos" method="post">
+        x <input type="text" size="4" name="x" />
+        y <input type="text" size="4" name="y" />
+        <input type="submit" value="gotopos">
+</form>
+
+</body>

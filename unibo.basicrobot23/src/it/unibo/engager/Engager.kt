@@ -83,6 +83,8 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 												   CommUtils.outmagenta("engager | engaged by remote $Owner  on $curConn" )		
 												   else 		   
 												   CommUtils.outmagenta("engager | engaged by local $Owner = ${payloadArg(0)} " )	
+								updateResourceRep( "workingfor($Owner)"  
+								)
 								answer("engage", "engagedone", "engagedone($Owner)"   )  
 								forward("engaged", "engaged($Owner)" ,"basicrobot" ) 
 						}

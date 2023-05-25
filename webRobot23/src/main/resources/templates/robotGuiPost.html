@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Robot WebGui</title>
+    
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+    
+    <script>connect()</script>
+    
+</head>
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div id="main-content" class="container">
+    <div class="row">
+  <!--
+         <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="connect">WebSocket connection:</label>
+                    <button id="connect" class="btn btn-default" type="submit">Connect</button>
+                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+       
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="name">What is your name?</label>
+                    <input type="text" id="name" class="form-control" placeholder="Your move here...">
+                </div>
+                <button id="send" class="btn btn-default" type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+ -->   
+ <h1>Basicrobot GUI</h1>
+ 
+ 	<div id="ipaddr" align="left">Please run <tt>bash /home/pi/nat/basicrobotInit.sh</tt> in <tt>nat</tt></div>
+ 
+<h2>Commands via HTML POST</h2>
+<hr/>
+	<table style="width:50%">
+	<tbody>	
+	<tr>
+  	<td>
+  	  <form class="form-inline"><button id="ww" class="btn btn-default" type="submit">w</button></form>
+ 	</td>
+ 	<td>
+ 	  <form class="form-inline"><button id="ss" class="btn btn-default" type="submit">s</button></form>
+ 	</td>
+ 	</tr>
+	<tr>
+  	<td>
+  	  <form class="form-inline"><button id="rr" class="btn btn-default" type="submit">r</button></form>
+ 	</td>
+ 	<td>
+ 	 <form class="form-inline"><button id="ll" class="btn btn-default" type="submit">l</button></form>
+ 	</td>
+ 	</tr>
+	<tr>
+  	<td>
+  	  <form class="form-inline"><button id="xx" class="btn btn-default" type="submit">x</button></form>
+ 	</td>
+ 	<td>
+ 	 <form class="form-inline"><button id="zz" class="btn btn-default" type="submit">z</button></form>
+ 	</td>
+ 	</tr>
+	<tr>
+  	<td>
+  	  <form class="form-inline"><button id="pp" class="btn btn-default" type="submit">p</button></form>
+ 	</td>
+ 	<td>
+ 	 <form class="form-inline"><button id="hh" class="btn btn-default" type="submit">h</button></form>
+ 	</td>
+ 	</tr>
+</table>
+
+
+ 
+  	
+ <h3>Input view</h3>
+ 	<span style="color:blue" th:text="${arg}">Our App</span>
+  	
+ 
+ <h3>Resource</h3>
+    
+    <form class="form-inline"><button id="update" class="btn btn-default" type="submit">show resource	</button></form>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <table id="conversation" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Resource state</th>
+                </tr>
+                </thead>
+                <tbody id="applmsgs">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

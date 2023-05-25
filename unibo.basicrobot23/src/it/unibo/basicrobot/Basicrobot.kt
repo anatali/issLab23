@@ -42,6 +42,8 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						delegate("engage", "engager") 
 						delegate("disengage", "engager") 
 						delegate("doplan", "planexec") 
+						delegate("setrobotstate", "robotposendosimbiotico") 
+						delegate("moverobot", "robotposendosimbiotico") 
 						CommUtils.outblack("basicrobot | STARTS")
 						uniborobots.robotSupport.create(myself ,"basicrobotConfig.json" )
 						 RobotType = uniborobots.robotSupport.robotKind  
@@ -85,6 +87,7 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 					transition(edgeName="t04",targetState="execcmd",cond=whenDispatch("cmd"))
 					transition(edgeName="t05",targetState="endwork",cond=whenDispatch("end"))
 					transition(edgeName="t06",targetState="waitForOwner",cond=whenDispatch("disengaged"))
+					transition(edgeName="t07",targetState="work",cond=whenDispatch("engaged"))
 				}	 
 				state("execcmd") { //this:State
 					action { //it:State
@@ -151,16 +154,16 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
 						uniborobots.robotSupport.move( "h"  )
-						 var TunedDuration   = StepTime - ((Duration * 0.90)).toLong()    
-						if(  TunedDuration > 10  
-						 ){CommUtils.outblack("basicrobot | $StepTime stepFail duration=$Duration  TunedDuration=$TunedDuration")
-						uniborobots.robotSupport.move( "s"  )
+						 var TunedDuration   = StepTime - ((Duration * 0.80)).toLong()    
+						CommUtils.outmagenta("basicrobot | stepKo $StepTime  duration=$Duration  TunedDuration=$TunedDuration")
+						if(  TunedDuration > 30  
+						 ){uniborobots.robotSupport.move( "s"  )
 						delay(TunedDuration)
 						uniborobots.robotSupport.move( "h"  )
-						}
 						updateResourceRep( "stepFail($Duration)"  
 						)
 						delay(300) 
+						}
 						answer("step", "stepfailed", "stepfailed($Duration,obst)"   )  
 						//genTimer( actor, state )
 					}

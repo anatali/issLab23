@@ -19,10 +19,10 @@ class Worker ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sco
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		val interruptedStateTransitions = mutableListOf<Transition>()
 		 val planner = unibo.planner23.Planner23Util()
-			    //val MapName   = "mapEmpty23"
+			    //val MapName = "mapEmpty23"
 			    val MapName = "mapCompleteWithObst23ok"
 			    val MyName    = name //upcase var
-			    val StepTime  = 300
+			    val StepTime  = 330
 				var Plan      = ""	
 				var TargetX   = ""
 				var TargetY   = ""
@@ -37,7 +37,7 @@ class Worker ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sco
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t00",targetState="waitclientrequest",cond=whenReply("engagedone"))
+					 transition(edgeName="t00",targetState="initPlanner",cond=whenReply("engagedone"))
 					transition(edgeName="t01",targetState="waitrobotfree",cond=whenReply("engagerefused"))
 				}	 
 				state("endofwork") { //this:State
@@ -59,19 +59,28 @@ class Worker ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sco
 					sysaction { //it:State
 					}	 	 
 				}	 
-				state("waitclientrequest") { //this:State
+				state("initPlanner") { //this:State
 					action { //it:State
 						CommUtils.outblue("$name loading $MapName")
 						 planner.initAI()  
 								   planner.loadRoomMap(MapName) 
 								   planner.showMap()
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition( edgeName="goto",targetState="waitclientrequest", cond=doswitch() )
+				}	 
+				state("waitclientrequest") { //this:State
+					action { //it:State
 						CommUtils.outblack("$name | waiting the client request...")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 				 	 		stateTimer = TimerActor("timer_waitclientrequest", 
-				 	 					  scope, context!!, "local_tout_worker_waitclientrequest", 5000.toLong() )
+				 	 					  scope, context!!, "local_tout_worker_waitclientrequest", 600000.toLong() )
 					}	 	 
 					 transition(edgeName="t02",targetState="endofwork",cond=whenTimeout("local_tout_worker_waitclientrequest"))   
 					transition(edgeName="t03",targetState="elabClientRequest",cond=whenRequest("moverobot"))
@@ -115,24 +124,28 @@ class Worker ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sco
 						CommUtils.outblue("pos reached")
 						 planner.doPathOnMap(Plan)  
 						 planner.showCurrentRobotState();  
+						updateResourceRep( planner.robotOnMap()  
+						)
 						answer("moverobot", "moverobotdone", "moverobotdone(ok)"   )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition( edgeName="goto",targetState="endofwork", cond=doswitch() )
+					 transition( edgeName="goto",targetState="waitclientrequest", cond=doswitch() )
 				}	 
 				state("endko") { //this:State
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("doplanfailed(ARG)"), Term.createTerm("doplanfailed(ARG)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 val PathTodo = payloadArg(0)  
-								CommUtils.outred("pos NOT reached - PlanTodo = ${PathTodo} vs. $Plan")
+								CommUtils.outred("pos NOT reached - PathTodo = ${PathTodo} vs. $Plan")
 								CommUtils.outblue("${Plan.substring(0, Plan.lastIndexOf(PathTodo))}")
-								   val PathDone = Plan.substring(0, Plan.lastIndexOf(PathTodo))
-												
-								 planner.doPathOnMap(PathDone)  
+								   var PathDone = Plan.substring(0, Plan.lastIndexOf(PathTodo))
+												 if( PathDone == "" ) PathDone ="n"				 
+												 else planner.doPathOnMap(PathDone)
+								updateResourceRep( planner.robotOnMap()  
+								)
 								 planner.showCurrentRobotState();  
 								answer("moverobot", "moverobotfailed", "moverobotfailed($PathDone,$PathTodo)"   )  
 						}
@@ -141,7 +154,7 @@ class Worker ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sco
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition( edgeName="goto",targetState="endofwork", cond=doswitch() )
+					 transition( edgeName="goto",targetState="waitclientrequest", cond=doswitch() )
 				}	 
 			}
 		}

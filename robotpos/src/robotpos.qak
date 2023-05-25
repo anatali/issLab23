@@ -9,11 +9,10 @@ Request  doplan     : doplan( PATH, OWNER, STEPTIME )
 Reply doplandone    : doplandone( ARG ) 
 Reply doplanfailed  : doplanfailed( ARG )
 
+
 Request moverobot    :  moverobot(TARGETX, TARGETY)
 Reply moverobotdone  :  moverobotok(ARG)
 Reply moverobotfailed:  moverobotfailed(PLANDONE, PLANTODO)
-
-Event alarm          : alarm(ARG)
 
 Context ctxrobotpos   ip [host="localhost" port=8111] 
 //Struttura: quanti nodi? => anche il basicrobot
@@ -24,10 +23,10 @@ ExternalQActor basicrobot context ctxbasicrobot
 
 QActor worker context ctxrobotpos{
 	[# val planner = unibo.planner23.Planner23Util()
-	    //val MapName   = "mapEmpty23"
+	    //val MapName = "mapEmpty23"
 	    val MapName = "mapCompleteWithObst23ok"
 	    val MyName    = name //upcase var
-	    val StepTime  = 300
+	    val StepTime  = 330
 		var Plan      = ""	
 		var TargetX   = ""
 		var TargetY   = ""
@@ -36,7 +35,7 @@ QActor worker context ctxrobotpos{
 		printCurrentMessage color blue
 		request basicrobot -m engage : engage( worker )
 	}
-	Transition t0 whenReply engagedone    -> waitclientrequest
+	Transition t0 whenReply engagedone    -> initPlanner
 	              whenReply engagerefused -> waitrobotfree
 
 	State endofwork{
@@ -47,21 +46,24 @@ QActor worker context ctxrobotpos{
 	State waitrobotfree{
 		println("$name: Sorry, the robot is already engaged.") color blue
 	}
-		              
-	State waitclientrequest{
+		         
+	State initPlanner{
         println("$name loading $MapName") color blue
 		[# planner.initAI()  
 		   planner.loadRoomMap(MapName) 
 		   planner.showMap()
 		#]
+	}	       
+	Goto waitclientrequest
+	       
+	State waitclientrequest{
 		println("$name | waiting the client request...")
 	}              
-	Transition t0 whenTime 5000        ->  endofwork
+	Transition t0 whenTime 600000        ->  endofwork
 	              whenRequest moverobot -> elabClientRequest
 	
 	State elabClientRequest{
 		printCurrentMessage color blue
-		//[# CommUtils.waitTheUser("$name | elabClientRequest hit 1CR") #]
 		onMsg( moverobot : moverobot(X,Y)){
 			[# TargetX = payloadArg(0)
 			   TargetY = payloadArg(1)
@@ -93,38 +95,39 @@ QActor worker context ctxrobotpos{
 		//Aggiorno il path sulla mappa
 		[# planner.doPathOnMap(Plan) #]
 		[# planner.showCurrentRobotState(); #]
+		updateResource [# planner.robotOnMap() #] 
 		replyTo moverobot with moverobotdone : moverobotdone(ok)
 	}
-	Goto endofwork
+	Goto waitclientrequest
 	
 	State endko{
 		onMsg( doplanfailed : doplanfailed(ARG) ){
 			[# val PathTodo = payloadArg(0) #]
-			println("pos NOT reached - PlanTodo = ${PathTodo} vs. $Plan") color red	
+			println("pos NOT reached - PathTodo = ${PathTodo} vs. $Plan") color red	
 			println("${Plan.substring(0, Plan.lastIndexOf(PathTodo))}") color blue
-			[#   val PathDone = Plan.substring(0, Plan.lastIndexOf(PathTodo))
-				
-			#]
+			[#   var PathDone = Plan.substring(0, Plan.lastIndexOf(PathTodo))
+				 if( PathDone == "" ) PathDone ="n"				 
+				 else planner.doPathOnMap(PathDone)
+			#] 
+			updateResource [# planner.robotOnMap() #]
 			//println("pos NOT reached - ${PathTodo}  done:${PathDone}  ") color red
-			[# planner.doPathOnMap(PathDone) #]
+			//[# planner.doPathOnMap(PathDone) #]
 			[# planner.showCurrentRobotState(); #]
 			replyTo moverobot with moverobotfailed : moverobotfailed($PathDone,$PathTodo)
 		}
-	} 
-	Goto endofwork
+	}
+	Goto waitclientrequest
 }
- 
+
 /*
  * client (for prototype0 testing)
  */
- 
+/*  
 QActor client context ctxrobotpos{
 	State s0 initial{
-		//[# CommUtils.waitTheUser("$name | hit 1CR") #]
-		request worker -m moverobot : moverobot(6,4)  //6,4
-		println("emitWithDelay") color red
-		//emit alarm : alarm(fire)
-		[# emitWithDelay("alarm","alarm(fire)", 1500)   #]  
+		[# CommUtils.waitTheUser("$name | hit 1CR") #]
+		request worker -m moverobot : moverobot(2,2)  //6,4
+		[# emitWithDelay("alarm","alarm(fire)", 1400)   #] 
 	}
 	Transition t0 whenReply moverobotdone   -> handleAnswer
 	              whenReply moverobotfailed -> handleAnswer
@@ -133,3 +136,5 @@ QActor client context ctxrobotpos{
 		printCurrentMessage color magenta
 	}
 }
+ 
+*/

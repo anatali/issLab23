@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<meta charset = "utf-8" />
+<title>BasicRobotCmdGui</title>
+<body>
+<script src="https://cdn.jsdelivr.net/webjars/org.webjars/jquery/2.1.0/jquery.js"></script>
+<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<!--
+<script src="/webjars/jquery/jquery.min.js"></script>
+
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+-->
+
+<h3>basicrobo22  CONFIGURATION</h3>
+<form action="configure" method="post">
+ <label for="configurespec">address</label>
+ <input type="text" id="configurespec" name="move" value="">
+ <input type="submit" value="connect">
+ <!-- the form-data is sent to the page specified in the action attribute -->
+</form>
+
+
+<hr/>
+
+<h4>Commands</h4>
+
+<center>
+ <table>
+  <tr><td style="width:50%">
+   <center>
+    <table style="width:50%">
+     <tbody>
+     <!-- the form-data is sent to the page specified in the action attribute -->
+     <tr>
+      <td> <form action="robotmove" method="post"><button name="move" value="w">w</button></form> </td>
+      <td> <form action="robotmove" method="post"><button name="move" value="s">s</button></form> </td>
+      <td> <form action="robotmove" method="post"><button name="move" value="r">r</button></form> </td>
+      <td> <form action="robotmove" method="post"><button name="move" value="l">l</button></form> </td>
+      <td> <form action="robotmove" method="post"><button name="move" value="p">p</button></form> </td>
+      <td> <form action="robotmove" method="post"><button name="move" value="h">h</button></form> </td>
+     </tr>
+
+    </table>
+   </center>
+  </td>
+   <td>
+    <!-- <h4>Web cam on Rasp</h4>
+    <div id="content" align="left" color="yellow">
+     <img src="" id="img_src" alt=""  width="320" height="240"><br/>
+    </div>
+    <script type="text/javascript">
+    if( robotip.length>0) document.getElementById("img_src").src = robotip;
+</script> -->
+   </td>
+  </tr>
+ </table>
+
+<hr/>
+<h3>DISPLAY AREA</h3>
+<div id = "display"></div>
+
+
+
+ <script src="wsminimal.js"></script>
+</body>
+</html>

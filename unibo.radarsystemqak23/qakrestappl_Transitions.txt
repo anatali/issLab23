@@ -1,0 +1,6 @@
+{"actor":"sonar23", "msgType":"dispatch", "curstate":"s0", "nextstate":"doActivate", "msgId":"sonaractivate"}
+{"actor":"sonar23", "msgType":"dispatch", "curstate":"s0", "nextstate":"doDeactivate", "msgId":"sonardeactivate"}
+{"actor":"led23", "msgType":"dispatch", "curstate":"s0", "nextstate":"doCmd", "msgId":"ledCmd"}
+{"actor":"led23", "msgType":"dispatch", "curstate":"doCmd", "nextstate":"doCmd", "msgId":"ledCmd"}
+{"actor":"radar23", "msgType":"dispatch", "curstate":"s0", "nextstate":"showDataOnGui", "msgId":"polar"}
+{"actor":"radar23", "msgType":"dispatch", "curstate":"showDataOnGui", "nextstate":"showDataOnGui", "msgId":"polar"}

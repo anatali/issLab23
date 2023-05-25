@@ -1,0 +1,113 @@
+System radarsystem23analisi
+Dispatch sonaractivate   : info(ARG)  //
+Dispatch sonardeactivate : info(ARG)
+Dispatch ledCmd          : ledCmd(ONOFF)
+Dispatch polar           : polar(D,A)
+Event    sonardata       : distance( V )
+
+//Context ctxrasp ip [host="192.168.1.xxx" port=8086]  //Raspberry
+//Context ctxpc   ip [host="192.168.1.yyy" port=8088]  //PC
+
+Context ctxprototipo0   ip [host="localhost" port=8088]  //PC
+ 
+//TODO: sviluppare sonarqak23 e usarlo come CodedActor o come ExternalActor
+QActor sonar23 context ctxprototipo0{ //ctxrasp{ 
+[# var goon = true #]
+	State s0 initial{
+		println("${name} STARTS  ")
+	} 
+	Transition t0 whenMsg sonaractivate   -> doActivate
+				  whenMsg sonardeactivate -> doDeactivate
+	State doActivate{  
+		//emit sonardata : distance( D )
+		 
+		[# var D = 50 
+		   for( i in 1..5){ 
+ 		   	 CommUtils.outyellow( "${name} simulates $D")
+		   	 emit( "sonardata", "distance( $D )" )
+		   	 delay(500)
+		   	 D = D - 5
+		   }
+		   for( i in 1..5){ 
+		   	CommUtils.outyellow( "${name} simulates $D")
+		   	emit( "sonardata",  "distance( $D )" )
+		   	delay(500)
+		   	D = D + 5
+		   }
+		#]
+ 	}
+ 	
+ 	State doDeactivate{  
+ 		println("${name} ENDS  ")
+ 	}
+}
+
+QActor led23 context ctxprototipo0{ //ctxrasp{ 
+	State s0 initial{
+		println("${name} STARTS")
+	}  
+	Transition t0 whenMsg ledCmd -> doCmd
+	
+	State doCmd{
+		//printCurrentMessage
+		onMsg( ledCmd : ledCmd(V) ){
+			[# var Cmd = payloadArg(0) #]
+			if [# Cmd=="on" #]{
+				//[# CommUtils.outyellow( "${name} - on") #]		
+				println("${name} - on") color magenta	 		
+			}else{
+				//[# CommUtils.outyellow( "${name} - off")#]
+				println("${name} - off") color magenta
+			}
+		}	 
+	}
+	Transition t0 whenMsg ledCmd -> doCmd
+}
+
+QActor radar23 context ctxprototipo0{ //ctxpc{ 
+	State s0 initial{
+		println("${name} STARTS")
+	} 
+	Transition t0 whenMsg polar -> showDataOnGui
+	
+	State  showDataOnGui{
+		onMsg( polar : polar(D,A)){
+			[#  var D = payloadArg(0)
+				var A = payloadArg(1)
+				//CommUtils.outyellow( "RADARGUI : $D/$A")
+			#]	
+			println("RADARGUI : $D/$A") color green	 
+		}	
+	}
+	Transition t0 whenMsg polar -> showDataOnGui
+}
+ 
+QActor controller23 context ctxprototipo0{ //ctxpc{ 
+[# val DLIMIT = 30 #]
+	State s0 initial{
+		println("${name} STARTS - Activates the sonar")
+		forward sonar23 -m sonaractivate : info(ok)
+	} 
+	Transition t0 whenEvent sonardata -> doBusinessWork
+	
+	State doBusinessWork{
+		//printCurrentMessage
+		onMsg( sonardata : distance(D)){
+			[# var D = payloadArg(0).toInt() #]
+			//Interact with the Radar
+			forward radar23 -m polar : polar( $D, 90)
+			//Interact with the Led
+			if [# D <= DLIMIT #]{
+ 				//println("${name} - Turn the Led on")
+				forward led23 -m ledCmd : ledCmd(on)
+			}else{ //TODO in the project: if Led is on ....
+ 				//println("${name} - Turn the Led off")
+				forward led23 -m ledCmd : ledCmd(off)				
+			}
+		}
+	}
+	Transition t0 whenEvent sonardata -> doBusinessWork
+	
+}
+
+ 

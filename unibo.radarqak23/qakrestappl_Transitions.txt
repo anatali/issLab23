@@ -1,0 +1,1 @@
+{"actor":"radargui", "msgType":"dispatch", "curstate":"waitForDataToShow", "nextstate":"showSpotNoReply", "msgId":"polar"}

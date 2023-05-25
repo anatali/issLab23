@@ -1,0 +1,67 @@
+/*
+ * This model gives essential and relevant information about
+ * 	     STRUCTURE, INTERACTION and BEHAVIOR
+ * about the system
+ * 
+ * The model is EXECUTABLE
+ */
+
+ 	//"tcp://mqtt.eclipse.org:1883"
+	//mqtt.eclipse.org
+	//tcp://test.mosquitto.org
+	//mqtt.fluux.io
+	//"tcp://broker.hivemq.com" 
+
+/*
+ * Declares the messages and the events in explicit way
+ */
+System -msglog ledalone
+mqttBroker "broker.hivemq.com" :  1883  eventTopic "unibo/nat/ledalone/events"
+
+Dispatch turnOn  : turnOn(X)       
+Dispatch turnOff : turnOff(X)    
+
+Event ledchanged : ledchanged( V ) 
+
+Context ctxledalone      ip [host="localhost" port=8080] 	 	 
+  
+QActor led context ctxledalone {     
+[#   
+   var state   = false  
+#]    
+	State s0 initial {  		
+  		println("led started")
+//  		[# machineExec( "sudo bash led25GpioTurnOn.sh" )#]
+  		delay 1000
+//  		[# machineExec( "sudo bash led25GpioTurnOff.sh" )#]
+ 	} 
+ 	Goto waitCmd       
+	 
+	State waitCmd{  
+		println("led waits ...") 
+	}   
+	Transition t0     
+ 		whenMsg turnOn  -> turnLedOn
+		whenMsg turnOff -> turnLedOff
+   	  
+	State  turnLedOn{  
+		printCurrentMessage   
+		//machineExec '"sudo bash led25GpioTurnOn.sh"'
+// 		[# machineExec( "sudo bash led25GpioTurnOn.sh" ) #]
+ 		[# state = true 	#]
+		emit ledchanged : ledchanged(on)
+		updateResource [# "ledstate($state)" #]
+		
+ 	}	  
+	Goto waitCmd  
+	      
+	State  turnLedOff{  
+ 		printCurrentMessage   
+//		[# machineExec( "sudo bash led25GpioTurnOff.sh" ) #]
+		[# state = false 		#]		 
+		emit ledchanged : ledchanged(off)
+		updateResource [# "ledstate($state)"	#]
+ 	}	
+	Goto waitCmd         
+}
+

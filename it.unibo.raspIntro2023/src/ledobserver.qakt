@@ -1,0 +1,19 @@
+System ledobserver
+mqttBroker "broker.hivemq.com" :  1883   eventTopic "unibo/ledalone/events"
+
+Event    ledchanged : ledchanged( V )
+
+Context ctxdummy         ip [host="192.168.1.88" port=8080] 	 	 
+Context ctxledobserver   ip [host="localhost" port=8083]   
+
+QActor ledobserver context ctxledobserver {    
+	State s0 initial {  		
+  		println("led ledobserver waiting ..")
+ 	} 
+ 	Transition t0 whenEvent  ledchanged -> handleChange
+ 	
+ 	State handleChange{
+ 		printCurrentMessage
+ 	}
+	Goto s0
+}

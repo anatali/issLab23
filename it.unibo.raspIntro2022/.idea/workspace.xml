@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="749ac501-6e6a-469e-bfae-117c7f5b2501" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/7.4.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/7.4.2/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/7.4.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/7.4.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/7.4.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/7.4.2/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/7.4.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/7.4.2/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/.idea/.name" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/build2022.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/ctxresourcecore.pl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/src/it/unibo/ctxresourcecore/MainCtxresourcecore.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/src/it/unibo/ctxresourcecore/MainCtxresourcecore.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/src/it/unibo/resourcecore/Resourcecore.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/src/it/unibo/resourcecore/Resourcecore.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.resourcecore/src/resourcecore.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.resourcecore/src/resourcecore.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actor22/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.actor22/src/unibo/actor22/QakActor22FsmAnnot.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actor22/src/unibo/actor22/QakActor22FsmAnnot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.basicrobot22/.gradle/7.4.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.basicrobot22/.gradle/7.4.2/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.basicrobot22/.gradle/7.4.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.basicrobot22/.gradle/7.4.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.basicrobot22/.gradle/7.4.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.basicrobot22/.gradle/7.4.2/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.basicrobot22/.gradle/7.4.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.basicrobot22/.gradle/7.4.2/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.basicrobot22/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.basicrobot22/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.basicrobot22/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.basicrobot22/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.basicrobot22/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.basicrobot22/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.basicrobot22/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.basicrobot22/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.basicrobot22/build/kotlin/unibobasicrobot20jar-classes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.basicrobot22/build/kotlin/unibobasicrobot20jar-classes.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="2PrbzaaEQxAPEKOiiOlEsfmFfYl" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="749ac501-6e6a-469e-bfae-117c7f5b2501" name="Default Changelist" comment="" />
+      <created>1684218410720</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1684218410720</updated>
+    </task>
+    <servers />
+  </component>
+</project>

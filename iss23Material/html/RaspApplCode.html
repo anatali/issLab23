@@ -47,7 +47,7 @@
             
   <section id="raspapplcode">
 <h1>RaspApplCode<a class="headerlink" href="#raspapplcode" title="Permalink to this headline">¶</a></h1>
-<p>Premessa: <span class="xref std std-ref">RaspBasRaspberrySoftwareicCode</span> e <a class="reference internal" href="RaspBasicCode.html#raspbasiccode"><span class="std std-ref">RaspBasicCode</span></a>.</p>
+<p>Premessa: <a class="reference internal" href="RaspberrySoftware.html#raspberrysoftware"><span class="std std-ref">RaspberrySoftware</span></a> e <a class="reference internal" href="RaspBasicCode.html#raspbasiccode"><span class="std std-ref">RaspBasicCode</span></a>.</p>
 <p><span class="slide1">Verifichiamo i dispositivi</span></p>
 <p>Riportiamo qui codice utile per sperimentare la coretta installazione del Led e del sonarHCSR04
 su RaspberryPi.</p>
@@ -85,7 +85,28 @@ su RaspberryPi.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/c/SonarAlone.c">SonarAlone.c</a></p></td>
-<td><p>Software per il sonarHCSR04 scritto in C</p></td>
+<td><p>Software per il <code class="docutils literal notranslate"><span class="pre">sonarHCSR04</span></code> scritto in C</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/python/Sonar.py">Sonar.py</a></p></td>
+<td><p>Software per il <code class="docutils literal notranslate"><span class="pre">sonarHCSR04</span></code> scritto in Python</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="software-lowlevel-per-il-radarsystem">
+<h3>Software lowlevel per il RadarSystem<a class="headerlink" href="#software-lowlevel-per-il-radarsystem" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/radarSystem/LedControl.py">LedControl.py</a></p></td>
+<td><p>Software per controllo del Led in <a class="reference external" href="https://it.wikipedia.org/wiki/Pipe_(informatica)">Pipe</a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">sonar</span><span class="o">.</span><span class="n">py</span> <span class="o">|</span> <span class="n">python</span> <span class="n">LedControl</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</td>
 </tr>
 </tbody>
 </table>
@@ -107,6 +128,7 @@ su RaspberryPi.</p>
 <li><a class="reference internal" href="#progetto-it-unibo-raspintro2023">Progetto <em>it.unibo.raspIntro2023</em></a><ul>
 <li><a class="reference internal" href="#software-per-il-led">Software per il Led</a></li>
 <li><a class="reference internal" href="#software-per-il-sonar">Software per il Sonar</a></li>
+<li><a class="reference internal" href="#software-lowlevel-per-il-radarsystem">Software lowlevel per il RadarSystem</a></li>
 </ul>
 </li>
 </ul>

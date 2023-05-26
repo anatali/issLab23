@@ -22,7 +22,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Appunti su tecnologie" href="AppuntiTecnologie.html" />
-    <link rel="prev" title="RaspBasicCode" href="RaspBasicCode.html" /> 
+    <link rel="prev" title="RaspApplCode" href="RaspApplCode.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -34,7 +34,7 @@
           <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="RaspBasicCode.html" title="RaspBasicCode"
+          <a href="RaspApplCode.html" title="RaspApplCode"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">RadarSystem23</a></li> 
@@ -206,7 +206,8 @@ introducendo una semplice modifica nel codice di <a class="reference external" h
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Questa funzione andrebbe invocata ad ogni iterazione del ciclo principale nel <code class="docutils literal notranslate"><span class="pre">main</span></code>, come ad esempio in: <a class="reference external" href="../../it.unibo.raspIntro2023/code/c/LedSonar.c">LedSonar.c</a>.</p>
+<p>Questa funzione andrebbe invocata ad ogni iterazione del ciclo principale nel <code class="docutils literal notranslate"><span class="pre">main</span></code>, come ad esempio in: <a class="reference external" href="../../it.unibo.raspIntro2023/code/c/LedSonar.c">LedSonar.c</a>
+(proposto in <a class="reference internal" href="RaspBasicCode.html#accendiamo-il-led-se-qualcosa-si-avvicina"><span class="std std-ref">RaspBasicCode</span></a>).</p>
 <p>Il punto critico di questa impostazione è che la parte strutturale del sistema risulta ‘annegata’ nel programma che
 esprime il funzionamento. In particolare, i requisiti parlano di Led e Sonar,
 ma a questi dispositivi non corrisponde alcun codice specifico, gestibile in modo separato dal codice che
@@ -216,6 +217,8 @@ alla loro <strong>interazione</strong> <span class="blue">non sono esplicitament
 <p>Più strutturata da punto di vista architetturale è la <a class="reference internal" href="RaspBasicCode.html#soluzione-in-python"><span class="std std-ref">Soluzione in Python</span></a> basata su <a class="reference external" href="https://it.wikipedia.org/wiki/Pipe_(informatica)">pipe</a> che potrebbe essere
 rappresentata come segue:</p>
 <a class="reference internal image-reference" href="_images/pipe.png"><img alt="_images/pipe.png" class="align-center" src="_images/pipe.png" style="width: 40%;" /></a>
+<p>Si veda: <a class="reference internal" href="RaspBasicCode.html#soluzione-in-python"><span class="std std-ref">Soluzione in Python</span></a> (in <a class="reference internal" href="RaspBasicCode.html#raspbasiccode"><span class="std std-ref">RaspBasicCode</span></a>)
+<a class="reference internal" href="RaspApplCode.html#software-lowlevel-per-il-radarsystem"><span class="std std-ref">Software lowlevel per il RadarSystem</span></a></p>
 <p><span class="slide2">Ma anche questa si presta a critiche …</span></p>
 </section>
 </section>
@@ -1610,8 +1613,8 @@ QActor sonar context ctxsonar {
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="RaspBasicCode.html"
-                          title="previous chapter">RaspBasicCode</a></p>
+    <p class="topless"><a href="RaspApplCode.html"
+                          title="previous chapter">RaspApplCode</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -1649,7 +1652,7 @@ QActor sonar context ctxsonar {
           <a href="AppuntiTecnologie.html" title="Appunti su tecnologie"
              >next</a> |</li>
         <li class="right" >
-          <a href="RaspBasicCode.html" title="RaspBasicCode"
+          <a href="RaspApplCode.html" title="RaspApplCode"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">RadarSystem23</a></li> 

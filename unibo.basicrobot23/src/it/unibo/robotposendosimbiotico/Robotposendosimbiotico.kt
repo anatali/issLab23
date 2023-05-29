@@ -29,7 +29,7 @@ class Robotposendosimbiotico ( name: String, scope: CoroutineScope  ) : ActorBas
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						CommUtils.outblue("$name STARTS loading $MapName")
+						CommUtils.outblack("$name STARTS loading $MapName")
 						 planner.initAI()  
 								   planner.loadRoomMap(MapName) 
 								   planner.showMap()
@@ -53,23 +53,29 @@ class Robotposendosimbiotico ( name: String, scope: CoroutineScope  ) : ActorBas
 				}	 
 				state("setTheRobotState") { //this:State
 					action { //it:State
-						if( checkMsgContent( Term.createTerm("setpos(X,Y,D)"), Term.createTerm("setrobotstate(X,Y,D)"), 
+						if( checkMsgContent( Term.createTerm("setpos(X,Y,D)"), Term.createTerm("setpos(X,Y,D)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 val X = payloadArg(0)
 											   val Y = payloadArg(1)
 											   val D = payloadArg(2)
 											   planner.setRobotState(X,Y,D) 
+								CommUtils.outmagenta("setTheRobotState ($X, $Y, $D) ")
+								 planner.showCurrentRobotState();  
 						}
+						delay(300) 
+						CommUtils.outmagenta("update resource for setTheRobotState")
+						updateResourceRep( planner.robotOnMap()  
+						)
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t020",targetState="elabClientRequest",cond=whenRequest("moverobot"))
+					 transition( edgeName="goto",targetState="waitclientrequest", cond=doswitch() )
 				}	 
 				state("elabClientRequest") { //this:State
 					action { //it:State
-						CommUtils.outblue("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
 						if( checkMsgContent( Term.createTerm("moverobot(TARGETX,TARGETY)"), Term.createTerm("moverobot(X,Y)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
@@ -85,25 +91,27 @@ class Robotposendosimbiotico ( name: String, scope: CoroutineScope  ) : ActorBas
 				}	 
 				state("planTheRobotmoves") { //this:State
 					action { //it:State
-						CommUtils.outblue("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
 						  
 								   Plan = planner.planForGoal(""+TargetX,""+TargetY).toString()
 								   println(Plan)
 								   Plan = planner.planCompacted(Plan) 
-								   CommUtils.outblue("name | Plan to reach pos: $Plan")
+								   if( Plan.isEmpty()) Plan="''"
+								   //CommUtils.outblue("$name | Plan to reach pos: $Plan")
+						CommUtils.outblack("$name | Plan to reach pos: $Plan")
 						request("doplan", "doplan($Plan,worker,$StepTime)" ,"basicrobot" )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t021",targetState="endok",cond=whenReply("doplandone"))
-					transition(edgeName="t022",targetState="endko",cond=whenReply("doplanfailed"))
+					 transition(edgeName="t020",targetState="endok",cond=whenReply("doplandone"))
+					transition(edgeName="t021",targetState="endko",cond=whenReply("doplanfailed"))
 				}	 
 				state("endok") { //this:State
 					action { //it:State
-						CommUtils.outblue("pos reached")
+						CommUtils.outblack("pos reached")
 						 planner.doPathOnMap(Plan)  
 						 planner.showCurrentRobotState();  
 						updateResourceRep( planner.robotOnMap()  
@@ -127,7 +135,7 @@ class Robotposendosimbiotico ( name: String, scope: CoroutineScope  ) : ActorBas
 												 else planner.doPathOnMap(PathDone)
 								updateResourceRep( planner.robotOnMap()  
 								)
-								CommUtils.outblue("uuu ${PathDone}")
+								CommUtils.outblack("uuu ${PathDone}")
 								 planner.showCurrentRobotState();  
 								answer("moverobot", "moverobotfailed", "moverobotfailed($PathDone,$PathTodo)"   )  
 						}

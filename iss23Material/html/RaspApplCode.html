@@ -51,17 +51,22 @@
 <p><span class="slide1">Verifichiamo i dispositivi</span></p>
 <p>Riportiamo qui codice utile per sperimentare la coretta installazione del Led e del sonarHCSR04
 su RaspberryPi.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">paho</span><span class="o">-</span><span class="n">mqtt</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">pip</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">matplotlib</span>
+</pre></div>
+</div>
 <section id="progetto-it-unibo-raspintro2023">
 <h2>Progetto <em>it.unibo.raspIntro2023</em><a class="headerlink" href="#progetto-it-unibo-raspintro2023" title="Permalink to this headline">¶</a></h2>
 <section id="software-per-il-led">
 <h3>Software per il Led<a class="headerlink" href="#software-per-il-led" title="Permalink to this headline">¶</a></h3>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
-<col style="width: 40%" />
-<col style="width: 60%" />
+<col style="width: 30%" />
+<col style="width: 70%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/bash/bls/led25GpioTurnOn.sh">led25GpioTurnOn.sh</a> , <a class="reference external" href="../../it.unibo.raspIntro2023/code/bash/bls/led25GpioTurnOff.sh">led25GpioTurnOff.sh</a></p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/bash/bls/led25GpioTurnOn.sh">led25GpioTurnOn.sh</a>, <a class="reference external" href="../../it.unibo.raspIntro2023/code/bash/bls/led25GpioTurnOff.sh">led25GpioTurnOff.sh</a></p></td>
 <td><p>Accensione/spegnimento in bash</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/bash/bls/led25OnOff.sh">led25OnOff.sh</a></p></td>
@@ -80,8 +85,8 @@ su RaspberryPi.</p>
 <h3>Software per il Sonar<a class="headerlink" href="#software-per-il-sonar" title="Permalink to this headline">¶</a></h3>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
-<col style="width: 40%" />
-<col style="width: 60%" />
+<col style="width: 30%" />
+<col style="width: 70%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/c/SonarAlone.c">SonarAlone.c</a></p></td>
@@ -90,15 +95,22 @@ su RaspberryPi.</p>
 <tr class="row-even"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/python/Sonar.py">Sonar.py</a></p></td>
 <td><p>Software per il <code class="docutils literal notranslate"><span class="pre">sonarHCSR04</span></code> scritto in Python</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/python/SonarMqtt.py">SonarMqtt.py</a></p></td>
+<td><p>Software per il <code class="docutils literal notranslate"><span class="pre">sonarHCSR04</span></code> scritto in Python che pubblica dul broker MQTT
+<span class="brown">mqtt.eclipseprojects.io</span> l’evento <code class="docutils literal notranslate"><span class="pre">msg(sonardata,event,sonar,none,distance(D),N)</span></code>.</p>
+<p>Si veda <a class="reference external" href="../../it.unibo.raspIntro2023/code/python/mqttPlotQakEvents.py">mqttPlotQakEvents.py</a> e <a class="reference external" href="../../unibo.radarqak23/src/radargui23.qak">radargui23.qak</a> possibili receiver.</p>
+</td>
+</tr>
 </tbody>
 </table>
+<p><span class="slide1">Costruiamo applicazioni</span></p>
 </section>
 <section id="software-lowlevel-per-il-radarsystem">
 <h3>Software lowlevel per il RadarSystem<a class="headerlink" href="#software-lowlevel-per-il-radarsystem" title="Permalink to this headline">¶</a></h3>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
-<col style="width: 40%" />
-<col style="width: 60%" />
+<col style="width: 20%" />
+<col style="width: 80%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/radarSystem/LedControl.py">LedControl.py</a></p></td>
@@ -106,6 +118,18 @@ su RaspberryPi.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">sonar</span><span class="o">.</span><span class="n">py</span> <span class="o">|</span> <span class="n">python</span> <span class="n">LedControl</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
+</td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="../../unibo.radarqak23/src/radargui23.qak">radargui23.qak</a></p></td>
+<td><p>Modello qak per il radar che percepisce eventi <code class="docutils literal notranslate"><span class="pre">sonardata:distance(D)</span></code> emessi da
+<a class="reference external" href="../../it.unibo.raspIntro2023/code/python/SonarMqtt.py">SonarMqtt.py</a></p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/radarguiqak23.png"><img alt="_images/radarguiqak23.png" src="_images/radarguiqak23.png" style="width: 50%;" /></a>
+<p>Sistema  che accende il Led e aggiorna il radarDisplay:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">sonarMqtt</span><span class="o">.</span><span class="n">py</span> <span class="o">|</span> <span class="n">python</span> <span class="n">LedControl</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</div></blockquote>
 </td>
 </tr>
 </tbody>

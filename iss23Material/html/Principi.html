@@ -406,7 +406,7 @@ che può essere modificato senza influenzare le regole aziendali (componente di 
 <section id="architettura-esagonale">
 <h3>Architettura esagonale<a class="headerlink" href="#architettura-esagonale" title="Permalink to this headline">¶</a></h3>
 <p>L’architettura esagonale (anche nota come <a class="reference internal" href="Architetture.html#architettura-esagonale-port-adapter"><span class="std std-ref">Port-Adapter</span></a>) è,
-tra le tante veda <a class="reference internal" href="Architetture.html#architetture"><span class="std std-ref">Architetture</span></a>
+tra le tante <a class="reference internal" href="Architetture.html#architetture"><span class="std std-ref">Architetture</span></a>
 di sistemi software oggi in uso, quella cui noi faremo particolare attenzione.</p>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
@@ -645,6 +645,25 @@ per definire i test in modo che possano individuare in modo automatico le falle 
 <span class="blue">rendere  l’applicazione osservabile</span>, o meglio:</p>
 <p><span class="remark">renderne verificabili, da parte di una macchina, gli effetti dell’applicazione</span>.</p>
 </section>
+<section id="progettazione-e-sviluppo-come-processo-evolutivo">
+<h3>Progettazione e sviluppo come processo evolutivo<a class="headerlink" href="#progettazione-e-sviluppo-come-processo-evolutivo" title="Permalink to this headline">¶</a></h3>
+<p>L’uso dei modelli è utile (per non dire indispensabile) PER CONCENTRARE
+l’attenzione SUGLI ASPETTI RITENUTI SALIENTI (tenendo conto anche
+dei tempi, delle tecnologie disponibili  e dei costi).</p>
+<p>Come già previsto da <a class="reference external" href="https://it.wikipedia.org/wiki/Unified_Modeling_Language">UML</a>, è opportuno definire modelli come risultato delle
+fasi di analisi dei requisiti (<em>Use Case Diagrams</em>), analisi del problema
+e del progetto (<em>class diagrams, sequence diagrams</em>, <em>activity diagrams</em>, <em>statechart diagram</em> )
+e anche per la distribuzione del prodotto (<em>deployment diagrams</em>).</p>
+<p>L’architettura logica espressa mediante un modello esguibile del sistema da realizzare,
+condiviso tra tutti (customer, responsabili aziendali, sviluppatori), è un importante e solido punto di partenza
+per la progettazione della soluzione, cioè per il passaggio da WHAT a HOW.
+Questo passaggio può essere visto e svolto come un <span class="blue">processo evolutivo</span> di trasformazione/specializzazione di questa
+architettura di base.</p>
+<p>Il modello della architettura logica può essere anche il riferimento per la impostazione di
+PIANI di testing espressi in MODO NON discorsivo (formale), comprensibile a una macchina.</p>
+<p>Noi seguiremo questa idea con lo sviluppo (si veda <a class="reference internal" href="Introduzione23.html#fase2"><span class="std std-ref">FASE2</span></a>) di
+un meta-modello custom che permette la definizione di modelli eseguibili di sistemi distributi.</p>
+</section>
 </section>
 </section>
 
@@ -691,6 +710,7 @@ per definire i test in modo che possano individuare in modo automatico le falle 
 <li><a class="reference internal" href="#linguaggi-di-meta-modellazione">Linguaggi di (meta)modellazione</a></li>
 <li><a class="reference internal" href="#testing">Testing</a></li>
 <li><a class="reference internal" href="#dal-testing-a-devops">Dal testing a DevOps</a></li>
+<li><a class="reference internal" href="#progettazione-e-sviluppo-come-processo-evolutivo">Progettazione e sviluppo come processo evolutivo</a></li>
 </ul>
 </li>
 </ul>

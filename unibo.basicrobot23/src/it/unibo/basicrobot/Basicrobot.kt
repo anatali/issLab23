@@ -26,7 +26,7 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 		  var CurrentMove   = "unkknown"
 		  var StepSynchRes  = false
 		  var Owner         = "unkknown"
-		  val planner       = unibo.planner23.Planner23Util() 
+		  //val planner       = unibo.planner23.Planner23Util() 
 		  
 		  fun checkOwner() : Boolean {
 		  	if( currentMsg.isEvent()  ) return true
@@ -44,13 +44,16 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						delegate("doplan", "planexec") 
 						delegate("setrobotstate", "robotposendosimbiotico") 
 						delegate("moverobot", "robotposendosimbiotico") 
-						CommUtils.outblack("basicrobot | STARTS")
+						delay(1000) 
+						CommUtils.outblack("basicrobot | STARTING ... ")
 						uniborobots.robotSupport.create(myself ,"basicrobotConfig.json" )
 						 RobotType = uniborobots.robotSupport.robotKind  
+						delay(2000) 
 						uniborobots.robotSupport.move( "a"  )
 						uniborobots.robotSupport.move( "d"  )
 						updateResourceRep( "basicrobot(started)"  
 						)
+						delay(1000) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -60,7 +63,7 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("waitForOwner") { //this:State
 					action { //it:State
-						CommUtils.outblack("basicrobot  | waiting for engaged/disengaged ...  ")
+						CommUtils.outblack("basicrobot  | Waiting engage request ...  ")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

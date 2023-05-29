@@ -5,67 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4db3de5c-51b9-4646-ac95-eac6f8228553" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/.settings/org.jetbrains.kotlin.core.prefs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/LabRaspiIntro.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/bls/button24Gpio.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/bls/buttonLed.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/bls/buttonOn24Click.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/bls/led25Gpio.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/bls/led25GpioTurnOff.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/bls/led25GpioTurnOn.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/bls/led25OnOff.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/bls/utils.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/getPhoto.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/led25Gpio.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/led25GpioTurnOff.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/led25GpioTurnOn.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/led25OnOff.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/mjpg/mjpg-streamer.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/motors/nanoMotorDriveA.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/motors/nanoMotorDriveB.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/motors/nanoMotorDriveSetUp.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/bash/startWebCamStreamer.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/c/LedBlinkSonar.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/c/LedSonar.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/c/OtherSonar.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/c/SonarAlone.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/c/hello.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/c/motors/Motors.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/Ultrasonic.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/bls/buttonPython24.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/bls/buttonPython24Callbacks.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/bls/buttonPython24Edge.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/bls/buttonPython24EventDetected.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/bls/gpio/buttonLedPython.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/bls/gpio/buttonPython24.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/bls/gpio/ledControl25.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/bls/ledPython25.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/bls/ledPython25Morse.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/ledCmdEmitter.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/ledPython25.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/mqttPlotQakEvents.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/mqttPlotQakEvents.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/sensorCCS811/examples/CCS811_example.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/sonar.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/tvoc/checktvoc.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/python/tvoc/tvoc.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/radarSystem/LedControl.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/radarSystem/ReadInput.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/radarSystem/SonarAlone.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/code/radarSystem/sonar.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntro2022/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.radarqak23/.gradle/7.4.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.radarqak23/.gradle/7.4.2/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.radarqak23/.gradle/7.4.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.radarqak23/.gradle/7.4.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.radarqak23/.gradle/7.4.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.radarqak23/.gradle/7.4.2/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.radarqak23/.gradle/7.4.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.radarqak23/.gradle/7.4.2/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.radarqak23/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.radarqak23/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.radarqak23/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.radarqak23/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.radarqak23/Api_radargui23.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.radarqak23/Api_radargui23.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.radarsystemqak23/Api_radarsystem23analisi.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.radarsystemqak23/Api_radarsystem23analisi.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.radarsystemqak23/src/radarsysystem23analisi.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.radarsystemqak23/src/radarsysystem23analisi.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibolibs/unibo.planner23-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../unibolibs/unibo.planner23-1.0.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -1,0 +1,59 @@
+System userobot 
+
+Request engage        : engage(ARG)	
+Reply   engagedone    : engagedone(ARG)
+Reply   engagerefused : engagerefused(ARG)
+Dispatch disengage    : disengage(ARG)
+
+Request  doplan     : doplan( PATH, OWNER, STEPTIME )
+Reply doplandone    : doplandone( ARG ) 
+Reply doplanfailed  : doplanfailed( ARG )
+
+Request moverobot    :  moverobot(TARGETX, TARGETY)
+Reply moverobotdone  :  moverobotok(ARG)
+Reply moverobotfailed:  moverobotfailed(PLANDONE, PLANTODO)
+
+Dispatch setrobotstate: setpos(X,Y,D)
+
+Context ctxbasicrobot ip [host="127.0.0.1" port=8020] 
+Context ctxuserobot   ip [host="localhost" port=8111] 
+  
+ExternalQActor basicrobot context ctxbasicrobot
+
+CodedQActor pathobs context ctxbasicrobot className "observers.planexecCoapObserver"
+
+/* 
+QActor planexecobserver context ctxbasicrobot{
+	State s0 initial{
+		
+	}
+}
+ */
+QActor userobotclient context ctxuserobot{
+	[# val MyName = name #]
+	State s0 initial{
+		println("userobotclient STARTS $MyName") color blue
+		request basicrobot -m engage : engage($MyName) 
+	}
+	Transition t0 whenReply engagedone    -> work
+	              whenReply engagerefused -> waittoengage
+ 	
+	State work{
+		forward basicrobot -m setrobotstate : setpos(0,0,d)
+		[# CommUtils.waitTheUser("$name | hit 1CR") #]
+		request basicrobot -m moverobot : moverobot(6,4)    //6,4
+		[# emitWithDelay("alarm","alarm(fire)", 4200)   #] 
+	}
+	Transition t0 whenReply moverobotdone   -> handleAnswer
+	              whenReply moverobotfailed -> handleAnswer
+	
+	State handleAnswer{
+		printCurrentMessage color magenta
+	}
+	
+	State waittoengage {
+		printCurrentMessage color red
+	}
+}
+ 
+ 

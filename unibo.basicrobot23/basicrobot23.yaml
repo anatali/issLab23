@@ -1,0 +1,24 @@
+version: '3'
+services:
+  wenv:
+    image: docker.io/natbodocker/virtualrobotdisi23:1.0
+    #image: docker.io/natbodocker/virtualrobotdisi:4.0
+    ports:
+      - 8090:8090 
+      - 8091:8091/tcp
+      - 8091:8091/udp
+  basicrobot23:
+    image: docker.io/natbodocker/basicrobot23:2.0
+    #image: basicrobot23:2.0
+    ports:
+      - 8020:8020/tcp
+      - 8020:8020/udp
+    depends_on:
+      - wenv
+
+## -------------------------------------------------------------
+## TODO See https://docs.docker.com/compose/startup-order/
+## -------------------------------------------------------------
+## docker-compose -f basicrobot23.yaml  up
+## docker-compose run --service-ports wenv
+## docker-compose run --service-ports vrobotclient  ATTIVA ANCHE wenv

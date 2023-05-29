@@ -9,7 +9,6 @@ Request  doplan     : doplan( PATH, OWNER, STEPTIME )
 Reply doplandone    : doplandone( ARG ) 
 Reply doplanfailed  : doplanfailed( ARG )
 
-
 Request moverobot    :  moverobot(TARGETX, TARGETY)
 Reply moverobotdone  :  moverobotok(ARG)
 Reply moverobotfailed:  moverobotfailed(PLANDONE, PLANTODO)
@@ -122,12 +121,12 @@ QActor worker context ctxrobotpos{
 /*
  * client (for prototype0 testing)
  */
-/*  
+  
 QActor client context ctxrobotpos{
 	State s0 initial{
 		[# CommUtils.waitTheUser("$name | hit 1CR") #]
 		request worker -m moverobot : moverobot(2,2)  //6,4
-		[# emitWithDelay("alarm","alarm(fire)", 1400)   #] 
+		//[# emitWithDelay("alarm","alarm(fire)", 1400)   #] 
 	}
 	Transition t0 whenReply moverobotdone   -> handleAnswer
 	              whenReply moverobotfailed -> handleAnswer
@@ -137,4 +136,4 @@ QActor client context ctxrobotpos{
 	}
 }
  
-*/
+ 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.websocket/javax.websocket-api/1.1/13b8cb26dfb76ac8c28294b06b4b8419e22e9ea1/javax.websocket-api-1.1.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.glassfish.tyrus.bundles/tyrus-standalone-client/1.9/cf9e6cdbd6ad2a72bc54c0823c0ac31c76df4b9e/tyrus-standalone-client-1.9.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5/a1e6cbb3cc2c5f210dd1310ff9fcb2c09c0d1438/httpclient-4.5.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.json-simple/json-simple/1.1.1/c9ad4a0850ab676c5c64461a05ca524cdfff59f1/json-simple-1.1.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/../unibolibs/2p301.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/../unibolibs/uniboInterfaces.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.1/f5aa318bda4c6c8d688c9d00b90681dcd82ce636/httpcore-4.4.1.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.9/9ce04e34240f674bc72680f8b843b1457383161a/commons-codec-1.9.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/junit/junit/4.10/e4f1766ce7404a08f45d859fb9c226fc9e41a861/junit-4.10.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.1/860340562250678d1a344907ac75754e259cdb14/hamcrest-core-1.1.jar!/" />
+    <src_description expected_position="0">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
+    </src_description>
+  </component>
+</module>

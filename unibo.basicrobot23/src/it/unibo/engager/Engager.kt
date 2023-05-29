@@ -25,7 +25,7 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				state("s0") { //this:State
 					action { //it:State
 						if(  ! currentMsg.isEvent()  
-						 ){CommUtils.outblue("$name waiting ..")
+						 ){CommUtils.outblack("$name waiting ..")
 						}
 						//genTimer( actor, state )
 					}
@@ -37,7 +37,7 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				}	 
 				state("handleEngage") { //this:State
 					action { //it:State
-						CommUtils.outblue("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
 						answer("engage", "engagedone", "engagedone(ok)"   )  
 						//genTimer( actor, state )
@@ -48,7 +48,7 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				}	 
 				state("disengageRobot") { //this:State
 					action { //it:State
-						CommUtils.outblue("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
 						 Owner  = "unkknown"  
 						forward("disengaged", "disengaged($Owner)" ,"basicrobot" ) 
@@ -62,7 +62,7 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				}	 
 				state("engageRefuse") { //this:State
 					action { //it:State
-						CommUtils.outblue("$name engage refused since already working for $Owner")
+						CommUtils.outblack("$name engage refused since already working for $Owner")
 						answer("engage", "engagerefused", "engagerefused($Owner)"   )  
 						//genTimer( actor, state )
 					}
@@ -73,9 +73,9 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				}	 
 				state("engageAccept") { //this:State
 					action { //it:State
-						CommUtils.outblue("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
-						if( checkMsgContent( Term.createTerm("engage(ARG)"), Term.createTerm("engage(OWNER)"), 
+						if( checkMsgContent( Term.createTerm("engage(OWNER)"), Term.createTerm("engage(OWNER)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 if( currentMsg.conn != null ) curConn = currentMsg.conn					
 												   Owner  = payloadArg(0)

@@ -95,11 +95,24 @@ su RaspberryPi.</p>
 <tr class="row-even"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/python/Sonar.py">Sonar.py</a></p></td>
 <td><p>Software per il <code class="docutils literal notranslate"><span class="pre">sonarHCSR04</span></code> scritto in Python</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/python/SonarMqtt.py">SonarMqtt.py</a></p></td>
-<td><p>Software per il <code class="docutils literal notranslate"><span class="pre">sonarHCSR04</span></code> scritto in Python che pubblica dul broker MQTT
-<span class="brown">mqtt.eclipseprojects.io</span> l’evento <code class="docutils literal notranslate"><span class="pre">msg(sonardata,event,sonar,none,distance(D),N)</span></code>.</p>
+<tr class="row-odd"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/python/SonarMqtt.py">SonarMqtt.py</a>  <span class="slide2">LOGICAMENTE ERRATO</span></p></td>
+<td><p>Software per il <code class="docutils literal notranslate"><span class="pre">sonarHCSR04</span></code> scritto in Python che pubblica sul broker MQTT
+<span class="brown">mqtt.eclipseprojects.io</span> TOPIC= <span class="blue">unibo/sonar/events</span> l’evento
+<code class="docutils literal notranslate"><span class="pre">msg(sonardata,event,sonar,none,distance(D),N)</span></code>.</p>
 <p>Si veda <a class="reference external" href="../../it.unibo.raspIntro2023/code/python/mqttPlotQakEvents.py">mqttPlotQakEvents.py</a> e <a class="reference external" href="../../unibo.radarqak23/src/radargui23.qak">radargui23.qak</a> possibili receiver.</p>
 </td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/python/pipes/ControllerMqtt.py">ControllerMqtt.py</a></p></td>
+<td><p>Un controller che libera il Sonar da compiti di interazione applicativa.
+Da usarsi in una pipe insieme a <a class="reference external" href="../../it.unibo.raspIntro2023/code/python/pipes/LedDevice.py">LedDevice.py</a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">sonar</span><span class="o">.</span><span class="n">py</span> <span class="o">|</span> <span class="n">python</span> <span class="n">ControllerMqtt</span><span class="o">.</span><span class="n">py</span> <span class="o">|</span> <span class="n">python</span> <span class="n">LedDevice</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/python/pipes/mqttReceiver.py">mqttReceiver.py</a></p></td>
+<td><p>Un ricevitore che fa subscribe a TOPIC= <span class="blue">unibo/sonar/events</span> per visualizzare
+i dati emessi dal Sonar</p></td>
 </tr>
 </tbody>
 </table>
@@ -113,7 +126,7 @@ su RaspberryPi.</p>
 <col style="width: 80%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/radarSystem/LedControl.py">LedControl.py</a></p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="../../it.unibo.raspIntro2023/code/radarSystem/LedControl.py">LedControl.py</a> <span class="slide2">LOGICAMENTE ERRATO</span></p></td>
 <td><p>Software per controllo del Led in <a class="reference external" href="https://it.wikipedia.org/wiki/Pipe_(informatica)">Pipe</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">sonar</span><span class="o">.</span><span class="n">py</span> <span class="o">|</span> <span class="n">python</span> <span class="n">LedControl</span><span class="o">.</span><span class="n">py</span>
 </pre></div>

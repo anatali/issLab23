@@ -73,7 +73,7 @@ i cui componenti sono  attori  che si comportano come un <a class="reference ext
 con l’idea di sistemi basati su <a class="reference external" href="https://microservices.io/">Microservizi</a>.</p>
 <p>L’aggiunta di <span class="blue">k</span> al prefisso (es <code class="docutils literal notranslate"><span class="pre">qak</span></code>, <code class="docutils literal notranslate"><span class="pre">Qak</span></code>) significa che stiamo facendo riferimento alla versione
 implementata in <a class="reference external" href="https://kotlinlang.org/">Kotlin</a>, senza utilizzare i supporti Akka (come fatto nella prima versione del linguaggio).</p>
-<p>Per una <span class="slide2">Introduzione all’uso di Kotlin</span> si veda: <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html">kotlinUnibo</a></p>
+<p>Per una <span class="slide2">Introduzione all’uso di Kotlin</span> si veda: si veda: <a class="reference internal" href="KotlinNotes.html#kotlinnotes"><span class="std std-ref">KotlinNotes</span></a>.</p>
 <p><span class="slide">Qak overview</span></p>
 </section>
 <section id="qak-software-factory">
@@ -548,13 +548,13 @@ un insieme di variabili e operazioni, tra cui quelle qui di seguito riportate.</
 </tr>
 <tr class="row-even"><td><p>Memorizzazione tempo corrente</p></td>
 <td><ul class="simple">
-<li><p><span class="blue">memoCurrentTime</span>. Es. <a class="reference internal" href="QakActors23Demo.html#datahandler"><span class="std std-ref">datahandler</span></a></p></li>
+<li><p><span class="blue">memoCurrentTime</span>. Es. <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a></p></li>
 </ul>
 </td>
 </tr>
 <tr class="row-odd"><td><p>Determinazione della durata</p></td>
 <td><ul class="simple">
-<li><p><span class="blue">setDuration</span>. Es. <a class="reference internal" href="QakActors23Demo.html#datahandler"><span class="std std-ref">datahandler</span></a></p></li>
+<li><p><span class="blue">setDuration</span>. Es. <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a></p></li>
 </ul>
 </td>
 </tr>
@@ -579,7 +579,7 @@ un insieme di variabili e operazioni, tra cui quelle qui di seguito riportate.</
 <tr class="row-odd"><td><p>Esecuzione codice esterno</p></td>
 <td><ul class="simple">
 <li><p><span class="blue">run</span>: <code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">ccc.xxx()</span></code>  invoca  il metodo <em>static</em> <code class="docutils literal notranslate"><span class="pre">xxx</span></code> della classe <code class="docutils literal notranslate"><span class="pre">ccc</span></code>.
-Es. <a class="reference internal" href="QakActors23Demo.html#datahandler"><span class="std std-ref">datahandler</span></a></p></li>
+Es. <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a></p></li>
 <li><p><span class="blue">machineExec</span>:  <code class="docutils literal notranslate"><span class="pre">machineExec(cmd:string)</span></code></p></li>
 <li><p><span class="blue">qrun</span> : <code class="docutils literal notranslate"><span class="pre">qrun</span> <span class="pre">ccc.xxx()</span></code>  invoca  il metodo <em>static</em>  <code class="docutils literal notranslate"><span class="pre">xxx</span></code> della classe <code class="docutils literal notranslate"><span class="pre">ccc</span></code>. Il
 metodo deve avere come primo argomento un riferimento all’attore corrente (<strong>myself</strong>).</p></li>

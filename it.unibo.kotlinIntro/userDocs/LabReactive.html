@@ -1,0 +1,312 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+ 
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	 
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	 
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 700px;
+    font-size: 15px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px; 
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #C0F0E0;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+	
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}       
+div.remark{
+	background-color: #E3F2FD;	
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+} 
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}     
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+	
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>LabReactive</title></head>
+    
+<body>
+<div id="body">
+<h1>LabReactive | Introduction to ReactiveProgramming (in Java)</h1>
+
+
+
+The term, <bc>reactive</bc>, refers to programming models that are built around reacting to changes. 
+<br/><br/>
+Reactive programming is about non-blocking applications that are asynchronous and event-driven and 
+require a small number of threads to scale vertically (i.e. within the JVM) rather than horizontally (i.e. through clustering)
+<br/><br/>
+In this style of programming, we make a request for resource and start performing other things. 
+When the data is available, we get the notification along with data in form of a <bc>call back</bc> function. 
+<br/><br/>
+Reactive web programming is great for applications that have streaming data, and clients that consume it and stream it to their users. 
+It is not great for developing traditional CRUD applications. 
+<br/><br/>
+For a longer introductio, see
+<a href="https://spring.io/blog/2016/06/07/notes-on-reactive-programming-part-i-the-reactive-landscape" traget="web">The Reactive Landscape</a> by  DAVE SYER.
+
+<h2>Overview</h2>
+
+ 
+<ul>
+<li>
+A <em>stream</em> is a sequence of data elements made available over time. 
+See also <a href="https://en.wikipedia.org/wiki/Coinduction#Codata" target="web">Coinduction and codata</a>.
+</li>
+<li>
+Streams are processed differently from batch data: normal functions cannot operate on streams as a whole.<br/>
+</li>
+<li>
+<em>Stream processing</em> is a computer programming paradigm, equivalent to 
+<a href="https://en.wikipedia.org/wiki/Dataflow_programming" target="web">dataflow programming</a>, 
+<a href="https://en.wikipedia.org/wiki/Event_stream_processing" target="web">event stream processing</a>, and 
+<a href="https://en.wikipedia.org/wiki/Reactive_programming" target="web">reactive programming.</a>.
+</li>
+<li>Stream processing allows some applications to more easily exploit a limited form of parallel processing.
+Given a  stream, a series of functions (usually <em>pipelined</em>) is applied to each element in the stream. 
+
+</li>
+<li>Functions that operate on a stream, producing another stream, are known as <em>filters</em>, and can be connected in pipelines, 
+analogously to function composition.
+Filters may operate on one item of a stream at a time, or may base an item of output on multiple items of input, 
+such as a moving average.</li>
+
+
+</ul>
+
+</li>
+</ul>
+
+<h4>Back pressure</h4>
+A key aspect of reactive applications is the concept of <bc>backpressure</bc>, which is a mechanism to ensure producers don't overwhelm consumers. 
+
+
+
+<h3>Reactive programming in Java</h3>
+<ol>
+<li>Reactive programming in Java has gradually been progressing ever since the introduction of ‘<bc>Futures</bc>’ in Java 1.5 – 
+(Futures are akin to <bc>Promises</bc> in the Javascript world).</li>
+<li>Java 1.8 brought us ‘<bc>CompletableFutures</bc>’ where futures could be chained together (amongst other things)</li>
+<li>Next came Netflix’s RxJava which offered the ‘Observable’ type – facilitating producer ‘push’ based values 
+(rather than consumer pull based)  as well as a the Flowable type – which allows ‘Back Pressure’ mechanisms 
+to be implemented i.e. where consumers can express how many items are they ready to process, thus keeping memory usage more controllable and stable.
+</li>
+<li>Eventually a collaboration between engineers from Kaazing, Netflix, Pivotal, Red Hat, Twitter, Typesafe to name a few, 
+defined us all a <bc>common API</bc> (<a href="https://www.reactive-streams.org/" traget="web">Reactive Streams</a>) for <i>Reactive Programming in Java</i>. 
+It has since been implemented in Akka, Ratpack, Vert.x and Spring where it was named 
+<a href="https://projectreactor.io/docs/core/release/reference/" traget="web"><bc>Reactor</bc></a> (that runs on Java 8 and above).  
+It was finally incorporated into the JDK in Java 9.</li>
+<li><a href="https://en.wikipedia.org/wiki/Reactive_extensions" target="web">Reactive Extensions</a>
+((also known as <em>ReactiveX</em>)) is an <tt>API</tt> for <bc>asynchronous programming with observable streams</bc>.
+<tt>ReactiveX</tt> is a combination of ideas from the <em>observer</em> and the <em>iterator</em> patterns and from <em>functional programming</em>
+and  provides a set of tools allowing imperative programming languages to operate on sequences of data regardless 
+of whether the data is synchronous or asynchronous.
+<br/><br/>
+<ul>
+<li><bc>Asynchronous programming</bc> allows programmers to call functions and then have the functions "callback" when they are done, 
+usually by giving the function the address of another function to execute when it is done. 
+Programs designed in this way often avoid the overhead of having many threads constantly starting and stopping.
+</li>
+<li>
+<bc>Observable streams</bc> in the context of Reactive Extensions are like 'event emitters' 
+that emit 3 'events': <em>next</em>, <em>error</em>, and <em>complete</em>. 
+An observable emits <tt>next</tt> events until it either emits an <tt>error</tt> event or a <tt>complete</tt> event. 
+However, at that point it will not emit any more events, unless it is subscribed to again.
+
+</li>
+
+</ol>
+
+
+ 
+<h2 id="rxexamples">Examples</h2> 
+ 
+
+
+
+ <br/><br/>
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%" >
+</td>
+<td>
+</td>
+</tr>
+ </tbody>
+</table>
+ <br/><br/>
+</div>  
+
+ 
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI  
+</div> 
+
+</body>
+</html>
+
+
+ 

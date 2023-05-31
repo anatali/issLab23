@@ -1,0 +1,813 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+	width: 750px;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+k{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #990000;
+	 
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	 
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	 
+}
+pre{
+	font-family: "Helvetica";
+	font-size: 90%;
+	background-color: #fcf8c7;
+	border: 1px solid blue;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}    
+div.remark{
+	background-color: #FFFC33;     
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+  -->
+</style>
+    
+<head>
+   
+<title>LABDslISS</title></head>
+    
+<body>
+
+<div class="body"> 
+
+<h1>LabKotlin | Kotlin Internal DSL</h1> 
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/LectureBologna1819.html" target="isslm">LabISS-lectures site</a></font> 
+
+  
+
+
+<h2 id="extensionft">Extension function type</h2>
+A way of extending the abilities of a Kotlin  class without actually inheriting the class.<br/>
+An <em>extension function</em> <ks>ef</ks> for a class <ks>C</ks> in package <ks>P</ks>  is
+a handy way of extending existing <ks>C</ks> with a new functionality without using inheritance or any forms of the Decorator pattern; it
+:
+<ul>
+<li>is declared (by using the <tt>Type.method</tt> syntax) as a <b>top-level</b> function and it is compiled to a <b>static</b> method that <i>accepts the receiver object as its first argument</i>;
+</li>
+<li>can directly access visible properties and methods of <ks>C</ks>;</li>
+<li>can use in its body the key-word <bc>this</bc>;</li>
+<li>cannot be overloaded;</li>
+<li>needs to be imported, e.g. <bc>import <ks>P.ef</ks></bc> or <bc>import <ks>P.ef</ks> as xx </bc> (to change the name ); </li>
+</ul>
+
+These examples are reported in  <a href="../src/kotlindsl/demoExtFun.kt" target="code">kotlindsl/demoExtFun.kt</a> (project <i>it.unibo.kotlinIntro</i>).
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:50%">
+<pre><m>class Counter{
+var v = 0
+    fun inc(): Int{ return ++v }
+}
+<kc>//Utility function</kc>
+fun <ks>showutil</ks>( c: Counter ): String { return "counter(${c.v})" }
+
+<kc>//Extension functions</kc>
+fun <k>Counter.show()</k> : String{ return "counter($v)" }
+fun <k>Counter.dec()</k>: Int{
+    this.v--
+    return v
+}
+
+</m>
+</pre>
+</td>
+<td><m>
+We can use the extension functions <ks>show</ks> and <ks>dec</ks> as they where defines within the class <i>Counter</i>:
+<pre>
+  fun main() {
+    val c1 = Counter()
+    println( <ks>c1.show()</ks> ) <kc>// counter(0)</kc>
+    c1.inc();c1.inc();<ks>c1.dec()</ks>
+    println( <ks>c1.show()</ks> ) <kc>// counter(1)</kc>
+}
+</pre>
+The compiled code is similar to <ks>showutil</ks>.
+<br/><br/>
+The IDE will automatically suggest the functions appropriate for the <tt>Counter</tt> type and your current scope.
+<!--
+See https://proandroiddev.com/kotlin-extension-functions-more-than-sugar-1f04ca7189ff
+-->
+</m>
+</td>
+</tr>
+</tbody>	
+</table></center>
+
+<h3>Adding extension functions to compiled Java</h3>
+Given a class included in a library <b>compiled</b> in Java, we can  always add our extensions to the class 
+without the need of the source code. <br/> 
+Extensions can be related to methods and properties (without state). 
+<br/><br/>
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:50%">
+<pre><m>
+<kc>//Extension function on String</kc>
+fun <k>String.lastChar()</k> : Char = <k>this</k>.get(this.length-1)
+
+println( "hello!".lastChar() ) 		<kc>// !</kc>
+
+<kc>//Extension property on String</kc>
+val <k>String.lastCharProp : Char</k>
+	get() = get( length-1 )
+
+println( "hello!".lastCharProp )		<kc>// !</kc>
+</m></pre>
+</td>
+<td><m>
+When the extension is a property, the <bc>get</bc> (and <bc>set</bc> for modifiable) method must be always defined because there is no backing field
+(see 
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2020LabBo/blob/master/it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#backingfield" target="lab">
+LabKotlin | Introduction to KOTLIN - backingfield</a>).
+
+<pre>
+<kc>Extensions on Counter</kc>
+var <k>Counter.value : Int</k>
+    get() = v
+    set( x : Int ){ v = x }
+ 
+
+c1.value = 10
+println( c1.value ) <kc>//counter(10)</kc>		
+
+</pre>
+ </m>
+</td>
+</tr>
+
+<tr>
+</tbody>	
+</table></center>
+<div class="remark"><m>
+Extension functions provide more benefit than improving readability of code;
+they aid in encapsulation and information hiding, improve expressiveness and give us a private, context-specific perspectives of types.</m>
+</div>
+
+<h2 id="lamdarec">Lambda with receiver</h2>
+<!-- https://medium.com/tompee/idiomatic-kotlin-lambdas-with-receiver-and-dsl-3cd3348e1235 -->
+While a <bc>lambda</bc> is a way to define behavior similar to a regular function, a
+<bc>lambda with receiver</bc> is a way to define behavior similar to an <i>extension function</i>. 
+<br/><br/>
+A lambda with a receiver allows you to call methods of an object in the body of a lambda without any qualifiers. 
+It is similar to the typed extension function but this time, for function types.
+<br/><br/>
+To give an example, let us start from a <i>Conventional function-type</i>:
+<br/> 
+The  examples are reported in  <a href="../src/kotlindsl/demoLambdaRec.kt" target="code">kotlindsl/demoLambdaRec.kt</a> (project <i>it.unibo.kotlinIntro</i>).
+<br/><br/>
+
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%">
+<pre><m>
+fun <b>buildString0</b>( <ks>builderAction</ks>: <k>(StringBuilder) -> Unit</k> ): String {
+        val sb = StringBuilder()
+        <ks>builderAction</ks>(sb)
+        return sb.toString()
+}
+
+fun <ks>buildSomething( sb: StringBuilder) : Unit</ks> {
+    sb.append("Hello").append(", "); sb.append("World!")
+}
+
+fun run0() {
+    val s = <b>buildString0</b>( <ks><k>::</k>buildSomething</ks> ) <kc>//function ref. operator </kc>
+    println(s)     <kc>//Hello, World!</kc>
+}
+</m>
+</pre>
+</td>
+<td><m><h3>Conventional function type</h3>
+a function (<tt>buildString0</tt>) receives as input an object of function-type <bc>(StringBuilder) -> Unit</bc>.
+This object is applied to a locally created <tt>StringBuilder</tt>, and then the function returns a <tt>String</tt>.
+<br/><br/>
+The same result obtained by calling <ks>run0</ks> can be obtained by using a <i>lambda expression</i>:
+<pre> 
+fun main() {
+<kc>//when a lambda expression is at the end of the parameter list, 
+we can take it out of the parentheses during invocation.
+
+Kotlin can generate a argument name called <k>it</k> 
+for single argument function types.
+</kc>
+    val s = <b>buildString0</b> <k>{</k> <kc>//<k>it</k>: StringBuilder</kc>
+        <ks><k>it</k></ks>.append("Hello").append(", ")
+        <ks><k>it</k></ks>.append("World!")
+    <k>}</k>
+    println(s)     <kc>//Hello, World!</kc>
+}
+</pre>
+</m>
+</td>
+</tr>
+</tbody>	
+</table></center>
+<br/>
+We can declare an extension function of a type by using the <tt>Type.method</tt> syntax to signify that we will be receiving 
+an instance of that type as the first parameter. What if I tell you we can use this this concept on <i>lambdas as well</i>?
+<br/>
+Let us now pass as argument an <bc>Extension function type</bc>, that  describes a block of code 
+that can be called as an extension function:
+<br/><br/>
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%">
+<pre><m>
+fun <b>buildString1</b>(  <ks>builAction</ks>: <k>StringBuilder.() -> Unit</k> ) : String {
+<kc>//The <ks>builAction</ks> is an extension function of type <ks>StringBuilder</ks></kc>
+        val sb = StringBuilder()
+        <ks>sb.builAction()</ks>   <kc>//oo-like notation for extension function</kc>
+        return sb.toString()
+}
+<kc>//when a lambda expression is at the end of the parameter list, 
+we can take it out of the parentheses during invocation.</kc>
+fun main() {
+    val s = buildString1 { <kc>//<k>this</k>: StringBuilder</kc>
+	<kc>//The <bc>this</bc> keyword (if used) refers to the receiver instance.</kc>
+        <ks>this</ks>.append("Hello, ")
+        append("World!")
+    }
+    println(s)  <kc>//Hello, World!</kc>
+}
+</m></pre>
+</td>
+<td>
+The re-factored code is an example of 
+<!--
+<h3>Extension function type</h3><m>
+The  function <tt>buildString1</tt> receives as input a function of <tt>extension function type</tt>
+<bc>StringBuilder.() -> Unit</bc>. 
+ <br/><br/>
+Now, at the calling site, we substitute the lambda with a 
+-->
+<div class="remark">
+<bc>Lambda with a receiver</bc> that gives to one of the parameters the  special status
+of receiver, letting us the possibility to refer to its members directly.
+</div>
+ <br/>
+
+<!--
+<div class="remark"><font size="3">
+<bc>lambda</bc>: a way to define behavior similar to a regular function.<br/>
+<bc>lambda with receiver</bc>: a way to define behavior similar to an extension function.</font>
+</div>
+-->
+</m>
+</td>
+</tr>
+
+<!--
+<tr>
+<td style="width:50%">
+<pre>
+<h3>Lambda with receiver</h3><m>
+<kc>//plus is called on the receiver object:</kc>
+val sum: Int.(Int) -> Int = { arg -> plus(arg) }
+
+val sum = fun Int.(arg: Int): Int = this + arg
+</m></pre>
+</td>
+<td></td>
+</tr>
+-->
+</tbody>	
+</table></center>
+<br/>
+
+<h3>With function</h3>
+The functions <tt>With</tt> and <tt>Apply</tt> are examples of lambdas with receivers defined in the Kotlin standard library.
+<div class="remark">
+When we put the lambda outside of the parentheses, the entire invocation <i>looks like
+a <b>built-in feature</b> of the language</i>.
+</div> 
+The <em>with</em> function is a <i>lambda with receiver</i> that allows us to access the receiver methods and properties 
+without any qualifier (or via <bc>this</bc>). The result is the <i>last expression</i> of the lambda.  
+ <br/><br/>
+To give an example, let us start with a function that prints the alphabet by using a <bc>StringBuilder</bc> object:
+<br/><br/>
+The  examples are reported in  <a href="../src/kotlindsl/withApply.kt" target="code">kotlindsl/withApply.kt</a> (project <i>it.unibo.kotlinIntro</i>).
+<br/>
+
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%">
+<pre><m>
+fun alphabet0(): String {
+    val result = StringBuilder()
+    for (letter in 'A'..'Z') result.append(letter)
+    return result.toString()
+}
+</m></pre>
+</td>
+<td><m> 
+If we call <tt>println(alphabet0())</tt>, the <tt>OUTPUT</tt> is:</m>
+<pre><m>ABCDEFGHIJKLMNOPQRSTUVWXYZ    
+</m></pre>
+<m>In this version, we call several times the <bc>result</bc> instance.</m>
+</td>
+</tr>
+
+</tbody>	
+</table></center>
+<br/>
+Now, let us use <em>with</em> (a <i>lambda with receiver</i>) :
+<br/><br/>
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%"><m>
+<em>with</em> allows us to access the receiver methods and properties 
+without any qualifier (or via <bc>this</bc>).
+Therefore, we could write: </m>
+<pre><m><k>with</k>( stringBuilder <k> , </k> <k>{ </k><kc>//this: StringBuilder </kc>
+	for (letter in 'A'..'Z') append(letter)
+	<k>this</k>.toString()  <kc>//this not necessary</kc>   
+	<k>}</k>
+)
+</m>
+</pre>
+
+
+</td>
+<td><m> 
+However, we can <em>put the lambda is put outside of the parentheses</em></m>
+<pre><m>fun alphabet1(): String {
+	val <ks>stringBuilder</ks> = StringBuilder()
+	return <k>with( <ks>stringBuilder</ks> )</k> { <kc>//this: StringBuilder </kc>
+		for (letter in 'A'..'Z') append(letter)
+		toString()   
+	}
+}
+</m></pre>
+ 
+<!--
+<div class="remark"><font size="3">
+the invocation looks like a built-in feature of the language.</font>
+</div></m>
+-->
+</td>
+</tr>
+</tbody>	
+</table></center>
+
+<h3>Apply function</h3>
+<em>Apply</em> works as <em>with</em> but returns the object passed to it as argument, i.e. the receiver object.
+<br/><br/>
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%">
+
+<pre><m>
+fun alphabet2() = <ks>StringBuilder().</ks><k>apply</k> { </k><kc>//this: StringBuilder </kc>
+    for (letter in 'A'..'Z') append(letter)  
+}.toString()
+
+
+fun <ks>myBuildStr</ks>( <ks>op</ks> : <tt>StringBuilder.() -> Unit</tt> ) = 
+							<k>StringBuilder().apply</k>( <ks>op</ks> )
+
+</m></pre>
+</td>
+<td><m>If we call <tt>println(alphabet2())</tt>, the <tt>OUTPUT</tt> is:</m>
+<pre><m>ABCDEFGHIJKLMNOPQRSTUVWXYZ    
+</m></pre>
+
+<m>Let us change the call by using <em>myBuildStr</em>:</m>
+<pre><m>val s = myBuildStr{
+	append("a")
+	append("z")
+	} 
+println( s ) 		<kc>//az</kc>
+</m></pre>
+
+</td>
+</tr>
+
+</tbody>	
+</table></center>
+
+<h3>buildString</h3>
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%">
+
+<pre><m>
+fun alphabet3() = <k>buildString</k> {
+    for (letter in 'A'..'Z') { append(letter) }
+}
+
+</m></pre>
+</td>
+<td> 
+
+<m>
+The standard library function <bc>buildString</bc> takes care of creating a <tt>StringBuilder</tt> and calling <tt> toString</tt>.
+</m>
+</td>
+</tr>
+
+</tbody>	
+</table></center>
+
+<h2>Function types and Type Safe builders</h2>
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%">
+
+<h3>Function types with receiver</h3><m>
+As a general rule, Kotlin function types can optionally have an additional receiver type, which is specified before a <ks>dot</ks> in the notation.<br/> 
+The type <bc>A.(B) -> C</bc> represents functions that can be called on a receiver object of 
+<bc>A</bc> with a parameter of <bc>B</bc> and return a value of <bc>C</bc>. 
+<pre>
+val sum: <k>Int.(Int) -> Int</k> = { arg  -> plus(arg) }
+<kc>//plus is called on the receiver object</kc>	
+</pre>
+
+Kotlin provides the ability to call an instance of a <i>function type with receiver</i> providing the receiver object.
+<pre>
+val v = 7.sum(3)		<kc>//10</kc>
+</pre>
+
+</m>
+</td>
+<td>
+<m> Inside the body of the function literal, the receiver object passed to a call becomes an implicit <ks>this</ks>.
+<br/>
+<pre>
+<kc>//plus is called on the receiver object:</kc>
+val sub: <k>Int.(Int) -> Int</k> = { v -> println("sub this=$<ks>this</ks>"); minus(v) }
+
+val b = 7.sub(3)		
+println("7.sub(3)=$b")	
+<kc>//OUTPUT
+sub this=7 
+7.sub(3)=4
+</kc>
+</pre>
+This behavior is similar to extension functions, which also allow you to access the members of the receiver object inside the body of the function.
+<br/><br/>
+The anonymous function syntax allows you to specify the receiver type of a function literal directly. 
+<pre>
+val div = fun Int.(arg: Int): Int = <k>this</k> / arg
+</pre>
+This can be useful if you need to declare a variable of a function type with receiver, and to use it later.
+</m>
+</td>
+</tr>
+
+<tr>
+<td style="width:50%"><h3>Type-Safe Builders</h3>
+By using well-named functions as builders in combination with function literals with receiver,
+ it is possible to create type-safe, statically-typed builders in Kotlin.
+
+
+</td>
+<td>Type-safe builders allow creating Kotlin-based domain-specific languages (DSLs) 
+suitable for building complex hierarchical data structures in a semi-declarative way. 
+</td>
+</tr>
+
+</tbody>	
+</table></center>
+
+
+<table style="width:100%" border="1">
+<tr>
+<td style="width:50%">
+</td>
+<td></td>
+</tr>
+</table>
+
+
+
+
+
+
+<h3>Example: HTML table</h3> 
+
+The  examples are reported in  <a href="../src/kotlindsl/htmlDsl.kt" target="code">kotlindsl/htmlDsl.kt</a> (project <i>it.unibo.kotlinIntro</i>).
+<br/><br/>
+
+Let us introduce a class to represent a generic <tt>HTML Tag</tt>:
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%">
+<pre><m>
+ <k>open</k> class <k>Tag</k>(val id: String, val body: String = "") {
+ private val children = mutableListOf<Tag>()
+	fun <ks>addTag</ks>( tag : Tag ){
+         children.add( tag )
+    }
+    protected fun &lt;T : Tag> <ks>doInit</ks>(child: T, <kc>init</kc>: <k>T.() -> Unit</k>) {
+        child.<kc>init</kc>()
+        children.add(child)
+    }
+    override fun toString() = "<$id>$body${children.joinToString("")}</$id>"
+}
+</td>
+<td>
+<pre><m>val tag1 = Tag("tr", "")
+println( tag1 )	<kc>//RESULT:  &lt;tr>&lt;/tr></kc>
+</m></pre>
+
+<m>The method <em>addTag</em> adds a tag to the children; therefore:
+</m>
+<pre><m>val tag1 = Tag("tr")
+<ks>tag1.addTag</ks>( Tag("b", "hello") )
+println( tag1 )	<kc>//RESULT:  &lt;tr>&lt;b>hello&lt;/b>&lt;/tr></kc>
+</m></pre>
+<m>The method <em>doInit</em> accepts in input a <k>Tag</k> and a the operation <kc>init</kc> defined as a 
+<i>Lambda with receiver</i> related to that tag.
+Its task is to use <kc>init</kc>  to build a child tag to be added to the others.</m>
+</td>
+</tr>
+</tbody>	
+</table></center>
+<br/>
+
+Let us define now a class to represent a <tt>HTML Table</tt> as a specialized version of <ks>Tag</ks>:
+
+<br/><br/>
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%">
+<pre><m>class <k>TD</k> : <ks>Tag</ks>("td", "hello")
+
+class <k>TABLE</k> : <ks>Tag</ks>("table") {
+    fun <ks>td</ks>( init: <k>TD.() -> Unit</k> ) = <ks>doInit</ks>( <b>TD()</b>, init)
+}</m></pre>
+<m>The operation <em>td</em> of <ks>TABLE</ks> accepts in input the operation <kc>init</kc> defined as a <i>Lambda with receiver</i> related to a 
+tag of type <ks>TD</ks>.
+</m>
+</td>
+<td>
+<m> Since <em>td</em> of <ks>TABLE</ks> calls the inherited method <em>doInit</em>, it adds a new child of type <ks>TD</ks>.
+</m>
+<pre><m>val table1 = TABLE()
+println( table1 )   <kc>//&lt;table>&lt;/table></kc>
+<k>table1.td</k>{  }
+println( table1 )  <kc>//&lt;table>&lt;td>hello&lt;/td>&lt;/table></kc>
+</m></pre>
+</td>
+</tr>
+
+<tr>
+<td style="width:50%">
+<m>Now, let us introduce a function that exploits <tt>apply</tt>:</m>
+<pre><m>
+fun table(init: <k>TABLE.() -> Unit</k>) = <ks>TABLE()</ks>.<k>apply</k>(init)
+</m>
+</pre>
+</td>
+<td><m> 
+
+</m>
+<pre>
+<m>table{	<kc>//this: TABLE</kc>
+	td{ }
+}
+println( table2 ) <kc>//&lt;table>&lt;td>hello&lt;/td>&lt;/table></kc>
+</m></pre>
+<m> <div class="remark"><font size="3">
+looks like a built-in feature of the language.</font>
+</div></m>
+</td>
+</tr>
+
+<!--
+<tr>
+<td style="width:50%">
+<pre><m>
+class <k>TR</k> : <ks>Tag</ks>("tr") {
+    fun td( init: TD.() -> Unit ) = doInit(TD(), init)
+}
+class <k>TD</k> : Tag("td")
+</td>
+<td>
+</td>
+</tr>
+-->
+</tbody>	
+</table></center>
+
+<h2 id="todsl">Towards  DSL </h2>  
+<a href="https://en.wikipedia.org/wiki/Domain-specific_language" target="web">Domain-specific languages (DSL)</a> are languages that specializes in solving a specific problem domain and can be very efficient at it. 
+Since DSLs are catered to a specific application domain, their syntax and structure are more straightforward than general programming languages. 
+Examples of systems that uses DSLs are <tt>Gradle</tt> and <tt>SQL</tt>.
+<br/><br/>
+There are 2 types of DSLs, internal and external. 
+<ul>
+<li><bc>External DSLs</bc> are DSLs with their own syntax and requires work when integrating to an application written with a general programming language.</li>
+<li><bc>Internal DSLs</bc> are written in the syntax of a general programming language but still follows the rules of the underlying DSL syntax. 
+Think of it as wrapping the external DSL in your favorite programming language.</li>
+</ul>
+ 
+ In Kotlin an Internal DSL can be creating by using Lambdas with Receivers. As an example, let us complete the example above of
+ a 'language' tat allows us to create HTML tables.
+<br/><br/>
+The  examples are reported in  <a href="../src/kotlindsl/htmlDsl.kt" target="code">kotlindsl/htmlDsl.kt</a> (project <i>it.unibo.kotlinIntro</i>).
+<br/>
+
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%">
+<pre><m>
+ open class <k>Tag</k>(val name: String) {
+    private val children = mutableListOf<Tag>()
+    protected fun <T : Tag> <ks>doInit</ks>(child: T, <kc>init</kc>: <k>T.() -> Unit</k>) {
+        child.<kc>init</kc>()
+        children.add(child)
+    }
+    override fun toString() = "<$name>${children.joinToString("")}</$name>"
+}
+class <k>TD</k> : Tag("td", "hello")
+
+class <k>TR</k> : Tag("tr") {
+    fun <ks>td</ks>( init: <k>TD.() -> Unit</k> ) = doInit( <ks>TD()</ks>, init)
+}
+
+class <k>TABLE</k> : Tag("table") {
+    fun <ks>tr</ks>( init: <k>TR.() -> Unit</k> ) = doInit( <ks>TR()</ks>, init)
+}
+
+fun <ks>table</ks>( <kc>init</kc>: <k>TABLE.() -> Unit</k>) = TABLE().<k>apply</k>(<kc>init</kc>)
+</m></pre> 
+</td>
+ 
+<td>
+<m>
+Now:
+<ol>
+<li>The lambda passed to <ks>table</ks> has a receiver of type <k>TABLE</k> which defines the <ks>tr</ks> method. This, in its turn ...<br/><br/></li>
+<li>In the lambda passed to the <ks>table</ks> function, we can use the <ks>tr</ks> function to create the &lt;tr> tag.<br/><br/></li>
+<li>Outside the lambda, the <ks>tr</ks> function would be unresolved.</li>
+</ol> </m>
+<pre><m>
+fun createTable() =
+<ks>    table {
+        tr {
+            td {
+            }
+        }
+    }
+</ks>
+fun main(args: Array<String>) {
+    println(createTable())	<kc>//&lt;table>&lt;tr>&lt;td>hello&lt;/td>&lt;/tr>&lt;/table></kc>
+}
+
+</m></pre> 
+</td>
+
+</tbody>	
+</table></center>
+<br/><br/>
+These mechanisms hev been used to build an internal DSL for the construction of actors working as Finite State Machine.
+See
+<a href="https://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/master/it.unibo.actorfsm/userDocs/FSM.html" target="web"> 	
+FSM | A kotlin-based DSL</a>
+
+<br/><br/>
+
+</div>  
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div> 
+</body>
+</html>

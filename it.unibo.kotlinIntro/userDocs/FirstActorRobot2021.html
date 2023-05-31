@@ -1,0 +1,944 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+<head>
+   
+<title>FirstActorRobot.</title></head>
+    
+<body>
+
+<div class="body"> 
+
+<h1>LabIss2021 | FirstActor : using KotlinActors to control a (virtual)robot</h1> 
+ 
+
+<h2>Introduction</h2>
+The system introduced in  
+<a href="../../it.unibo.virtualRobot2020/userDocs/VirtualRobot2021.html" target="web">it.unibo.virtualRobot2020\userDocs\VirtualRobot2021.html</a>
+is an example of a software component that:<br/><br/>
+<ul>
+<li>operates in an <em>environment</em> (<tt>WEnv</tt>)</li>
+<li>embeds a <em>device</em> (the virtual robot) built according to some specific technology</li>
+<li>interacts with its users by means of <em>asynchronous messages</em> (sent over a websocket at port 8091)</li>
+<li>is the <em>source of information</em> (related to the current state of the robot or of the <tt>WEnv</tt>)
+the that could be useful for several other components besides the component that controls the robot
+(i.e. the '<k>robot-owner</k>').</li>
+</ul>
+
+ 
+<br/> 
+An important goal (<a href="https://en.wikipedia.org/wiki/Non-functional_requirement" target="web">non-functional requirement</a>)
+of its design was that of making  the code of a robot application <k>as much independent as possible</k>:
+<ul>
+<li><ks>from the robot technology</ks>, in order to make it easier the substitution of a robot type with another</li>
+<li><ks>from the interaction protocol</ks>, , in order to capture the <em>essence</em> of the information flow among the
+<tt>WEnv</tt> system and the other application components</li> </ks>
+</ul>
+ 
+(Kotlin)actors help us to design and build <tt>WEnv</tt>-based applications, by providing in a quite natural way 
+a <k>more abstract layer of reasoning and of writing the code</k> .
+
+
+<h3>A first example</h3>
+
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%" >
+<center><img src="./img/RobotUsageBasicRobot.png" alt="RobotUsageBasicRobot" width="100%" ></center>
+
+<m>
+This example exploits the   
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/supports/IssWsHttpKotlinSupport.kt" target="code">IssWsHttpKotlinSupport.kt</a>
+(defined in the project <a href="../../it.unibo.kotlinSupports" target="code">it.unibo.kotlinSupports</a>)
+that can be observed by components that implement the interface 
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/interaction/IUniboActor.kt" target="code">IUniboActor.kt</a>
+(see the section <a href="#uniboActor">uniboActor</a> hereunder).
+</m>
+
+</td>
+<td>
+<ol>
+<li>The kactor <a href="../app/src/main/kotlin/kactorWEnv/robotUsage.kt" target="code">robotUsage.kt</a>
+send move-commands to the 
+kactor <a href="../app/src/main/kotlin/kactorWEnv/BasicRobotKactor.kt" target="code">BasicRobotKactor.kt</a>
+</li>
+<li>The  kactor <a href="../app/src/main/kotlin/kactorWEnv/BasicRobotKactor.kt" target="code">BasicRobotKactor.kt</a>
+executes the received command by using the provided support
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/supports/IssWsHttpKotlinSupport.kt" target="code">IssWsHttpKotlinSupport.kt</a>
+</li>
+<li>The component <a href="../app/src/main/kotlin/kactorWEnv/WEnvSupportObserver.kt" target="code">WEnvSupportObserver.kt</a>
+is a specilization of a
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ActorBasicKotlin.kt" target="code">ActorBasicKotlin.kt</a>.
+<br/>
+It acts as an <i>observer of the support</i>, that redirects to <a href="../app/src/main/kotlin/kactorWEnv/robotUsage.kt" target="code">robotUsage.kt</a>
+the observed messages sent by the WEnv.
+</li>
+</ol>
+</td>
+</tr>
+ </tbody>
+</table>
+
+
+
+
+<h2 id="msgstandard">Towards standards in messaging</h2>
+
+We note that the interaction among actors of type
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ActorBasicKotlin.kt" target="code">ActorBasicKotlin.kt</a>.
+<!-- <a href="../../it.unibo.kotlinSupports/userDocs/RobotService.html" target="web">RobotService</a> -->
+requires the usage of messages of type  
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ApplMessage.kt" target="code">ApplMessage.kt</a>
+that requires, besides a <tt>MSGID</tt> and a <tt>CONTENT</tt>, also the specification 
+ a <tt>name</tt> for the <tt>SENDER</tt>  and a name for the <tt>RECEIVER</tt>. 
+ <br/>The external representation is a String written with the syntax of a <k>Prolog Term</k> with 5 arguments:
+ <pre>
+msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
+</pre>
+
+The class <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ApplMessage.kt" target="code">ApplMessage.kt</a> 
+defines, from now on, a standard reference for our message-based applications. 
+<br/>
+ In general, we will distinguish among (at least) three 'layers' of standards in messaging:
+ 
+<div class="remark">
+
+
+<ol>
+<li>standard in <em>message semantics</em>: at the moment we will make reference to our <tt>enum class ApplMessageType</tt>:
+<pre>
+enum class <ks>ApplMessageType</ks>{  <k>event, dispatch, request, reply, invitation</k> }
+</pre>
+<m>
+<ul>
+<li><bc>Dispatch</bc>: a message '<i>fire and forget</i>': the sender does not expect any answer.</li>
+<li><bc>Request</bc>: the sender expects an <tt>answer</tt>.</li>
+<li><bc>Reply</bc>: the answer expected by a <tt>request</tt>.</li>
+<li><bc>Invitation</bc>: the sender expects an <tt>ack</tt>.</li>
+<li><bc>Event</bc>: the sender '<i>emits information</i>' without specifying any receiver (<tt>RECEIVER=none</tt>). </li>
+</ul></m>
+ </li>
+<li>standard in <em>message content</em>: this level is matter of the specific application. In our example,
+we use contents introduced in
+<a href="../../it.unibo.virtualRobot2020/userDocs/VirtualRobot2021.html" target="web">it.unibo.virtualRobot2020\userDocs\VirtualRobot2021.html</a>, 
+ can be mapped into JSON objects :
+<pre>
+{"robotmove":"<ks>MOVE</ks>", "time":T} 
+{"step":"<ks>STEPTIME</ks>} 
+{"endmove":"RESULT", "move":MOVE}
+{"sonarName": "sonarName", "distance": 1, "axis": "x" }
+{"collision" : "false", "move": "moveForward"}
+</pre>
+<m>
+We remember that , we use our specific <em> high-level robot-move language</em>:
+<ul>
+<li>with regards to the <ks>MOVE</ks>: <k>w</k>: means '<i>go forward </i>' &nbsp; <k>s</k>: means '<i>go backward </i>'
+&nbsp;  <k>h</k>: means '<i>stop </i>'&nbsp;  <k>l</k>: means '<i>rotate left 90</i>' &nbsp; <k>r</k>: means '<i>rotate right 90</i>'
+</li>
+<li>a <ks>step</ks> command means that the robot must go forward for the given <ks>STEPTIME</ks> and give back the 'answer' 
+<ul>
+ <li><k>{"stepDone":"ok"}</k>, if the move is done with success.</li>
+ <li><k>{"stepfail":"<ks>DT</ks>"}</k>, if the move is interrupted by an obstacle after time <ks>DT</ks>. 
+ In this case, the robot moves back for time <ks>DT</ks>. </li>
+ </ul>
+</li>
+</ul>
+</li></m>
+<li>standard in <em>message-communication protocols</em>  with particular reference to:
+<m>
+	<ul>
+	<li> 
+	 <a href="https://www.deviceplus.com/arduino/arduino-communication-protocols-tutorial/" target="web">Arduino protcols</a> (mainly
+	 <a href="https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter" target="web">UART </a>).
+	 </li>	
+	<li>point-to-point, two-way protocols like <a href="https://en.wikipedia.org/wiki/User_Datagram_Protocol" target="web">UDP</a>,	
+	<a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol" target="web">TCP</a>,
+	<a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol" target="web">HTTP</a> </li>
+	<li>publish-subscribe protocols, like <a href="https://en.wikipedia.org/wiki/MQTT" target="web">MQTT</a></li>
+	<li><a href="https://en.wikipedia.org/wiki/Constrained_Application_Protocol" target="web">CoAP</a>, as 
+	a lightweight <a href="https://en.wikipedia.org/wiki/Representational_state_transfer" target="web">REST</a>  protocol 
+	for <a href="https://en.wikipedia.org/wiki/Machine_to_machine" target="web">M2M interaction</a> 
+ 	</li>
+	</ul>
+	 </li>
+	 </m>
+</ol>
+</div>
+
+<h2 id="DivideImpera">Divide et impera?</h2>
+As usully happens in oop, the
+<a href="https://stackify.com/solid-design-principles/" target="web">Single Responsibility Principle</a> could induce
+the software designer to distribute different behaviours in different actors.
+<br/> 
+An accurate analysis is required to consider the effects of different architectural configurations.	
+<br/> 
+Let us consider here what could happen if we want to introduce a <tt>StepRobotActor</tt>, as discussed 
+in the project phase of 
+<a href="../../it.unibo.cautiousExplorer/userDocs/cautiousExplorerActors.html#project" target="web">cautiousExplorerActors.html</a>.
+<div class="remark">
+The main feature of a <tt>StepRobotActor</tt> is related to its capability of executing a <k>step</k> in 
+'atomic' way (i.e. all or nothing). <br/>
+A step is done when distance traveled by the robot is equal to the diameter of the circle in which it is supposed to be inscribed.
+
+</div>
+<center><table style="width:95%">
+<tbody>	
+
+<tr>
+<td style="width:40%"><h3>Step+Basic: case 0</h3>
+<center><img src="./img/RobotUsageCall.png" alt="RobotUsageCall" width="80%" ></center>
+ </td>
+<td> 
+<center><img src="./img/StepAndBasic.png" alt="StepAndBasic" width="60%" ></center>
+<hr/>
+<ul>
+<li><ks>pros:</ks> </li>
+<li><ks>cons:</ks> </li>
+<li><ks>caveat:</ks> </li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td><h3>Step+Basic: case 1</h3>
+
+<hr/>
+<ul>
+<li><ks>pros:</ks> </li>
+<li><ks>cons:</ks> </li>
+<li><ks>caveat:</ks> </li>
+</ul>
+
+</td>
+<td>
+<center><img src="./img/StepAndBasicArch1.png" alt="StepAndBasicArch1" width="80%" ></center> 
+</td>
+</tr>
+
+<tr>
+<td><h3>Step+Basic: case 2</h3>
+
+<hr/>
+<ul>
+<li><ks>pros:</ks> </li>
+<li><ks>cons:</ks> </li>
+<li><ks>caveat:</ks> </li>
+</ul>
+</td>
+<td>
+<center><img src="./img/StepAndBasicArch2.png" alt="StepAndBasicArch2" width="90%" ></center> 
+</td>
+</tr>
+
+
+<tr>
+<td><h3>Step+Basic: case 3</h3>
+<center><img src="./img/RobotUsageCall.png" alt="RobotUsageCall" width="60%" ></center>
+</td>
+<td>
+<!-- <center><img src="./img/BasicAndStepArch.png" alt="BasicAndStepArch" width="60%" ></center>  -->
+<center><img src="../../it.unibo.kotlinSupports/userDocs/img/BasicStepRobotActor.png" alt="BasicStepRobotActor" width="100%"  ></center>
+<hr/>
+<ul>
+<li><ks>pros:</ks> </li>
+<li><ks>cons:</ks> </li>
+<li><ks>caveat:</ks> </li>
+</ul>
+</td>
+</tr>
+
+
+</tbody>	
+</table></center>
+ 
+
+ 
+ 
+
+<h2 id="uniboActor">A new (abstract) component</h2>
+The abstract class 
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ActorBasicKotlin.kt" target="code">ActorBasicKotlin.kt</a>
+defines the properties of new abstraction that (from now on) can be used as the father of all our actors.
+
+ 
+
+<center><table style="width:95%"> 
+<tbody>	
+<tr>
+<td style="width:45%">
+<h3>The uniboActor (outside view)</h3>
+<br/><br/>
+<center><img src="./img/symActor.png" alt="symActor" width="15%"></center>
+<br/><br/>
+An <tt>uniboActor</tt> is a specializaztion of the abstract class 
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ActorBasicKotlin.kt" target="code">ActorBasicKotlin.kt</a>
+defined in the project 
+ <a href="../../it.unibo.kotlinSupports" target="code">it.unibo.kotlinSupports</a>
+and provides the following features:
+<ul> 
+<li>owns a <ks>name</ks> that should be <k>unique</k> in the application system</li>
+<li>implements the interface
+ <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/interaction/IUniboActor.kt" target="code">IUniboActor.kt</a>
+ that inherits from <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/interaction/IssActorObservable.kt" target="code">IssActorObservable.kt</a> 
+ </li>
+ <li>is <k>observable</k> by other <tt>uniboActors</tt> 
+ </li>
+<li>is able to handle messages expressed as String that are the representation of the type 
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ApplMessage.kt" target="code"><em>ApplMessage.kt</em></a>
+</li>
+<li>requires a specialized version of the abstract operation
+<pre>
+ abstract suspend protected  fun <ks>handleInput</ks>(msg : <ks>ApplMessage</ks>)
+</pre>
+</li>
+ 
+
+</ul>
+</td>
+<td>
+<h3>The uniboActor (internal view)</h3>
+<center><img src="./img/ActorBasicKotlin.png" alt="ActorBasicKotlin" width="70%"  ></center>
+
+<br/>
+The  class <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ActorBasicKotlin.kt" target="code">ActorBasicKotlin.kt</a>
+embeds a kotlin acor (referred by the var <ks>kactor</ks>). It is  able to perform the following actions: <br/><br/>
+<m>
+<ul>
+<li><i>send a message</i> to itself (<ks>send,  sendToYourself</ks>) </li>
+<li><i>send a message</i> (<ks>forward, sendToActor</ks>) to another <tt>uniboActor</tt> kown by reference</li>
+<li><i>delay</i>  (<ks>dosleep</ks>) the execution for a given time  </li>
+<li><i>end its activity</i> (<ks>terminate</ks>) </li>
+<li><i>wait for a user command</i> (<ks>waitUser</ks>): useful during debugging</li>
+</ul>
+
+<div class="remark">
+Moreover it defines a  data structure that can be used to store a message <ks>M</ks>, when the actor is in a state
+whose transition set does not include <ks>M</ks>:
+<pre>
+protected val msgQueueStore = mutableListOf&lt;ApplMessage>()
+</pre>
+</div>
+</m>
+ 
+ 
+See <a href="../../it.unibo.kotlinSupports/userDocs/ActorBasicKotlin.html" target="code">LabIss2021 | ActorBasicKotlin.html</a>
+in project <a href="../../it.unibo.kotlinSupports" target="code">it.unibo.kotlinSupports</a>.<br/>
+ </td>
+</tr>
+
+
+
+<tr>
+<td>
+ <h3>AbstractRobotActor</h3>
+The  class <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/robotService/AbstractRobotActor.kt" target="code">AbstractRobotActor.kt</a>
+extends <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ActorBasicKotlin.kt" target="code">ActorBasicKotlin.kt</a> and
+provides a <tt>uniboActor</tt> that:<br/><br/>
+
+<m>
+<ul>
+<li>
+accepts messages of type <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ApplMessage.kt" target="code"><em>ApplMessage.kt</em></a>
+with payload given by Strings that represents JSON objects, as  defined  in the utility class
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/robotService/ApplMsgs.kt" target="code"><em>ApplMsgs.kt</em></a>.<br/>
+</li>
+
+<li>
+implements the operation <ks>handleInput</ks> by delegating to an abstract operation <ks>msgDriven</ks> the handling of the JSON-payload:  
+<pre>
+ override suspend fun <ks>handleInput</ks>(msg: ApplMessage) {
+   msgDriven( JSONObject( msg.msgContent ) )  
+ }
+
+ protected abstract fun <ks>msgDriven</ks>(infoJson: JSONObject)
+ </pre>
+</li>
+
+</m>
+
+
+</td>
+<td>
+  <h3>Basic <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/robotService/ApplMsgs.kt" target="code"><em>ApplMsgs.kt</em></a></h3>
+  Let us report here some of the JSON strings that represent basic robot-moves:
+  <pre><m>
+    val <ks>forwardMsg</ks> = "{\"robotmove\":\"moveForward\", \"time\": 350}"
+    val <ks>backwardMsg</ks> = "{\"robotmove\":\"moveBackward\", \"time\": 350}"
+    val <ks>turnLeftMsg</ks> = "{\"robotmove\":\"turnLeft\", \"time\": 300}"
+    val <ks>turnRightMsg</ks> = "{\"robotmove\":\"turnRight\", \"time\": 300}"
+    val <ks>haltMsg</ks> = "{\"robotmove\":\"alarm\", \"time\": 20}"
+	... 
+    val endMoveId = "endmove"
+    val <ks>endMoveMsg</ks> = "{\"ID\":\"ENDMOVE\" }".replace("ID", endMoveId)
+	...
+    val stepId = "step"
+    val <ks>stepMsg</ks> = "{\"ID\":\"TIME\" }".replace("ID", stepId)
+    val stepDoneId = "stepDone"
+    val <ks>stepDoneMsg</ks> = "{\"ID\":\"ok\" }".replace("ID", stepDoneId)
+    val stepFailId = "stepFail"
+    val <ks>stepFailMsg</ks> = "{\"ID\":\"TIME\" }".replace("ID", stepFailId)
+	...</m></pre>
+</td>
+</tr>
+
+<tr>
+<td>
+ <h3>BasicStepRobotActor</h3>
+The  class <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/robotService/BasicStepRobotActor.kt" target="code">BasicStepRobotActor.kt</a>
+extends <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ActorBasicKotlin.kt" target="code">AbstractRobotActor.kt</a>
+with the aim of moving the robot.
+
+<br/><br/>
+This actor is able to perform both <tt>basic-moves</tt> and <tt>step-moves</tt>. <br/>
+A <k>step-move</k> is a forward-move with a time properly set, so that
+the distance traveled by the robot is equal to the diameter of the circle in which it is supposed to be inscribed.
+<br/><br/>
+While the (payload of the) answer to a <tt>basic-move</tt> is a <ks>endMoveMsg</ks>, the (payload of the) answer to a <tt>step-move</tt> is
+(see <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/robotService/ApplMsgs.kt" target="code"><em>ApplMsgs.kt</em></a>)
+<ul>
+<li><ks>stepDoneMsg</ks>: if the step is done with success</li>
+<li><ks>stepFailMsg</ks>: if the step cannot be completed</li>
+</ul>
+
+<div class="remark">
+The <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/robotService/BasicStepRobotActor.kt" target="code">BasicStepRobotActor.kt</a>
+avoids the interference among overlapping commands. In fact, it exploits the <k>msgQueueStore</k>
+to store a robot-move command while another <tt>basic-move</tt> or <tt>step-move</tt> is still in execution.
+The stored move is executed when the move in execution ends.
+</div>
+
+</td>
+<td>
+<center><img src="../../it.unibo.kotlinSupports/userDocs/img/BasicStepRobotActor.png" alt="BasicStepRobotActor" width="100%"  ></center>
+ <br/><br/>
+ <hr/>
+ The class <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/robotService/ApplMsgs.kt" target="code"><em>ApplMsgs.</em></a> 
+defines operations that return a <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ApplMessage.kt" target="code"><em>ApplMessage.kt</em></a>
+that can be sent to a 
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/robotService/BasicStepRobotActor.kt" target="code">BasicStepRobotActor.kt</a>.
+More specifically:
+<br/><br/> 
+
+<ul>
+<li><ks>stepRobot_step()</ks> :  for a <tt>step-move</tt>
+ 
+</li>
+<li><ks>stepRobot_<k>MOVE</k>()</ks> : for a <tt>basic-move</tt> <k>MOVE = <tt>w | s | l | r | h</tt></k></li>
+</ul>
+
+</td>
+</tr>
+
+<tr> 
+<td><h3>BasicStepRobotCaller</h3>
+  The  class <a href="../../it.unibo.cautiousExplorer/app/src/main/kotlin/demoWithRobot/BasicStepRobotCaller.kt" target="code">BasicStepRobotCaller.kt</a>
+extends <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ActorBasicKotlin.kt" target="code">ActorBasicKotlin.kt</a>
+with the aim of sending some commands to the 
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/robotService/BasicStepRobotActor.kt" target="code">BasicStepRobotActor.kt</a>
+to test its behavior.
+<pre>
+<m>val robot = BasicStepRobotActor("stepRobot", ownerActor=this, scope, "localhost")</m>
+
+	robot.registerActor(this)
+	robot.send(ApplMsgs.stepRobot_l("main" ))
+	robot.send(ApplMsgs.stepRobot_r("main" ))
+
+</pre>
+</td>
+
+<td>Note that the robot perform the moves, but the ouput shows the message:
+<pre>
+<k>stepRobot BasicStepRobotActor |  move already running: store the request</k>
+</pre>
+In fact, the caller sends the move-commands without any delay between them.
+</td>
+</tr>
+
+
+
+<tr> 
+<td><h3>PathExecutor</h3>
+
+ The  class <a href="../../it.unibo.cautiousExplorer/app/src/main/kotlin/demoWithRobot/PathExecutor.kt" target="code">PathExecutor.kt</a>
+extends <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ActorBasicKotlin.kt" target="code">ActorBasicKotlin.kt</a>
+with the aim of sending commands to the 
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/robotService/BasicStepRobotActor.kt" target="code">BasicStepRobotActor.kt</a>,
+so to moving the robot along a given path (e.g. <ks>"wwl"</ks>).
+<br/><br/>
+This <tt>uniboActor</tt> exploits the utility class
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/mapRoomKotlin/TripInfo.kt" target="code">TripInfo.kt</a>
+to create a map as a a singleton object, managed by another utility class
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/mapRoomKotlin/mapUtil.kt" target="code">mapUtil.kt</a>
+
+ 
+
+ 
+ 
+</td>
+<td>
+<center><img src="./img/pathExecutor.png" alt="pathExecutor" width="100%"  ></center>
+ <br/><br/>
+
+
+</td>
+</tr>
+
+<tr> 
+<td>
+ 
+</td>
+<td>
+</td>
+</tr>
+
+
+</tbody>	
+</table></center>
+
+<h2>Towards a robot service</h2>
+ <br/>
+Let us report, as an example,  an actor written in Kotlin that sends commands to our
+<a href="../../it.unibo.kotlinSupports/userDocs/RobotService.html" target="web">RobotService</a>:<br/><br/>
+
+<center><table style="width:95%"> 
+<tbody>	
+<tr>
+<td style="width:30%">
+<h4>A Koltin actor at work</h3>
+<a href="../app/src/main/kotlin/robotWithActors/robotActorTry.kt" target="code">robotActorTry.kt</a><br/><br/>
+<m>An example of usage is in:
+<a href="../app/src/main/kotlin/robotWithActors/MainRobotActorTry.kt" target="code">MainRobotActorTry.kt</a>
+</m>
+</td>
+<td>
+<center><img src="./img/robotActorTry.png" alt="robotActorTry" width="100%" height="60%"></center>
+
+
+ </td>
+</tr>
+</tbody>	
+</table></center>
+
+<br/>
+
+<h3>The KotlinActor <a href="../app/src/main/kotlin/robotWithActors/robotActorTry.kt" target="code">robotActorTry.kt</a> 
+as <a href="https://en.wikipedia.org/wiki/Finite-state_machine" target="web">Finite State Machine</a></a></h3>
+The behavior of the <a href="../app/src/main/kotlin/robotWithActors/robotActorTry.kt" target="code">robotActorTry.kt</a> 
+can be modelled as a a <em>message-driven</em>  
+<a href="https://en.wikipedia.org/wiki/Finite-state_machine" target="web">Finite State Machine</a>
+where each <bc>state</bc> is mapped into a <em>function</em> whose body specifies the <bc>actions</bc> to be executed in that state.
+<br/><br/>
+
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:40%">
+<pre>
+ while( <ks>state == "working"</ks> ){
+   var <ks>msg = channel.receive()</ks>
+   val msgJson = JSONObject(msg)
+   var input   = msgJson.keys().next()
+   when( input ){
+    "<k>cmd</k>"       -> doCmd(msgJson.getString("cmd"))
+    "<k>move</k>"      -> doMove(...)
+    "<k>sonarName</k>" -> doSonar(msg)
+    "<k>collision</k>" -> doCollision(msg)
+    else -> println("NO HANDLE for $msg")
+  }		
+ }
+</pre>
+
+</td>
+<td>
+<center><img src="./img/robotActorFsm.png" alt="robotActorFsm" width="60%"  ></center><br/>
+ </td>
+</tr>
+</tbody>	
+</table></center>
+
+In the version, the  KotlinActor <a href="../app/src/main/kotlin/robotWithActors/robotActorTry.kt" target="code">robotActorTry.kt</a> handles messages
+in the form of JSON objects:
+<m>
+ <ul>
+ <li><k>{"cmd":"<ks>init</ks>"}</k>: starts its job</li>
+ <li><k>{"cmd":"<ks>end</ks>"}</k>: terminates its job</li>
+  <li><k>{"collision" : "...", "move": "..."}</k>: 'reacts' to a <i>collision message</i> sent by the WEnv </li>
+ <li><k>{"sonarName": "...", "distance": ..., "axis": "..." }</k>: 'reacts' to a message sent by the WEnv  when a <em>scene-sonar</em> detects the robot</li>
+<li><k>{"robotmove":"<ks>MOVE</ks>", "time":T}</k>: sends a move-command to the robot. 
+ </li>
+</ul></m>
+ 
+Since the <a href="../../it.unibo.kotlinSupports/userDocs/RobotService.html" target="web">RobotService</a> understand messages represented in
+the form of <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ApplMessage.kt" target="code">ApplMessage.kt</a>,
+the move-command must be written in the proper way. For example:
+ <pre>
+ msg(robotmove,dispatch,<ks>actortry</ks>,<em>stepRobot</em>,{"robotmove":"moveForward" , "time": 350},1)</pre>
+ Note that now:
+ <div class="remark">
+the <b>sender</b> (that names itself as <ks>'actortry'</ks>) has no reference to the component that will handle its message.
+Rather it only knowns that the name of such a <b>destination</b> component is <em>'stepRobot'</em>.<br/>
+The <a href="../../it.unibo.kotlinSupports/userDocs/RobotService.html" target="web">RobotService</a> will receive the message
+sent by the <a href="../app/src/main/kotlin/robotWithActors/robotActorTry.kt" target="code">robotActorTry.kt</a>
+on the (TCP) port <ks>8010</ks> and will redirect it the component named 
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/robotService/StepRobotActor.kt" target="code"><em>'stepRobot'</em></a>,
+which is  a specialization of a generic
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ActorBasicKotlin.kt" target="code">ActorBasicKotlin.kt</a>.
+
+ </div>
+<!--
+However, it is quite simple to introduce a version of the  KotlinActor 
+(let us call it <a href="../app/src/main/kotlin/robotWithActors/robotActorTry.kt" target="code">robotActorTry.kt</a>)
+that accepts messages in the form of 
+<a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ApplMessage.kt" target="code">ApplMessage.kt</a> 
+-->
+<h3>The KotlinActor <a href="../app/src/main/kotlin/robotWithActors/InputReader.kt" target="code">InputReader.kt</a> </h3>
+
+The KotlinActor <a href="../app/src/main/kotlin/robotWithActors/InputReader.kt" target="code">InputReader.kt</a>
+handles the messages 
+(strings that represent an <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ApplMessage.kt" target="code">ApplMessage.kt</a> ) 
+sent by the <a href="../../it.unibo.kotlinSupports/userDocs/RobotService.html" target="web">RobotService</a>; for example
+<pre>
+msg(endmove,dispatch,stepRobot,ctxServer,<ks>{"collision" : "true" , "move": "moveForward"}</ks>,5)
+msg(endmove,dispatch,stepRobot,ctxServer,<ks>{"endmove" : "false" , "move": "moveForward"}</ks>,6)
+msg(supportInfo,dispatch,support,observer,<ks>{"sonarName":"sonar2" , "distance":7 , "axis":"x"}</ks>,0) }
+</pre> 
+
+
+
+
+The KotlinActor <a href="../app/src/main/kotlin/robotWithActors/InputReader.kt" target="code">InputReader</a> sends to the 
+<a href="../app/src/main/kotlin/robotWithActors/robotActorTry.kt" target="code">robotActorTry</a>
+<i>the content of each received message</i>
+(a string in JSON form) to the <a href="../../it.unibo.kotlinSupports/app/src/main/kotlin/it/unibo/actor0/ApplMessage.kt" target="code">ApplMessage.kt</a>.
+<br/><br/>
+Thus, it works as a (remote) observer of the <a href="../../it.unibo.kotlinSupports/userDocs/RobotService.html" target="web">RobotService</a>
+that updates <a href="../app/src/main/kotlin/robotWithActors/robotActorTry.kt" target="code">robotActorTry</a> as an 'observer'
+of the <a href="../app/src/main/kotlin/robotWithActors/InputReader.kt" target="code">InputReader</a> itself.
+
+
+<br/><br/>
+
+<!--
+
+<h3>An example</h3>
+ 
+An example of using the <a href="../src/virtualRobotUsage/robotActor.kt" target="code">robotActor.kt</a> can be found in 
+<a href="../src/virtualRobotUsage/robotActorUsage.kt" target="code">robotActorUsage.kt</a>.
+In this example, we first introduce a set of application messages:
+<pre>
+val initMsg			= AppMsg.create(<k>"init"</k>,		"main","robotactor")		<kc>//content="none" by default</kc>
+val moveForwardMsg	= AppMsg.create(<k>"move"</k>,	"main","robotactor",		<k>"w"</k>,<k>AppMsgType.dispatch</k>) 
+val haltRobotMsg		= AppMsg.create(<k>"move"</k>,	"main","robotactor",		<k>"h"</k>) 
+</pre>
+
+Afterwards, we define a method <tt>forward</tt> to send messages of type <bc>dispatch</bc> (<tt>AppMsgType.dispatch</tt>)  to the robot-actor:
+
+<pre>
+suspend fun forward(  msg: AppMsg ){ <ks>robotActor</ks>.<k>send</k>( msg.toString()  ) }
+...
+forward( initMsg )
+...
+forward( moveForwardMsg )
+delay(1000)
+forward( haltRobotMsg )
+</pre>
+
+ 
+The task of translating the 'application level language' into  <em>cril</em>  and viceversa is delegated to
+the <a href="../src/virtualRobotUsage/virtualRobotSupport.kt" target="code">virtualRobotSupport.kt</a> 
+(see the functions <tt>translate</tt>, <tt>doApplMove</tt> and <tt>sendMsgToRobot</tt>).
+<br/><br/>
+In this way, the <a href="../src/virtualRobotUsage/robotActor.kt" target="code">robotActor.kt</a> is made independent
+of the specific concrete robot to be used; 
+the  role of the <a href="../src/virtualRobotUsage/virtualRobotSupport.kt" target="code">virtualRobotSupport.kt</a>
+as a <a href="https://en.wikipedia.org/wiki/Translator_(computing)" target="web"><bc>language translator</bc></a> 
+ can be viewed as a sort of
+<a href="https://en.wikipedia.org/wiki/Adapter_pattern" target="web"><bc>adapter</bc></a>  in the message-passing world.
+
+ 
+
+ 
+ 
+<h2>Towards more complex behavior</h2>
+The <a href="../src/virtualRobotUsage/robotActorTry.kt" target="code">robotActorTry.kt</a> implements the business logic
+related to each message it can receive. However, since it is an active entity, we can now extend its behavior  
+so to satisfy the first requirement of our
+<a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2020LabBo/blob/master/it.unibo.issLabStart/userDocs/72939LabISSIntro.html#Application0" 
+target="web">Application0</a>. For example,we can say that:
+<hr/>
+<i>the robot starts to explore in a systematic and autonomous way the room after receiving the command '<k>explore</k>' </i>.
+<hr/>
+As <em>analysts</em>, we can say that the problem to face now is the design and development of a behavior that msut be both <bc>proactive</bc> (the robot must perform
+the exploration activity in autonomous way) and <bc>reactive</bc> 
+(while exploring, the robot should not lose its capability to handle other messages, for example <k>end</k> and <k>collision</k>).
+-->
+<br/><br/>
+
+<!--
+
+<h2>USING WENV WITH ACTORS</h2>
+
+<center><table style="width:95%">
+<tbody>	
+ 
+<tr>
+<td style="width:40%">
+<a href="clientWenvTcpObj.kt" target="code">RobotCmds.kt</a>
+</td>
+<td><m><em>Robot command messages</em></m></td>
+</tr>
+
+<tr>
+<td style="width:40%">
+<a href="../src/main/kotlin/it/unibo/robots19/basic/BasicRobotExecutor.kt" target="code">BasicRobotExecutor.kt</a>
+</td> 
+<td><m><em>Actor that executes commands</em> implemented by
+<a href="../src/main/kotlin/it/unibo/robots19/basic/RobotCmds.kt" target="code">RobotCmds.kt</a></m></td>
+</tr>
+
+<tr>
+<td style="width:40%">
+<a href="../executorDescr.pl" target="code">executorDescr.pl</a>
+</td>
+<td><m><em>Description of a qak system </em> managed with 
+<a href="../sysRules.pl" target="code">sysRules.pl</a>. A main is:
+<a href="../src/main/kotlin/it/unibo/robots19/experiment/MainExecutor.kt" target="code">MainExecutor.kt</a>
+</m></td>
+</tr>
+
+
+</tbody>	
+</table></center>
+
+<h3>Interacting with the BasicRobotExecutor </h3>
+ 
+<center><table style="width:95%">
+<tbody>	
+
+<tr>
+<td style="width:40%">
+<a href="../src/main/kotlin/it/unibo/robots19/basic/ClientToRobotExecutor.js" target="code">ClientToRobotExecutor.js</a>
+</td>
+<td><m><em>Client Node  </em> for the 
+<a href="../src/main/kotlin/it/unibo/robots19/basic/BasicRobotExecutor.kt" target="code">BasicRobotExecutor.kt</a>
+ 
+ 
+</m></td>
+</tr>
+
+</tbody>	
+</table></center>
+
+
+<div class="req">
+</div>	    
+ 	
+	
+	<h3>RESOURCES</h3>
+
+    <a href="http://137.204.107.10/iss2018/it.unibo.issMaterial/issdocs/Material/2016-02-26-raspbian-jessie-iss.img.zip" 
+								target="lecture">2016-02-26-raspbian-jessie-iss.img.zip</a> (<tt>WARNING: 1GB</tt>)<br/>
+    <a href="../CARD/guida_rpi.pdf" target="lecture">guida_rpi.pdf</a>,<br/>
+    <a href="../CARD/rpi_sd.pdf" target="lecture">rpi_sd.pdf</a>,<br/>
+    <a href="../CARD/istruzioni-aggiornate-raspi-linux.pdf" target="lecture">istruzioni-aggiornate-raspi-linux.pdf (Giacomo Venturini)</a> 
+	ed <a href="../CARD/esempio-procedura.html" target="lecture">esempio-procedura.html</a> ,<br/>
+-->
+<!-- 
+<video controls>
+   <source src="foo.ogg" type="video/ogg"> audio  
+  <source src="firstactorvr.264" type="video">
+  Your browser does not support the <code>video</code> element.
+</video>
+--> 
+</div>  
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div> 
+</body>
+</html>

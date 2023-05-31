@@ -1,0 +1,3759 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+	width: 750px;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+k{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #990000;
+	 
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	 
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	 
+}
+pre{
+	font-family: "Helvetica";
+	font-size: 70%;
+	background-color: #fcf8c7; 
+}
+ 
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}    
+
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+</style>
+    
+<head>
+   
+<title>LABKotlinIntroISS</title></head>
+    
+<body>
+
+<div class="body"> 
+
+
+<div id="top">
+<h1>LabKotlin | Introduction to <a href="https://kotlinlang.org/" target="web">KOTLIN</a></h1> 
+
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2020LabBo/blob/master/it.unibo.issLabStart/userDocs/LectureBologna1920.html" 
+target="isslm">LabISS-lectures site</a> 
+</div> 
+<h2><a id="basics"/>OVERVIEW</h2>
+
+<ol>
+<li>Basic elements of any computation are data and <bc>functions</bc> (data can be also viewed as functions that return values). </li>
+<li>Functions are <bc>first class objects</bc> that have a type, can be assigned to variables and used as function arguments or as
+return values.</li>
+<li>Computations almost always require the usage of <bc>threads</bc> and to face concurrency problems, even in <tt>multi-core</tt> environments.</li>
+<li><bc>Lexical Closures</bc> are often used as callbacks in <bc>asynchronous</bc> (IO-bound) programming according to a Continuation Passing Style (<bc>CPS</bc>)</li>
+<li>The single-threaded <tt>event-loop model</tt> of <ks>Node.js</ks> (JavaScript) leads to the idea of message/job queue.</li>
+<li>On May 2019, Google announced that the 
+<a href="https://en.wikipedia.org/wiki/Kotlin_(programming_language)" target="web">Kotlin programming language</a>
+ is now its preferred language for Android app developers.
+ <m>The Android OS is single threaded by default, which means operations will run by default on the UI thread except 
+they are explicitly scheduled to run on a background thread. 
+The UI thread is responsible for handling UI updates and executing long running operations on this thread can freeze your app, 
+or crash the app and show an <ks>ANR</ks> (Application Not Responding) error.</m>
+</li>
+<li>The Kotlin concept of <bc>coroutine</bc> allows us to introduce thread in a very light way. The concept is based on the idea
+of suspend a  computation without blocking a thread (<bc>suspend function</bc>) implemented using (under the hoods) a state machine 
+and <tt>CPS</tt>. </li>
+<li>Kotlin <bc>channels</bc> promote interaction among coroutines in term of <tt>stream of values</tt>.</li>
+<li>Kotlin <bc>actors</bc> promote a <tt>message-based programming style</tt> that overcomes traditional procedure-call interaction without
+loosing in performance.</li>
+</ol>
+
+ 
+ <table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:55%">
+<h3 id="index">INDEX</h3>
+
+<ol>
+<li><a href="#data">Data, Types and Variables</a></li>
+<li><a href="#funs">Functions</a></li>
+<li><a href="#lambda">Using lambda</a></li>
+<li><a href="#clos">Closures, Callbacks and CPS</a></li>
+<li><a href="#async">Towards Asynchronous Programming</a></li>
+<li><a href="#coroutinesIntro">Introduction to coroutines</a></li> 
+<li><a href="#dispatchers">Dispatchers</a></li>  
+<li><a href="#suspend">Suspending functions</a></li>
+<!-- <li><a href="#concur">Concurrency</a></li> -->
+<li><a href="#channels">Kotlin Channels</a></li>
+<li><a href="#kotlinprodcons">Producers-consumers in Kotlin</a></li>
+<li><a href="#actors">Kotlin Actors</a></li>
+<li><a href="#sequences">Sequences (suspendable)</a></li>
+<li><a href="#classes">Classes and Objects in Kotlin</a>
+	<ul>
+	<li><a href="#kotlinObject">Kotlin object</a> </li>
+	<li><a href="#kotlinclass">Kotlin class</a></li>
+	<li><a href="#propdeleg">Property delegation</a></li>
+	<li><a href="#dataclass">data class</a></li>
+	<li><a href="#companionobj">companion object</a></li>
+	<li><a href="#enumclass">enum class</a></li>
+	<li><a href="#ill">init, lateinit, lazy</a></li>
+	<li><a href="#inheritance">Inheritance</a></li>
+	<li><a href="#sealedclass">Sealed class</a></li>
+	</ul>
+</li> 
+
+<br/><br/>
+See <a href="https://kotlinlang.org/docs/kotlin-docs.pdf" target="web">Kotlin Language Documentation</a>
+  
+</ol>
+</td>
+
+<td style="width:45%">
+<img src="./img/KotlinInAction.png" alt="KotlinInAction" width="70%"  />
+ 
+</td>
+
+</tr> 
+</tbody>	
+</table>
+ 
+ 
+ 
+To run the <a href="https://kotlinlang.org/" target="web">KOTLIN</a> experiments, 
+use an IDE or <a href="https://play.kotlinlang.org" target="web">Kotlin Playground</a>.
+
+You can consult also: <a href="https://try.kotlinlang.org/#/Examples" target="web">Kotlin online</a>
+<br/> <br/> 
+
+For the examples hereunder, look at <a href="../app/src/main/kotlin/kotlindemo/demoBasic.kt" target="code">demoBasic.kt</a>  (project <m><ks>it.unibo.kotlinIntro</ks></m>).
+ 
+<h2><a id="data"/>Data, Types and Variables</h2>
+
+<center><table style="width:98%">
+
+<tbody>	
+<tr>
+<td style="width:45%"><pre> <k>val</k> base : Int = 0</pre> </td>
+<td><m><em>Immutable reference</em>. </m> </td>
+</tr>
+
+<tr>
+<td><pre><k>var</k> counter = 0</pre> </td>
+<td><m><em>Mutable reference</em>. The Type <bc>Int</bc> is inferred</m> </td>
+</tr>
+
+<tr>
+<td><pre>val name = "Bob"
+val st   ="hello<k>$</k>name"
+<kc>------</kc>
+println( st )	//Hello Bob
+</pre> </td>
+<td><m><em>String template</em></m> </td>
+</tr>
+
+
+<tr>
+<td><pre>val data : String<k>?</k> = null
+val v = data<k>?</k>.length <k>?:</k> 0
+<kc>------</kc>
+println("v=$v")	//0
+</pre> </td>
+<td><m><em>Nullable type</em> with safe null access 
+<ul>
+<li><k>String?</k> &nbsp;&nbsp;   nullable string<br/></li>
+<li><k>?.</k>  &nbsp;&nbsp;&nbsp;  <ks>safe call operator</ks><br/></li>
+<li><k>?:</k>  &nbsp;&nbsp;&nbsp;  <ks>elvis  operator</ks>: the right-hand side is evaluated only if the left-hand side is null</li>
+</ul>
+</m></td>
+</tr>
+<tr>
+<td><pre>
+val v01 : <k>Any</k> = 23
+<kc>------</kc>
+println( "v01 is String=${<ks>v01 </k>is</k> String</ks>}") <kc>//v01 is String=false</kc>
+println( "v01 is Int=${<ks>v01 <k>is</k> Int</ks>}")	<kc>//v01 is Int=true</kc>
+</pre> </td>
+<td><m><em>Type hierarchy</em>. <br/>
+<ul>
+<li><bc>Any</bc> is is a non-nullable type that denotes the root of the Kotlin class hierarchy. </li>
+<li><bc>Unit</bc> is used as a return type of a function that has nothing to return.</li>
+<li> <bc>is</bc> is a predefined check operator (like Java <bc>instanceOf</bc>)</li>
+ </ul>
+</m> </td>
+</tr>
+
+
+<tr>
+<td><pre>
+val v02  : Any = "Bob"
+val sv02 = v02 <k>is</k> String	<kc>//boolean</kc>
+val nv02 = v02 <k>is</k> Int    <kc>//boolean</kc>
+<kc>------</kc>
+println( "v02 is String=${sv02}") <kc>//v02 is String=true</kc>
+println( "v02 is Int=${nv02}")	  <kc>//v02 is Int=false</kc>
+<kc>//val n = v02.length 		<ks>ERROR</ks></kc>
+<k>if (v02 is String)</k> print(v02.length)	<kc>//3</kc><ks> Smart cast</ks>
+</pre> </td>
+<td><m><em>Smart cast</em>.  The compiler tracks the is-checks (and explicit casts) for immutable values and inserts 
+(safe) casts automatically when needed.</m> 
+</td>
+</tr>
+
+<tr>
+<td><pre>
+val n02 = (v02 <k>as</k> String).length
+<kc>------</kc>
+println( "$n02")              <kc> //3</kc>
+
+<kc>//println( "${v02 <k>as</k> Int}") <ks>java.lang.ClassCastException</ks></kc>
+
+println( "${v02 <k>as?</k> Int}")  	<kc>//null</kc>
+val t : Int = v02 <k>as?</k> Int <k>?:</k> 100
+<kc>------</kc>
+println( "$t") 				<kc>//100</kc>
+</pre> </td>
+<td><m><em>Explicit casting</em>.<br/>
+<ul>
+<li>The <bc>as</bc> operator performs type casting. <br/></li>
+<li>The <bc>as?</bc> operator performs safe type casting.<br/></li>
+<li>The <bc>?:</bc> is the <em>Elvis operator</em> that provides default values instead of null.<br/></li>
+</ul>
+</m> </td>
+</tr>
+
+<tr>
+<td ><pre>
+val s1 = "a"	<kc>//primitive type</kc>
+var s2 = "a"	<kc>//primitive type</kc>
+<kc>------</kc>
+println( "s1 === s2 : ${s1 <k>===</k> s2} ") 	<kc>//s1 === s2 : true</kc>
+println( "s1 == s2  : ${s1 <k>==</k> s2} ")	<kc>//s1 == s2  : true</kc>
+<kc>------</kc>
+s2 = "b"
+println( "s1 === s2 : ${s1 === s2} ") 	<kc>//s1 === s2 : false</kc>
+<kc>------</kc>
+s2 = "a"
+println( "s1 === s2 : ${s1 === s2} ")	<kc>//s1 == s2  : true </kc>
+
+<kc>------</kc>
+val fa = java.io.File("a")  <kc>//<k>NON</k> primitive type</kc>
+val fb = java.io.File("a")	<kc>//<k>NON</k> primitive type</kc>
+
+println( "fa === fb : ${fa === fb}")	<kc>//false</kc>
+println( "fa == fb  : ${fa == fb}")		<kc>//true</kc>
+
+</pre> </td>
+<td><m><em>Referential equality</em> <bc>===</bc> : true when two references point to the same object.
+<br/>
+For values represented by <ks>primitive types</ks> at runtime (for example, <ks>Int</ks>), 
+the <k>===</k> equality check is equivalent to the <k>==</k> check.
+<br/><br/>
+<em>Structural equality</em> <bc>==</bc> : translated into a call of the <bc>equals</bc> function of the class 
+
+</td>
+</tr>
+
+<tr>
+<td><pre> 
+val aToz = "a"<k>..</k>"z"
+val q = "q"
+<kc>------</kc>
+println( "q in aToz=${q <k>in</k> aToz}")   <kc>//q in aToz=true</kc>
+println( "1 in aToz=${<k>"""</k>1<k>"""</k> in aToz}") 	<kc>//1 in aToz=false</kc>
+</pre> </td>
+<td><m><ul>
+<li><em>Range</em> created by the <bc>..</bc> operator.</li>
+<li>The <bc>in</bc> infix operator performs a belong test.</li>
+<li>Triple quotes <bc>"""</bc> do not require escaping chars.</li>
+</m></td>
+</tr>
+
+<tr>
+<td><pre>
+var arr = <k>arrayOf</k>(1,2,3)
+<kc>------</kc>
+println( "arr size=${arr<k>.size</k>}")	<kc>//arr size=3</kc>
+println( "firstEl=${arr[0]}  lastEl=${<ks>arr[arr.size-1]</ks>}")
+								<kc>//firstEl=1  lastEl=3</kc>
+								
+<kc>------</kc>								
+arr.forEach <ks>{ v -> print("arr $v ") }</ks>; println()  
+								<kc>//arr 1 arr 2 arr 3</kc>
+arr.forEach <ks>{ print("$<k>it</k>") }</ks>; println()	<kc>//1 2 3 - see later</kc>
+</pre> </td>
+<td><m>
+<ul>
+<li><em>Array</em>: a regular 
+<a href="https://kotlinlang.org/docs/collections-overview.html" target="code"><em>Collection</em></a>
+class.</li>
+<li> <bc>size</bc> is a 
+<a href="https://kotlinlang.org/docs/reference/properties.html" target="code"><em>Property</em></a></li>
+</ul>
+</m> </td>
+</tr>
+
+
+</tbody>	
+</table></center>
+
+<div class="remark">
+ See also see <a href="https://kotlinlang.org/spec/expressions.html" target="web">Kotlin language specification: expressions</a>
+ </div>
+ 
+ 	
+<h3>Utility functions</h3>
+For the examples hereunder, start from <a href="../app/src/main/kotlin/kotlindemo/demoTemplate.kt" target="code">demoTemplate.kt</a>  (project <m><ks>it.unibo.kotlinIntro</ks></m>)
+that introduces:
+
+<pre>
+val <k>cpus</k> = <ks>Runtime.getRuntime().availableProcessors()</ks>;
+
+fun <k>curThread()</k> : String { 
+	return "thread=${<ks>Thread.currentThread().name</ks>} / nthreads=${<ks>Thread.activeCount()</ks>}" 
+}
+
+inline fun <k>measureTimeMillis</k>(block: () -> Unit): Long {
+    val start = <ks>System.currentTimeMillis()</ks>
+    block()
+    return System.currentTimeMillis() - start
+}
+</pre>
+
+<h2><a id="funs"/>Functions </h2>
+
+These examples are reported in  <a href="../app/src/main/kotlin/kotlindemo/demoFun.kt" target="code">demoFun.kt</a>  (project <m><ks>it.unibo.kotlinIntro</ks></m>).
+<br/><br/>
+ 
+
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:45%"><pre>
+fun <k>fsum(a:Int, b:Int) : Int</k> {
+  return a+b
+}
+<kc>------</kc>
+println( " ${<ks>fsum(3,6)</ks>} " ) 	<kc>//9</kc>
+</pre> </td>
+<td><m>A <em>Top-level function</em> that returns a value.<br/>
+
+<center><img src="./img/fun0.png" alt="fun0.png" width="50%"/></center>
+ 
+ </m>
+ </td>
+</tr>
+
+<tr>
+<td><pre>var fcounter = 0
+fun <k>incCounter() : Unit</k>{ fcounter++ }
+fun <k>decCounter()</k> { fcounter-- }
+<kc>------</kc>
+println( "pre=$fcounter  " ) 	<kc>//pre=0</kc>
+<ks>incCounter()</ks>
+println( "post=$fcounter " ) 	<kc>//post=1</kc>
+</pre> </td>
+<td><m>Top-level functions that <em>do not </em> return a value. The return type <bc>Unit</bc> can be omitted</m><br/>
+
+<center><img src="./img/funUnit.png" alt="funUnit.png" width="40%"/></center>
+</td>
+</tr>
+
+<tr>
+
+<tr>
+<td><pre>
+fun fsquare<k>(v: Int) = v * v</k>
+<kc>------</kc>
+println(  <ks>fsquare(3)</ks>  ) 	<kc>//9</kc>
+</pre> </td>
+<td><m><em>One line function</em>. Braces can be omitted. Return type can be omitted (it is inferred)</m> </td>
+</tr>
+ 
+<td>
+
+<pre>
+val ftaction : <k>() -> Unit</k> 	   
+	<kc>//function type (no args, returns nothing (Unit)</kc>
+
+val ftsum : <k>( Int,  Int) -> Int </k> 
+	<kc>//function type (two args, returns an Int)</kc>
+
+val ftgreet: <k>(String )-> <ks>()->Unit</ks></k>
+	<kc>//returns another function  </kc>
+</td>
+<td><m><h3>Function type</h3> is just a syntactic sugar for an interface, but the interface cannot be used explicitly.
+We can  use it to type local variables, properties or arguments.
+It is implemented in Java as a <bc>FunctionN</bc> interface.
+<br/>
+A  way to provide a value function is to use a <em>function literal</em>:
+
+<ul>
+<li><bc>Lambda expression</bc></li>
+<li><bc>Anonymous function</bc></li>
+
+</ul>
+</m> </td>
+</tr>
+
+<tr>
+<td><pre>
+val <k>ftaction = {</k> println("hello") <k>}</k>  <kc>//lambda expr </kc>
+<ks>ftaction()</ks> 		<kc>//hello</kc>
+
+<kc>------</kc>
+val <k>ftsum = {</k>x:Int, y:Int -> x+y<k>}</k>  <kc>//lambda expr</kc>
+val fva = <ks> ftsum(1,2)</ks> 
+println("fva=$fva")	      <kc>//fva=3</kc>
+
+<kc>------</kc>
+val <k>ftgreet = {</k>  m: String -> { println(m)}   <k>}</k>
+println( <ks>ftgreet( "Hello!" )</ks> )	<kc>//Function0&lt;kotlin.Unit></kc>
+<ks> ftgreet( "Hello!" )<k>()</k></ks>  	<kc>//Hello!</kc>
+
+println( <ks> { println( "Welcome" ) }</ks>)	<kc>//() -> kotlin.Unit</kc>
+println( <ks> { println( "Welcome" ) }<k>()</k>)</ks> <kc>//Welcome  kotlin.Unit</kc>
+
+<kc>------</kc>
+val <k>fel = {</k>  print( "Last exp val:" ); 100  <k>}</k>
+println( "${ <ks>fel()</ks> }" )  <kc>//Last exp val:100</kc>
+<ks>fel() returns <tt>100</tt> but before executes <tt>print</tt></ks>
+</td>
+<td><h3>Lambda Expression literal</h3>
+<m>it can be assigned to a variable, just like any other <k>literal</k>
+(see <a href="https://kotlinlang.org/spec/expressions.html#lambda-literals" target="web">Kotlin language specification: expressions</a>). <br/><br/>
+A call returns (the value of the) <bc>last</bc> expression.<br/>
+</m> 
+</td>
+</tr>
+
+<tr>
+<td>
+<pre>
+<ks>fun(){println("Hello-anonymous")}</ks>	<kc>//Anonymous funct</kc>
+println( <ks>fun(){println("Hello-anonymous")}</ks> ) 
+						<kc>//Function0&lt;kotlin.Unit></kc>
+
+<kc>------</kc>
+val faction=<ks>fun()</ks>{println("Hello-faction")} <kc>//type:<k>()-> Unit</k></kc> 
+faction() 		<kc>//Hello-faction</kc>
+
+<kc>------</kc>
+val fsquare=<ks>fun(x)</ks> = x * x       <kc>//Type: <k>(Int)->Int</k></kc>  
+println("fsquare=${fsquare(3)}")	      <kc>//fsquare=9</kc>
+
+<kc>------</kc>
+val greet= <ks>fun</ks>(m:String) = <ks>fun()</ks>{ println("Printing $m") }
+	<kc>//Type:: <k>(String) -> ()->Unit</k> </kc>  
+println( greet )      
+<kc>//Function1&lt;java.lang.String, 
+  kotlin.jvm.functions.Function0&lt;? extends kotlin.Unit>></kc>
+println(greet("Hello World1"))	<kc>//Function0&lt;kotlin.Unit></kc>
+greet<ks>( "Hello World2" )</ks><k>( )</k> 	<kc>//Printing Hello World2</kc>
+
+------------------------------------------
+fun fexec23( op: <k>(Int, Int) : Int</k> ) : Int  {  <k>return</k> op(2,3)  }
+
+val v23 =  fexec23( <ks>fun(x:Int,y:Int):Int{return x+y}</ks> )
+println("$v23")         					<kc>//5</kc>
+
+println( fexec23( <ks>{ x:Int, y:Int -> x*y }</ks> )	 )	<kc>//6</kc>
+
+println( fexec23(<k>::fsum</k>))	 <kc>//5</kc> See <a href="#funcref">Function reference</a>
+
+
+</pre> </td>
+<td><h3>Anonymous function</h3>
+<m>another way to write a block of code instead of a Lambda expression. Needs <bc>return</bc>
+like any function </m> </td>
+</tr>
+
+
+</tbody>	
+</table></center>
+
+
+<h2><a id="lambda"/>Using lambda</h2>
+Java 8 introduced lambda expressions along with functional interfaces..<br/> 
+A <m><k>functional interface</k></m> 
+(see <a href="http://tutorials.jenkov.com/java-functional-programming/functional-interfaces.html"  target="web">Tutorial on Java Functional Interfaces</a>)
+is an interface with a single method. They are commonly referred to as <i>Single Abstract Method</i> or <m><k>SAM</k></m>.
+<br/> 
+A Java functional interface can be implemented by a Java <m><k>Lambda Expression</k></m>
+(see <a href="http://tutorials.jenkov.com/java/lambda-expressions.html"  target="web">Tutorial on Java Lambda Expressions</a>).
+<br/><br/>
+The examples hereunder are reported in  <a href="../app/src/main/kotlin/kotlindemo/demoLambda.kt" target="code">demoLambda.kt</a>  (project <m><ks>it.unibo.kotlinIntro</ks></m>).
+<br/><br/>
+
+<center><table style="width:95%">
+<tbody>	
+
+
+<tr>
+<td><pre>
+fun exec23( <k>op:(Int,Int) -> Int</k> ) : Int { return op(2,3) }
+
+val sum = { x:Int, y:Int -> x+y }	<kc>//lambda expr</kc>
+val mul = { x:Int, y:Int -> x*y }	<kc>//lambda expr</kc>
+
+println("${ exec23(sum) }")	      <kc>//5</kc>
+println("${ exec23(mul) }")	      <kc>//6</kc>
+
+</td>
+<td><h3>Higher order functions</h3>
+<center><img src="./img/funArgFun.png" alt="funArgFun.png" width="40%"/></center>
+ 
+<m> </m> </td>
+</tr>
+
+
+
+<tr>
+<td><pre>
+val v1 = exec23( { x:Int, y:Int -> x-y } ) <k>//1) no shortcut</k>
+println("v1=$v1")	      <kc>//v1=-1</kc>
+
+<kc>------</kc>
+val v2 = exec23<k>()</k> { x:Int, y:Int -> x-y } <k>//2) lambda last arg</k>
+println("v2=$v2")	      <kc>//v2=-1</kc>
+
+<kc>------</kc>
+val v3 = exec23{ x:Int, y:Int -> x-y } <k>//3) () can be removed</k>
+println("v3=$v3")	      <kc>//v3=-1</kc>
+
+<kc>------</kc>
+val v4 = exec23{ x,y -> x-y } <k>//4) arg types inferred</k>
+println("v4=$v4")	      <kc>//v4=-1</kc>
+</td>
+<td><h3>Lambda syntax shortcut</h3> </td>
+</tr>
+
+<tr>
+<td><pre>
+fun <k>p2</k>( <ks>op:( Int ) -> Int)</ks> : Int { return op(<k>2</k>) }
+
+    println( p2( { <k>x:Int-> x*x }</k> ) )	<kc>//4 - no shortcut</kc>
+    println( p2<k>( )</k>  { x:Int-> x*x } )	<kc>//4 - lambda last arg</kc>
+    println(  p2 { <k>x:Int-> x*x</k> }	)	<kc>//4 - last arg no ()</kc>
+    println(  p2 { <k>x -> x*x</k> } )		<kc>//4 - arg type inferred</kc>
+	-----------------------
+    println( p2{ <k>it -> it</k>  } )      <kc>//2</kc>
+    println( p2{ <k>it</k>  } )   		   <kc>//2</kc>
+    println(  p2 { <k>it -> it*it</k> } )		<kc>//4</kc>
+    println(  p2 { <k>it*it</k> } )			<kc>//4</kc>
+    println( p2{ <k>it -18 / 9</k> } )     <kc>//0</kc>
+    println( p2{ <k>it -18 </k>} / 9)     <kc>//-1 (int)</kc>
+     
+</pre> </td>
+<td><h3>Simplification in lambda call</h3>
+
+<pre>
+p2 { it*it }
+</pre>
+
+<m> The keyword <bc>it</bc> is an auto-generated parameter name </m></td>
+</tr>
+
+
+
+<td><pre>
+fun modulo(k:Int): <k>(Int) -> Int</k>   <kc> //SIGNATURE</kc>
+            = { <ks>it % k</ks>  }               <kc>//BODY</kc>	
+println(  <k>modulo(3)</k>  ) 	 
+   <kc>//Function1&lt;java.lang.Integer, java.lang.Integer>
+println(  <ks>modulo(3)<k>(5)</k></ks>     ) 	<kc>//2</kc>
+println(  <ks>modulo(5)<k>(3)</k></ks>     ) 	<kc>//3</kc>
+</pre> </td>
+<td><h3>Function as return value</h3>
+<center><img src="./img/funRetFun.png" alt="funRetFun.png" width="30%"/></center>
+<br/>
+<m>The modulo operation is a way to determine the <k>remainder</k> of a division operation </m> </td>
+</tr>
+
+
+
+
+<tr>
+<td><pre>
+</pre> </td>
+<td><m><em></em></m> </td>
+</tr>
+
+<tr>
+<td><pre>
+fun sToN( s: String, base: Int<k>=10</k> ) : Int{
+    var v = 0
+    for( i <ks>in</ks> 0..s.length-1 ) {
+        v = ( s[i].toInt()-48 ) + v*base
+    }
+    return v
+}
+println( " ${ sToN( <k>s=</k>"123") } " ) 	<kc>//123</kc>
+println( "${ sToN( <k>s="123", 8</k>) }" ) 	<kc>//83</kc>
+</pre> </td>
+<td><m><em>Default parameters</em> and <em>Named parameters</em> at call </m> </td>
+</tr>
+
+
+
+
+<tr>
+<td><pre>
+fun mirror(v: Int) : <k>Pair&ltInt,Int></k> {
+	return Pair(v, -v)
+}
+<kc>------</kc>
+val v = mirror(2)
+println("${v<k>.first</k>}, ${v<k>.second</k>} ")  <kc>//2,-2</kc>
+
+<kc>------</kc>
+<k>val(pos,neg)</k>  = mirror(3)
+println( " pos=$pos neg=$neg " ) 	<kc>//pos=3 neg=-3</kc>  
+</pre> </td>
+<td><m><em>Multiple return values</em>. To extract the values into separate values, we can exploit
+<a href="https://kotlinlang.org/docs/destructuring-declarations.html" target="web"><k>destructuring declarations</k></a>
+ (syntactic sugar)</m> 
+<pre>
+val(pos,neg) = mirror(3)
+</pre>
+</td>
+</tr>
+
+
+
+<td><pre>val sToNref = <ks><k>::</k>sToN</ks>
+println( sToNref )	
+	<kc> //fun sToN(kotlin.String, kotlin.Int): kotlin.Int</kc> 
+-------------------------
+fun add( x:Int, y:Int ) : Int { return x+y }
+println( <ks>exec23( <k>::add</k> )</ks> )				<kc>//5</kc>
+
+val x = <ks>(<k>::add</k>)(5,6)</ks>	<kc>//call using a funref</kc>
+println( x ) 		<kc>//11</kc>
+
+</pre> 
+<!--
+<m>To obtain the output, include the dependency on:</m>
+<pre>
+<k>implementation</k> "org.jetbrains.kotlin:kotlin-reflect"
+</pre>
+-->
+</td>
+<td><h3 id="funcref">Function reference</h3>
+<m>The</m> <bc>::</bc>  <m>operator creates a member reference or a (statically known) class reference.<br/>
+The <em>reference</em> is a value of type <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html" target="web">KClass</a>.<br/>
+A Kotlin class reference is not the same as a Java class reference. To obtain a Java class reference, 
+use the <bc>.java</bc> property on a <tt>KClass</tt> instance.</m>
+ </td>
+ 
+  
+ <tr>
+<td><pre>
+var str = "Hello World"
+<ks>str</ks><k>.let</k> { println("$<k>it</k>!!") }	<kc>//Hello World!!</kc>
+
+<ks>137</ks><k>.let</k>  { println("$<k>it</k>!!") }	<kc>//137!!</kc>
+ </pre> </td>
+<td>
+<h3>Standard library function <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/let.html" target="web"><k>let</k></a></h3> 
+<m>
+<em>let</em>  takes the object it is invoked upon as the parameter and returns the result of the lambda expression.<br/>
+It is a 
+<a href="https://kotlinlang.org/docs/reference/scope-functions.html" target="web"><k>scope function</k></a>,
+ wherein the variables declared inside the expression cannot be used outside.
+<!-- https://www.journaldev.com/19467/kotlin-let-run-also-apply-with  useful higher order functions implementing idiomatic patterns.-->
+</m>
+ 
+</td>
+</tr>
+
+<tr>
+
+ 
+<tr>
+<td><pre>
+fun testRunFunction() {
+    val logo = "Starting"
+    val <k>v1 = run { </k>
+        println("First start:$logo  ${curThread()}")
+        val logo = "First"	<kc>//local</kc>
+        println("First ended : $logo")
+    <k>}</k>
+    val <k>v2 = run { </k>
+        println("Second start:$logo ${curThread()}")
+        val logo = "Second"	<kc>//local</kc>
+        println("Second ended: $logo ")
+    <k>}</k>
+    println("logo=$logo v1=$<ks>v1</ks> v2=$<ks>v2</ks>" )
+}
+
+testRunFunction()
+
+</pre> 
+</td>
+ 
+<td> 
+<h3>Standard library function <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/run.html" target="web"><k>run</k></a></h3> 
+<m>
+<em>run </em> calls the specified function block and returns its result.<br/>
+    It is a combination of <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/with.html" target="web"><k>with</k></a> and 
+	<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/let.html" target="web"><k>let</k></a>
+	<a href="https://kotlinlang.org/docs/scope-functions.html" target="web"><ks>scope library functions</ks></a>.<br/>
+	Similar to the <tt>let</tt> function, the run function returns the last statement.<br/>
+	Unlike <tt>let</tt>, the <tt>run</tt> function <ks>doesn’t supports</ks> the <k>it</k> keyword.
+ </m>
+<pre>
+<kc>//OUTPUT</kc>
+First start:Starting  thread=main | nthreads=2
+First ended : First
+Second start:Starting thread=main | nthreads=2
+Second ended: Second 
+logo=Starting v1=kotlin.Unit v2=kotlin.Unit
+</pre>
+</td>
+</tr>
+ 
+</tbody>	
+</table></center>
+ 
+
+<h2><a id="clos"/>Closures, Callbacks and CPS</h2>
+These examples are reported in  <a href="../app/src/main/kotlin/kotlindemo/demoCps.kt" target="code">demoCps.kt</a>  (project <m><ks>it.unibo.kotlinIntro</ks></m>).
+<br/><br/>
+
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:45%"><pre>
+fun counterCreate()  : ( cmd : String ) -> Int {
+    <ks>var localCounter = 0</ks>
+    return { msg ->
+        when (msg) {
+            "inc" -> ++localCounter
+            "dec" -> --localCounter
+            "val" -> localCounter
+             else -> throw Exception( "unknown" )
+        }
+    }
+}
+<kc>------</kc>
+val c1 = <ks>counterCreate()</ks>
+println( <ks>c1("val")</ks> ) 	<kc>//0</kc>
+for( i in 1..3 ) <ks>c1("inc")</ks>
+println("c1=${<ks>c1("val")</ks>}")	      <kc>//c1=3</kc>
+
+<kc>------</kc>
+val c2 = <ks>counterCreate()</ks>		<kc>//another instance</kc>
+for( i in 1..3 ) <ks>c2("dec")</ks>
+println("c2=${<ks>c2("val")</ks>}")	     <kc>//c2=-3</kc>
+</pre> </td>
+<td>
+<h3>Lexical Closures</h3>
+<m>The <em>closure</em> returned by <bc>counterCreate</bc> is "closed over" the variable <bc>localCounter</bc>.<br/>
+We are reproducing <ks>oo</ks> programming style (<i>instance</i> and <i>state encapsulation</i>)</m> </td>
+</tr>
+
+
+
+<tr>
+<td><pre>
+fun showAction( msg: String ){
+    println( msg )
+}
+fun readAction() : String{
+    println("readaction  ... | ${curThread()}")
+    return "myinput"	<kc>//SIMULATE to acquire input</kc>
+}
+fun evalAction( v: Int, msg: String ) : String{
+    println("evalaction ... | v=$v ${curThread()}")
+    return "$msg:$v"
+}
+
+fun doJobNormal(n:Int){	<kc>//<ks>print- eval-read</ks> pattern</kc>
+    <k>showAction( evalAction( n,readAction() )  )</k>
+}
+-----------------------
+   doJobNormal(10)		<kc>//output : myinput:100</kc>
+}
+
+</pre> </td>
+<td><h3>Normal flow</h3>
+ With reference to the set of functions on the left, let us execute a <em>Normal call sequence</em>:
+The output is:</m>
+<pre>
+<kc>//OUPUT</kc>
+readaction  ... | thread=main | nthreads=2
+evalaction ...  | v=10  thread=main | nthreads=2
+myinput:10
+</pre>
+
+ 
+</td>
+</tr>
+
+<tr>
+<td><pre>
+fun readCps( <ks>callback</ks>:<k>( String )-> Unit</k> ) :Unit {
+    println("readCps  ... | ${curThread()}")
+    <k>callback( "myinputcps" )</k>
+}
+
+---------------------
+  readCps( <ks>{ msg -> showAction(msg)</ks>  }
+  readCps( <ks>showAction(<k>it</k>)</ks>  } <kc>//using  lambda  shortcut</kc>
+</pre> </td>
+<td> 
+<h3><a href="https://en.wikipedia.org/wiki/Callback_(computer_programming)" target="web">Callbacks</a></h3> 
+<m>
+are quite common in <bc>event-loop</bc> architectures such as 
+<a href="https://en.wikipedia.org/wiki/JavaScript" target="web"><b>JavaScript</b></a> /
+<a href="https://en.wikipedia.org/wiki/Node.js" target="web"><b>Node.js</b></a>.
+The idea is to pass one function as a parameter to another function, and have this one invoked once the process has completed.
+</m> 
+<pre>
+<kc>//OUPUT</kc>
+readCps  ... | thread=main | nthreads=2
+myinputcps
+</pre>
+<m>  The usage of callbacks leads to the
+ <em>Continuation-passing style</em>  (see <a href="https://en.wikipedia.org/wiki/Continuation-passing_style" target="web">CPS</a>),
+ which is quite diffused to handle 
+ <a href="https://en.wikipedia.org/wiki/Asynchronous_I/O" target="web">Asynchronous I/O</a>
+</m>
+</td>
+</tr>
+
+<tr>
+<td><pre>
+fun readCps( <ks>callback</ks>:<k>(String)-> Unit</k>  ):Unit{
+    println("readCps  ... | ${curThread()}")
+    <ks>callback</ks>( "myinputcps" )
+}
+fun evalCps(v:Int, msg:String, <ks>callback</ks>:<k>(String)-> Unit</k> ){
+    println("evalCps ... | ${curThread()}")
+    <ks>callback</ks>( "$msg: $v" )
+}
+
+fun <i>doJobCpsNoShortcut</i>( n: Int  ){
+    <ks>readCps</ks>( <kc>//lambda</kc>
+        { <em>input</em> : String-> <ks>evalCps</ks>( n, <em>input</em>, {<kc>//lambda</kc>
+              <em>msg</em> ->  showAction( <em>msg</em> )  
+            } 
+        )}<kc>//evalCps</kc>
+     )<kc>//readCps</kc>	
+}
+
+fun <b>doJobCps</b>( n: Int  ){ <kc>//using lambda shortcut</kc>
+	<ks>readCps</ks><k>{ evalCps( n, it) { <ks>showAction( it )</ks>} } </k> 
+} 
+---------------------
+  doJobCps( 10 }
+</pre> </td>
+<td>
+<h3 id="CPS">CPS  (Continuation Passing Style)</h3>
+<m>The example on the left trasforms the normal <ks>print-eval-read pattern</ks> into a 
+pattern <k>read-and-after-do</k>
+</m>
+
+<pre>
+<kc>//OUPUT</kc>
+readCps  ... | thread=main | nthreads=2
+evalCps ... | thread=main | nthreads=2
+myinputcps:10
+</pre>
+ 
+<h3>Callback hell</h3>
+<m>
+In order to avoid the <bc>anti-pattern</bc> known as
+ <a href="http://callbackhell.com/">callback hell</a>, people use other approaches such as 
+ <a href="https://en.wikipedia.org/wiki/Futures_and_promises" target="web"><b>futures / promises</b></a> or 
+<a href=" https://en.wikipedia.org/wiki/Reactive_extensions" target="web"><b>Reactive Extensions (Rx)</b></a>
+(from <tt>C#</tt>, <tt>.NET</tt>) .
+ </m> 
+
+</td>
+</tr>
+
+</tbody>	
+</table></center>
+
+<h2 id="async">Towards Asynchronous Programming</h2>
+This example is reported in  <a href="../app/src/main/kotlin/kotlindemo/demoCpsAsynch.kt" target="code">demoCpsAsynch.kt</a>  
+(project <m><ks>it.unibo.kotlinIntro</ks></m>).
+<br/><br/>
+<center><table style="width:95%">
+<tbody>	
+
+<tr>
+<td style="width:50%">
+Let us suppose that the operation <bc>readCps</bc> takes a long time and that we do not want to block
+the computation. </td>
+<td>
+
+
+As a solution, modern langauages do introduce:
+
+<ol>
+<li>Threading</li>
+<li>Callbacks</li>
+<li> <a href="https://en.wikipedia.org/wiki/Futures_and_promises" target="web"><b>futures / promises</b></a>  
+</li>
+<li><a href=" https://en.wikipedia.org/wiki/Reactive_extensions" target="web"><b>Reactive Extensions (Rx)</b></a></li>
+<li>Coroutines</li>
+</ol>
+
+<m></m>
+</td>
+</tr>
+
+
+
+<tr>
+<td>
+<m>
+As an example of <a href="https://en.wikipedia.org/wiki/Continuation-passing_style" target="web">CPS</a> in 
+ <a href="https://en.wikipedia.org/wiki/Asynchrony_(computer_programming)" target="web">Asynchronous</a> programming,
+let us simulate here the <tt>readCpsAsynch</tt> operation as an activity that runs in its own <bc>thread</bc>  and ends after <tt>3 sec</tt>.
+</m>
+<pre>
+fun readCpsAsynch( <ks>callback</ks>:<k>(String)-> Unit</k> ) : Unit{
+  <k>kotlin.concurrent.thread(<ks>start = true</ks>)</k> {
+	println("readCpsAsynch  ... | ${curThread()} ")
+	<ks>Thread.sleep(3000)</ks>	<kc>//Long-term action</kc>
+	println("readCpsAsynch done")
+	<ks>callback</ks>( "myinputasynchcps" )
+  }
+}
+
+fun doJobAsynchCps( n: Int  ){
+	<ks>readCpsAsynch</ks>{ <k>evalCps( n, it)</k> { <ks>showAction( it )</ks>}} 
+	println("Here I can do other jobs ... ")
+}
+</pre>
+<m>
+The package <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.concurrent/" target="web">kotlin.concurrent</a> includes 
+utility functions for concurrent programming.
+The function <em>kotlin.concurrent.thread</em> creates a thread that runs the specified 
+<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.concurrent/thread.html#kotlin.concurrent$thread(kotlin.Boolean,%20kotlin.Boolean,%20java.lang.ClassLoader,%20kotlin.String,%20kotlin.Int,%20kotlin.Function0((kotlin.Unit)))/block" target="web">block</a>
+of code.
+
+</m>
+<pre>
+--------------------------
+    doJobAsynchCps( 10  )
+</pre> 
+ 
+</td>
+<td>
+<h3>ASYNCHRONOUS PROGRAMMING WITH CPS</h3>
+<m>Now, the <tt>main</tt> program ends immediately; the computation is executed in the thread activated for the input.
+</m> 
+<pre>
+<kc>//OUPUT</kc>
+BEGINS CPU=4 thread=main | nthreads=2
+Here I can do other jobs ... 
+readCpsAsynch  ... | thread=Thread-0 / nthreads=3  
+<b>work done in time= 4
+ENDS thread=main | nthreads=2</b>
+readCpsAsynch done 
+evalCps ... | <k>thread=Thread-0</k> | nthreads=3
+myinputasynchcps:10
+</pre>
+<m> 
+Note the <a href="https://kotlinlang.org/docs/reference/java-interop.html#sam-conversions" target="web">Single Abstract Method conversion</a> 
+(<bc>SAM</bc>) in <tt>kotlin.concurrent.thread</tt>: when an object implements a <tt>SAM</tt> interface, we can pass a lambda instead.
+</m> 
+</td>
+</tr>
+
+</tbody>	
+</table></center>
+
+
+
+
+<h2><a id="coroutinesIntro"/>Introduction to coroutines</h2>
+
+Overview (see also <a href="https://www.youtube.com/watch?v=_hfBv0a09Jc:" target="web">Elizarov video</a>)
+<ol>
+<li>A function can be activated as a <bc>coroutine</bc>, i.e. as a a sort of 'light-weight thread'.</li>
+<li>A coroutine can invoke other functions; it can also <bc>suspend</bc> its behavior (<em>without blocking its running thread</em>). </li>
+<li>Interaction among <a href="https://en.wikipedia.org/wiki/Concurrency_(computer_science) ">concurrent</a> activities (coroutines) can be
+supported by <bc>channels</bc> that provide suspensive send/receive operations.
+</li>
+<li>Combining a coroutine with a channel to communicate with other coroutines makes the idea of 
+<a href="#actors"><bc>kotlin actor</bc></a>.</li>
+</ol>
+<hr/>
+<ul>
+<li>Essentially, a 
+  <a href="https://kotlinlang.org/docs/reference/coroutines/basics.html" target="web"><em>Coroutine</em></a> 
+  is a light-weight thread that can be activated with a 
+   <a href="https://www.educative.io/edpresso/coroutine-builders-launching-coroutines-in-kotlin" target="web"><em>Coroutine builder</em></a> 
+ into a 
+ <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/" target="web"><em>CoroutineScope</em></a>.
+<br/><br/></li>
+
+
+<li>
+Coroutines can be executed concurrently using a multi-threaded 
+ <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html" target="web"><em>CoroutineDispatcher</em></a>
+like the 
+<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-default.html"  target="web">Dispatchers.Default</a>.
+<b>It presents all the usual concurrency problems</b>. 
+See <a href="https://kotlinlang.org/docs/reference/coroutines/shared-mutable-state-and-concurrency.html" target="web">Kotlin Shared mutable state and concurrency</a>.
+<br/><br/></li>
+
+<li>By default, coroutines are run on a <b>shared pool of threads</b>. 
+Threads still exist in a program based on coroutines, but <bc>one thread can run many coroutines</bc>, so there's no need for too many threads.
+
+<center><img src="./img/coroutines.png" alt="coroutines.png" width="40%"/></center>
+<br/><br/></li> 
+
+<li>
+Kotlin Coroutines enhance <a href="https://en.wikipedia.org/wiki/Asynchrony_(computer_programming)" target="web">Asynchronous</a> programming 
+by being lightweight and essentially faster than a thread as they are <em>stackless</em>. 
+What this means from a multiprocessing perspective, is that Kotlin Coroutines <em>don't map on the native CPU thread</em>, 
+hence there's <bc>no context-switching</bc> on the processor.
+<br/><br/></li>
+
+<li>The execution of a coroutine always happens inside a 
+<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/"  target="web">CoroutineContext</a> 
+that defines <b>how</b> the coroutine will be executed.
+It includes a coroutine <a href="https://kotlinlang.org/docs/reference/coroutines/coroutine-context-and-dispatchers.html" target="web"><k>Dispatcher</k></a>. 
+A <em>Coroutine Context</em> can be composed  by several element types. <!-- to create <em>composed behaviors</em>. -->
+<br/><br/></li>
+
+
+<li>
+Every coroutine has a context that is represented by an instance of 
+<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/"  target="web">CoroutineContext</a> interface. 
+A context is a set of elements and current coroutine context is available via <m><k>coroutineContext</k></m> property.<br/>
+A <m><k>scope</k></m> is just a reference to a context.
+<br/><br/></li>
+
+<li>Coroutines are <bc>computations that can be  suspended</bc></m> without blocking a thread.
+They are based on the concept of <em>Continuation-passing style</em> (<m><k>CPS</k></m>) programming.
+
+
+<center><img src="./img/coroutineSuspend.png" alt="coroutineSuspend.png" width="40%"/></center>
+<br/><br/></li>
+
+<li>Coroutines do not rely on features of the <tt>Operating System</tt> or the <tt>JVM</tt>. Instead, a <bc>Continuation</bc> is added to every suspending function as 
+an additional parameter according to the <a href="#CPS"><bc>CPS style</bc></a>. The compiler produces a <em>state machine</em> to handle suspension.
+<br/><br/></li>
+
+
+<li>
+A coroutine itself is represented by a 
+<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-job/index.html" target="web">Job</a>. 
+It is responsible for coroutine's lifecycle, cancellation, and parent-child relations. 
+A current job can be retrieved from a current coroutine's context.
+<br/><br/></li>
+
+<m></m>
+</ul>
+
+<h3>Examples</h3>
+The examples hereunder are reported in  <a href="../app/src/main/kotlin/kotlindemo/demoCoroutinesIntro.kt" target="code">demoCoroutinesIntro.kt</a>  
+(project <m><ks>it.unibo.kotlinIntro</ks></m>).<br/>
+The main program now waits for a command from the user to select the demo to run:
+<hr/>
+<pre>
+var demoTodo : () -> Unit = { println("nothing to do") }
+
+fun readInt() : Int { print(">"); return readLine()!!.toInt() }
+
+fun <ks>doDemo</ks>( input : Int ){
+	println("BEGINS CPU=$cpus ${curThread()}")
+	<k>when( input )</k>{ 
+		1 ->  demoTodo =  { <b>runBlockThread()</b> }
+		2 ->  demoTodo =  { thcounter=0;  <b>GlobalScope.launch{ runBlockThread() }</b> }
+		3 ->  demoTodo =  { <b>scopeDemo()	</b>       }
+ 		4 ->  demoTodo =  { <b>manyThreads()</b>   }
+ 		5 ->  demoTodo =  { <b>manyCoroutines()</b>   }
+		...
+		else ->  { println("command unknown") }  //Note the block      	
+	} 			
+	println( "work done in time= ${measureTimeMillis(  demoTodo )}"  )
+	println("ENDS ${curThread()}")	
+}
+
+fun main() {
+		var input =  readInt()
+		while( input != 0 ){
+			<ks>doDemo( input )</ks>
+			demoTodo = 	{ println("nothing to do") }    
+			input    =  readInt()
+		}
+  	    println( "BYE") 
+}
+</pre>
+<hr/>
+
+<center><table style="width:95%">
+<tbody>	
+
+<tr>
+<td>
+<h3>Conventional (Java) code</h3>
+<pre>
+var <ks>thcounter</ks>=0
+
+fun <ks>runBlockThread( delay : Long = 0L )</ks>{	    
+    //println("thread sleeps ... : ${curThread()}")
+    <k>Thread.sleep(delay)</k> 
+	thcounter++  <kc>//thcounter = thcounter + 1 NON ATOMICA</kc>
+	println("thread ends : ${curThread()} thcounter=${thcounter}")
+ <k>}</k>
+ <!-- <k>run {</k> <kc>//Calls a function block; returns its result</kc> -->
+<!-- } -->
+------------------
+runBlockThread(1500 )	<kc>//user-option 1</kc>
+</pre> </td>
+<td><m>The current Thread (<tt>main</tt>) waits for <tt>1500</tt> msecs.<br></m>
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=4 thread=main | nthreads=2
+thread ends : thread=main | nthreads=2 thcounter=1
+work done in time= <ks>1514</ks>
+ENDS thread=main | nthreads=2
+</pre>
+</td>
+</tr>
+
+
+
+<tr>
+<td>
+ <h3><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-global-scope/" target="web"><k>GlobalScope</k></a></h3> 
+<m><ks>GlobalScope.launch</ks>  is used to launch <tt>top-level coroutines</tt>, which operate on the whole application lifetime. 
+</m>
+<pre>
+<k>GlobalScope.launch{</k> <ks>runBlockThread()</ks> <k>}</k> <kc>//user-option 2</kc>
+</pre> </td>
+<td><m>
+The <tt>runBlockThread</tt> is now called in the <em>default Thread devoted to Coroutine execution</em>. 
+</m>
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=4 <ks>thread=main</ks> | nthreads=2
+work done in <ks>time= 0</ks>
+ENDS thread=main | nthreads=4
+<ks>></ks><m>thread ends : thread=<k> DefaultDispatcher-worker-1</k>  | nthreads=5 thcounter=1</m>
+</pre>
+<m>
+Note that the 'program' ends immediately. <br/>
+The output after <ks>></ks> appears since our main waits for input. </m> 
+</m>
+</td>
+</tr>
+
+
+<tr>
+<td>
+<m>
+The example above  shows that the coroutine works with reference to the <bc>Dispather.Deafault</bc>. <br/>
+A <a href="https://kotlinlang.org/docs/reference/coroutines/coroutine-context-and-dispatchers.html" target="web"><k>Dispatcher</k></a>
+determines the thread in which a coroutine will be executed. It can be provided by the <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/index.html" target="web"> 
+Coroutine Scope</a> or specified using a builder.
+</m>
+<h3>On <a href="https://kotlinlang.org/docs/reference/coroutines/coroutine-context-and-dispatchers.html" target="web"><k>Dispatchers</k></a></h3> 
+ 
+A dispatcher can be provided in two ways:
+
+<ul>
+<li>By the<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/index.html" target="web">. 
+CoroutineScope</a></li>
+<li><bc>Explicitly</bc>: the coroutine builder receives a coroutine context as a first parameter.
+<!-- See  <a href="#Dispatchers">Dispatchers</a> later on. -->
+</li>
+</ul>
+ 
+
+
+   
+</td>
+<td>
+ <h3><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/index.html" target="web"> 
+<k>Coroutine Scope</k></a></h3> 
+   defines a 
+  <a href="https://en.wikipedia.org/wiki/Scope_(computer_science)" target="web"> <k>Scope</k></a> for new coroutines. <br/>
+  <m>Every coroutine builder is an extension on 
+  <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/" target="web"> 
+    <em>CoroutineScope</em></a> and inherits its 
+  <a href="https://kotlinlang.org/docs/reference/coroutines/coroutine-context-and-dispatchers.html" target="web"><k>coroutineContext</k></a>
+  to automatically propagate both context elements and cancellation.
+  </m>
+  <h3>Launch and join</h3> 
+<m>Coroutines started by  <bc>launch</bc> return a <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-job/index.html" target="web">Job</a>
+ immediately,  which we can use to <tt>cancel</tt> 
+the computation or wait its completion with <bc>join</bc>.
+<div class="remark">
+When <ks>launch{...}</ks> is used without parameters, it inherits the context 
+(and thus dispatcher) from the <tt>CoroutineScope</tt> it is being launched from. 
+Usually, it inherits the context of the main <ks>runBlocking</ks> coroutine which runs in the <tt>main</tt> thread.
+</div>
+</m> 
+</td>
+</tr>
+
+
+<tr>
+<td>
+<h3>runBlocking</h3> 
+<m><bc>runBlocking</bc> is a  <tt>Coroutine Builder</tt> wrapper that runs new coroutine and blocks current thread interruptibly until its completion. 
+<br/>
+Using <bc>launch</bc>, the coroutine is launched in the
+scope of the outer coroutine (that of <bc>runBlocking</bc> in this case). 
+</m>
+<pre>
+fun demoRunBlocking1(){ <kc>//user-option 6</kc>
+	<k>runBlocking</k> {
+		println("Before run2  ${curThread()}")
+		val job =  <k>launch</k>{ runBlockThread(2000)  }
+		println("Just after launch ${curThread()}")
+		<k>job.join()</k>
+		println("After job ${curThread()}")
+	}
+	println("Ends run2 ${curThread()}")
+}
+</pre> </td>
+<td><m>
+No <tt>Thread.sleep</tt> tis required now.  <br/>
+</m>
+
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=8 thread=main / nthreads=2  
+Before run2  thread=main / nthreads=2  
+Just after launch thread=main / nthreads=2  
+After job thread=main / nthreads=2  
+Ends run2 thread=main / nthreads=2  
+work done in time= 2031
+ENDS   thread=main / nthreads=2  
+>
+</pre>
+<m>
+Since we use <bc>launch</bc> instead of <bc>GlobalScope.launch</bc>, then the coroutine is launched in the
+scope of the outer <bc>runBlocking</bc> coroutine.
+<div class="remark">
+This is an example of  
+<a href="https://kotlinlang.org/docs/reference/coroutines/basics.html#structured-concurrency" target="web">structured concurrency</a>:
+coroutines confined to different scopes  are more maintainable and manageable.
+</div>
+<!-- <bc>runBlocking</bc>  is designed to bridge regular blocking code to libraries written in suspending style, 
+to be used in main functions and in tests. -->
+</m>
+</td>
+</tr>
+
+
+<tr>
+<td>
+
+<pre>
+fun demoRunBlocking2(){	<kc>//user-option 7</kc>
+	<k>runBlocking</k> {
+		println("Before run1 ${curThread()}")
+		<k>launch</k>{  runBlockThread(2000)  }
+		println("Just after launch ${curThread()}")
+	}
+	println("Ends run1 ${curThread()}")
+}
+</pre> 
+</td>
+<td><m>
+<br/>
+</m>
+
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=8 thread=main / nthreads=2  
+Before run1 thread=main / nthreads=2  
+Just after launch thread=main / nthreads=2  
+Ends run1 thread=main / nthreads=2  
+work done in time= 2023
+ENDS   thread=main / nthreads=2  
+>
+</pre>
+<m>
+The <tt>runBlocking</tt> won't complete before all of its 
+child coroutines finish.
+</m>
+</td>
+</tr>
+
+<tr>
+<td>
+
+<pre>
+fun scopeDemo (){	<kc>//user-option 3</kc>
+   thcounter=0
+	val scope = <k>CoroutineScope( Dispatchers.Default )</k>
+	println( <ks>scope.coroutineContext</ks> )
+	val job = <k>scope.launch</k>{
+		println("start coroutine 1 ${curThread()}")
+		runBlockThread(3000)
+		println("end coroutine 1 ${curThread()}")
+	}
+	//job.join()  
+<m>// should be called only from a coroutine or another suspend function</m>
+	<k>scope.launch</k>{
+		println("start coroutine 2 ${curThread()}")
+		<k>job.join()</k>
+		println("end coroutine 2 ${curThread()}")
+	}
+
+}
+</pre> </td>
+<td><m>
+The <b>runBlockThread</b> is now called in a new Coroutine scope. 
+</m>
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=8 thread=main / nthreads=2  
+<ks>[JobImpl{Active}@567d299b, DefaultDispatcher]</ks>
+start coroutine 1 thread=DefaultDispatcher-worker-1 / nthreads=5  
+work done in time= 35
+ENDS   thread=main / nthreads=5  
+start coroutine 2 thread=DefaultDispatcher-worker-2 / nthreads=6  
+>end coroutine 1 thread=DefaultDispatcher-worker-1 / nthreads=6  
+end coroutine 2 thread=DefaultDispatcher-worker-1 / nthreads=6  
+</pre>
+<m>
+</m>
+</td>
+</tr>
+
+<tr>
+<td>
+
+<pre>
+fun workTodo(i : Int) { println("hello $i ${curThread()}") }
+
+suspend fun runInScope(
+  <k>scope:CoroutineScope=CoroutineScope(<ks>Dispatchers.IO</ks>))</k>
+){
+   var job = mutableListOf<Job>()
+   for (i in 1..6){
+     job.add( <k>scope.launch</k>{ 
+		delay(1000L/i); 
+		workTodo(i) } )
+   }//for
+   <ks>job.forEach { it.join() }</ks>
+}
+
+@ObsoleteCoroutinesApi
+fun main() = runBlocking {
+  println("BEGINS CPU=$cpus ${curThread()}")
+  println("Run in current context ")
+  runInScope( this )
+  //println("Run in new context ")
+  //runInScope(   )
+  println("ENDS ${curThread()}")
+}
+</pre> </td>
+<td><h3>Example <a href="../app/src/main/kotlin/kotlindemo/demoScopeAndDispatcher.kt" target="code">demoScopeAndDispatcher.kt</a></h3> 
+<pre>
+<kc>//OUTPUT ( runInScope( this ) )</kc>
+BEGINS CPU=8 thread=main / nthreads=2  
+Run in current context 
+hello 6 thread=main / nthreads=2  
+hello 5 thread=main / nthreads=2  
+hello 4 thread=main / nthreads=2  
+hello 3 thread=main / nthreads=2  
+hello 2 thread=main / nthreads=2  
+hello 1 thread=main / nthreads=2  
+ENDS thread=main / nthreads=2  
+------------------------------
+<kc>//OUTPUT ( runInScope( ) )</kc>
+BEGINS CPU=8 thread=main / nthreads=2  
+Run in new scope 
+hello 6 thread=DefaultDispatcher-worker-8 / nthreads=11  
+hello 5 thread=DefaultDispatcher-worker-1 / nthreads=11  
+hello 4 thread=DefaultDispatcher-worker-1 / nthreads=12  
+hello 3 thread=DefaultDispatcher-worker-4 / nthreads=12  
+hello 2 thread=DefaultDispatcher-worker-8 / nthreads=12  
+hello 1 thread=DefaultDispatcher-worker-1 / nthreads=12  
+ENDS thread=main / nthreads=12 
+</pre>
+<m>
+</m>
+</td>
+</tr>
+
+
+</tbody>	
+</table></center>
+
+<h3>A closer look to coroutines</h3>
+From  <a href="https://medium.com/@elizarov/coroutine-context-and-scope-c8b255d59055"  target="web">Elizarov</a> we know that:
+<ul>
+ 
+
+<li>
+A coroutine is typically launched using 
+<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/launch.html"  target="web"><bc>launch</bc></a>
+coroutine builder:
+<pre>
+fun <k>CoroutineScope.launch</k>(		//<kc><a href="https://kotlinlang.org/docs/reference/extensions.html" target="web">Extension function</a> on CoroutineScope</kc>
+    <ks>context</ks>: CoroutineContext = EmptyCoroutineContext,		//<kc>parameter</kc>
+    // ...	
+): <k>Job</k>
+</pre>
+<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/launch.html"  target="web"><bc>launch</bc></a>
+ is defined as an <a href="https://kotlinlang.org/docs/reference/extensions.html" target="web">Extension function</a> of the
+<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/"  target="web">CoroutineScope</a> interface
+that consists of a sole property (<m><kc>val  coroutineContext: CoroutineContext</kc></m>).
+<br/><m>
+ <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/"  target="web">CoroutineScope</a>   merges (using the 
+ <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/plus.html"  target="web"><bc>plus</bc></a>
+operator of the context) the scope context with the <m><ks>context</ks></m> parameter, 
+whose elements are taking precedence over the elements from the scope context. The resulting context is the parent context of the new coroutine.</m>
+<br/>
+ The new coroutine creates its own child 
+<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-job/index.html" target="web">Job</a> instance (using a job from this context as its parent) 
+and defines its child context as a parent context plus its job.<br/>
+
+<center><img src="./img/coroutinesScopes.png" alt="coroutinesScopes.png" width="70%"/></center>
+<br/><br/></li>
+
+<li>
+By convention, a context in 
+<a href="https://kotlinlang.org/docs/reference/coroutines/coroutine-context-and-dispatchers.html#coroutine-scope"  target="web">CoroutineScope</a> 
+contains a <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-job/index.html" target="web">Job</a> 
+that is going to become a parent of new coroutine 
+(with the exception of <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-global-scope/" target="web">GlobalScope</a>
+that you should avoid anyway - see: 
+<a href="https://medium.com/@elizarov/the-reason-to-avoid-globalscope-835337445abc" target="web">The reason to avoid GlobalScope</a>).
+<br/><br/></li>
+
+ 
+<li>
+The difference between a context and a scope is in their intended purpose:
+	<ul>
+	<li>
+	The intended purpose of  <a href="https://kotlinlang.org/docs/reference/coroutines/coroutine-context-and-dispatchers.html#coroutine-scope"  target="web">CoroutineScope</a>
+	in <tt>launch</tt> and in all the other coroutine builders is to reference 
+	a scope in which new coroutine is launched.
+	</li>
+
+	<li>
+	The intended purpose of 
+	<m><kc>context:<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/coroutine-context.html"  target="web">CoroutineContext</a> </kc></m> parameter in launch is to provide additional context elements to override elements 
+	that would be otherwise inherited from a parent scope.
+	</li>
+	</ul>
+<br/></li> 
+<li>Every coroutine builder function (like <tt>launch</tt>, <tt>async</tt>, <tt>runBlocking</tt>, etc.) :
+	
+	<ul>
+	<li>is an extension on <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/"  target="web">CoroutineScope</a> interface
+	and inherits its abstract read-only property <tt>coroutineContext: CoroutineContext</tt> to  automatically propagate both context elements and cancellation.
+	<ul>
+		<li><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-global-scope/" target="web">GlobalScope</a>: the coroutine affects the whole Application</li>
+		<li><a href="https://kotlinlang.org/docs/reference/coroutines/coroutine-context-and-dispatchers.html#coroutine-scope"  target="web">CoroutineScope</a>: 
+		defines a scope for new coroutines</li>
+	</ul>
+	 </li>
+
+	<li>
+	accepts as parameter one of the main <em>Dispatcher</em> (<tt>Default, IO, newSingleThreadContext , Unconfined, Main</tt>)
+	 </li>
+
+	<li>	
+	  like every scoping function (<tt>coroutineScope, withContext</tt>, etc) 
+	  provides its own scope with its own 
+	  <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-job/index.html" target="web">Job</a>
+	  instance into the inner block of code it runs. <br/>
+	  By convention, they all wait for all the coroutines inside their block to complete before completing themselves, 
+	  thus enforcing the discipline of 
+	  <a href="https://elizarov.medium.com/structured-concurrency-anniversary-f2cc748b2401"  target="web"><k>structured concurrency</k></a>
+	  
+	  <m></m>.<br/><br/>
+	</li>
+	</ul>
+
+	<li>
+All the <tt>coroutine builder</tt> functions (<bc>launch</bc>,<bc>async</bc>,...) accept as parameter one of the
+following main Dispatchers:
+
+<ul>
+<li><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-default.html" target="web">
+<em>Default</em></a>: for CPU-intensive tasks. It can use as many threads as CPU cores.</li>
+<li><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-i-o.html" target="web">
+<em>IO</em></a>: IO-intensive tasks  waiting for an answer from another system. 
+The size of this thread pool is 64.</li>
+<li><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/new-single-thread-context.html" target="web">
+<em>newSingleThreadContext</em></a> creates a new thread for the coroutine to run.</li>
+<li><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-unconfined.html" target="web">
+<em>Unconfined</em></a>: not confined -- will work with main thread (don’t use it unless you’re very sure of what you’re doing).</li>
+<li><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-main.html" target="web">
+<em>Main</em></a>: a special dispatcher that is included in <tt>UI</tt> related coroutine libraries.
+
+</ul>
+	
+	</li>
+
+ 	</ul>
+	
+<center><table style="width:95%">
+<tbody>		
+
+<tr>
+<td>
+<pre>
+var thcounter=0
+var maxNumThread = 0;
+
+fun runBlockThread( delay : Long = 0L ){
+	Thread.sleep( delay )
+	val nt =  Thread.activeCount()
+	if( maxNumThread &lt nt )  maxNumThread = nt
+	thcounter++
+}
+
+val n=10000	<m><kc>//number of Thread or Coroutines to launch</kc></m>
+val k=1000	<m><kc>//times an action is repeated by each Thread or Coroutine</kc></m>
+
+fun <ks>manyThreads()</ks>{  <kc>//user-option 4</kc>
+	thcounter=0
+ 	val time = measureTimeMillis{
+		val jobs = List(n){
+		<ks>kotlin.concurrent.thread(start = true)</ks> {
+			repeat( k ){ runBlockThread() }
+ 		}
+		}
+		jobs.forEach{<k>it.join()</k>} <kc>//wait for termination of all threads</kc> 
+ 	}
+	println("manyThreads time= $time thcounter=$thcounter")
+}
+</pre> </td>
+<td>
+ <h3>Many Threads</h3> 
+
+<m>The function  <ks>manyThreads</ks> activates <tt>n=10000</tt> threads; each thread increments a global counter
+<tt>k=1000 times</tt>.</m>
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=4 thread=main | nthreads=2
+manyThreads time= <k>14811</k> counter=<k>9924712</k> maxNumThread=100 
+work done in time= 14812
+ENDS thread=main | nthreads=2
+</pre>
+<m>Question: why the final value of the <tt>thcounter</tt> is not <tt>n*k = 10000000</tt>?.
+</m>
+</td>
+</tr>
+
+
+<tr>
+<td>
+
+<pre>
+fun <ks>manyCoroutines()</ks>{	<kc>//user-option 5</kc>
+    //val d = newSingleThreadContext("single")
+	val d = <ks>newFixedThreadPoolContext(10,"d")</ks>
+	//val d = Dispatchers.Default
+	val <k>scope</k> = CoroutineScope( d )
+	var thcounter=0
+	
+	val time = measureTimeMillis {
+		val jobs = List(n) { <k>scope.launch</k>{ repeat(k) { runBlockThread() } } }
+		jobs.forEach { it.join() } <m><kc>//wait for termination of all coroutines</kc></m>
+	}
+	
+	println("manyCoroutines time= $time counter=$counter")
+ }
+</pre> </td>
+<td>
+ <h3>Many Coroutines</h3> 
+
+<m>The function  <ks>manyCoroutines</ks> activates <tt>n=10000</tt> coroutines; each coroutine increments a global counter
+<tt>k=1000 times</tt>.</m>
+<pre>
+<kc>//OUTPUT (Dispatchers.Default)</kc>
+BEGINS CPU=4 thread=main | nthreads=1
+work done in time= 11
+ENDS thread=main | nthreads=3
+>manyCoroutines time= <k>4271</k> thcounter=<k>9478141</k>  maxNumThread=14
+</pre>
+<m>The execution time is now much less than the case of using threads.</m>
+
+<pre>
+<kc>//OUTPUT (newSingleThreadContext)</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+work done in time= 9
+ENDS   thread=main / nthreads=3  
+>manyCoroutines time= 1397  thcounter=<k>10000000</k>  maxNumThread=<k>3</k> 
+</pre>
+<m>Question: why the final value of the <tt>thcounter</tt> is now <tt>n*k = <k>10000000</k></tt>?.
+</td>
+</tr>
+
+<tr>
+<td>
+<pre>fun scopeAsyncDemo(){  <kc>//user-option 8</kc>
+  val scope = CoroutineScope( Dispatchers.Default )
+  val <ks>res</ks> : Deferred&lt;String>   = <k>scope.async</k>{
+    println("async starts")
+    delay(2000) <kc>//See <a href="#delay">delay</a></kc>
+   "hello from async"
+  }
+  scope.launch{
+    println("starts to wait result")
+    val r = <k><ks>res</ks>.await()</k>; 
+	<kc>//must be called only from a coroutine or a suspend function</kc>	
+    println("result= ${r}")
+  }
+}
+</pre>
+</td>
+<td><h3><a href="https://kotlinlang.org/docs/coroutines-basic-jvm.html#async-returning-a-value-from-a-coroutine" target="web">Async: returning a value from a coroutine﻿</a></h3>
+<m><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/async.html" target="web">CoroutineScope.async</a>:
+creates a coroutine and returns its future result as an implementation of 
+<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-deferred/index.html" target="web">Deferred</a>.
+</m> 
+
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=8 thread=main / nthreads=2  
+async starts
+work done in time= 30
+ENDS   thread=main / nthreads=5  
+starts to wait result ...
+>result= hello from async
+</pre>
+
+</td>
+</tr>
+</tbody>	
+</table></center>
+
+	
+ 
+<h2><a id="dispatchers"/>Dispatchers</h2>
+<ul>
+<li>Coroutine dispatcher can confine coroutine execution to a specific thread, dispatch it to a thread pool, 
+or let it run unconfined.</li>
+<li>Coroutines can be executed concurrently using a multi-threaded dispatcher.</li>
+<li>Coroutines can suspend on one thread and resume on another thread.</li>
+</ul>
+
+
+The examples hereunder are reported in  <a href="../app/src/main/kotlin/kotlindemo/demoDispatchers.kt" target="code">demoDispatchers.kt</a>  
+(project <m><ks>it.unibo.kotlinIntro</ks></m>).<br/>
+
+<center><table style="width:95%">
+<tr>
+<td "width:45%">
+<pre><kc>@kotlinx.coroutines.ObsoleteCoroutinesApi
+@kotlinx.coroutines.ExperimentalCoroutinesApi</kc>
+fun testDispatchers(n : Int, scope: CoroutineScope) {
+        if( n== 1 ){
+            <ks>runBlocking</ks> {
+                 <k>launch</k> { <kc>//context of the parent runBlocking</kc>
+                     delay(500)
+                     println("1_a) runBlocking | ${curThread()}")
+                 }
+                <k>launch</k> { <kc>//context of the parent runBlocking</kc>
+                    println("1_b) runBlocking | ${curThread()}")
+                }
+            }
+        }
+        if( n== 2 ) {
+            val dispatcher = <ks>Dispatchers.Default</ks>
+            <k>scope.launch(dispatcher)</k> {
+                delay(500)
+                println("2_a) Default | ${curThread()}")
+            }
+            <k>scope.launch(dispatcher)</k> { 
+                println("2_b) Default | ${curThread()}")
+            }
+        }
+        if( n== 3 ){
+            val dispatcher = <ks>newSingleThreadContext("MyThr")</ks>
+            scope.launch( dispatcher ) {
+                delay(500)
+                 println("3-a) newSingleThreadContext | ${curThread()}")
+            }
+            scope.launch( dispatcher ) {
+                println("3-b) newSingleThreadContext | ${curThread()}")
+            }
+        }
+        if( n== 4 ) {
+            val dispatcher = <ks>Dispatchers.IO</ks>
+            scope.launch(dispatcher) {
+                delay(500)
+                println("4_a) Dispatchers.IO | ${curThread()}")
+            }
+            scope.launch(dispatcher) {
+                println("4_b) Dispatchers.IO | ${curThread()}")
+            }
+        }
+         if( n== 5 ) {
+            val dispatcher = <ks>Dispatchers.Unconfined</ks>
+            scope.launch(dispatcher) {
+                delay(500)
+                println("5_a) Unconfined | ${curThread()}")
+            }
+            scope.launch(dispatcher) {
+                println("5_b) Unconfined | ${curThread()}")
+            }
+        }
+        if( n== 6 ) { <kc>//Working in a new scope and in the given one</kc>
+            val <k>myscope</k> = <ks>CoroutineScope(Dispatchers.Default)</ks>
+            scope.launch { delay(1000); println("just to avoid premature main end") }
+            val job1 = <k>myscope.launch</k> {
+                delay(500)
+                println("2_a) Default | ${curThread()}")
+            }
+            <k>myscope.launch</k> {
+                 //job1.join()
+                 println("2_b) Default | ${curThread()}")
+            }
+        }
+        if( n== 7 ) {  <kc>//Working in a new scope only</kc>
+           val <k>myscope</k> = <ks>CoroutineScope(Dispatchers.Default)</ks>
+          <k>myscope.launch</k>{
+              delay(500)
+              println("2_a) Default | ${curThread()}")
+           }
+           <k>myscope.launch</k>{
+              println("2_b) Default | ${curThread()}")
+           }
+        }		
+} 
+
+</pre> </td>
+<td><m></m>
+<!-- Dkotlinx.coroutines.debug JVM option https://play.kotlinlang.org/koans/overview -->
+
+<pre>
+fun main(){
+    println("BEGINS CPU=$cpus ${curThread()}")
+    runBlocking {
+        testDispatchers(0, this)
+        //testDispatchers(1, this)
+        //testDispatchers(2, this)
+        //testDispatchers(3, this)
+        //testDispatchers(4, this)
+        //testDispatchers(5, this)
+        //testDispatchers(6, this)
+        //testDispatchers(7, this)
+    }
+    println("ENDS ${curThread()}")
+}</pre>
+<h3>Dispatchers</h3>
+<m>
+ <ul>
+<li><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-main.html" target="web">
+<em>Main</em></a>: included in <tt>UI</tt> related coroutine libraries.
+<li><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-default.html" target="web">
+<em>Default</em></a>: for CPU-intensive tasks. </li>
+<li><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/new-single-thread-context.html" target="web">
+<em>newSingleThreadContext</em></a> creates a new thread for the coroutine to run.</li>
+<li><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-i-o.html" target="web">
+<em>IO</em></a>: IO-intensive tasks  waiting for an answer from another system. </li>
+<li><a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-unconfined.html" target="web">
+<em>Unconfined</em></a>: not confined -- will work with main thread (don’t use it unless you’re very sure of what you’re doing).</li>
+
+</ul>	</m>
+<pre>
+<kc>//OUPUT (run one at the time)</kc>
+<kc>//testDispatchers(0, this)</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+0_b) runBlocking | thread=main / nthreads=2  
+0_a) runBlocking | thread=main / nthreads=2  
+ENDS thread=main / nthreads=2   
+
+<kc>//testDispatchers(1, this)</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+1_b) runBlocking | thread=main / nthreads=2  
+1_a) runBlocking | thread=main / nthreads=2  
+ENDS thread=main / nthreads=2  
+
+<kc>//testDispatchers(2, this)</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+2_b) Default | thread=DefaultDispatcher-worker-3 / nthreads=5  
+2_a) Default | thread=DefaultDispatcher-worker-1 / nthreads=6  
+ENDS thread=main / nthreads=6  
+
+<kc>//testDispatchers(3, this)</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+3-b) newSingleThreadContext | thread=MyThr / nthreads=3  
+3-a) newSingleThreadContext | thread=MyThr / nthreads=3  
+ENDS thread=main / nthreads=3  
+
+<kc>//testDispatchers(4, this)</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+4_b) Dispatchers.IO | thread=DefaultDispatcher-worker-2 / nthreads=5  
+4_a) Dispatchers.IO | thread=DefaultDispatcher-worker-1 / nthreads=7  
+ENDS thread=main / nthreads=7  
+
+<kc>//testDispatchers(5, this)</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+5_b) Unconfined | thread=main / nthreads=3  
+5_a) Unconfined | thread=kotlinx.coroutines.DefaultExecutor / nthreads=3  
+ENDS thread=main / nthreads=3  
+
+<kc>//testDispatchers(6, this)</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+2_b) Default | thread=DefaultDispatcher-worker-3 / nthreads=5  
+2_a) Default | thread=DefaultDispatcher-worker-1 / nthreads=6  
+just to avoid premature main end
+ENDS thread=main / nthreads=6  
+
+<kc>//testDispatchers(7, this)</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+2_b) Default | thread=DefaultDispatcher-worker-3 / nthreads=5  
+ENDS thread=main / nthreads=5 
+
+</pre>
+</td>
+</tr>
+
+</tbody>	
+</table></center>
+ 
+ <!--
+<h3>Experiments with Dispatchers</h3>
+
+
+The examples hereunder are reported in  <a href="../app/src/main/kotlin/kotlindemo/demoDispatcherPatterns.kt" target="code">demoDispatcherPatterns.kt</a>  
+(project <m><ks>it.unibo.kotlinIntro</ks></m>).<br/>
+
+<center><table style="width:95%">
+<tr>
+<td "width:45%">
+ <pre>
+fun action(i : Int) { println("hello $i ${curThread()}") }
+
+suspend fun launchWithDefault(i:Int, <ks>scope</ks>:CoroutineScope){
+    <ks>scope</ks>.launch( <k>Dispatchers.Default</k> ){ action(i) }
+}
+
+fun main() = runBlocking {
+	println("BEGINS CPU=$cpus ${curThread()}")
+    for (i in 1..6) <ks>launchWithDefault( i,this ) </ks>
+	println("ENDS ${curThread()}")	
+}
+</pre> </td>
+<td><h3>Dispatch.Default</h3>
+<m>The actions are executed by as many Threads as the CPU cores</m> 
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=8 thread=main | nthreads=1
+hello 1 thread=DefaultDispatcher-worker-1 | nthreads=4
+hello 2 thread=DefaultDispatcher-worker-1 | nthreads=4
+hello 3 thread=DefaultDispatcher-worker-1 | nthreads=4
+hello 4 thread=DefaultDispatcher-worker-2 | nthreads=4
+hello 5 thread=DefaultDispatcher-worker-2 | nthreads=6
+hello 6 thread=DefaultDispatcher-worker-1 | nthreads=6
+ENDS thread=main | nthreads=7
+</pre> 
+</td>
+</tr>
+
+<tr>
+<td><pre>
+suspend fun launchAction(i:Int,scope:CoroutineScope){
+	launchIO(i,scope)
+}
+suspend fun launchIO( i:Int,<ks>scope</ks>:CoroutineScope){
+    <ks>scope</ks>.launch( <k>Dispatchers.IO</k> ){ action(i) }
+}
+fun main() = runBlocking {
+	println("BEGINS CPU=$cpus ${curThread()}")
+    for (i in 1..10) <ks>launchWithDefault( i,this ) </ks>
+	println("ENDS ${curThread()}")	
+}
+
+</pre> </td>
+<td><h3>Dispatch.IO</h3>
+<m>The actions are executed by a pool of (<tt>64</tt>) Threads.</m> 
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=8 thread=main | nthreads=1
+hello 1 thread=DefaultDispatcher-worker-2 | nthreads=4
+hello 2 thread=DefaultDispatcher-worker-2 | nthreads=4
+hello 3 thread=DefaultDispatcher-worker-1 | nthreads=6
+hello 4 thread=DefaultDispatcher-worker-3 | nthreads=7
+hello 5 thread=DefaultDispatcher-worker-1 | nthreads=10
+hello 7 thread=DefaultDispatcher-worker-1 | nthreads=11
+hello 8 thread=DefaultDispatcher-worker-3 | nthreads=12
+hello 10 thread=DefaultDispatcher-worker-1 | nthreads=13
+hello 9 thread=DefaultDispatcher-worker-5 | nthreads=13
+ENDS thread=main | nthreads=13
+hello 6 thread=DefaultDispatcher-worker-6 | nthreads=13
+</pre> 
+</td>
+</tr>
+
+<tr>
+<td><pre>
+val th = <ks>newSingleThreadContext</ks>("My Thread")
+
+suspend fun launchAction(i:Int,scope:CoroutineScope){
+	launchSingle(i,scope)
+}
+suspend fun launchSingle(i:Int,scope:CoroutineScope){
+    scope.launch( th ){ action(i) }
+}
+
+fun main() = runBlocking {
+	println("BEGINS CPU=$cpus ${curThread()}")
+    for (i in 1..10) <ks>launchWithDefault( i,this ) </ks>
+	println("ENDS ${curThread()}")	
+}
+ 
+</pre> </td>
+<td><h3>Thread confinement </h3>
+<m>The actions are executed one a e time (in <tt>mutual exclusion</tt>).</m> 
+by a <bc>single thread</bc>
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=8 thread=main | nthreads=1
+hello 1 thread=My Thread | nthreads=2
+hello 2 thread=My Thread | nthreads=2
+hello 3 thread=My Thread | nthreads=2
+ENDS thread=main | nthreads=2
+hello 4 thread=My Thread | nthreads=2
+hello 5 thread=My Thread | nthreads=2
+hello 6 thread=My Thread | nthreads=2
+</pre> 
+</td>
+</tr>
+
+
+</tbody>	
+</table></center>
+-->
+
+<h2><a id="suspend"/>Suspending functions</h2>
+A suspending function is just a regular Kotlin function with an additional <bc>suspend</bc> modifier which indicates that 
+the function can suspend the execution of a coroutine. 
+<center><img src="./img/coroutineSuspend1.png" alt="coroutineSuspend1.png" width="40%"/></center>
+
+
+Suspending functions can invoke any other regular functions, but to actually suspend the execution, it has to be another suspending function.
+<br/><br/>
+The examples hereunder are reported in  <a href="../app/src/main/kotlin/kotlindemo/demoSuspended.kt" target="code">demoSuspended.kt</a>  
+(project <m><ks>it.unibo.kotlinIntro</ks></m>).
+<br/><br/>
+<!--
+The main program now waits for a command from the user to select the demo to run:
+<hr/>
+<pre>
+</pre>
+<hr/>
+-->
+<center><table style="width:95%">
+<tbody>	
+
+
+<tr>
+<td>
+<h3 id="delay">delay</h3> 
+<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/delay.html" target="web">Kotlin delay</a>
+is a special <i>suspending function</i> that does not block a thread, but suspends the work.
+<div class="remark"><m>
+A function that can <bc>suspend</bc> its work cannot be called from a normal function,
+but only from <k>another suspend</k> function or from a <em>Coroutine</em>.
+</m></div>
+</m> 
+<pre>
+<k>suspend</k> fun ioBoundFun(dt: Long = 1000L) : Long{
+	val <ks>time</ks> =  <b>measureTimeMillis</b>{
+		println("ioBoundFun | dt=$dt STARTS in ${curThread()}")
+		<k>delay</k>(dt)
+	}
+    val res = dt/10
+    println("ioBoundFun | dt=$dt res=$res ${curThread()} TIME=$time")
+    <ks>return res</ks>
+}
+
+fun main(){
+   println("BEGINS CPU=$cpus ${curThread()}")
+   run1()
+   //run2()
+   //run3()
+   println("ENDS ${curThread()}")
+}
+</pre> </td>
+<td>
+<pre>
+
+fun <k>run1()</k>{ <ks>runBlocking { ioBoundFun() }</ks> }
+
+<kc>//OUTPUT</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+ioBoundFun | dt=1000 STARTS in thread=main / nthreads=2  
+ioBoundFun | dt=1000 res=100 thread=main / nthreads=2   TIME=1017
+ENDS thread=main / nthreads=2     
+</pre>
+<hr/>
+<pre>
+fun <k>run2()</k>{
+	val <k>myScope</k>=<ks>CoroutineScope(newSingleThreadContext("single")</ks>)
+	<k>myScope.launch</k>{ ioBoundFun(500L) }
+	<ks>runBlocking</ks> { ioBoundFun() }
+	<k>myScope.launch</k>{ ioBoundFun(300L) }
+}
+
+<kc>//OUTPUT</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+ioBoundFun | dt=1000 STARTS in thread=main / nthreads=3  
+ioBoundFun | dt=500 STARTS in thread=single / nthreads=3  
+ioBoundFun | dt=500 res=50 thread=single / nthreads=3   TIME=506
+ioBoundFun | dt=1000 res=100 thread=main / nthreads=3   TIME=1003
+ENDS thread=main / nthreads=3  
+ioBoundFun | dt=300 STARTS in thread=single / nthreads=3    
+<kc>//!!! The main ends before the termination of the last ioBoundFun</kc> 
+</pre>
+
+ 
+
+</td>
+</tr>
+ 
+
+ <tr>
+<td>
+<h3>Coroutine builder <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/async.html" target="web"><k>async</k></a> </h3>
+<m>The 
+<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/async.html" target="web">async</a>
+coroutine builder creates new coroutine and returns a 
+<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/promise.html" target="web"><b>promise</b></a>, 
+(of type <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-deferred/" target="web">Deferred</a>
+in Kotlin): it promises to compute a value which we can wait for or  request at any time.
+</m>
+<pre>
+ fun activate(<ks>mainscope</ks> : CoroutineScope){
+  val <k>myscope</k> = CoroutineScope( <ks>newSingleThreadContext("t1")</ks>)
+  val job1 =  <k>myscope.async</k> { ioBoundFun(500L) }
+  val job2 = <k>myscope.async</k>{ ioBoundFun(300L) }
+  <ks>mainscope.launch</ks> {
+    if (!job1.isCompleted || !job2.isCompleted) println("Waiting for completion")
+    val end1 = <k>job1.await()</k> <kc>//only from a coroutine or another suspend</kc>
+    val end2 = <k> job2.await()</k> 
+    println("All jobs done; end1=$end1 end2=$end2")
+  }
+}
+
+</pre> </td>
+<td><m>
+<br/><br/>
+ The method <bc>await</bc> on the promise allows us to get the value.
+
+
+</m> 
+<pre>
+fun <k>run3()</k>{ <ks>runBlocking{ activate(this)  }</ks>}
+
+<kc>//OUPUT</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+ioBoundFun | dt=500 STARTS in thread=t1 / nthreads=3  
+ioBoundFun | dt=300 STARTS in thread=t1 / nthreads=3  
+Waiting for completion
+ioBoundFun | dt=300 res=3	0 thread=t1 / nthreads=3   TIME=309
+ioBoundFun | dt=500 res=50 thread=t1 / nthreads=3   TIME=513
+All jobs done; end1=50 end2=30
+ENDS thread=main / nthreads=3  
+</pre>
+
+<m>There is a laziness option to async using an optional start parameter with a value of <bc>CoroutineStart.LAZY</bc>. 
+It starts coroutine only when its result is needed by some await or if a start function is invoked.</m>
+<br/><br/>
+See also
+<a href="https://kotlinlang.org/docs/reference/coroutines/composing-suspending-functions.html" target="web">Composing Suspending Functions</a>
+</td>
+</tr>
+
+
+
+</tbody>	
+</table></center>
+
+ 
+<h2><a id="channels"/>Kotlin Channels</h2>
+<ul>
+<li>Kotlin <a href="https://kotlinlang.org/docs/reference/coroutines/channels.html" target="web">Channels</a>
+(see also
+<a href="https://play.kotlinlang.org/hands-on/Introduction%20to%20Coroutines%20and%20Channels/08_Channels" target="web">Kotlin Channels</a>
+in  <a href="https://play.kotlinlang.org/hands-on/overview" target="web">Kotlin Hands-On</a>)
+ provide a way to transfer a <tt>streams of values</tt>.
+ <center><img src="./img/UsingChannelManyCoroutines.png" alt=" UsingChannelManyCoroutines.png" width="70%"/></center>
+ <br/><br/></li>
+ 
+ <li>
+ A <a href=" https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.channels/-channel/index.html" target="web">
+ Channel</a> is conceptually very similar to <bc>BlockingQueue</bc>. 
+ One key difference is that instead of a blocking <tt>put</tt> operation it has a <bc>suspending send</bc>, 
+ and instead of a blocking <tt>take</tt> operation it has a <bc> suspending receive</bc>.
+ They are used for providing and consuming objects from the channel, implemented with a <tt>FIFO</tt>
+strategy.
+
+<center><img src="./img/liveCoroutine.gif" alt="liveCoroutine.gif" width="50%"/></center>
+
+
+  <br/><br/></li>
+ 
+ 
+<li>The sender is suspended when the channel is full
+and resumes as soon as the receiver consumes the data. This concept is often referred to as 
+<a href="https://www.reactivemanifesto.org/glossary#Back-Pressure" target="web"><bc>Backpressure</bc> (<i>Reactive Manifesto Glossary</i>) </a> 
+
+and helps to prevent a channel from being flooded with more elements than the receivers can actually process. 
+<br/><br/></li>
+<li>
+Kotlin defines several types of channels:
+<br/>
+
+	<em>Unbuffered Channels</em>:
+	<ul>
+	 <li><bc>RendezvousChannel</bc> (the buffer has capacity <tt>0</tt> and the sender suspends until the element is consumed)</li>
+	</ul>
+
+	<em>Buffered Channels</em>:
+	<ul>
+	<li><bc>LinkedListChannel</bc></li>
+	<li><bc>ArrayChannel</bc></li>
+	<li><bc>ConflatedChannel</bc> (the buffer has capacity <tt>1</tt> and the sender overrides an element not cosumed)</li>
+	</ul>
+</li>
+</ul>
+<hr/>
+The examples hereunder are reported in  <a href="../app/src/main/kotlin/kotlindemo/demoChannels.kt" target="code">demoChannels.kt</a>  (project <m><ks>it.unibo.kotlinIntro</ks></m>).
+<br/><br/>
+ 
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:45%"><pre>
+<k>suspend</k> fun channelTest(scope : CoroutineScope){
+val n = 5
+val <ks>channel</ks> = <k>Channel&ltInt>(2)</k> <kc>//ArrayChannel capacity=2 size=0</kc>
+
+     val sender = scope.launch {
+         println( channel )
+         <b>repeat( n )</b> {
+             <ks>channel</ks><k>.send( <ks>it</ks> )</k>
+             println("SENDER | sent $it in ${curThread()}")
+         }
+     }
+     
+	 <ks>delay(500)</ks> <kc>//The receiver starts after a while ...</kc>
+     
+	 val receiver = scope.launch {
+         <b>for( i in 1..n )</b> {
+             val v = <ks>channel</ks><k>.receive()</k>
+             println("RECEIVER | receives $v in ${curThread()}")
+         }
+     }
+}
+ 
+fun main() {
+    println("BEGINS CPU=$cpus ${curThread()}")
+    runBlocking {
+         <ks>channelTest</ks>(this)  
+        println("ENDS runBockig ${curThread()}")
+    }
+    println("ENDS main ${curThread()}")
+}
+ </pre> </td>
+<td><m>
+The example shows the usage of an <bc>ArrayChannel</bc> of capacity <tt>2</tt>. 
+</m>
+
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=8 thread=main / nthreads=2  
+<m>ArrayChannel@198e2867{EmptyQueue}(buffer:capacity=2,size=0)</m>
+SENDER | sent 0 in thread=main / nthreads=2  
+SENDER | sent 1 in thread=main / nthreads=2  
+ENDS runBockig thread=main / nthreads=2  
+RECEIVER | receives 0 in thread=main / nthreads=2  
+RECEIVER | receives 1 in thread=main / nthreads=2  
+RECEIVER | receives 2 in thread=main / nthreads=2  
+SENDER | sent 2 in thread=main / nthreads=2  
+SENDER | sent 3 in thread=main / nthreads=2  
+SENDER | sent 4 in thread=main / nthreads=2  
+RECEIVER | receives 3 in thread=main / nthreads=2  
+RECEIVER | receives 4 in thread=main / nthreads=2  
+ENDS main thread=main / nthreads=2 
+
+<kc>//OUTPUT wihout delay(500)</kc>
+BEGINS CPU=8 thread=main / nthreads=2  
+<m>ArrayChannel@2a098129{EmptyQueue}(buffer:capacity=2,size=0)</m>
+ENDS runBockig thread=main / nthreads=2  
+SENDER | sent 0 in thread=main / nthreads=2  
+SENDER | sent 1 in thread=main / nthreads=2  
+RECEIVER | receives 0 in thread=main / nthreads=2  
+RECEIVER | receives 1 in thread=main / nthreads=2  
+RECEIVER | receives 2 in thread=main / nthreads=2  
+SENDER | sent 2 in thread=main / nthreads=2  
+SENDER | sent 3 in thread=main / nthreads=2  
+SENDER | sent 4 in thread=main / nthreads=2  
+RECEIVER | receives 3 in thread=main / nthreads=2  
+RECEIVER | receives 4 in thread=main / nthreads=2  
+ENDS main thread=main / nthreads=2 
+
+</pre>
+
+
+</td>
+</tr>
+
+</tbody>	
+</table></center>
+<!--
+<div class="remark">
+Motto: Do not communicate by sharing memory; instead, share memory by communicating.
+</div>
+-->
+ 
+ 
+
+
+<h2><a id="kotlinprodcons"/>Producers-consumers in Kotlin</h2>
+
+<ul>
+<li>The pattern where a coroutine is  producing a sequence of elements is quite common. 
+This is a part of <em>producer-consumer pattern</em> that is often found in concurrent code. 
+You could abstract such a producer into a function that takes <bc>channel</bc> as its parameter, 
+<i>but this goes contrary to common sense that results must be returned from functions</i>.
+<br/><br/>
+</li>
+<li>There is a convenient coroutine builder named 
+<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.channels/produce.html"  target="web"><bc>produce</bc></a>
+ that makes it easy to do it right on producer side, 
+and an <a href="https://kotlinlang.org/docs/reference/extensions.html" target="web">Extension function</a>  
+<bc>consumeEach</bc>, that replaces a for loop on the consumer side.
+<br/><br/>
+</li>
+<li>The coroutine builder 
+<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.channels/produce.html"  target="web"><bc>produce</bc></a> 
+is associated with the channel that it sends elements to (a 
+<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.channels/-receive-channel/"  target="web"><bc>ReceiveChannel</bc> </a>
+interface) requires a specific <tt>CoroutineContext</tt> (as with <bc>launch</bc> or <bc>async</bc>) and works as follows:
+<ul>
+<li>suspends after a value is produced and  resumes when a new value is requested (similar to suspending sequences and iterators)</li>
+ 
+<li>the body of the suspending lambda that is passed can suspend at any point</li>
+<li>a value from a producer can only be received in a suspending computation </li>
+<li>the channel has <em>no buffer</em> by default; it is closed when the coroutine completes</li>
+</ul>
+</li>
+ 
+</ul>
+<m></m>
+ 
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:45%">
+<h3 id="produce">Coroutine builder 
+<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.channels/produce.html"  target="web"><bc>produce</bc></a></h3>
+<pre>
+val <ks>dispatcher</ks> = newSingleThreadContext("myThread")<kc>//Dispatchers.IO</kc> 
+<b>lateinit var</b> <ks>simpleProducer</ks> : <k>ReceiveChannel&lt;Int></k> 
+
+fun startProducer(<em>scope</em> : CoroutineScope ){
+ <ks>simpleProducer</ks> = <em>scope</em><k>.produce(<ks>dispatcher, capacity=0</ks>)</k>{<kc>//capacity=2</kc>
+   for( i in 1..4 ){
+     println("producer PRE -> $i  in  ${curThread()}")
+     <k>send( i )</k>
+     println("producer POST-> $i at ${System.currentTimeMillis()}")
+   }
+}
+
+<k>suspend</k> fun consume(){
+  val v = <ks>simpleProducer</ks>.<k>receive()</k>	<kc/>//Get the first</kc>
+  println( "consume- first ${v} at ${System.currentTimeMillis()} in ${curThread()}")
+  <ks>simpleProducer</ks>.<k>consumeEach</k> {
+     println( "consume- $it at ${System.currentTimeMillis()} in ${curThread()}" )
+  }
+}
+
+fun main() {
+    println("BEGINS CPU=$cpus ${kotlindemo.curThread()}")
+    runBlocking {
+        startProducer(this)
+        consume()
+        println("ENDS runBlocking ${kotlindemo.curThread()}")
+    }
+    println("ENDS main ${kotlindemo.curThread()}")
+}
+</pre>
+</td>
+<td>
+This example is reported in <a href="../app/src/prodCons/simpleProducerKotlin.kt" target="code">simpleProducerKotlin.kt</a>
+<hr/><m> 
+<ul>
+<li>The <k>ReceiveChannel</k> has <ks>only the receive method</ks>. It does not have a send method. 
+This means that another coroutine can only read from this output channel.
+</li>
+<li>The channel has <em>no buffer by default</em>; it is closed when the coroutine completes.</li>
+<li>The coroutine builder <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.channels/produce.html" target="web"><bc>produce</bc></a> 
+takes a suspending lambda as a parameter; only the code within this lambda can send items to the channel.
+</li>
+</ul>
+</m>
+ 
+<pre>
+<kc>//OUTPUT (singleThread, capacity=0)</kc>
+producer PRE -> 1  in  thread=myThread / nthreads=3  
+producer POST-> 1 at 1618394375343   
+producer PRE -> 2  in  thread=myThread / nthreads=3  
+consume- first 1 at 1618394375344 in thread=main / nthreads=3
+consume- 2 at 1618394375<ks>345</ks> in thread=main / nthreads=3
+producer POST-> 2 at 1618394375<ks>345</ks>   
+producer PRE -> 3  in  thread=myThread / nthreads=3  
+consume- 3 at 1618394375<k>346</k> in thread=main / nthreads=3
+producer POST-> 3 at 1618394375<k>346</k>   
+producer PRE -> 4  in  thread=myThread / nthreads=3  
+producer POST-> 4 at 1618394375346   
+consume- 4 at 1618394375351 in thread=main / nthreads=3
+ENDS runBlocking thread=main / nthreads=3  
+ENDS main thread=main / nthreads=3     
+
+<kc>//OUTPUT (singleThread, capacity=2)</kc>
+BEGINS CPU=8 thread=main / nthreads=2  
+producer PRE -> 1  in  thread=myThread / nthreads=3  
+producer POST-> 1 at 1618394697274   
+producer PRE -> 2  in  thread=myThread / nthreads=3  
+producer POST-> 2 at 1618394697274   
+producer PRE -> 3  in  thread=myThread / nthreads=3  
+consume- first 1 at 1618394697283 in thread=main / nthreads=3
+producer POST-> 3 at 1618394697<ks>285</ks>   
+producer PRE -> 4  in  thread=myThread / nthreads=3  
+consume- 2 at 1618394697<ks>285</ks> in thread=main / nthreads=3
+consume- 3 at 1618394697286 in thread=main / nthreads=3
+consume- 4 at 1618394697<k>286</k> in thread=main / nthreads=3
+producer POST-> 4 at 1618394697<k>286</k>  
+ENDS runBlocking thread=main / nthreads=3  
+ENDS main thread=main / nthreads=3  
+ 
+</pre>
+<m> </m>
+ 
+</td>
+</tr>
+
+<tr>
+<td>
+<h3>Many-type producer</h3>
+
+<pre>
+val <ks>context</ks> = newSingleThreadContext("myThread")
+<b>lateinit var</b> producer : <k>ReceiveChannel&lt;Any></k> <kc>//postponed initialization</kc> 
+
+fun createProducer(<ks>scope</ks> : CoroutineScope ){
+    producer = <k><ks>scope</ks>.produce(<ks>context</ks>, capacity=0)</k>{ <kc>//capacity=1</kc>
+		<k>send(5.2)</k>
+		println( "producer sent 5.2 in ${curThread()}")
+		<k>send("a")</k>
+		println( "producer sent a   in ${curThread()}")
+		<k>send(100)</k>
+		println( "producer sent 100 in ${curThread()}")
+   }
+}
+
+suspend fun doconsume(){
+	val v = <k><ks>producer</ks>.receive()</k>		<kc>//the first item</kc>
+	println( "doconsume receives1 $v in ${curThread()}")
+	<k><ks>producer</ks>.consumeEach</k> { 
+	println( "doconsume receives2 $it in ${curThread()}") }
+}
+
+fun main() {
+    println("BEGINS CPU=$cpus ${kotlindemo.curThread()}")
+    runBlocking {
+        createProducer(this);
+        doconsume()
+        println("ENDS runBlocking ${kotlindemo.curThread()}")
+    }
+    println("ENDS main ${kotlindemo.curThread()}")
+}
+
+</pre>
+</td>
+<td>
+This example is reported in <a href="../app/src/prodCons/prodConsKotlin.kt" target="code">prodConsKotlin.kt</a>
+<hr/>
+<br/> 
+
+<m>When channel <bc>capacity = 0</bc> (default), the output is:</m> 
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+doconsume receives1 5.2 in thread=main / nthreads=3
+producer sent 5.2 in thread=myThread / nthreads=3
+doconsume receives2 a in thread=main / nthreads=3
+producer sent a   in thread=myThread / nthreads=3
+doconsume receives2 100 in thread=main / nthreads=3
+producer sent 100 in thread=myThread / nthreads=3
+ENDS runBlocking thread=main / nthreads=3  
+ENDS main thread=main / nthreads=3 
+</pre>
+
+<m>When channel <bc>capacity = 1</bc>, the output is:</m>
+
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+producer sent 5.2 in thread=myThread / nthreads=3
+producer sent a   in thread=myThread / nthreads=3
+doconsume receives1 5.2 in thread=main / nthreads=3
+doconsume receives2 a in thread=main / nthreads=3
+doconsume receives2 100 in thread=main / nthreads=3
+producer sent 100 in thread=myThread / nthreads=3
+ENDS runBlocking thread=main / nthreads=3  
+ENDS main thread=main / nthreads=3  
+</pre>
+ 
+ 
+ 
+</td>
+</tr>
+
+<tr>
+<td style="width:45%">
+<h3>Many consumers</h3>
+<pre>
+val <ks>aProducer</ks>:<k>ReceiveChannel&lt;Int>=GlobalScope.produce</k>{
+    for( i in 1..3 ){
+        println( "aProducer produces $i in ${curThread()}")
+        <k>send( i )</k>
+    }
+}
+
+fun consumer1(scope: CoroutineScope){
+ <k>scope.launch</k>{
+	delay(100)
+	val v = <ks>aProducer</ks>.<k>receive()</k>
+	println( "consumer1 receives ${v} in ${curThread()}" )
+ }
+}
+fun consumer2(scope: CoroutineScope){
+ <k>scope.launch</k>{
+	for( i in 1..2 ) {
+	  val v = <ks>aProducer</ks>.<k>receive()</k>
+	  println("consumer2 receives ${v} in ${curThread()}")
+	  delay(100)
+	}
+ }
+}
+
+fun main() {
+    println("BEGINS CPU=${kotlindemo.cpus} ${kotlindemo.curThread()}")
+    runBlocking {
+        consumer1(this)
+        consumer2(this)
+        println("ENDS runBlocking ${kotlindemo.curThread()}")
+    }
+    println("ENDS main ${kotlindemo.curThread()}")
+}
+</pre>
+</td>
+<td>
+This example is reported in <a href="../app/src/prodCons/prodManyConsKotlin.kt" target="code">prodManyConsKotlin.kt</a>
+<br/><br/>
+
+<br/>The output is:</m>
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=12 thread=main / nthreads=5  
+aProducer produces 1 in thread=DefaultDispatcher-worker-1 / nthreads=5
+ENDS runBlocking thread=main / nthreads=5  
+consumer2 receives 1 in thread=main / nthreads=5
+aProducer produces 2 in thread=DefaultDispatcher-worker-1 / nthreads=5
+aProducer produces 3 in thread=DefaultDispatcher-worker-1 / nthreads=5
+consumer1 receives 2 in thread=main / nthreads=5
+consumer2 receives 3 in thread=main / nthreads=6
+ENDS main thread=main / nthreads=6 
+</pre>
+ 
+ 
+</td>
+</tr>
+
+</tbody>	
+</table></center>
+ 
+ 
+<h2><a id="actors"/><a href="https://kotlinlang.org/docs/reference/coroutines/shared-mutable-state-and-concurrency.html#actors" target="web">Kotlin Actors</a></h2>
+<!-
+Writing complex actors #87   https://github.com/Kotlin/kotlinx.coroutines/issues/87#issuecomment-317207589
+->
+Using coroutines and channels, we can build a system that encapsulate mutable state in a manner that do not need 
+any locks and synchronization and instead leverage a protocol of messages to handle concurrent updates of that state.
+Such a model is called an <bc>actor</bc>. <br/> 
+It is not a new concept, instead it has been around for years 
+(see <a href="https://en.wikipedia.org/wiki/Actor_model" target="web">Actor model</a> ) 
+and is the underlying concept of <a href="https://www.erlang.org/" target="web">Erlang</a>
+ and can also be used in Java and Scala using 
+<a href="https://doc.akka.io/docs/akka/current/typed/guide/introduction.html" target="web">Akka</a>.
+<ul>
+<li>An actor is an entity made up of a combination of a <em>coroutine</em>, the state that is confined and encapsulated into this coroutine, 
+and a <em>channel</em> to communicate with other coroutines. 
+<br/> <br/> </li>
+<li>The coroutine builder named  <k>actor</k> conveniently combines actor’s mailbox channel into its scope to receive messages from 
+and combines the send channel into the resulting job object, so that a single reference to the actor can be carried around as its handle.
+<br/><br/>  
+</li>
+<li>The <bc>actor</bc> <i>coroutine builder</i> <em>is a dual of</em> <bc>produce</bc> <i>coroutine builder</i>, 
+since a producer is associated with the channel that it <i>sends</i> elements to.
+<br/><br/>
+</li>
+<li>This combination of actor-related mechanisms opens the way to the concept of <em>state share by communication</em>.
+</li>
+</ul>
+<m>
+</m>
+
+<h3>An example</h3>
+<br/>
+<center><table style="width:95%">
+<tbody>	
+
+<tr>
+<td style="width:50%"><pre>
+var <k>dispatcher</k>    = <ks>newSingleThreadContext</ks>("single")
+<b>lateinit var</b> <ks>receiverActor</ks> : <k>SendChannel&lt;String></k> 
+
+fun startReceiver( <k>scope</k> : CoroutineScope){
+	receiverActor = <ks><k>scope</k>.actor&lt;String></ks>(<k>dispatcher</k>, <ks>capacity = 2</ks>) {  
+		<kc>//actor is a coroutine builder (dual of produce)</kc>
+		println("receiverActor STARTS")
+		delay(500)	<kc>//time of initialization ...</kc>
+		var msg = <em>channel</em><k>.receive()</k>
+		while( msg != "end"){
+		    delay(500)  <kc>//time to elaborate the msg ...</kc>
+			println("receiverActor receives $msg ${curThread()}")
+			msg = <em>channel</em><k>.receive()</k>
+		}
+		println("receiverActor ENDS ${curThread()}")
+	}
+}
+
+<div class="remark"> 
+<em>channel</em> is a reference to the mailbox channel 
+that this coroutine receives messages from.
+It is provided for convenience, so that the code 
+in the coroutine can refer to the channel
+as <em>channel</em> as apposed to <k>this</k>.
+ </div>
+
+fun startSender( ){
+    val <k>myScope</k> = CoroutineScope(<k>dispatcher</k>)
+	<kc>//</>myScope</k>.launch{	//(1) </kc>
+	val senderActor = <ks><k>myScope</k>.actor&lt;String></ks>{   <kc>//(2)</kc>
+		println("senderActor STARTS")
+		for( i in 1..4 ) {
+			<k><ks>receiverActor</ks>.send</k>("Hello$i")
+			println("sender has sent Hello$i ${curThread()}")
+		}
+		<k><ks>receiverActor</ks>.send</k>("end")
+		println("sender ENDS ${curThread()}" )
+ 	}
+}
+
+fun main() {
+	println("BEGINS CPU=$cpus ${curThread()}")
+	runBlocking {
+		startReceiver(this)
+		startSender()
+		println("ENDS runBlocking ${curThread()}")
+	}
+	println("ENDS main ${curThread()}")
+}
+</pre>
+
+</td>
+<td>
+This example is reported in  <a href="../app/src/main/kotlin/kotlindemo/demoActors.kt" target="code">demoActors.kt</a>.
+<br/>
+
+<center><img src="./img/demoActor0.png" alt="demoActor0.png" width="70%"/></center>
+<m>This picture is related to case <kc>(2)</kc>, when also the sender is modelled as an actor.
+Both actors run within the same thread.
+<br/><br/>
+A Kotlin (experimental) 
+<a href="https://kotlinlang.org/docs/reference/coroutines/shared-mutable-state-and-concurrency.html#actors" target="web">actor</a>:
+<ul>
+<li>has type (interface) <bc>SendChannel&ltT></bc>, where <bc>T</bc> is the type of message it can handle </li>
+<li>confines the access of its state to a single <bc>Coroutine</bc></li>
+<li>is associated with the <em>channel</em>
+<!-- <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.channels/-channel/" target="web"><bc>channel</bc></a> NO -->
+(<tt>unbuffered</tt> by default ) that it receives messages from </li>
+<li>modifies the state by handling the messages received on its <em>channel</em>
+<li>works in a message-driven way</li>
+</ul>
+</m>
+<pre>
+<kc>//OUTPUT (receiver capacity=2) </kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+receiverActor STARTS
+ENDS runBlocking thread=main / nthreads=3  
+sender STARTS
+sender has sent Hello1 thread=single / nthreads=3  
+sender has sent Hello2 thread=single / nthreads=3  
+sender has sent Hello3 thread=single / nthreads=3  
+receiverActor receives Hello1 thread=single / nthreads=3  
+sender has sent Hello4 thread=single / nthreads=3  
+receiverActor receives Hello2 thread=single / nthreads=3  
+sender ENDS thread=single / nthreads=3  
+receiverActor receives Hello3 thread=single / nthreads=3  
+receiverActor receives Hello4 thread=single / nthreads=3  
+receiverActor ENDS thread=single / nthreads=3  
+ENDS main thread=main / nthreads=3  
+
+<kc>//OUTPUT (receiver capacity=0) </kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+receiverActor STARTS
+ENDS runBlocking thread=main / nthreads=3  
+sender STARTS
+sender has sent Hello1 thread=single / nthreads=3  
+receiverActor receives Hello1 thread=single / nthreads=3  
+sender has sent Hello2 thread=single / nthreads=3  
+receiverActor receives Hello2 thread=single / nthreads=3  
+sender has sent Hello3 thread=single / nthreads=3  
+receiverActor receives Hello3 thread=single / nthreads=3  
+sender has sent Hello4 thread=single / nthreads=3  
+receiverActor receives Hello4 thread=single / nthreads=3  
+receiverActor ENDS thread=single / nthreads=3  
+sender ENDS thread=single / nthreads=3  
+ENDS main thread=main / nthreads=3 
+</pre>
+</td>
+</tr>
+
+ 
+</tbody>	
+</table></center>
+
+
+
+<h3>An actor working as a counter</h3>
+ 
+<ul>
+
+<li>The first step of using an actor usually consists in defining a <bc>class of messages</bc> that an actor is going to process.
+Kotlin's <a href="https://kotlinlang.org/docs/reference/sealed-classes.html"  target="web"><m><k>sealed classes</k></m></a> are well suited for that purpose. However,
+In the next example, we will use a conventional class (<m><ks>CounterMsg</ks></m>).<br/><br/>
+</li>
+<li>The class <m><ks>CounterMsg</ks></m> defines a field of interface 
+<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-completable-deferred/" target="web"><m><k>CompletableDeferred</k></m></a>.
+It is a 
+<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-deferred/" target="web"><m><k>Kotlin Deferred</k></m></a> 
+that can be completed via public functions <bc>complete</bc> or <bc>cancel</bc>.
+All functions on this interface and on all interfaces derived from it, are <bc>thread-safe</bc> and can be safely invoked 
+from concurrent coroutines without external synchronization.<br/><br/>
+</li>
+
+
+<li>We will use also (in function <tt>sendManyMessages</tt>) an 
+<a href="https://kotlinlang.org/docs/reference/extensions.html" target="web">
+<bc>Extension function</bc></a> on <tt>CoroutineScope</tt> that 
+launches <tt>n</tt> coroutines all doing the same action <tt>k</tt> times and measures the completion time:
+<pre>
+suspend fun <k>CoroutineScope.manyRun</k>( action: <k>suspend () -> Unit</k> ) {
+    val n=100		<kc>//number of coroutines to launch</kc>
+    val k=1000		<kc>//times an action is repeated by each coroutine</kc>
+    val time = measureTimeMillis {
+        val jobs = List(n) {	<kc>//launch 100 coroutines</kc>
+            <k>launch</k> { repeat(k) { action() }  } <kc>//each doing 1000 (inc) action</kc>
+        }
+        jobs.forEach { it.join() } <kc>//wait for termination of all coroutines</kc>
+    }
+    println("Completed ${n * k} actions in $time ms")
+}
+</pre>
+</li>
+</ul>
+ 
+
+
+<m></m>
+<br/>
+This example is reported in  <a href="../app/src/main/kotlin/kotlindemo/demoActorCounter.kt" target="code">demoActorCounter.kt</a>  (project <m><ks>it.unibo.kotlinIntro</ks></m>).
+<br/><br/> 
+
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:55%">
+<pre>
+class <kc>CounterMsg</kc>(
+	val cmd:String,
+	val response: <k>CompletableDeferred&ltInt></k>?<ks>=null</ks>){
+}
+
+fun <ks>createCounter</ks>(<k>scope</k> : CoroutineScope):<k>SendChannel&ltCounterMsg></k>{
+ val counterActor = <k>scope</k><ks>.actor&lt;<kc>CounterMsg</kc>></ks> {
+	var k = 0 	<kc>//actor state</kc>
+	for (<k>msg <ks>in</ks> channel</k>) { <kc>// iterate over incoming messages</kc>
+	    if( k>0 && k % 10000 == 0  && msg.cmd != "GET" )
+		<m>println("${msg.cmd} | $k in ${curThread()} full=${channel.isFull}")</m>
+		when ( msg.cmd ) {
+			<ks>"INC"</ks> -> k++
+			<ks>"DEC"</ks> -> k--
+			<ks>"GET"</ks> -> <k>msg.response?.complete</k>(k)
+			<ks>"END"</ks> -> {println("counter closing ...");<k>channel.close()</k>}		
+			else -> throw Exception( "unknown" )
+		}
+	  }
+	}
+ return counterActor
+}
+
+<k>suspend</k> fun <ks>showValue</ks>(<ks>counterActor</ks>: <k>SendChannel&lt;CounterMsg></k>){
+    val <em>cVal</em> = <b>CompletableDeferred&lt;Int></b>()
+    <ks>counterActor</ks>.<k>send</k>(<kc>CounterMsg</kc><ks>("GET", <em>cVal</em>))</ks>
+    println("Counter VALUE=${<k><em>cVal</em>.await()</k>}")<kc>//wait for completion</kc>	
+}
+<!--
+<k>suspend</k> fun <ks>sendManyMessages</ks>( <ks>scope</ks> : CoroutineScope, 
+		<ks>counterActor</ks>: SendChannel&lt;CounterMsg>){
+    <ks>scope</ks>.<k>manyRun</k> {<ks>counterActor</ks>.<k>send</k>( <kc>CounterMsg</kc><ks>("INC")</ks>)}
+}
+-->
+fun main(){
+  println("BEGINS CPU=$cpus ${curThread()}")
+  <k>runBlocking</k>{
+	val <ks>counter</ks> = createCounter( this )
+	showValue( <ks>counter</ks> ) <kc>//initial value</kc>
+
+	<!-- sendManyMessages(this, <ks>counter</ks>) -->
+	<k>manyRun</k> {<ks>counter</ks>.send( CounterMsg("INC"))}
+	
+	showValue( <ks>counter</ks> )
+	
+	<kc>//TERMINATE THE COUNTER</kc>
+	<ks>counter</ks>.<k>send</k>( CounterMsg(<ks>"END"</ks>) )
+	println("JOIN ${curThread()}")
+	<k>(counter as Job).join()</k>	<kc>//WAIT for counter termination</kc>
+	<kc>//<ks>counter</ks>.close() //shutdown the actor</kc>
+
+    println("ENDS runBlocking ${curThread()}")
+  }
+  println("ENDS main ${curThread()}")
+}
+</pre>
+<m></m> 
+</td>
+<td>
+<center><img src="./img/demoActorCounter.png" alt="demoActorCounter.png" width="50%"/></center>
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+Counter VALUE=0
+counter INC | 10000 in thread=main / nthreads=2   full=true
+counter INC | 20000 in thread=main / nthreads=2   full=true
+counter INC | 30000 in thread=main / nthreads=2   full=true
+counter INC | 40000 in thread=main / nthreads=2   full=true
+counter INC | 50000 in thread=main / nthreads=2   full=true
+counter INC | 60000 in thread=main / nthreads=2   full=true
+counter INC | 70000 in thread=main / nthreads=2   full=true
+counter INC | 80000 in thread=main / nthreads=2   full=true
+counter INC | 90000 in thread=main / nthreads=2   full=true
+Completed 100000 actions in 147 ms
+Counter VALUE=100000
+JOIN thread=main / nthreads=2  
+counter END | 100000 in thread=main / nthreads=2   full=true
+counter closing ...
+ENDS runBlocking thread=main / nthreads=2  
+ENDS main thread=main / nthreads=2  </pre>
+
+<h3>Actor termination</h3>
+<m>
+Note that the actor <k>counter</k> can be terminated:
+<ul>
+<li>From the inside, e.g.  : <k>channel.close()</k></li>
+<li>From the outside, e.g. : <k>counter.close()</k></li>
+</ul>
+Moreover, we can await for actor termination by writing<br/>
+<k>(counter as Job).join()</k>
+</m> 
+</td>
+</tr>
+</tbody>	
+</table></center>
+<!--
+A simple actor can be written as a function, but an actor with a complex state  is better suited for a class.<br/>
+-->
+
+ 
+<div class="remark">
+<hr/>
+Now it is time to exploit kotlin actors to interact with our (virtual) robot: <a href="FirstActorRobot2021.html">FirstActorRobot2021.html</a>. 	
+
+<center><img src="./img/robotActorTry.png" alt="robotActorTry.png" width="80%"/></center>
+
+<hr/>
+</div>
+ 
+<h2 id="sequences">SEQUENCES (SUSPENDABLE)</h2> 
+
+The examples hereunder are reported in  <a href="../app/src/main/kotlin/kotlindemo/demoSequences.kt" target="code">demoSequences.kt</a>  (project <m><ks>it.unibo.kotlinIntro</ks></m>).
+<br/><br/>
+
+<center><table style="width:95%">
+<tbody>	
+ <tr>
+<td style="width:45%">
+<pre>
+data class APerson(val name: String, val age: Int)
+
+val <ks>persons</ks> = listOf(
+    APerson("Peter", 16),
+    APerson("Alice", 23),
+    APerson("Anna",  25),
+    APerson("Anna",  28),
+    APerson("Sonya", 39)
+)
+
+val names = <ks>persons</ks><k>.asSequence()</k>
+    .filter { it.age > 18 }
+    .map { it.name }
+    .distinct()
+    .sorted()
+    .toList()
+
+fun testSequence(){
+ 	println(names)
+}
+	
+fun main(){
+    println("BEGINS CPU=$cpus ${curThread()}")
+	<m>println( "work done in time= ${measureTimeMillis({testSequence()})}")</m>
+    println("ENDS ${curThread()}")
+}	
+</pre>
+</td>
+<td>
+<h3>Sequences</h3>
+<m>are a key abstraction to functional programming in Kotlin, a concept quite similar to <tt>Java 8</tt> <em>Streams</em>.
+They represent <bc>lazily evaluated collections</bc>.  
+See <a href="https://winterbe.com/posts/2018/07/23/kotlin-sequence-tutorial/" target="web">Kotlin Sequence Tutorial</a>.
+<br/><br/>
+</m>
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=8 thread=main | nthreads=2
+[Alice, Anna, Sonya]
+work done in time= 0
+ENDS thread=main | nthreads=2
+</pre>
+<m>Sequences are <bc>stateless</bc> and they reset after being used.</m>
+</td>
+</tr>
+
+<tr id="yield">
+<td>
+<pre>
+val fiboSeq = sequence{
+    var a = 0
+    var b = 1 
+    println("fibonacciSeq yield-first: 1 ")	
+    <k>yield(1)</k>   <kc>//first</kc>
+    while (true) {
+        println("fibonacciSeq yield: ${a + b} ")	
+        <k>yield(a + b)</k>   <kc>//next</kc>
+        val tmp = a + b
+        a = b
+        b = tmp
+    }
+}
+
+fun useFibonacciSeq(){
+    val v1 = <k>fibonacciSeq.elementAt(1)</k>
+    println("element at 1=$v1")
+	
+    val v2 = <k>fibonacciSeq.elementAt(2)</k>
+    println("element at 1=$v2")
+	
+    val <ks>firstNums</ks> = <k>fibonacciSeq.take(5)</k>  <kc>//calculated later</kc> 
+    println("firstNums=${firstNums}") 
+			<kc>//kotlin.sequences.TakeSequence@...</kc>
+	
+    val v10 = <k>fibonacciSeq.elementAt(10)</k>
+    println("element at 10=$v10")	
+	
+    println("firstNums=${<k><ks>firstNums</ks>.joinToString()</k>}")	
+	
+}
+
+fun testSequence(){
+ 	useFibonacciSeq()
+}
+fun main(){
+    println("BEGINS CPU=$cpus ${curThread()}")
+	<m>println( "work done in time= ${measureTimeMillis({testSequence()})}")</m>
+    println("ENDS ${curThread()}")
+}
+</pre> 
+</td>
+
+<td>
+<h3>Suspendable Sequences</h3>
+<m>A <em>suspend function</em> can suspend its execution while waiting for the execution of one or more computations to happen.
+<br/>
+Instead, 
+<div class="remark">
+a <em>suspendable sequence</em> is a coroutine builder that can suspend between invocation by using the <bc>yield()</bc> function.
+</div>
+<br/>
+</m>
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=12 thread=main / nthreads=2  
+fibonacciSeq yield first: 1 
+fibonacciSeq yield 1 
+<b>element at 1=1</b>
+fibonacciSeq yield first: 1 
+fibonacciSeq yield 1 
+fibonacciSeq yield 2 
+<b>element at 2=2</b>
+firstNums ... kotlin.sequences.TakeSequence@7006c658
+fibonacciSeq yield-first: 1 
+fibonacciSeq yield: 1 
+...
+fibonacciSeq yield: 89 
+<b>element at 10=89</b>
+fibonacciSeq yield first: 1 
+fibonacciSeq yield 1 
+fibonacciSeq yield 2 
+fibonacciSeq yield 3 
+fibonacciSeq yield 5 
+<b>firstNums=1, 1, 2, 3, 5</b>
+work done in time= 8
+ENDS thread=main / nthreads=2 </pre>
+
+
+</m> 
+</td>
+</tr> 
+
+</tbody>	
+</table></center>
+
+ 
+<h2><a id="classes"/>Classes and Objects in Kotlin</h2>
+The examples hereunder are reported in  <a href="../app/src/main/kotlin/kotlindemo/demoClasses.kt" target="code">demoClasses.kt</a>  (project <m><ks>it.unibo.kotlinIntro</ks></m>).
+<br/><br/>
+
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td>
+
+<h3>Java static</h3>
+Let us introduce a static class in Java:
+<pre>
+public class SingleCounter {
+    private <k>static</k> int counter = 0;
+    public <k>static</k> int value(){ return counter;}
+    public <k>static</k> void inc(){ counter++ ;}
+    public <k>static</k> void dec(){ counter-- ;}
+    public <k>static</k> void reset(){ counter = 0 ;}
+}
+</pre> 
+</td>
+<td>
+<h3  id="kotlinObject">Java to Kotlin: object </h3>
+The equivalent in Kotlin is:
+<pre>
+<k>object</k> <ks>SingleCounter</ks> {
+    private var counter = 0
+    fun value(): Int { return counter }
+    fun inc() { counter++ }
+    fun dec() { counter-- }
+    fun reset() { counter = 0 }
+}
+</pre>
+<m>The conversion form Java to Kotlin can be done automatically by using
+<a href="https://www.jetbrains.com/idea/" target="web">IntelliJ IDEA</a> </m>
+<br/><br/>
+<m><bc>Object</bc>: defines a singleton object. No constructor allowed. Instance created immediately. </m> </td>
+</tr>
+
+<tr>
+<td><h3>Using Kotlin Object</h3>
+<pre>
+fun p2( c:<ks>SingleCounter</ks> ) : Int { 
+	return c.value()*c.value() }
+
+fun testObject(){
+    val c = <ks>SingleCounter</ks>
+    val d = <ks>SingleCounter</ks>
+    for( i in 1..3 ) c.inc()
+    val v = p2( <ks>SingleCounter</ks> )
+    println("testObject | 
+	 c=${<k>c.value()</k>} d=${<k>d.value()</k>} 
+	 obj=${<k><ks>SingleCounter</ks>.value()</k>} v=$v")
+    <k><ks>SingleCounter</ks>.reset()</k>
+    println("testObject | 
+	  c=${<k>c.value()</k>} d=${<k>d.value()</k>} 
+	  obj=${<k><ks>SingleCounter</ks>.value()</k>}")	
+}
+
+fun main(){
+    println("BEGINS CPU=$cpus ${curThread()}")
+    println( "work done in time= ${measureTimeMillis({testObject()})}")	
+    println("ENDS ${curThread()}")
+}
+</pre> </td>
+<td>
+<m>An object is singleton without state; it can be used as a regular object</m>
+<pre>
+<bc>//OUPUT</bc>
+BEGINS CPU=4 thread=main | nthreads=1
+testObject | c=3 d=3 obj=3 v=9
+testObject | c=0 d=0 obj=0
+work done in time= 0
+ENDS thread=main | nthreads=1
+</pre>
+ </td>
+</tr>
+
+
+
+<tr>
+<td style="width:45%"> 
+<h3>Java class</h3>
+Let us introduce a conventional class in Java:
+<pre>
+public class Person {
+    private final String name;			<kc>//Java field</kc>
+    private int age=0;				<kc>//Java field</kc>
+    private boolean isMarried = false;	<kc>//Java field</kc>
+    public Person(String name){ this.name = name; }
+    public String getName(){ return name;  }
+    public int getAge(){ return age;  }
+    public void incAge(){ age++;  }
+    public boolean getIsMarried(){ return isMarried;  }
+    public void setIsMarried(boolean v){ isMarried=v;  }
+}
+<kc>
+------------------------------------------------------------
+KOTLIN syntax for properties
+------------------------------------------------------------</kc>
+<ks>var &lt;propertyName>[: &lt;PropertyType>] 
+				[= &lt;property_initializer>]
+    [&lt;getter>]
+    [&lt;setter>]
+</ks>
+The initializer, getter and setter are optional.
+</pre> 
+
+</td>
+<td><h3 id="kotlinclass">Java to Kotlin: class </h3>
+
+<m>The result of automatic conversion done by the <a href="https://www.jetbrains.com/idea/" target="web">IntelliJ IDEA</a> is:</m>
+<center><img src="./img/PersonKotlin.png" alt="PersonKotlin" width="100%" ></center>
+
+<h3>Kotlin properties</h3>
+<m>While Java stores class data into <em>fields</em>, classes in Kotlin do introduce <em>properties</em> 
+(<tt>fields</tt> together with <tt>accessors</tt> methods) as a first-class language feature 
+(see <a href="https://kotlinlang.org/docs/reference/properties.html" target="web">Kotlin Properties and Fields</a>). 
+Note that:
+<ul>
+<li>properties that stores a value</li>
+<li>properties with <bc>custom accessors</bc> that calculates values at each access</li>
+<li>Properties are defined by their accessors. A property does not need to include any field at all. </li>
+<li>When we define custom accessors that are not using any field, then the field is not generated.
+This is why we can use 
+<a href="https://kotlinlang.org/docs/reference/delegated-properties.html" target="web"><bc>property delegation</bc></a>.
+</li>
+</ul></m>
+</td>
+</tr>
+
+
+
+<tr>
+<td><h3 id="kotlinclassuse">Using Kotlin Class</h3>
+<pre>
+<k>class</k> Person(val name: String) { <kc>//Primary constructor</kc>
+    var age : Int = 0     		<kc>//Kotlin property</kc>
+       <k>set</k>( value ){
+	      if(value < 0) println("ERROR: age value wrong")
+		  else field = value	<bc>//backing field</bc>
+      }
+   var married = false   		<kc>//Kotlin property</kc>
+      <k>set</k>( value ){
+      if(value && age < 14) println("WARNING:too young for marriage")
+		<kc>//else married = value  //WRONG!! Stack overflow</kc>
+		else <k>field =</k> value
+      }
+   val isAdult: Boolean
+      <k>get</k>(){ return age >= 18}	<kc>//custom getter</kc>
+}
+
+fun testClass(){
+	println("------ testClass ")
+    val p1 = Person("Bob")		 <kc>//no new</kc>
+    p1.age=20
+    println( "name=${p1.name}, age=${p1.age}, "+
+  	  " married=${p1.married} adult=${p1.isAdult} ")
+    val p2 = Person("Alice")	<kc>//no new</kc>
+    p2.age = 15
+    println( "name=${p2.name}, age=${p2.age}, " +
+	" married=${p2.married} adult=${p2.isAdult} ")
+    val p3 = Person("Bob")
+    p3.age= p1.age
+    println( "equals:  ${p1.equals(p3)}" )	<kc>//false</kc>
+    println( "==:      ${p1 == p3}" )		<kc>//false</kc>
+    println( "===:     ${p1 === p3}" )		<kc>//false</kc>
+}
+
+fun main(){
+    println("BEGINS CPU=$cpus ${curThread()}")
+    println( "work done in time= ${measureTimeMillis({testClass()})}")	
+    println("ENDS ${curThread()}")
+}
+</pre> </td>
+<td>
+<h3>Rules</h3>
+<ul>
+<li>Classes in Kotlin <b>cannot have static members</b>.</li>
+<li>A <a href="https://www.tutorialspoint.com/kotlin/kotlin_constructors.htm" target="web"><bc>Primary constructor</bc></a>
+	<ul>
+	<li>specifies constructor parameters</li>
+	<li>defines properties initialized by those parameters</li>
+	</ul>
+	</li>
+<li>Custom <a href="http://kotlin-quick-reference.com/101-R-getter-setter-properties.html" target="web"><bc> getter accessors</bc></a>
+: allows us to implement a computed property </li>
+<li>Custom <a href="http://kotlin-quick-reference.com/101-R-getter-setter-properties.html" target="web"><bc> setter accessors</bc></a>
+: it is called every time we assign a value to the property.</li>
+</ul>
+ 
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=4 thread=main | nthreads=1
+name=Bob, age=20,  married=false adult=true 
+name=Alice, age=15,  married=false adult=false 
+equals:  false
+==:      false
+===:     false
+work done in time= 2
+ENDS thread=main | nthreads=1
+</pre>
+
+<h3 id="backingfield">Backing field</h3>
+<ul>
+<li>Fields cannot be declared directly in Kotlin classes.
+<m>However, when a property needs a backing field, Kotlin provides it automatically.</m></li>
+<li>A <em>backing field</em>  is a field <i>generated</i> by the compiler <m>if we reference it explicitly 
+or if we use the default accessor implementation.</m>
+</li>
+<li>The special identifier <bc>field</bc> is used to access the backing field.</li>
+</ul>
+ 
+
+ 
+
+</td>
+</tr>
+
+<tr>
+<td>
+<h3 id="propdeleg"><a href="https://kotlinlang.org/docs/reference/delegated-properties.html" target="web"><k>Property delegation</k></a></h3>
+<pre>
+class ExampleDelegate {
+    var p: String  <k>by</k> <ks>Delegate</ks>()  <kc>//delegated property</kc>
+}
+class <ks>Delegate</ks> {
+	private var <ks>myval</ks> : String = "delegateInitialValue"
+    opercoator fun <k>getValue</k>(
+			thisRef: Any?, property: KProperty<*>): String {
+	   println("... object $thisRef delegates '${property.name}' to $this!")
+	   return <ks>myval</ks>
+    } 
+    operator fun <k>setValue</k>(
+			thisRef: Any?, property: KProperty<*>, value: String) {
+	   println("... $this assigns $value to '${property.name}' in $thisRef.")
+	  <ks> myval = value</ks>
+    }
+}
+
+fun testPropertyDelegate(){
+	val v = ExampleDelegate()
+	println(v.p)
+	v.p = "Bob"
+	println(v.p)
+}
+
+fun main() = runBlocking{
+    println("BEGINS CPU=$cpus ${curThread()}")
+    println( "work done in time= 
+		${measureTimeMillis(  { testPropertyDelegate() } )}"  )
+	println("ENDS ${curThread()}")
+}
+</pre>
+ 
+
+</td>
+<td>
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=8 thread=main | nthreads=1
+<m>... object kotlindemo.ExampleDelegate@1175e2db delegates 'p' to kotlindemo.Delegate@36aa7bc2!</m>
+delagteDefaultValue
+<m>... kotlindemo.Delegate@36aa7bc2 assigns Bob to 'p' in kotlindemo.ExampleDelegate@1175e2db.
+... object kotlindemo.ExampleDelegate@1175e2db delegates 'p' to kotlindemo.Delegate@36aa7bc2!</m>
+Bob
+work done in time= 44
+ENDS thread=main | nthreads=1
+
+</pre>
+
+<h3>Java equivalent of a Kotlin property</h3>
+<pre>
+private String name = "Bob";
+public String getName() { return name; }
+public void setName(String name) { this.name = name; }
+</pre>
+</td>
+</tr>
+
+<tr>
+<td><h3 id="dataclass">Kotlin data class</h3>
+<pre>
+<k>data class</k> PersonData(val name: String) { <kc>//Primary constructor</kc>
+    var age : Int = 0     		<kc>//public</kc>
+    var married = false   		<kc>//public</kc>
+    val isAdult: Boolean
+      get(){ return age >= 18}	<kc>//custom getter</kc>
+}
+
+fun main(){
+    val p1 = PersonData("Bob")
+    p1.age=20
+    val p3 = PersonData("Bob")
+    p3.age = p1.age
+    println( "p1=${p1}, p3=$p3")		<kc>//<ks>toString</ks> generated</kc>
+    println( "equals:  ${<k>p1.equals</k>(p3)}" )	<kc>//<ks>equals</ks> generated</kc>
+}
+</pre> </td>
+<td>
+Kotlin generates the methods:
+<ul>
+<li><bc>equals</bc></li>
+<li><bc>hasCode</bc></li>
+<li><bc>toString</bc></li>
+</ul>
+
+</m> 
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=4 thread=main | nthreads=1
+p1=PersonData(name=Bob), p3=PersonData(name=Bob) 
+equals:  true
+work done in time= 1
+ENDS thread=main | nthreads=1
+</pre>
+</td>
+</tr>
+
+ 
+
+<tr>
+<td>
+<h3 id="companionobj">Companion object</h3>
+<pre>
+class PersonCO <k>private constructor</k>( val name: String ){
+    var age : Int = 0
+    var married = false
+    val isAdult: Boolean
+        get(){ return age >= 18} <kc>//custom getter</kc>
+  
+	<k>companion object</k> {
+		val <ks>personList</ks> = mutableListOf&lt;PersonCO>()
+		fun <ks>createPerson</ks>( name: String ) : PersonCO {
+			val p = PersonCO( name.toUpperCase() )
+			personList.add(p)
+			return p
+		}
+		fun <ks>showAllPersons</ks>(){
+		personList.forEach {
+			println( "name=${it.name}, age=${it.age},
+				married=${it.married} ") }
+		}
+	}<kc>//companion</kc>
+	
+	<k>object  Info</k> {
+		fun <ks>showAllAdults</ks>(){
+			personList.forEach {
+				if( it.isAdult )
+				println( "ADULT ${it.name} of age=${it.age}  ") }
+		}
+		fun <ks>showOrderedByName</ks>(){
+			println( <ks>personList</ks>.sortedWith(<k>NameComparator</k>))
+		}
+	}<kc>//Info</kc>
+    
+	<k>object NameComparator</k><ks>:Comparator&lt;PersonCO></ks>{<kc>//Interface</kc>
+		<k>override</k> fun <ks>compare</ks>(p1:PersonCO, p2:PersonCO):Int =
+				p1.name.compareTo(p2.name)
+	}<kc>//NameComparator</kc>
+	
+}<kc>>//PersonCO</kc>
+
+
+fun testCompanion(){
+    <kc>//</kc>val <ks>p = PersonCO("Bob")</ks> <kc>//ERROR: init is private in PersonCO</kc>
+    val p1 = <k>PersonCO.createPerson</k>("Bob")
+    p1.age=20
+    val p2 = /k>PersonCO.createPerson</k>("Alice")
+    p2.age = 15
+    <k>PersonCO.createPerson</k>("Adam")		<kc>//age=0</kc>
+    <k>PersonCO.showAllPersons</k>()
+    <k>PersonCO.Info.showAllAdults</k>()	
+}
+
+fun main(){
+    println("BEGINS CPU=$cpus ${curThread()}")
+    println( "work done in time= ${measureTimeMillis({testCompanion()})}")
+    println("ENDS ${curThread()}")
+}
+</pre> </td>
+<td>
+<h3>Rules (See <a href="https://kotlinlang.org/docs/tutorials/kotlin-for-py/objects-and-companion-objects.html" target="web">Objects and companion objects</a>)</h3>
+
+<ul>
+<li><bc>Primary constructor private</bc>: the class cannot be instantiated.</li>
+<li><bc>Companion object</bc>: a singleton declared within a class that can access to the private members of the class.
+<br/><m>The properties and methods of a <tt>Companion object</tt> can be accessed through the name of the containing class,
+without specifying the name of the object explicitly. 
+<br/>However, we can also insert the name of the companion object.</m>
+</li>
+<li>The resulting syntax looks like <em>static method</em> invocation in Java.</li>
+<li>A (singleton) <bc>Object</bc> can be declared into a class.</li>
+
+</ul>
+ 
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=4 thread=main | nthreads=1
+name=BOB, age=20,married=false 
+name=ALICE, age=15,married=false 
+name=ADAM, age=0,married=false 
+ADULT BOB of age=20  
+work done in time= 4
+ENDS thread=main | nthreads=1
+</pre>
+ </td>
+</tr>
+ 
+
+<tr>
+<td>
+<h3 id="enumclass"><a href="https://kotlinlang.org/docs/reference/enum-classes.html">Enum Classes</a></h3>
+<pre>
+enum class <ks>Color</ks>(var r: Int, val g: Int, val b: Int){ <kc>//properties</kc>
+<kc>//Property values for each constant</kc>
+	RED(255,0,0) <k>,</k> 
+	YELLOW(255,255,0) <kc>//declares its own anonymous class</kc>
+	{<k>override</k> fun toString():String{ return "YELLOW_COLOR"} } <k>,</k> 
+	GREEN(0,255,0) <k>,</k> 
+	BLUE(0,0, 255)
+    <k>;</k> <kc>//semicolon is is mandatory if define methods</kc>
+
+	fun rgb() = (r * 256 + g) * 256 + b
+	<k>override</k> fun toString():String{return "${<k>super.</k>toString()}($r,$g,$b)"}
+}
+
+fun main(){
+    val y = <ks>Color</ks>.YELLOW
+    val b = <ks>Color</ks>.BLUE
+    println("$y = ${y.rgb()} | $b = ${b.rgb()} ")
+}
+</pre> </td>
+<td><m><em>enum</em>: is a <bc>soft keyword</bc> (i.e. the name can be reused) 
+that introduces a set of constant objects, each instance of the class.
+Each object can be initalized and declare methods.</m> 
+
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=8 thread=main | nthreads=1
+YELLOW_COLOR = 16776960 | BLUE(0,0,255) = 255 
+work done in time= 5
+ENDS thread=main | nthreads=1
+
+</pre>
+ 
+
+<br/><br/></td>
+</tr>
+
+<tr>
+<td><h3 id="ill">About initialization</h3>
+<pre>
+<k>enum</k> class <ks>Origin</ks>{
+    asia, africa, europa, america, australia
+}
+
+<kc>//open: see Inheritance</kc>
+<k>open class</k> PersonILL(val name:String,	<kc>//ILL=>Init,Late,Lazy</kc>
+		val nickname: String = "rambo") {<kc>//default value</kc>
+    var age      = 0
+    var married   = false
+    val isAdult: Boolean <k>by lazy</k>{ println("lazy fired");age>18 }
+    <k>lateinit var</k> country  : Origin  <kc>//visible</kc>
+    protected var  voter  : Boolean 	<kc>//not visible</kc>
+        get(){ return isAdult }
+    <k>init{</k> <kc>//country = Origin.europa</kc>
+        voter  =  (age > 18)   <kc>//expression</kc>
+    }
+    <kc>//custom accessor</kc>
+    fun voter():Boolean{ return voter }
+}
+
+fun testILL(){
+ val p = PersonILL("Bob")
+  println("name=${p.name} age=${p.age} married=${p.married} " +
+     " nickname=${p.nickname}  ") // p.country not initialized
+  p.age     = 22
+  p.married = true
+  p.country = Origin.europa
+  println("Bob property-set done ")
+  println("Bob is adult=${p.isAdult} - lazy fired")  
+  println("name=${p.name} age=${p.age} married=${p.married}")
+  println("	adult=${p.isAdult} nickname=${p.nickname}")
+  println("	country=${p.country} voter=${p.voter()}")	
+}
+ 
+fun main(){
+	println("BEGINS CPU=$cpus ${curThread()}")
+	println( "work done in time= ${measureTimeMillis({testILL()})}")	
+	println("ENDS ${curThread()}")
+}
+</pre>
+<hr/>
+<pre><kc>//OUTPUT</kc>
+Bob property-set done 
+<ks>lazy fired</ks>
+Bob is adult=true - lazy fired
+name=Bob age=22 married=true
+	adult=true nickname=rambo
+	country=europa voter=true  <kc>//no more lazy fired</kc>
+work done in time= 46
+ENDS thread=main | nthreads=1
+</pre> </td>
+<td> 
+
+
+<h3>default parameter values</h3>
+set default values for properties. Their usage avoids the introduction of secondary constructors
+<br/><br/>
+<h3>init block</h3>
+
+ <em>init</em> is a keyword that introduces an 
+<a href="https://www.callicoder.com/kotlin-classes-objects-constructors-initializers/"><bc>initializer block</bc></a>
+ 
+
+<br/><br/>
+
+<h3>lateinit</h3>
+ a modifier that allows us to introduce a <bc>var</bc> property without an initializer.
+It is not applicable to primitive types. 
+
+<br/><br/>
+A common use is for <a href="https://it.wikipedia.org/wiki/Dependency_injection" target="web">dependency injection</a>.
+ 
+<h3>lazy</h3> 
+variable will not be initialized unless you use that variable in your code. 
+It will be initialized <em>only once</em> after that we always use the same value.
+
+<h3>Guidelines</h3>
+<ul>
+<li>If variable are mutable (i.e. might change at a later stage) use <bc>lateinit</bc>.<br/>
+ <bc>lateinit var</bc> can be initialized from anywhere the object is seen from.</li>
+<li><bc>lazy</bc> can only be used for <bc>val</bc> properties,<m> whereas lateinit can only be applied to var because 
+it can't be compiled to a final field, thus no immutability can be guaranteed.</m></li>
+<li>If its only meant to initialized once and shared by all, and it's more internally set 
+(dependent on variable internal to the class), then use <bc>lazy</bc>. </li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<td>
+<h3 id="inheritance">Inheritance</h3>
+<pre>
+<k>open class</k> PersonILL(val name:String, ...
+
+class <ks>Student</ks>(name: String,
+	nickname: String="nerd") <k>: Person(name, nickname)</k> {
+	override fun toString() : String{
+		return "student(name($name),age($age),married($married),"+
+		"adult($isAdult),nickname($nickname),"+
+		"country($country),voter($voter))" 
+	}
+}
+
+fun testInheritance(){
+  val p = <ks>Student</ks>("alice", "batterfly")
+  p.age		= 24
+  p.country	= Origin.asia
+  println( p )
+}
+
+fun main(){
+	println("BEGINS CPU=$cpus ${curThread()}")
+	println( "work done in time= ${measureTimeMillis({testInheritance()})}")	
+	println("ENDS ${curThread()}")
+}
+
+</pre> </td>
+<td>
+
+ <bc>open</bc>: a modifier that makes it possible to define subclasses.
+ <br/><br/>
+Whereas Java's classes and methods are open by default, in Kotlin they are <bc>final</bc>,
+in order to overcome the <a href="https://en.wikipedia.org/wiki/Fragile_base_class" target="web">fragile base class problem</a>.
+
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=8 thread=main | nthreads=1
+lazy fired
+<m>student(name(alice),age(24),married(false),adult(true),nickname(batterfly),country(asia),voter(true))</m>
+work done in time= 47
+ENDS thread=main | nthreads=1
+</pre>
+<h3>Abstract classes</h3>
+
+An <em>abstract</em> class is <bc>open</bc> by default.
+<br/><br/>
+Abstract classes can have everything that interfaces can, and additionally, 
+they can have fields and constructors. 
+Therefore we can properly hold state in abstract classes 
+
+
+</td>
+</tr>
+
+<tr>
+<td>
+<h3 id="sealedclass">Sealed class</h3>
+<pre>
+<k>sealed class</k> <ks>Expr</ks>{
+    <k>class</k> <ks>Num</ks>( val value:Int):Expr()
+    <k>class</k> <ks>Add</ks>( val left:Expr, val right:Expr):Expr()
+    fun eval():Int{
+        when( <k>this</k> ){
+            <k>is Num</k> -> return value
+            <k>is Add</k> -> return left.eval() + right.eval()
+            <kc>//no deafult branch</kc>
+        }
+    }
+}
+
+fun testSealedClass(){
+    val v1 = Expr.Num(10)
+    val v2 = Expr.Num(20)
+    val sum = Expr.Add(v1,v2)
+    println("${v1.eval()} + ${v2.eval()} = ${sum.eval()}")	
+}
+
+fun main(){
+	println("BEGINS CPU=$cpus ${curThread()}")
+	println( "work done in time= ${measureTimeMillis({testSealedClass()})}")	
+	println("ENDS ${curThread()}")
+}
+</pre> </td>
+<td>
+<bc>sealed </bc>: a modifier which restricts the possible subclasses of a class. All the possible subclasses
+must be nested in the superclass.
+
+<pre>
+<kc>//OUTPUT</kc>
+BEGINS CPU=8 thread=main | nthreads=1
+10 + 20 = 30
+work done in time= 7
+ENDS thread=main | nthreads=1
+
+</pre>
+</td>
+</tr>
+
+<tr>
+<td><pre></pre> </td>
+<td><m><em> </em></m> </td>
+</tr>
+
+</tbody>	
+</table></center>
+
+<br/><br/> 
+</div>  
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div> 
+</body>
+</html>
+
+<!--
+class CounterMsg( 
+	val cmd:String, val replyChannel:SendChannel<Int>?=null){
+}
+
+fun counterActor() : SendChannel<CounterMsg> = GlobalScope.actor<CounterMsg> {
+    var localCounter = 0 // actor state
+    for (msg in channel) { // iterate over messages
+        when ( msg.cmd ) {
+            "INC" -> localCounter++
+            "DEC" -> localCounter--
+            "GET" -> msg.replyChannel?.send(localCounter)
+            else -> throw Exception( "unknown" )
+        }    }
+}
+
+suspend fun useTheCounter(){
+    val counter = counterActor()
+    println("INC")
+    counter.send( CounterMsg("INC") )
+
+    val answerChannel = Channel<Int>()
+    counter.send( CounterMsg("GET", answerChannel) )
+
+    val answer = answerChannel.receive()
+    println("useTheCounter COUNTER = $answer")
+}
+
+fun main() = runBlocking{
+    println("BEGINS")
+    useTheCounter()
+    println("ENDS")
+}
+
+//OUTPUT
+BEGINS with 4  cores
+INC
+useTheCounter COUNTER = 1
+ENDS 
+-->

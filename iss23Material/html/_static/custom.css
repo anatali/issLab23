@@ -17,7 +17,15 @@ body {
   }
 
   .green {
-    color:#006600;
+    color:#0fd80f;
+  }
+
+  .reference{
+    padding: 1px;
+    font-style: italic;
+    background-color: #fffed6; 
+    color:#990000;
+    text-decoration: underline;
   }
 
   .remark{

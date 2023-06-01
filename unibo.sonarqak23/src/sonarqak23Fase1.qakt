@@ -1,0 +1,41 @@
+System sonarqak23
+
+//--------For this system-----------
+Event sonardata : distance(D)   //emitted  by datacleaner
+Event obstacle  : obstacle(D)   //emitted as stream by distancefilter
+
+Context ctxsonarqak23 ip [ host= "localhost"     port= 8128 ]
+
+CodedQActor sonar  context ctxsonarqak23 className "sonarSimulator"           //IN LOCALE
+//CodedQActor sonar  context ctxsonarqak23 className "sonarHCSR04Support23"   //SU RASP
+//CodedQActor datalogger     context ctxsonarqak23 className "rx.dataLogger"
+CodedQActor datacleaner    context ctxsonarqak23 className "rx.dataCleaner"
+CodedQActor distancefilter context ctxsonarqak23 className "rx.distanceFilter"
+
+QActor sonar23 context ctxsonarqak23{ 
+	State s0 initial{  
+		println("sonar23 | start") 
+		[# subscribeToLocalActor("distancefilter").subscribeToLocalActor("datacleaner").subscribeToLocalActor("sonar") #]
+	}
+	Goto work
+	 
+	State work{
+		//println("sonar23 | waits ... ") 		
+	}
+	Transition t0 whenEvent sonardata -> handlesonardata
+	              whenEvent obstacle  -> handleobstacle
+	
+	State handlesonardata{
+		printCurrentMessage
+	}
+	Goto work 
+	
+	State handleobstacle{
+		onMsg( obstacle : obstacle(D)){			
+			println("$name handleobstacle ALARM ${payloadArg(0)}") color magenta
+		}
+	}
+	Goto work
+}   
+
+  

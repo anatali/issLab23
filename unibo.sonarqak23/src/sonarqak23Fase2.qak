@@ -1,0 +1,96 @@
+System sonarqak23
+
+//--------For this system-----------
+Event sonardata : distance(D)   //emitted  by distancefilter
+Event obstacle  : obstacle(D)   //emitted as stream by distancefilter
+
+//--------From basicrobot-----------------------------------
+Request engage        : engage(OWNER)	
+Reply   engagedone    : engagedone(ARG)
+Reply   engagerefused : engagerefused(ARG)
+Dispatch disengage    : disengage(ARG)
+
+Request moverobot    :  moverobot(TARGETX, TARGETY)
+Reply moverobotdone  :  moverobotok(ARG)
+Reply moverobotfailed:  moverobotfailed(PLANDONE, PLANTODO)
+
+Event alarm           : alarm(X)
+//----------------------------------------------------------
+
+Context ctxsonarqak23 ip [ host= "localhost"     port= 8128 ]
+Context ctxbasicrobot ip [ host= "192.168.1.9" port= 8020 ]
+
+ExternalQActor basicrobot context ctxbasicrobot
+
+
+CodedQActor sonar  context ctxsonarqak23 className "sonarSimulator"           //IN LOCALE
+//CodedQActor sonar  context ctxsonarqak23 className "sonarHCSR04Support23"   //SU RASP
+//CodedQActor datalogger     context ctxsonarqak23 className "rx.dataLogger"
+CodedQActor datacleaner    context ctxsonarqak23 className "rx.dataCleaner"
+CodedQActor distancefilter context ctxsonarqak23 className "rx.distanceFilter"
+
+QActor sonar23 context ctxsonarqak23{ 
+	[# var  ApplAlso = sysUtil.getActor("appl") != null #]
+	State s0 initial{  
+		println("sonar23 | start with appl: $ApplAlso") 
+		[# subscribeToLocalActor("distancefilter").subscribeToLocalActor("datacleaner").subscribeToLocalActor("sonar") #]
+	}
+	Goto work
+	 
+	State work{
+		//println("sonar23 | waits ... ") 		
+	}
+	Transition t0 whenEvent sonardata -> handlesonardata
+	              whenEvent obstacle  -> handleobstacle
+	
+	State handlesonardata{
+		printCurrentMessage
+	}
+	Goto work 
+	
+	State handleobstacle{
+		onMsg( obstacle : obstacle(D)){			
+			println("$name handleobstacle ALARM ${payloadArg(0)}") color magenta
+			emit alarm : alarm(obstacle)			
+		}
+		
+	}
+	Goto sonar23 if [# ApplAlso == true #]  else work  
+	
+	State sonar23{
+		println("$name BYE")
+	}
+}   
+
+/*
+ * appl
+ * Per attivare il basicrobot:
+ * docker-compose -f basicrobot23.yaml  up
+ */
+QActor appl context ctxsonarqak23{ 
+	[# val MyName = name #]
+ 
+	State s0 initial{  
+		println("appl | start") color blue 
+ 		request basicrobot -m engage : engage($MyName)
+	}
+	Transition t0 whenReply engagedone -> work
+ 
+ 	State work{
+ 		println("appl | move the robot") color blue
+ 		request basicrobot -m moverobot : moverobot(6,4)
+ 	}
+ 	Transition t0 whenReply moverobotdone -> posreached
+ 	              whenReply moverobotfailed -> posfailed
+ 	
+ 	State posreached{
+ 		printCurrentMessage  color blue
+ 		forward basicrobot -m disengage : disengage($MyName)
+ 	}
+ 	
+  	State posfailed{
+ 		printCurrentMessage color red
+ 		forward basicrobot -m disengage : disengage($MyName)
+ 	}
+}//appl
+ 

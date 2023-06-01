@@ -145,14 +145,99 @@ i dati emessi dal Sonar</p></td>
 </tr>
 </tbody>
 </table>
-<p><span class="slide1">Da Python-code ad attori</span></p>
+<p><span class="slide">Da Python-code ad attori</span></p>
 </section>
 <section id="sonar-e-led-come-attori">
 <h3>Sonar e Led come attori<a class="headerlink" href="#sonar-e-led-come-attori" title="Permalink to this headline">¶</a></h3>
 <p>Il software di basso livello viene inglobato all’interno di attori qak che
 possono sfruttare la infrastruttura qak per interagire tra loro, in locale
 e/o in remoto, in modo <em>technology-independent</em>.</p>
-<p><a class="reference external" href="../../it.unibo.raspIntro2023/code/kotlin/sonarHCSR04Support23.kt">sonarHCSR04Support23.kt</a></p>
+<section id="progetto-unibo-sonarqak23">
+<h4>Progetto  unibo.sonarqak23<a class="headerlink" href="#progetto-unibo-sonarqak23" title="Permalink to this headline">¶</a></h4>
+<p>Sviluppiamo un sistema software che utilizza il <a class="reference internal" href="RaspBasicCode.html#usiamo-un-sonar-hc-sr04"><span class="std std-ref">SONAR HC-SR04</span></a> operando in tre fasi:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#sonarqak23-fase1"><span class="std std-ref">sonarqak23 Fase1</span></a>: predisposizione della gestione dei dispositivi.</p></li>
+<li><p><a class="reference internal" href="#sonarqak23-fase2"><span class="std std-ref">sonarqak23 Fase2</span></a>: interazione con il <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">BasicRobot23</span></a>.</p></li>
+<li><p><a class="reference internal" href="#sonarqak23-fase3"><span class="std std-ref">sonarqak23 Fase3</span></a>: distribuzione su Raspberry Pi.</p></li>
+</ol>
+<p><span class="slide1">Fase1</span></p>
+<section id="sonarqak23-fase1">
+<h5>sonarqak23 Fase1<a class="headerlink" href="#sonarqak23-fase1" title="Permalink to this headline">¶</a></h5>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 70%" />
+<col style="width: 30%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><span class="slide2">GOAL Fase1</span>: Costruire un (sotto)sistema ad attori che utilizza
+il <a class="reference internal" href="RaspBasicCode.html#usiamo-un-sonar-hc-sr04"><span class="std std-ref">SONAR HC-SR04</span></a>.</p>
+<ol class="arabic simple">
+<li><p>Definizione del <a class="reference internal" href="QakActors23.html#codedqactor"><span class="std std-ref">CodedQActor</span></a> di nome <span class="blue">sonar</span> che opera come un simulatore del sonar
+(classe Kotlin <code class="docutils literal notranslate"><span class="pre">sonarSimulator</span></code>) o che esegue codice Python per la gestione di un sonar fisico
+<a class="reference internal" href="RaspBasicCode.html#usiamo-un-sonar-hc-sr04"><span class="std std-ref">SONAR HC-SR04</span></a> (classe Kotlin <a class="reference external" href="../../unibo.sonarqak23/src/kotlin/sonarHCSR04Support23.kt">sonarHCSR04Support23.kt</a>).
+Questo attore emmete l’evento locale
+<code class="docutils literal notranslate"><span class="pre">sonar:distance(D)</span></code> usando la primitiva <a class="reference internal" href="Actors23.html#emitlocalstreamevent"><span class="std std-ref">emitLocalStreamEvent</span></a>.</p></li>
+<li><p>Definizione dei <a class="reference internal" href="QakActors23.html#codedqactor"><span class="std std-ref">CodedQActor</span></a> di nome <span class="blue">dataCleaner</span> e <span class="blue">distancefilter</span> ciascuno dei quali
+opera come uno <a class="reference internal" href="QakActors23.html#streamedqactor"><span class="std std-ref">StreamedQActor</span></a>. Pertanto, essi sono usabili per costruire una pipe
+che ha  <span class="blue">sonar</span> come sorgente-dati e che provvede a eliminare dati spuri (<span class="blue">dataCleaner</span>)
+e a generare  (<span class="blue">distancefilter</span>) eventi significativi per il livello applicativo.</p></li>
+<li><p>Definizione di un attore <span class="blue">sonar23</span> che crea la pipe  <code class="docutils literal notranslate"><span class="pre">sonar-dataCleaner-distancefilter</span></code>
+per la gestione dei dati emessi dal <span class="blue">sonar</span>, e
+gestisce l’evento <strong>sonardata</strong> (emesso da <span class="blue">dataCleaner</span>)
+e l’evento locale <strong>obstacle</strong> (emesso da <span class="blue">distancefilter</span>).</p></li>
+<li><p>Esecuzione del sistema prima su PC (con <span class="blue">sonar</span> simulato) e poi sul Raspberry (prima con
+<span class="blue">sonar</span> simulato e poi con <span class="blue">sonar fisico</span>).</p></li>
+</ol>
+</td>
+<td><a class="reference internal image-reference" href="_images/ArchSonarqak23Fase1.png"><img alt="_images/ArchSonarqak23Fase1.png" src="_images/ArchSonarqak23Fase1.png" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="slide1">Fase2</span></p>
+</section>
+<section id="sonarqak23-fase2">
+<h5>sonarqak23 Fase2<a class="headerlink" href="#sonarqak23-fase2" title="Permalink to this headline">¶</a></h5>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><span class="slide2">GOAL Fase2</span>: muovere il <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">BasicRobot23</span></a> e fermarlo quando il sonar rileva un ostacolo.</p>
+<ol class="arabic simple">
+<li><p>Il <span class="blue">sonar23</span> gestisce l’evento <strong>obstacle</strong> emettendo l’evento <code class="docutils literal notranslate"><span class="pre">alarm:alarm(obstacle)</span></code>.</p></li>
+<li><p>Definizione dell’attore di nome <span class="blue">appl</span> che muove il <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">BasicRobot23</span></a> da HOME alla
+cella (6,4).</p></li>
+<li><p>Attivazione del <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">BasicRobot23</span></a> per <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a> mediante docker-compose.</p></li>
+<li><p>Sprimentazione su PC (con <span class="blue">sonar</span> simulato) per verificare che l’evento <code class="docutils literal notranslate"><span class="pre">alarm:alarm(obstacle)</span></code>
+venga percepito dal robot, che si ferma prima di  avere completato il piano di movimento.</p></li>
+</ol>
+</td>
+<td><a class="reference internal image-reference" href="_images/ArchSonarqak23Fase2.png"><img alt="_images/ArchSonarqak23Fase2.png" src="_images/ArchSonarqak23Fase2.png" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="slide1">Fase3</span></p>
+</section>
+<section id="sonarqak23-fase3">
+<h5>sonarqak23 Fase3<a class="headerlink" href="#sonarqak23-fase3" title="Permalink to this headline">¶</a></h5>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><span class="slide2">GOAL Fase3</span>: sperimentare il sistema  con <a class="reference internal" href="BasicRobot23.html#basicrobot23"><span class="std std-ref">BasicRobot23</span></a> per <a class="reference internal" href="VirtualRobot23.html#virtualrobot23"><span class="std std-ref">VirtualRobot23</span></a>
+su PC e con il (sotto)sistema <a class="reference internal" href="#sonarqak23-fase2"><span class="std std-ref">sonarqak23</span></a> su RaspberryPi, con sonar fisico.</p></td>
+<td><a class="reference internal image-reference" href="_images/ArchSonarqak23Fase3.png"><img alt="_images/ArchSonarqak23Fase3.png" src="_images/ArchSonarqak23Fase3.png" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
 </section>
 </section>
 </section>
@@ -172,7 +257,15 @@ e/o in remoto, in modo <em>technology-independent</em>.</p>
 <li><a class="reference internal" href="#software-per-il-led">Software per il Led</a></li>
 <li><a class="reference internal" href="#software-per-il-sonar">Software per il Sonar</a></li>
 <li><a class="reference internal" href="#software-lowlevel-per-il-radarsystem">Software lowlevel per il RadarSystem</a></li>
-<li><a class="reference internal" href="#sonar-e-led-come-attori">Sonar e Led come attori</a></li>
+<li><a class="reference internal" href="#sonar-e-led-come-attori">Sonar e Led come attori</a><ul>
+<li><a class="reference internal" href="#progetto-unibo-sonarqak23">Progetto  unibo.sonarqak23</a><ul>
+<li><a class="reference internal" href="#sonarqak23-fase1">sonarqak23 Fase1</a></li>
+<li><a class="reference internal" href="#sonarqak23-fase2">sonarqak23 Fase2</a></li>
+<li><a class="reference internal" href="#sonarqak23-fase3">sonarqak23 Fase3</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

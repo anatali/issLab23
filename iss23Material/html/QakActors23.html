@@ -46,7 +46,7 @@
           <div class="body" role="main">
             
   <section id="qakactors23">
-<h1>QakActors23<a class="headerlink" href="#qakactors23" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id5">QakActors23</a><a class="headerlink" href="#qakactors23" title="Permalink to this headline">¶</a></h1>
 <p>Il viaggio iniziato enunciando i requisiti dell’<a class="reference internal" href="Applicazione1.html#applicazione1"><span class="std std-ref">Applicazione1</span></a> si è svolto in una sequenza di  tappe
 nelle quali abbiamo introdotto nuovi concetti e nuove librerie di supporto:</p>
 <ol class="arabic simple">
@@ -64,8 +64,85 @@ i concetti cui siamo pervenuti nel nostro percorso bottom-up.</p>
 organizzazione di sistemi software distribuiti, che abbiamo ormai reccolto nel termine <span class="blue">actor</span>.
 Questi concetti costituisocno il <span class="blue">metamodello QActor</span>
 e derivano dall’<a class="reference external" href="https://doc.akka.io//docs/akka/current/typed/guide/actors-motivation.html">Akka actor model</a> basato, a sua volta, sul lavoro di <a class="reference external" href="https://en.wikipedia.org/wiki/Carl_Hewitt#Actor_model">Hewitt</a> al MIT .</p>
+<div class="contents topic" id="overview">
+<p class="topic-title">Overview</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#qakactors23" id="id5">QakActors23</a></p>
+<ul>
+<li><p><a class="reference internal" href="#qactor23-introduzione" id="id6">QActor23: Introduzione</a></p></li>
+<li><p><a class="reference internal" href="#qak-software-factory" id="id7">Qak software factory</a></p>
+<ul>
+<li><p><a class="reference internal" href="#qak-plugin" id="id8">Qak plugin</a></p></li>
+<li><p><a class="reference internal" href="#qak-codice-e-risorse-generate" id="id9">Qak codice e risorse generate</a></p></li>
+<li><p><a class="reference internal" href="#qak-factory" id="id10">Qak factory</a></p></li>
+<li><p><a class="reference internal" href="#qak-infrastructure" id="id11">Qak infrastructure</a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id12">Qak syntax</a></p>
+<ul>
+<li><p><a class="reference internal" href="#dichiarazione-degli-attori" id="id13">Dichiarazione degli attori</a></p></li>
+<li><p><a class="reference internal" href="#dichiarazione-dei-messaggi" id="id14">Dichiarazione dei messaggi</a></p></li>
+<li><p><a class="reference internal" href="#operazioni-di-invio-messaggi" id="id15">Operazioni di invio messaggi</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#startup" id="id16">StartUp</a></p>
+<ul>
+<li><p><a class="reference internal" href="#creazione-di-un-nuovo-progetto" id="id17">Creazione di un nuovo progetto</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#qak-model-template" id="id18">Qak model template</a></p>
+<ul>
+<li><p><a class="reference internal" href="#dichiarazione-di-un-qactor" id="id19">Dichiarazione di un QActor</a></p>
+<ul>
+<li><p><a class="reference internal" href="#dichiarazione-delle-transizioni" id="id20">Dichiarazione delle transizioni</a></p></li>
+<li><p><a class="reference internal" href="#wheninterrupt" id="id21">whenInterrupt</a></p></li>
+<li><p><a class="reference internal" href="#demonottodo-qak" id="id22">demonottodo.qak</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#qak-in-codice-kotlin" id="id23">Qak in codice kotlin</a></p>
+<ul>
+<li><p><a class="reference internal" href="#demobetter-qak" id="id24">demobetter.qak</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#qak-primitive-disponibili" id="id25">Qak primitive disponibili</a></p>
+<ul>
+<li><p><a class="reference internal" href="#accesso-al-contenuto-dei-messaggi" id="id26">Accesso al contenuto dei messaggi</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id27">Shortcut</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#codedqactor" id="id28">CodedQActor</a></p></li>
+<li><p><a class="reference internal" href="#externalqactor" id="id29">ExternalQActor</a></p></li>
+<li><p><a class="reference internal" href="#streamedqactor" id="id30">StreamedQActor</a></p></li>
+<li><p><a class="reference internal" href="#attore-come-risorsa-coap" id="id31">Attore come risorsa CoAP</a></p></li>
+<li><p><a class="reference internal" href="#qakactors23-note-implementative" id="id32">QakActors23 note implementative</a></p>
+<ul>
+<li><p><a class="reference internal" href="#it-unibo-kactor-actorbasic-kt" id="id33">it.unibo.kactor.ActorBasic.kt</a></p>
+<ul>
+<li><p><a class="reference internal" href="#parte-kotlininheritance" id="id34">Parte kotlinInheritance</a></p></li>
+<li><p><a class="reference internal" href="#actorbasic-il-funzionamento" id="id35">ActorBasic: il funzionamento</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#it-unibo-kactor-actorbasicfsm-kt" id="id36">it.unibo.kactor.ActorBasicFsm.kt</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#come-definire-codedqactor" id="id37">Come definire CodedQactor</a></p>
+<ul>
+<li><p><a class="reference internal" href="#sonarhcsr04support23" id="id38">sonarHCSR04Support23</a></p></li>
+<li><p><a class="reference internal" href="#datacleaner" id="id39">dataCleaner</a></p>
+<ul>
+<li><p><a class="reference internal" href="#datacleaner-gestione-messaggi" id="id40">dataCleaner: gestione messaggi</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
 <section id="qactor23-introduzione">
-<h2>QActor23: Introduzione<a class="headerlink" href="#qactor23-introduzione" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6">QActor23: Introduzione</a><a class="headerlink" href="#qactor23-introduzione" title="Permalink to this headline">¶</a></h2>
 <p>La <span class="blue">Q/q</span>  nella parola <em>QActor</em>, significa “quasi” poiché il linguaggio non è inteso come un linguaggio
 di programmazione generico, ma piuttosto un <span class="remark">linguaggio di modellazione eseguibile</span>,
 da utilizzzre durante l’analisi del problema e il progetto di protitpi di sistemi distribuiti,
@@ -77,12 +154,12 @@ implementata in <a class="reference external" href="https://kotlinlang.org/">Kot
 <p><span class="slide">Qak overview</span></p>
 </section>
 <section id="qak-software-factory">
-<h2>Qak software factory<a class="headerlink" href="#qak-software-factory" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7">Qak software factory</a><a class="headerlink" href="#qak-software-factory" title="Permalink to this headline">¶</a></h2>
 <p>Il linguaggio <code class="docutils literal notranslate"><span class="pre">Qak</span></code> è definito utilizzando il framework <a class="reference external" href="https://www.eclipse.org/Xtext/:https://www.eclipse.org/Xtext/">Xtext</a>, che permette di definire un insieme di
 <span class="remark">plugin</span> per l’ecosistema Eclipse che, una volta installati, permettono ad un application designer
 de definire in tempi rapidi un modello eseguibile del sistema.</p>
 <section id="qak-plugin">
-<h3>Qak plugin<a class="headerlink" href="#qak-plugin" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id8">Qak plugin</a><a class="headerlink" href="#qak-plugin" title="Permalink to this headline">¶</a></h3>
 <p>I plugin che,  installati in Eclipse, realizzano la Qak software factory sono:</p>
 <ul class="simple">
 <li><p>it.unibo.Qactork.ide_1.3.5.jar</p></li>
@@ -92,7 +169,7 @@ de definire in tempi rapidi un modello eseguibile del sistema.</p>
 <p>Essi sono disponibili in: <strong>issLab23/iss23Material/plugins</strong>.</p>
 </section>
 <section id="qak-codice-e-risorse-generate">
-<h3>Qak codice e risorse generate<a class="headerlink" href="#qak-codice-e-risorse-generate" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id9">Qak codice e risorse generate</a><a class="headerlink" href="#qak-codice-e-risorse-generate" title="Permalink to this headline">¶</a></h3>
 <p>La Qak software factory offre:</p>
 <ul class="simple">
 <li><p>un editor guidato dalla sintassi;</p></li>
@@ -104,7 +181,7 @@ in <a class="reference internal" href="Actors23.html#descrizione-di-un-sistema-d
 </ul>
 </section>
 <section id="qak-factory">
-<h3>Qak factory<a class="headerlink" href="#qak-factory" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id10">Qak factory</a><a class="headerlink" href="#qak-factory" title="Permalink to this headline">¶</a></h3>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
 <col style="width: 55%" />
@@ -124,7 +201,7 @@ che definisce <span class="slide2">struttura, interazione e comportamento</span>
 </table>
 </section>
 <section id="qak-infrastructure">
-<h3>Qak infrastructure<a class="headerlink" href="#qak-infrastructure" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id11">Qak infrastructure</a><a class="headerlink" href="#qak-infrastructure" title="Permalink to this headline">¶</a></h3>
 <p>La libreria <strong>unibo.qakactor23-3.5.jar</strong> è prodotta nel progetto
 <span class="blue">unibo.qakactor23</span> e costituisce la
 la <span class="blue">qak-infrastructure</span>, che si appoggia
@@ -132,11 +209,11 @@ al supporto <strong>unibo.basicomm23-1.0.jar</strong> introdotto nel progetto <a
 che implementa il concetto <a class="reference internal" href="Interaction.html#interaction"><span class="std std-ref">Interaction</span></a> per diversi protocolli (TCP, UDP, CoAP, …).</p>
 </section>
 <section id="id1">
-<h3>Qak syntax<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id12">Qak syntax</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>La sintassi del linguaggio, che introduce le notazioni relative al <span class="blue">metamodello QActor</span>,
 è definita in in <a class="reference external" href="./_static/Qactork.xtext">Qak syntax</a>.  Riportiamo qui alcuni esempi.</p>
 <section id="dichiarazione-degli-attori">
-<h4>Dichiarazione degli attori<a class="headerlink" href="#dichiarazione-degli-attori" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id13">Dichiarazione degli attori</a><a class="headerlink" href="#dichiarazione-degli-attori" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">QActorDeclaration</span> <span class="p">:</span> <span class="n">QActor</span> <span class="o">|</span> <span class="n">QActorCoded</span> <span class="o">|</span> <span class="n">QActorExternal</span> <span class="p">;</span>
 </pre></div>
 </div>
@@ -148,7 +225,7 @@ che implementa il concetto <a class="reference internal" href="Interaction.html#
 </ul>
 </section>
 <section id="dichiarazione-dei-messaggi">
-<h4>Dichiarazione dei messaggi<a class="headerlink" href="#dichiarazione-dei-messaggi" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id14">Dichiarazione dei messaggi</a><a class="headerlink" href="#dichiarazione-dei-messaggi" title="Permalink to this headline">¶</a></h4>
 <p>I diversi tipi di messaggio sono dichiarati usando una <em>sintassi</em> Prolog-like (si veda <a class="reference external" href="http://amsacta.unibo.it/5450/7/tuprolog-guide.pdf">tuProlog</a> ):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Event</span><span class="p">:</span>    <span class="s2">&quot;Event&quot;</span>     <span class="n">name</span><span class="o">=</span><span class="n">ID</span>  <span class="s2">&quot;:&quot;</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">PHead</span>  <span class="p">;</span>
 <span class="n">Dispatch</span><span class="p">:</span> <span class="s2">&quot;Dispatch&quot;</span>  <span class="n">name</span><span class="o">=</span><span class="n">ID</span>  <span class="s2">&quot;:&quot;</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">PHead</span>  <span class="p">;</span>
@@ -161,7 +238,7 @@ che implementa il concetto <a class="reference internal" href="Interaction.html#
 </div>
 </section>
 <section id="operazioni-di-invio-messaggi">
-<h4>Operazioni di invio messaggi<a class="headerlink" href="#operazioni-di-invio-messaggi" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id15">Operazioni di invio messaggi</a><a class="headerlink" href="#operazioni-di-invio-messaggi" title="Permalink to this headline">¶</a></h4>
 <p>Le operazioni di invio messaggio sono le seguenti:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Forward</span>   <span class="p">:</span> <span class="s2">&quot;forward&quot;</span> <span class="n">dest</span><span class="o">=</span><span class="p">[</span><span class="n">QActorDeclaration</span><span class="p">]</span>
                       <span class="s2">&quot;-m&quot;</span> <span class="n">msgref</span><span class="o">=</span><span class="p">[</span><span class="n">Dispatch</span><span class="p">]</span> <span class="s2">&quot;:&quot;</span> <span class="n">val</span> <span class="o">=</span> <span class="n">PHead</span> <span class="p">;</span>
@@ -179,7 +256,7 @@ che implementa il concetto <a class="reference internal" href="Interaction.html#
 </section>
 </section>
 <section id="startup">
-<h2>StartUp<a class="headerlink" href="#startup" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16">StartUp</a><a class="headerlink" href="#startup" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
 <li><p>Scarica gradle (versione usata qui: <span class="blue">Gradle 7.4.2</span>)</p></li>
 <li><p>Scarica <a class="reference external" href="https://www.eclipse.org/Xtext/download.html">Eclipse Xtext</a>   (versione usata qui: <span class="blue">Eclipse  2022-03 (4.23.0)</span>)</p>
@@ -199,7 +276,7 @@ che implementa il concetto <a class="reference internal" href="Interaction.html#
 </li>
 </ol>
 <section id="creazione-di-un-nuovo-progetto">
-<h3>Creazione di un nuovo progetto<a class="headerlink" href="#creazione-di-un-nuovo-progetto" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id17">Creazione di un nuovo progetto</a><a class="headerlink" href="#creazione-di-un-nuovo-progetto" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
 <li><p>In <strong>un’area di lavoro vuota</strong>, creare un nuovo progetto Java  utilizzando</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradle</span> <span class="n">init</span>
@@ -236,7 +313,7 @@ salvataggio del modello).</p></li>
 </section>
 </section>
 <section id="qak-model-template">
-<h2>Qak model template<a class="headerlink" href="#qak-model-template" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id18">Qak model template</a><a class="headerlink" href="#qak-model-template" title="Permalink to this headline">¶</a></h2>
 <p>Le regole sintattche del linguaggio impongono che un
 modello Qak venga definito organizzando la sua descrizione nel modo che segue:</p>
 <p><span class="slide2">Sequenza delle dichiarazioni nel modello</span></p>
@@ -253,7 +330,7 @@ modello Qak venga definito organizzando la sua descrizione nel modo che segue:</
 </div>
 <p><span class="slide1">Struttura sintattica di un QActor</span></p>
 <section id="dichiarazione-di-un-qactor">
-<h3>Dichiarazione di un QActor<a class="headerlink" href="#dichiarazione-di-un-qactor" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id19">Dichiarazione di un QActor</a><a class="headerlink" href="#dichiarazione-di-un-qactor" title="Permalink to this headline">¶</a></h3>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
 <col style="width: 40%" />
@@ -279,7 +356,7 @@ modello Qak venga definito organizzando la sua descrizione nel modo che segue:</
 </tbody>
 </table>
 <section id="dichiarazione-delle-transizioni">
-<h4>Dichiarazione delle transizioni<a class="headerlink" href="#dichiarazione-delle-transizioni" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id20">Dichiarazione delle transizioni</a><a class="headerlink" href="#dichiarazione-delle-transizioni" title="Permalink to this headline">¶</a></h4>
 <p>La transizone da uno stato a uno stato successivo può avvenire senza attesa di alcun messaggio (<span class="blue">EmptyTransition</span>)
 oppure in relazione alla disponibilità di un messaggio tra quelli definiti in <a class="reference internal" href="#dichiarazione-dei-messaggi"><span class="std std-ref">Dichiarazione dei messaggi</span></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Transition</span>         <span class="p">:</span>  <span class="n">EmptyTransition</span> <span class="o">|</span> <span class="n">NonEmptyTransition</span>  <span class="p">;</span>
@@ -362,7 +439,7 @@ ma derivi da elaborazioni.</p>
 </section>
 </section>
 <section id="wheninterrupt">
-<h4>whenInterrupt<a class="headerlink" href="#wheninterrupt" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id21">whenInterrupt</a><a class="headerlink" href="#wheninterrupt" title="Permalink to this headline">¶</a></h4>
 <p>Per la transzione da uno stato <code class="docutils literal notranslate"><span class="pre">SA</span></code> a uno stato <code class="docutils literal notranslate"><span class="pre">SB</span></code> con ritorno allo stato <code class="docutils literal notranslate"><span class="pre">SA</span></code>
 <span class="blue">whenInterrupt</span>.</p>
 <ul class="simple">
@@ -381,7 +458,7 @@ ma derivi da elaborazioni.</p>
 dover essere espresso direttamente in Kotlin. Ma occorre non  esagerare con l’uso di una tale possibilità.</p>
 </section>
 <section id="demonottodo-qak">
-<h4>demonottodo.qak<a class="headerlink" href="#demonottodo-qak" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id22">demonottodo.qak</a><a class="headerlink" href="#demonottodo-qak" title="Permalink to this headline">¶</a></h4>
 <p>Questo esempio definisce un attore che, una volta attivato, calcola il numero di Fibonacci di posizione <code class="docutils literal notranslate"><span class="pre">7</span></code>
 usando codice Kotlin.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="n">demonottodo</span>
@@ -414,12 +491,12 @@ usando codice Kotlin.</p>
 </section>
 </section>
 <section id="qak-in-codice-kotlin">
-<h3>Qak in codice kotlin<a class="headerlink" href="#qak-in-codice-kotlin" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id23">Qak in codice kotlin</a><a class="headerlink" href="#qak-in-codice-kotlin" title="Permalink to this headline">¶</a></h3>
 <p>L’esempio mostra come un attore possa esprimere le azioni di uno stato usando direttamete codice Kotlin
 compreso tra l parentesi <code class="docutils literal notranslate"><span class="pre">[#</span></code> e <code class="docutils literal notranslate"><span class="pre">#]</span></code>.</p>
 <p><span class="slide1">… meglio così</span></p>
 <section id="demobetter-qak">
-<h4>demobetter.qak<a class="headerlink" href="#demobetter-qak" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id24">demobetter.qak</a><a class="headerlink" href="#demobetter-qak" title="Permalink to this headline">¶</a></h4>
 <p>Per limitare l’uso diretto di codice Kotlin, è opportuno introdurre classi di utilità e invocarne i metodi.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="n">demobetter</span>
 <span class="n">Context</span> <span class="n">ctxdemobetter</span> <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8055</span><span class="p">]</span>
@@ -453,7 +530,7 @@ nella directory <span class="blue">resources</span> (si veda <a class="reference
 </section>
 </section>
 <section id="qak-primitive-disponibili">
-<h2>Qak primitive disponibili<a class="headerlink" href="#qak-primitive-disponibili" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id25">Qak primitive disponibili</a><a class="headerlink" href="#qak-primitive-disponibili" title="Permalink to this headline">¶</a></h2>
 <p>Ogni attore è una specializzazione della classe  <code class="docutils literal notranslate"><span class="pre">it.unibo.kactor.ActorBasicFsm</span></code>
 (che specializza <code class="docutils literal notranslate"><span class="pre">it.unibo.kactor.ActorBasic</span></code> del progetto ) da cui eredita
 un insieme di variabili e operazioni, tra cui quelle qui di seguito riportate.</p>
@@ -548,13 +625,13 @@ un insieme di variabili e operazioni, tra cui quelle qui di seguito riportate.</
 </tr>
 <tr class="row-even"><td><p>Memorizzazione tempo corrente</p></td>
 <td><ul class="simple">
-<li><p><span class="blue">memoCurrentTime</span>. Es. <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a></p></li>
+<li><p><span class="blue">memoCurrentTime</span>. Es. <a class="reference internal" href="QakActors23Demo.html#datahandler"><span class="std std-ref">datahandler</span></a></p></li>
 </ul>
 </td>
 </tr>
 <tr class="row-odd"><td><p>Determinazione della durata</p></td>
 <td><ul class="simple">
-<li><p><span class="blue">setDuration</span>. Es. <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a></p></li>
+<li><p><span class="blue">setDuration</span>. Es. <a class="reference internal" href="QakActors23Demo.html#datahandler"><span class="std std-ref">datahandler</span></a></p></li>
 </ul>
 </td>
 </tr>
@@ -579,7 +656,7 @@ un insieme di variabili e operazioni, tra cui quelle qui di seguito riportate.</
 <tr class="row-odd"><td><p>Esecuzione codice esterno</p></td>
 <td><ul class="simple">
 <li><p><span class="blue">run</span>: <code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">ccc.xxx()</span></code>  invoca  il metodo <em>static</em> <code class="docutils literal notranslate"><span class="pre">xxx</span></code> della classe <code class="docutils literal notranslate"><span class="pre">ccc</span></code>.
-Es. <a class="reference internal" href="SpringDataRest.html#datahandler"><span class="std std-ref">DataHandler</span></a></p></li>
+Es. <a class="reference internal" href="QakActors23Demo.html#datahandler"><span class="std std-ref">datahandler</span></a></p></li>
 <li><p><span class="blue">machineExec</span>:  <code class="docutils literal notranslate"><span class="pre">machineExec(cmd:string)</span></code></p></li>
 <li><p><span class="blue">qrun</span> : <code class="docutils literal notranslate"><span class="pre">qrun</span> <span class="pre">ccc.xxx()</span></code>  invoca  il metodo <em>static</em>  <code class="docutils literal notranslate"><span class="pre">xxx</span></code> della classe <code class="docutils literal notranslate"><span class="pre">ccc</span></code>. Il
 metodo deve avere come primo argomento un riferimento all’attore corrente (<strong>myself</strong>).</p></li>
@@ -589,7 +666,7 @@ metodo deve avere come primo argomento un riferimento all’attore corrente (<st
 </tbody>
 </table>
 <section id="accesso-al-contenuto-dei-messaggi">
-<h3>Accesso al contenuto dei messaggi<a class="headerlink" href="#accesso-al-contenuto-dei-messaggi" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id26">Accesso al contenuto dei messaggi</a><a class="headerlink" href="#accesso-al-contenuto-dei-messaggi" title="Permalink to this headline">¶</a></h3>
 <p>Supponiamo di avere un messaggio dichiarato come segue:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Dispatch</span> <span class="n">m</span> <span class="p">:</span> <span class="n">m</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z</span><span class="p">)</span>
 </pre></div>
@@ -619,7 +696,7 @@ funzione  <code class="docutils literal notranslate"><span class="pre">payloadAr
 </table>
 </section>
 <section id="id2">
-<h3>Shortcut<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id27">Shortcut</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
 <col style="width: 50%" />
@@ -666,7 +743,7 @@ solve(move(M));println( #M )
 </section>
 </section>
 <section id="codedqactor">
-<h2>CodedQActor<a class="headerlink" href="#codedqactor" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id28">CodedQActor</a><a class="headerlink" href="#codedqactor" title="Permalink to this headline">¶</a></h2>
 <p>Vi sono situazioni in cui è preferibile introdurre attori scritti direttamente in Kotlin (o in Java)
 ed utlizzarli come una sorta di componenti predefiniti in modelli descritti in linguaggio Qak.</p>
 <ul>
@@ -686,7 +763,7 @@ it ‘injects’ into the CodedQActor the context specified by the model.</p></l
 </ul>
 </section>
 <section id="externalqactor">
-<h2>ExternalQActor<a class="headerlink" href="#externalqactor" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id29">ExternalQActor</a><a class="headerlink" href="#externalqactor" title="Permalink to this headline">¶</a></h2>
 <p>Un sistema software ad attori Qak può essere pensato come un organismo che comincia ad
 operare solo quando tutte le sue parti sono state costruite ed attivate.</p>
 <p>In molti casi però, come di solito accade nelle architetture a <a class="reference external" href="https://microservices.io/">Microservizi</a>,
@@ -698,7 +775,7 @@ solo mediante scambio di messaggi.</p>
 </ul>
 </section>
 <section id="streamedqactor">
-<h2>StreamedQActor<a class="headerlink" href="#streamedqactor" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id30">StreamedQActor</a><a class="headerlink" href="#streamedqactor" title="Permalink to this headline">¶</a></h2>
 <p>La <a class="reference external" href="https://en.wikipedia.org/wiki/Reactive_programming">Reactive programming</a> è una combinazione di idee riconducibili al modello <em>Observer</em>,
 al modello <em>Iterator</em> e alla <em>programmazione funzionale</em>.
 In questo stile di programmazione, un servizio-consumatore reagisce ai dati non appena arrivano, con la capacità
@@ -708,13 +785,227 @@ inivare messaggi ad altri attori locali allo stesso contesto,
 che si sono (o vengono) ‘resistrati come osservatori’ presso di lui, con la primitiva <span class="blue">subscribeTo</span>.</p>
 <p>Ciascun attore-sottoscrittore elabora i dati ‘in parallelo’ con gli altri e può a sua volta funzionare come osservabile.</p>
 <ul class="simple">
-<li><p>Per un esempio si veda: <span class="xref std std-ref">streamdemo.qak</span></p></li>
+<li><p>Per un esempio si veda <a class="reference internal" href="RaspApplCode.html#progetto-unibo-sonarqak23"><span class="std std-ref">Progetto  unibo.sonarqak23</span></a>.</p></li>
 </ul>
 </section>
 <section id="attore-come-risorsa-coap">
-<h2>Attore come risorsa CoAP<a class="headerlink" href="#attore-come-risorsa-coap" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id31">Attore come risorsa CoAP</a><a class="headerlink" href="#attore-come-risorsa-coap" title="Permalink to this headline">¶</a></h2>
 <p>Per concetti e supporti di base per <a class="reference external" href="https://en.wikipedia.org/wiki/Constrained_Application_Protocol">CoAP</a>, si veda <a class="reference internal" href="AppuntiTecnologie.html#coap"><span class="std std-ref">CoAP</span></a> in <a class="reference internal" href="AppuntiTecnologie.html#appunti-su-tecnologie"><span class="std std-ref">Appunti su tecnologie</span></a>.</p>
-<p>In progress …</p>
+<p><span class="slide">Sulla implementazione</span></p>
+</section>
+<section id="qakactors23-note-implementative">
+<h2><a class="toc-backref" href="#id32">QakActors23 note implementative</a><a class="headerlink" href="#qakactors23-note-implementative" title="Permalink to this headline">¶</a></h2>
+<p>Ogni attore qak specializza la classe astratta <a class="reference internal" href="#it-unibo-kactor-actorbasic-kt"><span class="std std-ref">ActorBasic</span></a>
+oppure la classe astratta <a class="reference internal" href="#it-unibo-kactor-actorbasicfsm-kt"><span class="std std-ref">ActorBasicFsm</span></a>.</p>
+<p>Nel primo caso, l’attore opera in modo message-driven utilizzando un canale Kotlin.</p>
+<p>Nel secondo caso, l’attore opera come un automa a stati finiti gestendo in modo opportuno
+i messaggi ricevuti sul canale Kotlin
+ereditato da <a class="reference internal" href="#it-unibo-kactor-actorbasic-kt"><span class="std std-ref">ActorBasic</span></a>.</p>
+<section id="it-unibo-kactor-actorbasic-kt">
+<h3><a class="toc-backref" href="#id33">it.unibo.kactor.ActorBasic.kt</a><a class="headerlink" href="#it-unibo-kactor-actorbasic-kt" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">abstract</span> <span class="k">class</span>  <span class="nc">ActorBasic</span><span class="p">(</span>  <span class="n">name</span><span class="p">:</span>         <span class="n">String</span><span class="p">,</span>
+                          <span class="n">val</span> <span class="n">scope</span><span class="p">:</span>        <span class="n">CoroutineScope</span> <span class="o">=</span> <span class="n">GlobalScope</span><span class="p">,</span>
+                          <span class="n">var</span> <span class="n">discardMessages</span> <span class="p">:</span> <span class="n">Boolean</span> <span class="o">=</span> <span class="n">false</span><span class="p">,</span>
+                          <span class="n">val</span> <span class="n">confined</span> <span class="p">:</span>    <span class="n">Boolean</span> <span class="o">=</span> <span class="n">false</span><span class="p">,</span>
+                          <span class="n">val</span> <span class="n">ioBound</span> <span class="p">:</span>     <span class="n">Boolean</span> <span class="o">=</span> <span class="n">false</span><span class="p">,</span>
+                          <span class="n">val</span> <span class="n">channelSize</span> <span class="p">:</span> <span class="n">Int</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="p">)</span> <span class="p">:</span> <span class="n">CoapResource</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">MqttCallback</span> <span class="p">{</span>
+  <span class="o">...</span>
+
+  <span class="o">//</span><span class="n">To</span> <span class="n">be</span> <span class="n">overridden</span> <span class="n">by</span> <span class="n">the</span> <span class="n">application</span> <span class="n">designer</span>
+  <span class="n">abstract</span> <span class="n">suspend</span> <span class="n">fun</span> <span class="n">actorBody</span><span class="p">(</span><span class="n">msg</span> <span class="p">:</span> <span class="n">IApplMessage</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><span class="remark">class  ActorBasic</span></p></td>
+<td><p>si veda <a class="reference internal" href="KotlinNotes.html#oggetti-e-classi"><span class="std std-ref">Oggetti e classi</span></a> in <a class="reference internal" href="KotlinNotes.html#kotlinnotes"><span class="std std-ref">KotlinNotes</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="remark">scope:CoroutineScope</span></p></td>
+<td><p>si veda <a class="reference internal" href="KotlinNotes.html#le-coroutines"><span class="std std-ref">Le coroutines</span></a> in <a class="reference internal" href="KotlinNotes.html#kotlinnotes"><span class="std std-ref">KotlinNotes</span></a> e  <a class="reference external" href="../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#coroutinesIntro">kotlinUniboCoroutinesIntro</a> in <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html">kotlinUnibo</a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="remark">confined:Boolean</span></p></td>
+<td><p>si veda <a class="reference internal" href="KotlinNotes.html#confinamento"><span class="std std-ref">Confinamento</span></a> in <a class="reference internal" href="KotlinNotes.html#kotlinnotes"><span class="std std-ref">KotlinNotes</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="remark">ioBound:Boolean</span></p></td>
+<td><p>si veda <a class="reference internal" href="KotlinNotes.html#confinamento"><span class="std std-ref">Confinamento</span></a> in <a class="reference internal" href="KotlinNotes.html#kotlinnotes"><span class="std std-ref">KotlinNotes</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="remark">channelSize:Int</span></p></td>
+<td><p>si veda <a class="reference internal" href="KotlinNotes.html#i-canali"><span class="std std-ref">I canali</span></a> in <a class="reference internal" href="KotlinNotes.html#kotlinnotes"><span class="std std-ref">KotlinNotes</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="remark">discardMessages:Boolean</span></p></td>
+<td><p>serve per decidere se gestire o meno messaggi non attesi. Usato principalmente in
+<a class="reference internal" href="#it-unibo-kactor-actorbasicfsm-kt"><span class="std std-ref">ActorBasicFsm</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="remark">suspend fun actorBody</span></p></td>
+<td><p>definisce il codice per la gestione dei messaggi <a class="reference internal" href="unibo.basicomm23.html#unibo-interaction-interfaces-iapplmessage"><span class="std std-ref">IApplMessage</span></a>
+ricevuti dall’attore.
+Si veda <a class="reference internal" href="KotlinNotes.html#id1"><span class="std std-ref">Suspending functions</span></a> in <a class="reference internal" href="KotlinNotes.html#kotlinnotes"><span class="std std-ref">KotlinNotes</span></a> e  <a class="reference internal" href="#come-definire-codedqactor"><span class="std std-ref">Come definire CodedQactor</span></a>.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="parte-kotlininheritance">
+<h4>Parte <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#inheritance">kotlinInheritance</a><a class="headerlink" href="#parte-kotlininheritance" title="Permalink to this headline">¶</a></h4>
+<p>La notazione:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span>  <span class="nc">ActorBasic</span><span class="p">(</span> <span class="o">...</span> <span class="p">)</span> <span class="p">:</span> <span class="n">CoapResource</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">MqttCallback</span>
+</pre></div>
+</div>
+<p>esprime in forma compatta che <em>ActorBasic</em> <a href="#id3"><span class="problematic" id="id4">:remarkk:`eredita`</span></a> dalla classe <a class="reference internal" href="#coapresource"><span class="std std-ref">CoapResource</span></a> e
+<span class="remark">implementa</span> l’interfaccia <a class="reference internal" href="#mqttcallback"><span class="std std-ref">MqttCallback</span></a> (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#inheritance">kotlinInheritance</a>).</p>
+<section id="coapresource">
+<h5>CoapResource<a class="headerlink" href="#coapresource" title="Permalink to this headline">¶</a></h5>
+<p>Ogni attore è anche una risorsa CoAP, specializzazione della classe definita nella libreria
+<a class="reference external" href="https://www.eclipse.org/californium/">https://www.eclipse.org/californium/</a>.</p>
+</section>
+<section id="mqttcallback">
+<h5>MqttCallback<a class="headerlink" href="#mqttcallback" title="Permalink to this headline">¶</a></h5>
+<p>Ogni attore implementa anche l’interfaccia
+<code class="docutils literal notranslate"><span class="pre">org.eclipse.paho.client.mqttv3.MqttCallback</span></code>. Pertanto
+ogni attore può gestire notifiche emesse da un MQTT client, attravesro il metodo <code class="docutils literal notranslate"><span class="pre">messageArrived</span></code>.</p>
+</section>
+</section>
+<section id="actorbasic-il-funzionamento">
+<h4><a class="toc-backref" href="#id35">ActorBasic: il funzionamento</a><a class="headerlink" href="#actorbasic-il-funzionamento" title="Permalink to this headline">¶</a></h4>
+<p>Si realizza in modo
+efficiente il concetto di un ente computazionale dotato di flusso di controllo autonomo, capace di recevere e gestire
+messaggi in modo FIFO, sfruttando un  <a class="reference internal" href="KotlinNotes.html#kotlin-actor"><span class="std std-ref">Kotlin actor</span></a> incapsulato:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/ActorBasic.png"><img alt="_images/ActorBasic.png" class="align-center" src="_images/ActorBasic.png" style="width: 50%;" /></a>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">val</span> <span class="n">actor</span> <span class="o">=</span> <span class="n">scope</span><span class="o">.</span><span class="n">actor</span><span class="o">&lt;</span><span class="n">IApplMessage</span><span class="o">&gt;</span><span class="p">(</span> <span class="n">dispatcher</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="n">channelSize</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span><span class="p">(</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">channel</span> <span class="p">)</span> <span class="p">{</span>
+                      <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgContent</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;stopTheActor&quot;</span><span class="p">)</span> <span class="p">{</span>  <span class="n">channel</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="p">}</span>
+    <span class="k">else</span> <span class="n">actorBody</span><span class="p">(</span> <span class="n">msg</span> <span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="automsg">
+<h5>autoMsg<a class="headerlink" href="#automsg" title="Permalink to this headline">¶</a></h5>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">autoMsg</span></code> è un esempio di invio di un messaggio all’attore, da parte dell’attore stesso.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">suspend</span> <span class="nb">open</span> <span class="n">fun</span> <span class="n">autoMsg</span><span class="p">(</span>  <span class="n">msg</span> <span class="p">:</span> <span class="n">IApplMessage</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">actor</span><span class="o">.</span><span class="n">send</span><span class="p">(</span> <span class="n">msg</span> <span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="sendmessagetoactor">
+<h5>sendMessageToActor<a class="headerlink" href="#sendmessagetoactor" title="Permalink to this headline">¶</a></h5>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">sendMessageToActor</span></code> realizza l’invio di un messaggio ad un attore
+di cui è noto il nome o la connessione.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>suspend fun sendMessageToActor(msg : IApplMessage,
+       destName: String, conn : Interaction? = null ) {
+  //realizza l&#39;invio di msg all&#39;attore di nome destName
+  //usando conn se conn!=null (destname è un &#39;alieno&#39;)
+  val destactor = context!!.hasActor(destName)
+  /*
+    se destactor  è locale: destactor.actor.send( msg )
+    altrimenti usa il proxy verso il contesto di destactor
+}
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="it-unibo-kactor-actorbasicfsm-kt">
+<h3><a class="toc-backref" href="#id36">it.unibo.kactor.ActorBasicFsm.kt</a><a class="headerlink" href="#it-unibo-kactor-actorbasicfsm-kt" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">abstract</span> <span class="k">class</span> <span class="nc">ActorBasicFsm</span><span class="p">(</span>  <span class="n">qafsmname</span><span class="p">:</span>  <span class="n">String</span><span class="p">,</span>
+                      <span class="n">fsmscope</span><span class="p">:</span> <span class="n">CoroutineScope</span> <span class="o">=</span> <span class="n">GlobalScope</span><span class="p">,</span>
+            <span class="n">discardMessages</span> <span class="p">:</span> <span class="n">Boolean</span> <span class="o">=</span> <span class="n">false</span><span class="p">,</span>
+                      <span class="n">confined</span> <span class="p">:</span>    <span class="n">Boolean</span> <span class="o">=</span> <span class="n">false</span><span class="p">,</span>
+                      <span class="n">ioBound</span> <span class="p">:</span>     <span class="n">Boolean</span> <span class="o">=</span> <span class="n">false</span><span class="p">,</span>
+                      <span class="n">channelSize</span> <span class="p">:</span> <span class="n">Int</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="p">):</span> <span class="n">ActorBasic</span><span class="p">(</span><span class="n">qafsmname</span><span class="p">,</span><span class="n">fsmscope</span><span class="p">,</span><span class="n">discardMessages</span><span class="p">,</span><span class="n">confined</span><span class="p">,</span><span class="n">ioBound</span><span class="p">,</span><span class="n">channelSize</span><span class="p">)</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>Un attore che specializza questa classe opera come un automa a stati finiti
+in modo simile a quanto introdtto in <a class="reference internal" href="Actors23FSM.html#actors23fsm"><span class="std std-ref">Actors23FSM</span></a>.</p>
+<p>I messaggi ricevuti sul canale Kotlin
+(ereditato da <a class="reference internal" href="#it-unibo-kactor-actorbasic-kt"><span class="std std-ref">ActorBasic</span></a>) sono gestiti in relazione
+alle specifiche sulle transizioni associate allo stato corrrente dell’automa.</p>
+<p><span class="slide1">Esempi di CodedQactor</span></p>
+</section>
+</section>
+<section id="come-definire-codedqactor">
+<h2><a class="toc-backref" href="#id37">Come definire CodedQactor</a><a class="headerlink" href="#come-definire-codedqactor" title="Permalink to this headline">¶</a></h2>
+<p>Le librerie connesse alla <a class="reference internal" href="#qak-infrastructure"><span class="std std-ref">Qak infrastructure</span></a> permettono di definire attori Qak in Java e/o Kotlin
+senza utilizzare il  <a class="reference internal" href="#id1"><span class="std std-ref">linguaggio Qak</span></a> e la <a class="reference internal" href="#qak-factory"><span class="std std-ref">Qak factory</span></a>.</p>
+<p>Si tratta di una forma di programmazione di più basso livello che costringe l’application designer
+ad affrontare dettagli nascosti quando si usa il <a class="reference internal" href="#id1"><span class="std std-ref">linguaggio Qak</span></a>, ma proprio per questo
+permette di comprendere meglio qualche dettaglio implementativo.</p>
+<p>Consideriamo ad esempio l’attore <a class="reference internal" href="#sonarhcsr04support23"><span class="std std-ref">sonarHCSR04Support23</span></a> introdotto nel <a class="reference internal" href="RaspApplCode.html#progetto-unibo-sonarqak23"><span class="std std-ref">Progetto  unibo.sonarqak23</span></a>.</p>
+<section id="sonarhcsr04support23">
+<h3><a class="toc-backref" href="#id38">sonarHCSR04Support23</a><a class="headerlink" href="#sonarhcsr04support23" title="Permalink to this headline">¶</a></h3>
+<p>Lo scopo di questo attore è gestire le informazioni emesse da un
+programma Python che gestisce un <a class="reference internal" href="RaspBasicCode.html#usiamo-un-sonar-hc-sr04"><span class="std std-ref">sonar fisico</span></a>
+trasformandole in eventi Qak.</p>
+<p>L’attore viene introdotto come una specializzazione di <a class="reference internal" href="#it-unibo-kactor-actorbasic-kt"><span class="std std-ref">ActorBasic</span></a>
+che definisce un oggetto di classe <em>BufferedReader</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">dataCleaner</span> <span class="p">(</span><span class="n">name</span> <span class="p">:</span> <span class="n">String</span> <span class="p">)</span> <span class="p">:</span> <span class="n">ActorBasic</span><span class="p">(</span> <span class="n">name</span> <span class="p">)</span> <span class="p">{</span>
+<span class="n">lateinit</span> <span class="n">var</span> <span class="n">reader</span> <span class="p">:</span> <span class="n">BufferedReader</span>
+
+<span class="n">init</span><span class="p">{</span>
+  <span class="n">runBlocking</span><span class="p">{</span>  <span class="n">autoMsg</span><span class="p">(</span><span class="s2">&quot;sonarstart&quot;</span><span class="p">,</span><span class="s2">&quot;do&quot;</span><span class="p">)</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Per <span class="remark">lateinit</span>, si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#ill">kotlinAboutInit</a>.</p></li>
+<li><p>Per <span class="remark">init</span>, si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#initblock">kotlininitblock</a>.</p></li>
+<li><p>Per <span class="remark">runBlocking</span>: si veda <a class="reference internal" href="KotlinNotes.html#runblocking"><span class="std std-ref">runBlocking</span></a>.</p></li>
+</ul>
+<p>Consideriamo ora l’attore <a class="reference internal" href="#datacleaner"><span class="std std-ref">dataCleaner</span></a> introdotto nel <a class="reference internal" href="RaspApplCode.html#progetto-unibo-sonarqak23"><span class="std std-ref">Progetto  unibo.sonarqak23</span></a>.</p>
+</section>
+<section id="datacleaner">
+<h3><a class="toc-backref" href="#id39">dataCleaner</a><a class="headerlink" href="#datacleaner" title="Permalink to this headline">¶</a></h3>
+<p>Lo scopo di questo attore è gestire eventi emessi da un <a class="reference internal" href="RaspBasicCode.html#usiamo-un-sonar-hc-sr04"><span class="std std-ref">sonar fisico</span></a>
+in modo da eliminare dal sistema informazioni di distanza palesemente errate, non comprese
+nel range <code class="docutils literal notranslate"><span class="pre">2..150</span></code>.</p>
+<p>L’attore viene introdotto come una specializzazione di <a class="reference internal" href="#it-unibo-kactor-actorbasic-kt"><span class="std std-ref">ActorBasic</span></a>
+che definisce i valori-linite di distanza accettabili.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">dataCleaner</span> <span class="p">(</span><span class="n">name</span> <span class="p">:</span> <span class="n">String</span> <span class="p">)</span> <span class="p">:</span> <span class="n">ActorBasic</span><span class="p">(</span> <span class="n">name</span> <span class="p">)</span> <span class="p">{</span>
+<span class="n">val</span> <span class="n">LimitLow</span>  <span class="o">=</span> <span class="mi">2</span>
+<span class="n">val</span> <span class="n">LimitHigh</span> <span class="o">=</span> <span class="mi">150</span>
+</pre></div>
+</div>
+<section id="datacleaner-gestione-messaggi">
+<h4><a class="toc-backref" href="#id40">dataCleaner: gestione messaggi</a><a class="headerlink" href="#datacleaner-gestione-messaggi" title="Permalink to this headline">¶</a></h4>
+<p>Ricordando la struttura di un attore Qak realizzata da <a class="reference internal" href="#it-unibo-kactor-actorbasic-kt"><span class="std std-ref">ActorBasic</span></a>:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/ActorBasic.png"><img alt="_images/ActorBasic.png" class="align-center" src="_images/ActorBasic.png" style="width: 50%;" /></a>
+</div></blockquote>
+<p>compito dell’application designer è ora quello di definire il metodo actorBody per
+la gestione dei messaggi ricevuti sul canale di ingresso.</p>
+<p>Nel caso specifico:
+- evitiamo di considerare messaggi che non provengano</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">override</span> <span class="n">suspend</span> <span class="n">fun</span> <span class="n">actorBody</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="n">IApplMessage</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgId</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;sonar&quot;</span><span class="p">)</span> <span class="k">return</span>
+      <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgSender</span><span class="p">()</span> <span class="o">==</span> <span class="n">name</span><span class="p">)</span> <span class="k">return</span> <span class="o">//</span><span class="n">AVOID</span> <span class="n">to</span> <span class="n">handle</span> <span class="n">the</span> <span class="n">event</span> <span class="n">emitted</span> <span class="n">by</span> <span class="n">itself</span>
+      <span class="n">elabData</span><span class="p">(</span> <span class="n">msg</span> <span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="n">suspend</span> <span class="n">fun</span> <span class="n">elabData</span><span class="p">(</span> <span class="n">msg</span><span class="p">:</span> <span class="n">IApplMessage</span><span class="p">){</span> <span class="o">//</span><span class="n">OPTIMISTIC</span>
+    <span class="n">val</span> <span class="n">data</span>  <span class="o">=</span> <span class="p">(</span><span class="n">Term</span><span class="o">.</span><span class="n">createTerm</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgContent</span><span class="p">()</span> <span class="p">)</span> <span class="k">as</span> <span class="n">Struct</span><span class="p">)</span><span class="o">.</span><span class="n">getArg</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">()</span>
+      <span class="n">CommUtils</span><span class="o">.</span><span class="n">outyellow</span><span class="p">(</span><span class="s2">&quot;$tt $name |  data = $data &quot;</span><span class="p">)</span>
+    <span class="n">val</span> <span class="n">Distance</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="n">parseInt</span><span class="p">(</span> <span class="n">data</span> <span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">Distance</span> <span class="o">&gt;</span> <span class="n">LimitLow</span> <span class="o">&amp;&amp;</span> <span class="n">Distance</span> <span class="o">&lt;</span> <span class="n">LimitHigh</span> <span class="p">){</span>
+      <span class="n">emitLocalStreamEvent</span><span class="p">(</span> <span class="n">msg</span> <span class="p">)</span> <span class="o">//</span><span class="n">propagate</span>
+        <span class="n">val</span> <span class="n">m0</span> <span class="o">=</span> <span class="n">MsgUtil</span><span class="o">.</span><span class="n">buildEvent</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;sonardata&quot;</span><span class="p">,</span> <span class="s2">&quot;distance($data)&quot;</span><span class="p">)</span>
+        <span class="n">emit</span><span class="p">(</span> <span class="n">m0</span> <span class="p">)</span>
+      <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+        <span class="n">CommUtils</span><span class="o">.</span><span class="n">outmagenta</span><span class="p">(</span><span class="s2">&quot;$tt $name |  DISCARDS $Distance &quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
 </section>
 </section>
 
@@ -776,6 +1067,31 @@ che si sono (o vengono) ‘resistrati come osservatori’ presso di lui, con la 
 <li><a class="reference internal" href="#externalqactor">ExternalQActor</a></li>
 <li><a class="reference internal" href="#streamedqactor">StreamedQActor</a></li>
 <li><a class="reference internal" href="#attore-come-risorsa-coap">Attore come risorsa CoAP</a></li>
+<li><a class="reference internal" href="#qakactors23-note-implementative">QakActors23 note implementative</a><ul>
+<li><a class="reference internal" href="#it-unibo-kactor-actorbasic-kt">it.unibo.kactor.ActorBasic.kt</a><ul>
+<li><a class="reference internal" href="#parte-kotlininheritance">Parte kotlinInheritance</a><ul>
+<li><a class="reference internal" href="#coapresource">CoapResource</a></li>
+<li><a class="reference internal" href="#mqttcallback">MqttCallback</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#actorbasic-il-funzionamento">ActorBasic: il funzionamento</a><ul>
+<li><a class="reference internal" href="#automsg">autoMsg</a></li>
+<li><a class="reference internal" href="#sendmessagetoactor">sendMessageToActor</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#it-unibo-kactor-actorbasicfsm-kt">it.unibo.kactor.ActorBasicFsm.kt</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#come-definire-codedqactor">Come definire CodedQactor</a><ul>
+<li><a class="reference internal" href="#sonarhcsr04support23">sonarHCSR04Support23</a></li>
+<li><a class="reference internal" href="#datacleaner">dataCleaner</a><ul>
+<li><a class="reference internal" href="#datacleaner-gestione-messaggi">dataCleaner: gestione messaggi</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

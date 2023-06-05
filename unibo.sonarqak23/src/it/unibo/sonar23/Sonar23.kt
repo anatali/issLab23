@@ -33,6 +33,8 @@ class Sonar23 ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				}	 
 				state("work") { //this:State
 					action { //it:State
+						updateResourceRep( "sonar23 waiting ..."  
+						)
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -45,6 +47,8 @@ class Sonar23 ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 					action { //it:State
 						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
+						updateResourceRep( "sonar23 handles $currentMsg"  
+						)
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

@@ -1,0 +1,446 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+	width: 90%;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 90%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>QakAndProces</title></head>
+    
+<body>
+
+<div class="body"> 
+
+<h1>LabIss | Agile model-based software development</h1> 
+ 
+<ol>
+ 
+<li><a href="#process">QActors and process development</a></li>
+<li><a href="#metam">Models and meta-models</a></li>
+<li><a href="#dsl">Domain Specific Languages</a></li>
+<!-- <li><a href="#vision">Vision </a></li>   Model Driven Software Development -->
+
+ 
+</ol> 
+ 
+
+
+
+<h2 id="process">QActors and process development</h2>
+<tt>QActor</tt> models should be introduced in the early stages of the software development process, to express in a concise way
+the overall <em>architecture</em> of a distributed system composed of a set of actors that use 
+<bc>high-level</bc> message-oriented operations, by abstracting from the fact that they could work
+in a local  environment (i.e. in a same <tt>JVM</tt>) or on different computational nodes.
+<br/><br/>
+
+The intent is to exploit the features of the <tt>QActor</tt> language to capture the <bc>logic of the interaction</bc>
+rather than the technological details of its implementation.
+<br/><br/>
+The possibility to execute a (simple) <tt>QActor</tt> model of a system as the result of the 
+<em>problem analysis</em> phase can be very useful for a more productive interaction with the customer in order to
+better understand the requirements, define the product backlog and introduce proper functional test-plans
+already expressed as programs.
+
+<h3>Logical architectures</h3>
+Moreover, a system analyst could exploit the <tt>QActor</tt>  modeling language to define
+a <bc>logical architecture</bc> of the system, to be used as a reference-point for software development.
+<br/><br/>
+Clearly, such a simple initial architectural model must be refined in the next steps of process development 
+(mainly in the <em>project phase</em>) by gradually <bc>zooming</bc> into
+the details of each resource and of each actor.
+<br/><br/>
+The concepts embedded into the <tt>QActor</tt> language can express (running) models of software system
+bot at the 'macro' level (of a distributed, heterogeneous system) and at the 'micro' level (of each node composing the system)
+in a 'seamless' way. 
+<br/><br/>
+The mapping between the logical level and the appropriate interaction-technology support(s) identified by the designer,
+can be done in a quite automated way by a proper software factory built around the <tt>QActor</tt> concepts,
+as formally defined in the 
+<a href="LabQakIntro2021.html" target="web"><bc>QActor meta-model</bc></a>.
+
+
+<h2 id="metam">Models and meta-models</h2>
+ 
+ <center><table style="width:100%">
+<tbody>	
+<tr>
+<td style="width:35%"><h3>Metamodeling</h3>
+The <a href="https://en.wikipedia.org/wiki/Object_Management_Group" target="web"> 
+Object Management Group (OMG)</a> has developed a metamodeling architecture to define the 
+<a href="https://en.wikipedia.org/wiki/Unified_Modeling_Language" target="web"><em>UML</em></a>, called the
+<a href="https://en.wikipedia.org/wiki/Meta-Object_Facility" target="web"> <bc>Meta-Object Facility (MOF)</bc></a>,
+designed as a four-layered architecture. 
+<br/><br/>
+The most prominent example of a Layer 2 MOF model is the 
+<a href="http://www.cs.sjsu.edu/faculty/pearce/modules/lectures/uml2/index.htm" target="web"> 
+<em>UML metamodel</em></a>, which describes the UML itself.  
+ 
+<br/><br/>
+The UML language can be extended using a mechanism called 
+<a href="https://en.wikipedia.org/wiki/Stereotype_(UML)" target="web"> 
+<em>stereotyping</em></a>, but this has been criticized as being insufficient/untenable.
+</td>
+<td>
+<img src="./img/slide8.png" alt="slide8" width="80%" /> <br/><br/>
+<m>
+M2-models describe elements of the M1-layer, and thus M1-models. These would be, for example, models written in UML. 
+The last layer is the M0-layer or data layer. It is used to describe runtime instances of the system. </m>
+</td>
+</tr>
+
+	<tr>
+	<td >
+	<h3 id=""mdsd>Model Driven Software Development</h3>
+		<div class="remark">
+		See <li> <a href="UMLHarelRumpe.pdf" target="lecture">On semantics</a></li>    
+<li> <a href="Whatmodelsmean.pdf" target="lecture">What models mean</a></li>   
+		</div>
+	</td>
+	<td>
+	<center><img src="./img/mdsdpng.png" alt="mdsdpng.png" width="80%" /></center>  
+
+	</td>
+	</tr>
+	
+	
+<tr>
+<td><h3 id="xtext"><a href="https://www.eclipse.org/Xtext/" target="web">EMF and Xtext</a></h3>
+<m>
+The <a href="https://www.eclipse.org/modeling/emf/" target="web">Eclipse Modeling Framework (EMF)</a>
+is a modeling framework and code generation facility for building tools and other applications based on a structured data model
+based on the <a href="https://en.wikipedia.org/wiki/Eclipse_Modeling_Framework" target="web">EMF (core) </a>standard.
+<br/><br/>
+
+
+<a href="https://www.eclipse.org/Xtext/" target="web">Xtext</a> is a framework for development of programming languages 
+and domain-specific languages. 
+<br/><br/>
+Xtext uses 
+<a href=" https://www.eclipse.org/Xtext/documentation/308_emf_integration.html" target="web">EMF models</a>
+ as the in-memory representation of any parsed text files. 
+This in-memory object graph is called the abstract syntax tree (AST). Depending on the community this concepts 
+is also called document object model (<bc>DOM</bc>), semantic model, or simply model.
+<br/><br/>
+With Xtext you define your language using a powerful grammar language. 
+As a result you get a full infrastructure, including <b>parser, linker, typechecker, compiler</b> 
+as well as <b>editing support</b> for Eclipse.
+<br/>
+
+</m>
+
+</td>
+<td>
+<h3>The <a href="https://www.eclipse.org/modeling/emf/" target="web">Eclipse Modeling Framework</a></h3>
+<img src="./img/emf.png" alt="emf" width="80%" /></td>
+</tr>
+
+<tr>
+<td>
+<b>Definition of a custom language: example</b>
+<pre>
+grammar it.unibo.xtext.intro19.Iot 
+	with org.eclipse.xtext.common.Terminals
+generate iot "http://www.unibo.it/xtext/intro19/Iot"
+terminal VARID : ('A'..'Z'|'_ ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
+
+IotSystem: "<ks>System</ks>" spec=IotSystemSpec ;
+QualifiedName : ID ('.' ID)* ;
+
+IotSystemSpec: name=ID  			 
+	 (mqttBroker = BrokerSpec)?     <kc>//<k>?</k> means Optional</kc>
+	 (message   += Message   )*     <kc>//<k>*</k> means N>=0</kc>
+;
+BrokerSpec : "<ks>mqttBroker</ks>" host=STRING ":" port=INT ;
+
+Message :  Event | Dispatch  ;
+
+Event: 	  "<ks>Event</ks>"    name=ID  ":" msg = STRING  ;
+Dispatch: "<ks>Dispatch</ks>" name=ID  ":" msg = STRING  ;
+</pre> 	
+ 
+</td>
+<td>
+<img src="./img/xtextGrammar.png" alt="xtextGrammar" width="80%" />
+</td>
+</tr>
+
+</table>
+</center> 	
+
+
+
+
+ 
+<h2 id="dsl">Domain Specific Languages</h2>
+
+A <a href="https://en.wikipedia.org/wiki/Domain-specific_language" target="web">Domain-specific languages (DSL)</a> 
+is a computer language specialized to a particular application domain. 
+Examples of DSL are <tt>Gradle</tt> and <tt>SQL</tt>.
+This is in contrast to a 
+<a href="https://en.wikipedia.org/wiki/General-purpose_programming_language" target="web">general-purpose programming language (GPL)</a>,
+ which is broadly applicable across domains.  
+<br/><br/>
+DSL are specialized in solving a specific problem domain and can be very efficient at it.
+Moreover, by  <bc>incorporating knowledge</bc> about that domain, DSLs can lead to more concise and more analyzable programs, 
+promote <em>effective communication with customers</em>, better code quality and increased development speed.  
+<br/><br/>
+DSLs come in two main forms: external and internal.
+<ul>
+<li><bc>External DSLs</bc> are DSLs with their own syntax that's parsed independently of the host GPL. 
+They requires work when integrating to an application written with a general programming language.</li>
+<li><bc>Internal DSLs</bc> are written in the syntax of a general programming language.
+They are a particular form of API in a host general purpose language, often referred to as a 
+<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="web"><em>fluent interface</em></a> .</li>
+</ul>
+
+
+ 
+
+  	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:100%">
+  	<li><a href="https://www.slideshare.net/zirrus/domainspecific-langauges" target="web">Domain-specific
+Languages, by Javier Luis Cánovas Izquierdo</a>, Inria <br/></li>
+<li><a href="https://www.slideshare.net/mariofusco/real-world-dsl" target="web">Real World DSL, by Mario Fusco</a>, Red Hat <br/></li>
+ 
+<!-- https://www.slideshare.net/peterfriese/the-unbearable-stupidity-of-modeling -->
+<div class="remark">
+For an example using Kotlin to define internal DSL see 
+<a href="https://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/master/it.unibo.kotlinIntro/userDocs/LabDsl.html"
+target="lecture">LabDsl.html</a>.
+</div>	<center><img src="./img/dslSlide.png" alt="dslSlide" width="70%" /></center><br/>
+
+	</td>
+	</tr>
+	 </table>
+	</center> 
+ 
+
+
+
+ 
+ <br/><br/>
+
+  
+ 
+ <!--
+
+<center><table style="width:95%">
+<tbody>	
+ 
+<tr>
+<td style="width:40%">
+</td>
+<td><m></m></td>
+</tr>
+
+<tr>
+<td style="width:40%">
+</td> 
+<td><m></m></td>
+</tr>
+
+<tr>
+<td style="width:40%">
+
+</td>
+<td><m> 
+</m></td>
+</tr>
+
+
+</tbody>	
+</table></center>
+-->
+</div>
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div> 
+</body>
+</html>

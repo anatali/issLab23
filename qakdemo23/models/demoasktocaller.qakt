@@ -1,0 +1,78 @@
+System /*-msglog  -trace */ demo_req_b
+//mqttBroker "broker.hivemq.com" : 1883
+
+Request r1 : r1(X)
+Request r2 : r2(X)
+Reply   a1 : a1(X) 
+  
+
+//Context ctxdemoreqb ip [host="localhost" port=8014]    //for first run (debug)
+Context ctxcallerb ip [host="localhost" port=8076]  
+Context ctxcalledb ip [host="127.0.0.1" port=8078]  
+
+QActor callerb context ctxcallerb {
+	State init initial {
+		println("	callerb request r1(10)")
+		request calledb -m r1 : r1(10)
+		delay 1000
+		request calledb -m r1 : r1(20)
+	}
+	Goto work 
+	
+	State work{
+		//println("	callerb work")
+	}
+	Transition t0 
+		whenReply   a1 -> handleReply
+		whenRequest r2 -> handleAskFromCalled
+	
+	State handleReply{
+		printCurrentMessage
+	}
+	Goto work 
+	 
+	State handleAskFromCalled{
+//		printCurrentMessage
+		onMsg( r2 : r2(X) ) {
+			println("	callerb receives ask from called r2(${payloadArg(0)})")
+			println("	callerb replies with a1(90)")
+			replyTo r2 with a1 : a1(90)
+		}
+	}
+	Goto work
+} 
+
+QActor calledb context ctxcalledb {
+[# var RequestArg = "0" #]
+	State init initial {
+		//println("calledb init")
+	}
+	Transition t0 
+		whenRequest r1 -> handleRequest
+	 
+	 
+	State handleRequest{
+		printCurrentMessage 	
+			
+		onMsg( r1 : r1(X) ){
+			[# RequestArg = payloadArg(0) #]
+			println("	calledb receives the request r1($RequestArg)")
+			println("	calledb askfor r2(theta)")
+			askFor r2 request r1 : r2(theta)   //r2 is the new request
+ 		}		
+	} 
+	Transition t0
+		 whenTime 1000 -> init
+		 whenReply a1 -> answerAfterAsk
+
+	State answerAfterAsk{  
+//		printCurrentMessage		 
+ 		onMsg( a1 : a1(X) ){ 
+ 			println("	calledb receives answer to ask a1(${payloadArg(0)})")
+ 			[# val R = "${RequestArg}_${payloadArg(0)}" #]
+ 			println("	calledb replies to orginal request with a1($R)")
+			replyTo r1 with a1 : a1( $R   )  
+ 		}
+	} 
+	Goto init   
+}  

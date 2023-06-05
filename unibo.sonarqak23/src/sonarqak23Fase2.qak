@@ -3,6 +3,7 @@ System sonarqak23
 //--------For this system-----------
 Event sonardata : distance(D)   //emitted  by distancefilter
 Event obstacle  : obstacle(D)   //emitted as stream by distancefilter
+Dispatch coapUpdate: coapUpdate(RESOURCE, VALUE)
 
 //--------From basicrobot-----------------------------------
 Request engage        : engage(OWNER)	
@@ -24,7 +25,7 @@ ExternalQActor basicrobot context ctxbasicrobot
 
 
 CodedQActor sonar  context ctxsonarqak23 className "sonarSimulator"           //IN LOCALE
-//CodedQActor sonar  context ctxsonarqak23 className "sonarHCSR04Support23"   //SU RASP
+    //CodedQActor sonar  context ctxsonarqak23 className "sonarHCSR04Support23"   //SU RASP
 //CodedQActor datalogger     context ctxsonarqak23 className "rx.dataLogger"
 CodedQActor datacleaner    context ctxsonarqak23 className "rx.dataCleaner"
 CodedQActor distancefilter context ctxsonarqak23 className "rx.distanceFilter"
@@ -39,12 +40,14 @@ QActor sonar23 context ctxsonarqak23{
 	 
 	State work{
 		//println("sonar23 | waits ... ") 		
+		updateResource [# "sonar23 waiting ..." #]
 	}
 	Transition t0 whenEvent sonardata -> handlesonardata
 	              whenEvent obstacle  -> handleobstacle
 	
 	State handlesonardata{
 		printCurrentMessage
+		updateResource [# "sonar23 handles $currentMsg" #]
 	}
 	Goto work 
 	
@@ -61,6 +64,25 @@ QActor sonar23 context ctxsonarqak23{
 		println("$name BYE")
 	}
 }   
+
+QActor sonar23observer context ctxsonarqak23{
+	State s0 initial{  
+		println("sonar23observer | start  ") 
+		observeResource sonar23
+	}
+	Goto observing 
+	
+	State observing{
+		
+	}
+	Transition t0 whenMsg coapUpdate -> doObserve
+
+	State doObserve{
+		printCurrentMessage
+	}
+	Goto observing
+	
+}
 
 /*
  * appl

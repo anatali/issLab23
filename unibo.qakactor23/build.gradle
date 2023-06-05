@@ -1,0 +1,96 @@
+/*
+================================================================================
+build.gradle
+ 	gradle build eclipse		//to set the dependency on the library
+================================================================================
+*/
+plugins {
+    id 'java'
+    id 'eclipse'
+
+    id "org.jetbrains.kotlin.jvm" version "1.6.0"
+}
+version '3.5'
+sourceCompatibility = 11
+
+repositories {
+    mavenCentral()
+    flatDir {  
+       dirs '../unibolibs'
+    }
+}
+
+dependencies {
+    // Align versions of all Kotlin components
+    implementation platform('org.jetbrains.kotlin:kotlin-bom')
+    // Use the Kotlin JDK 8 standard library.
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+
+    // This dependency is used by the application.
+    implementation 'com.google.guava:guava:30.1.1-jre'
+
+    // Use the Kotlin test library.
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+
+    // Use the Kotlin JUnit integration.
+    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
+
+
+    //testCompile group: 'junit', name: 'junit', version: '4.12'
+ /* COROUTINES ********************************************************************************************************** */
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
+    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: "1.6.0", ext: 'pom'
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm
+    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core-jvm', version: "1.6.0"
+
+    //implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+
+//ARDUINO
+    // https://mvnrepository.com/artifact/org.scream3r/jssc
+    implementation group: 'org.scream3r', name: 'jssc', version: '2.8.0'
+//MQTT
+// https://mvnrepository.com/artifact/org.eclipse.paho/org.eclipse.paho.client.mqttv3
+    implementation group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.2.1'
+//JSON
+    // https://mvnrepository.com/artifact/org.json/json
+    //implementation group: 'org.json', name: 'json', version: '20160810'
+    //implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+//COAP
+	// https://mvnrepository.com/artifact/org.eclipse.californium/californium-core
+	implementation group: 'org.eclipse.californium', name: 'californium-core', version: '2.0.0-M12'
+	// https://mvnrepository.com/artifact/org.eclipse.californium/californium-proxy
+	implementation group: 'org.eclipse.californium', name: 'californium-proxy', version: '2.0.0-M12'
+//LOG4j	
+	implementation group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
+
+//CUSTOM
+    implementation name: 'uniboInterfaces'
+    implementation name: '2p301'
+    //implementation name: 'it.unibo.qakactor-2.0'
+    //For p2p two-way connections (TCP, UDP, BTH, Serial ...)
+    //implementation name: 'unibonoawtsupports'
+    //implementation name: 'unibo.comm22-1.1'  //Added June 2022
+    implementation name: 'unibo.basicomm23-1.0' //Feb23
+
+    //implementation fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'uniboInterfaces.jar')
+    //implementation fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: '2p301.jar')
+    //implementation fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'it.unibo.bls19Local-1.0.jar')
+    //For p2p two-way connections (TCP, UDP, BTH, Serial ...)
+    //implementation fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'unibonoawtsupports.jar')
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}
+
+jar {
+    println("building jar")
+    from sourceSets.main.allSource
+}

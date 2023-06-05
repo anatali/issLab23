@@ -130,7 +130,7 @@ in ‘modo indipendente dalla tecnologia’ con cui è realizzato del robot (vir
 </tr>
 </tbody>
 </table>
-<p><span class="slide1">Evoluzione del May 11</span></p>
+<p><span class="slide1">Evoluzione del Maggio 11</span></p>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
 <col style="width: 40%" />
@@ -196,6 +196,137 @@ le operazioni-base descritte in <a class="reference external" href="./_static/La
 sia libero.</p></li>
 </ol>
 </section>
+<section id="basicrobot23-versione-maggio30">
+<h2>basicrobot23 versione Maggio30<a class="headerlink" href="#basicrobot23-versione-maggio30" title="Permalink to this headline">¶</a></h2>
+<p><span class="slide1">Evoluzione del Maggio 30</span></p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/basicrobot23WithSimbiotico.PNG"><img alt="_images/basicrobot23WithSimbiotico.PNG" class="align-center" src="_images/basicrobot23WithSimbiotico.PNG" style="width: 90%;" /></a>
+</td>
+<td><ul class="simple">
+<li><p><span class="blue">basicrobot</span></p></li>
+<li><p><span class="blue">engager</span></p></li>
+<li><p><span class="blue">planexec</span></p></li>
+<li><p><span class="blue">robotposendosimbiotico</span></p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Si veda il progetto <span class="blue">unibo.basicrobot23</span>, che fornisce il modello eseguibile <span class="blue">basicrobot.qak</span>,
+di cui si fornsice qui una parte:</p>
+<section id="basicrobot23-messaggi">
+<h3>basicrobot23 messaggi<a class="headerlink" href="#basicrobot23-messaggi" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="n">basicrobot23</span>
+
+<span class="n">Dispatch</span> <span class="n">cmd</span>        <span class="p">:</span> <span class="n">cmd</span><span class="p">(</span><span class="n">MOVE</span><span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">end</span>        <span class="p">:</span> <span class="n">end</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+
+<span class="n">Request</span> <span class="n">step</span>       <span class="p">:</span> <span class="n">step</span><span class="p">(</span><span class="n">TIME</span><span class="p">)</span>
+<span class="n">Reply</span> <span class="n">stepdone</span>     <span class="p">:</span> <span class="n">stepdone</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">Reply</span> <span class="n">stepfailed</span>   <span class="p">:</span> <span class="n">stepfailed</span><span class="p">(</span><span class="n">DURATION</span><span class="p">,</span> <span class="n">CAUSE</span><span class="p">)</span>
+
+<span class="n">Event</span>  <span class="n">sonardata</span>   <span class="p">:</span> <span class="n">sonar</span><span class="p">(</span> <span class="n">DISTANCE</span> <span class="p">)</span>        <span class="c1">//percepito da sonarobs/engager</span>
+<span class="n">Event</span> <span class="n">obstacle</span>     <span class="p">:</span> <span class="n">obstacle</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">Request</span>  <span class="n">doplan</span>   <span class="p">:</span> <span class="n">doplan</span><span class="p">(</span> <span class="n">PATH</span><span class="p">,</span> <span class="n">OWNER</span><span class="p">,</span> <span class="n">STEPTIME</span> <span class="p">)</span>
+<span class="n">Reply</span> <span class="n">doplandone</span>  <span class="p">:</span> <span class="n">doplandone</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+<span class="n">Reply</span> <span class="n">doplanfailed</span>  <span class="p">:</span> <span class="n">doplanfailed</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+
+<span class="n">Dispatch</span> <span class="n">setrobotstate</span><span class="p">:</span> <span class="n">setpos</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">D</span><span class="p">)</span>
+
+<span class="n">Request</span> <span class="n">engage</span>        <span class="p">:</span> <span class="n">engage</span><span class="p">(</span><span class="n">OWNER</span><span class="p">)</span>
+<span class="n">Reply</span>   <span class="n">engagedone</span>    <span class="p">:</span> <span class="n">engagedone</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+<span class="n">Reply</span>   <span class="n">engagerefused</span> <span class="p">:</span> <span class="n">engagerefused</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+
+<span class="n">Dispatch</span> <span class="n">disengage</span>    <span class="p">:</span> <span class="n">disengage</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">engaged</span>      <span class="p">:</span> <span class="n">engaged</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">disengaged</span>   <span class="p">:</span> <span class="n">disengage</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+
+<span class="n">Event</span> <span class="n">alarm</span>           <span class="p">:</span> <span class="n">alarm</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">nextmove</span>     <span class="p">:</span> <span class="n">nextmove</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">nomoremove</span>   <span class="p">:</span> <span class="n">nomoremove</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+
+<span class="c1">//Endosimbiosi di robotpos</span>
+<span class="n">Request</span> <span class="n">moverobot</span>    <span class="p">:</span>  <span class="n">moverobot</span><span class="p">(</span><span class="n">TARGETX</span><span class="p">,</span> <span class="n">TARGETY</span><span class="p">)</span>
+<span class="n">Reply</span> <span class="n">moverobotdone</span>  <span class="p">:</span>  <span class="n">moverobotok</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+<span class="n">Reply</span> <span class="n">moverobotfailed</span><span class="p">:</span>  <span class="n">moverobotfailed</span><span class="p">(</span><span class="n">PLANDONE</span><span class="p">,</span> <span class="n">PLANTODO</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="basicrobot23-attori">
+<h3>basicrobot23 attori<a class="headerlink" href="#basicrobot23-attori" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Context</span> <span class="n">ctxbasicrobot</span> <span class="n">ip</span> <span class="o">[</span><span class="n">host</span><span class="o">=</span><span class="s">&quot;localhost&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8020</span><span class="o">]</span>
+</pre></div>
+</div>
+<section id="basicrobot23-engager">
+<h4>basicrobot23 engager<a class="headerlink" href="#basicrobot23-engager" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">QActor</span> <span class="n">engager</span> <span class="n">context</span> <span class="n">ctxbasicrobot</span><span class="p">{</span>
+  <span class="c1">//Gestisce i messaggi engage/disengage</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="basicrobot23-basicrobot">
+<h4>basicrobot23 basicrobot<a class="headerlink" href="#basicrobot23-basicrobot" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span>QActor basicrobot context ctxbasicrobot{
+  /*
+    Gestisce i messaggi
+        comando di avvenuto engagement: engaged
+        comando-base: cmd
+        passo in avanti: step
+  */
+  State ss0 initial {
+      ...
+      delegate &quot;engage&quot; to engager
+      delegate &quot;disengage&quot; to engager
+      delegate &quot;doplan&quot; to planexec
+      delegate &quot;setrobotstate&quot; to robotposendosimbiotico
+      delegate &quot;moverobot&quot; to robotposendosimbiotico
+
+      updateResource [# &quot;basicrobot(started)&quot; #]
+  }
+}
+</pre></div>
+</div>
+</section>
+<section id="basicrobot23-planexec">
+<h4>basicrobot23 planexec<a class="headerlink" href="#basicrobot23-planexec" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">QActor</span> <span class="n">planexec</span> <span class="n">context</span> <span class="n">ctxbasicrobot</span><span class="p">{</span>
+  <span class="cm">/*</span>
+<span class="cm">    Gestisce i messaggi</span>
+<span class="cm">        esecuzione di un piano: doplan</span>
+<span class="cm">        risposta alla esecuzione di un passo: stepdone/stepfailed</span>
+<span class="cm">        evento di allarme: alarm</span>
+<span class="cm">    Usa i messaggi &#39;interni&#39;:</span>
+<span class="cm">        nomoremove</span>
+<span class="cm">        nextmove</span>
+<span class="cm">  */</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="basicrobot23-robotposendosimbiotico">
+<h4>basicrobot23 robotposendosimbiotico<a class="headerlink" href="#basicrobot23-robotposendosimbiotico" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">QActor</span> <span class="n">robotposendosimbiotico</span> <span class="n">context</span> <span class="n">ctxbasicrobot</span><span class="p">{</span>
+  <span class="cm">/*</span>
+<span class="cm">    Usa il planner e la mappa della stanza</span>
+<span class="cm">    Gestisce i messaggi</span>
+<span class="cm">        posizionamento del robot: setrobotstate</span>
+<span class="cm">        movimento a una cella target: moverobot</span>
+<span class="cm">        risposta alla esecuzione di un piano: doplandone/doplanfailed</span>
+<span class="cm">  */</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
 </section>
 
 
@@ -220,6 +351,17 @@ sia libero.</p></li>
 </li>
 <li><a class="reference internal" href="#basicrobot23-model">basicrobot23 model</a></li>
 <li><a class="reference internal" href="#uso-del-planner">Uso del planner</a></li>
+<li><a class="reference internal" href="#basicrobot23-versione-maggio30">basicrobot23 versione Maggio30</a><ul>
+<li><a class="reference internal" href="#basicrobot23-messaggi">basicrobot23 messaggi</a></li>
+<li><a class="reference internal" href="#basicrobot23-attori">basicrobot23 attori</a><ul>
+<li><a class="reference internal" href="#basicrobot23-engager">basicrobot23 engager</a></li>
+<li><a class="reference internal" href="#basicrobot23-basicrobot">basicrobot23 basicrobot</a></li>
+<li><a class="reference internal" href="#basicrobot23-planexec">basicrobot23 planexec</a></li>
+<li><a class="reference internal" href="#basicrobot23-robotposendosimbiotico">basicrobot23 robotposendosimbiotico</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

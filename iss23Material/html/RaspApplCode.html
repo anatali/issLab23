@@ -83,6 +83,8 @@ su RaspberryPi.</p>
 </section>
 <section id="software-per-il-sonar">
 <h3>Software per il Sonar<a class="headerlink" href="#software-per-il-sonar" title="Permalink to this headline">¶</a></h3>
+<p><span class="remark">ATTENZIONE</span>: per gli esempi in Python, si fa riferimento a <span class="slide2">Python3</span>. Si veda
+<a class="reference internal" href="RaspberrySoftware.html#installazione-del-modulo-gpio-per-python3"><span class="std std-ref">Installazione del modulo GPIO per Python3</span></a></p>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
 <col style="width: 30%" />
@@ -219,6 +221,31 @@ venga percepito dal robot, che si ferma prima di  avere completato il piano di m
 </tr>
 </tbody>
 </table>
+</section>
+<section id="sonar23observer">
+<h5>sonar23observer<a class="headerlink" href="#sonar23observer" title="Permalink to this headline">¶</a></h5>
+<p>Riportiamo qui la specifica del sonar23observer come esempio della <a class="reference internal" href="QakActors23.html#qak-primitive-disponibili"><span class="std std-ref">primitiva Qak</span></a>
+<span class="blue">observeResource</span>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">QActor</span> <span class="n">sonar23observer</span> <span class="n">context</span> <span class="n">ctxsonarqak23</span><span class="p">{</span>
+  <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span><span class="p">{</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;sonar23observer | start  &quot;</span><span class="p">)</span>
+    <span class="n">observeResource</span> <span class="n">sonar23</span>
+  <span class="p">}</span>
+  <span class="n">Goto</span> <span class="n">observing</span>
+
+  <span class="n">State</span> <span class="n">observing</span><span class="p">{</span>
+
+  <span class="p">}</span>
+  <span class="n">Transition</span> <span class="n">t0</span> <span class="n">whenMsg</span> <span class="n">coapUpdate</span> <span class="o">-&gt;</span> <span class="n">doObserve</span>
+
+  <span class="n">State</span> <span class="n">doObserve</span><span class="p">{</span>
+    <span class="n">printCurrentMessage</span>
+  <span class="p">}</span>
+  <span class="n">Goto</span> <span class="n">observing</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
 <p><span class="slide1">Fase3</span></p>
 </section>
 <section id="sonarqak23-fase3">
@@ -261,6 +288,7 @@ su PC e con il (sotto)sistema <a class="reference internal" href="#sonarqak23-fa
 <li><a class="reference internal" href="#progetto-unibo-sonarqak23">Progetto  unibo.sonarqak23</a><ul>
 <li><a class="reference internal" href="#sonarqak23-fase1">sonarqak23 Fase1</a></li>
 <li><a class="reference internal" href="#sonarqak23-fase2">sonarqak23 Fase2</a></li>
+<li><a class="reference internal" href="#sonar23observer">sonar23observer</a></li>
 <li><a class="reference internal" href="#sonarqak23-fase3">sonarqak23 Fase3</a></li>
 </ul>
 </li>

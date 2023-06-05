@@ -1,0 +1,77 @@
+System /*-msglog  -trace */ demoaskfor
+//mqttBroker "broker.hivemq.com" : 1883
+
+Request r1 : r1(X)
+Request r2 : r2(X)
+Reply   a1 : a1(X) 
+  
+
+//Context ctxdemoreqb ip [host="localhost" port=8014]    //for first run (debug)
+Context ctxdemoaskfor ip [host="localhost" port=8076]  
+ 
+QActor caller context ctxdemoaskfor {
+	State init initial {
+		println("$name  request r1(10)")
+		request called -m r1 : r1(10)
+		delay 1000
+		request called -m r1 : r1(20)
+	}
+	Goto work 
+	
+	State work{
+		//println("$name work")
+	} 
+	Transition t0 
+		whenReply   a1 -> handleReply
+		whenRequest r2 -> handleAskFromCalled
+	
+	State handleReply{
+		printCurrentMessage
+	}
+	Goto work 
+	 
+	State handleAskFromCalled{
+//		printCurrentMessage
+		onMsg( r2 : r2(X) ) {
+			println("$name receives ask from called r2(${payloadArg(0)})") color blue
+			println("$name  replies with a1(90)") color blue
+			replyTo r2 with a1 : a1(90)
+		}
+	}
+	Goto work
+} 
+
+QActor called context ctxdemoaskfor {
+[# var RequestArg = "0" #]
+	State init initial {
+		//println("$name init")
+	}
+	Transition t0 
+		whenRequest r1 -> handleRequest
+	 
+	 
+	State handleRequest{
+		printCurrentMessage 	
+			
+		onMsg( r1 : r1(X) ){
+			[# RequestArg = payloadArg(0) #]
+			println("$name receives the request r1($RequestArg)") color green
+			println("$name askfor r2(theta)") color magenta
+			askFor r2 request r1 : r2(theta)  //r2 i s the new request
+ 		}		
+	} 
+	Transition t0
+		 whenTime 1000 -> init
+		 whenReply a1 -> answerAfterAsk
+
+	State answerAfterAsk{  
+//		printCurrentMessage		 
+ 		onMsg( a1 : a1(X) ){ 
+ 			println("$name receives answer to askFor a1(${payloadArg(0)})") color magenta
+ 			[# val R = "${RequestArg}_${payloadArg(0)}" #]
+ 			println("$name replies to orginal request with a1($R)") color green
+			replyTo r1 with a1 : a1( $R   )  
+ 		}
+	}  
+	Goto init   
+}  

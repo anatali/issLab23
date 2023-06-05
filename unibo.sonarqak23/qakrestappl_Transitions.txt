@@ -1,0 +1,1 @@
+{"actor":"sonar23observer", "msgType":"dispatch", "curstate":"observing", "nextstate":"doObserve", "msgId":"coapUpdate"}

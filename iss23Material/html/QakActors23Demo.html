@@ -107,14 +107,17 @@ e del Contesto:</p>
 <h3>QActor demo0<a class="headerlink" href="#qactor-demo0" title="Permalink to this headline">¶</a></h3>
 <table class="colwidths-given docutils align-default" style="width: 100%">
 <colgroup>
-<col style="width: 45%" />
-<col style="width: 55%" />
+<col style="width: 40%" />
+<col style="width: 60%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">QActor</span> <span class="n">demo0</span> <span class="n">context</span> <span class="n">ctxdemo0</span><span class="p">{</span>
   <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span> <span class="p">{</span>
     <span class="n">discardMsg</span> <span class="n">Off</span>  <span class="o">//</span><span class="n">discardMsg</span> <span class="n">On</span>
     <span class="o">//</span><span class="p">[</span><span class="c1"># sysUtil.logMsgs=true #]</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;myself=$</span><span class="si">{myself.name}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;curState=$</span><span class="si">{currentState.stateName}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;currentMsg=$</span><span class="si">{currentMsg}</span><span class="s2">&quot;</span><span class="p">)</span>
   <span class="p">}</span>
   <span class="n">Goto</span> <span class="n">s1</span>
   <span class="n">State</span> <span class="n">s1</span><span class="p">{</span>
@@ -410,10 +413,13 @@ con payload</p>
 </tr>
 </tbody>
 </table>
+</section>
+</section>
+<section id="demoasktocaller-qak">
+<h2>demoasktocaller.qak<a class="headerlink" href="#demoasktocaller-qak" title="Permalink to this headline">¶</a></h2>
 <p><span class="slide1">Esempio CodedQActor</span></p>
 <p>Questo esempio introduce tre istanze di un attore <a class="reference internal" href="#workactor"><span class="std std-ref">workactor</span></a> codificato in Kotlin,
 ciascuna delle quali emette un evento.</p>
-</section>
 </section>
 <section id="democodedqactor-qak">
 <h2>democodedqactor.qak<a class="headerlink" href="#democodedqactor-qak" title="Permalink to this headline">¶</a></h2>
@@ -482,18 +488,20 @@ ciascuna delle quali emette un evento.</p>
 <col style="width: 60%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">workactor</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="n">String</span><span class="p">):</span><span class="n">ActorBasic</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">confined</span><span class="o">=</span><span class="n">true</span><span class="p">){</span>
+<tr class="row-odd"><td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">workactor</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="n">String</span><span class="p">):</span>
+          <span class="n">ActorBasic</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">confined</span><span class="o">=</span><span class="n">true</span><span class="p">){</span>
 <span class="n">var</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
   <span class="n">override</span> <span class="n">suspend</span> <span class="n">fun</span> <span class="n">actorBody</span><span class="p">(</span><span class="n">msg</span> <span class="p">:</span> <span class="n">IApplMessage</span><span class="p">){</span>
     <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgId</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;start&quot;</span><span class="p">){</span>
       <span class="n">workStep</span><span class="p">(</span>   <span class="p">)</span>
-    <span class="p">}</span><span class="k">else</span> <span class="n">CommUtils</span><span class="o">.</span><span class="n">outgreen</span><span class="p">(</span><span class="s2">&quot;$tt $name | received  $msg &quot;</span>  <span class="p">)</span>
+    <span class="p">}</span><span class="k">else</span>
+     <span class="n">CommUtils</span><span class="o">.</span><span class="n">outgreen</span><span class="p">(</span><span class="s2">&quot;$tt $name | received  $msg &quot;</span><span class="p">)</span>
   <span class="p">}</span>
 
   <span class="n">suspend</span> <span class="n">fun</span> <span class="n">workStep</span><span class="p">(</span>    <span class="p">){</span>
     <span class="n">i</span><span class="o">++</span>
-    <span class="n">val</span> <span class="n">alarm</span><span class="o">=</span><span class="n">CommUtils</span><span class="o">.</span><span class="n">buildEvent</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="s2">&quot;alarm&quot;</span><span class="p">,</span><span class="s2">&quot;alarm$name-$i&quot;</span><span class="p">)</span>
-    <span class="n">CommUtils</span><span class="o">.</span><span class="n">outmagenta</span><span class="p">(</span><span class="s2">&quot;$tt $name | emitting $alarm&quot;</span><span class="p">)</span>
+    <span class="n">val</span> <span class="n">alarm</span><span class="o">=</span><span class="n">CommUtils</span><span class="o">.</span><span class="n">buildEvent</span><span class="p">(</span>
+                   <span class="n">name</span><span class="p">,</span><span class="s2">&quot;alarm&quot;</span><span class="p">,</span><span class="s2">&quot;alarm$name-$i&quot;</span><span class="p">)</span>
     <span class="n">emit</span><span class="p">(</span> <span class="n">alarm</span> <span class="p">)</span>
     <span class="k">if</span><span class="p">(</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">3</span> <span class="p">)</span> <span class="n">terminate</span><span class="p">()</span>
     <span class="k">else</span> <span class="p">{</span>
@@ -712,7 +720,7 @@ dichiarato come tale, dando informazioni sul suo contesto.</p>
 </section>
 <section id="actors-as-streams">
 <h2>Actors as streams<a class="headerlink" href="#actors-as-streams" title="Permalink to this headline">¶</a></h2>
-<p>In progress …</p>
+<p>Si veda <a class="reference internal" href="QakActors23.html#streamedqactor"><span class="std std-ref">StreamedQActor</span></a>.</p>
 </section>
 </section>
 
@@ -738,6 +746,7 @@ dichiarato come tale, dando informazioni sul suo contesto.</p>
 <li><a class="reference internal" href="#demorequest-called">demorequest called</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#demoasktocaller-qak">demoasktocaller.qak</a></li>
 <li><a class="reference internal" href="#democodedqactor-qak">democodedqactor.qak</a><ul>
 <li><a class="reference internal" href="#datahandler">datahandler</a></li>
 <li><a class="reference internal" href="#workactor">workactor</a></li>

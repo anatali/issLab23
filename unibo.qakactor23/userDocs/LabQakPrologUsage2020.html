@@ -1,0 +1,403 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+k{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #990000;
+	 
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	 
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	 
+}
+pre{
+	font-family: "Helvetica";
+	font-size: 70%;
+	background-color: #fcf8c7; 
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}    
+div.remark{
+	background-color: #FFFC33;     
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+  -->
+</style>
+    
+<head>
+   
+<title>LabQakPrologUsage2020</title></head>
+    
+<body>
+
+<div class="body"> 
+
+<h1>LabQakPrologUsage2020 | Using Prolog</h1> 
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2020Lab/blob/master/it.unibo.issLabStart/userDocs/LectureCesena1920.html" target="isslm">LabISS-lectures site</a></font> 
+ 
+<br/><br/>
+<em>QActor</em> is the name given to the custom meta-model inspired to the actor model, as supported by the <bc>Akka</bc> library.
+<br/>
+The leading <em>Q/q</em> in the <tt>QActor</tt> word, means 'quasi' since the <tt>QActor</tt> meta-model does introduce (with respect to <tt>Akka</tt>) 
+its own peculiarities, including reactive actions, even-driven programming concepts and a support for distribution in heterogeneous systems. 
+<br/>
+The addition of a <em>k</em> to the prefix (e.g. <bc>qak, Qak</bc>) means that we are making reference to the version implemented in <bc>Kotlin</bc>,
+without using any <tt>Akka</tt> support.
+
+
+
+
+
+<h2 id="Prolog">Using Prolog</h2>
+Let us recall here the fundamental aspects of <tt>Prolog</tt>, by means of a set of examples. 
+<br/>
+The code of these examples can be found in
+<a href="../../it.unibo.demoqak20/userdocs/LabQakExamples2020.html#prolog" target="code">LabQakExamples2020.html</a>
+<br/>
+
+<center><table style="width:98%">
+<tbody>	
+
+<td style="width:45%">
+<m>
+
+ <h3>Main concepts to remember</h3>
+ <ul>
+<li>Prolog as an interpreted language </li>
+<li>Facts and Rules are called Terms </li>
+<li>Rules as relations: declarative semantics.</li>
+<li>Rules as procedures: procedural semantics.</li>
+<li>Selective Linear Definite clause resolution (See <a href="https://en.wikipedia.org/wiki/SLD_resolution" target="web">SLD</a>)</li>
+<li>Constants, Variables, Terms and Unification</li>
+<li>Backtracking and Cut</li>
+</ul>
+<h4>Facts</h4>
+<pre>
+vertical(    line(point(X, Y), point(X, Z)) ).
+horizontal(  line(point(X, Y), point(Z, Y)) ).
+
+pos(1,point(1,5)).
+pos(2,point(3,1)).
+pos(3,point(3,3)).
+pos(4,point(3,5)).
+pos(4,point(3,7)).
+pos(4,point(7,1)).
+pos(4,point(7,5)).
+pos(4,point(7,9)).
+</pre>
+
+<h4>Rules</h4>
+<pre>
+horizontalLine(P1,P2):- 
+	pos(START,P1), horizontal( line(P1,P2) ),
+	pos(POS,P2), POS \== START.  
+ 
+allHLines(P1,HL):-
+	findall( secondPoint(P2), horizontalLine(P1,P2), HL).
+</pre>
+
+
+</m> 
+
+</m>
+</td>
+ <td> 
+ 
+<h3>A knowledge base (<a href="../../it.unibo.demoqak20/userKb.pl" target="code">userKb.pl</a>)</h3>
+
+
+Two complex <em>Terms</em> representing a <bc>point</bc> are bundled together as the two arguments of another complex 
+ <em>Term</em> with the functor <bc>line</bc>.
+<br/>
+In effect, we represent a <bc> line</bc>  by a complex term which has two arguments which are complex terms themselves and represent points. 
+<br/><br/>
+We're using Prolog's ability to build complex terms to work our way up a hierarchy of concepts.
+<br/>
+The term <tt>pos/2</tt> represent a position in a two-dimensional space.
+<br/><br/>
+See 
+ <a href="https://www.cs.ru.nl/~peterl/teaching/CS3510/intro-prol.pdf"target="web">Introduction to PROLOG</a>
+ <br/>
+ <a href="http://amsacta.unibo.it/5450/7/tuprolog-guide.pdf" target="web">tuProlog Manual</a>
+
+
+
+</m> 
+</td>
+</tr>
+
+
+<tr>
+<td>
+<pre>
+<k>solve( <ks>consult("sysRules.pl")</ks>	 )</k>
+<k>solve( <ks>consult("userKb.pl")</ks>	 )</k>
+
+<k>solve( <ks>unify( p(X,X ), p(1,2)  )</ks>)</k>
+println( <ks>currentSolution</ks> )		<kc>//  no.</kc>
+
+<k>solve( <ks>unify( p(X,b(X) ), p(1,Y) )</ks> )</k>
+println( <ks>currentSolution</ks> )		//<kc>X / 1  Y / b(1)</kc>
+println( "X=${<ks>getCurSol(\"X\")</ks>} Y=${g<ks>etCurSol(\"Y\")</ks>}" )
+
+solve( vertical(line( point(16, 4), point(16, 72) )) )
+println( currentSolution ) 		<kc>//yes.</kc>
+solve(  horizontal(line(point(1,1),point(2,Y)))  )
+<k>ifSolved{</k> println( "Y=${getCurSol(\"Y\")}" ) <k>}</k> <kc>//Y=1.</kc>
+
+solve(  horizontalLine( point(1,5),P )  )
+<k>ifSolved{</k> println( "P=${getCurSol(\"P\")} " ) <k>}</k>   <kc>//P=point(3,5)</kc>
+
+solve(  allHLines( point(1,5),L )  ) 
+<k>ifSolved{</k> println( "all lines=${getCurSol(\"L\")} " <k>}</k> 
+<kc>//all lines=[secondPoint(point(3,5)),secondPoint(point(7,5))]</kc> 
+</pre>
+ <td>
+  <h3>Built-in operations</h3>
+ <m>
+  <ul>
+  <li><ks>solve( G )</ks>: calls the Prolog interpreter for the goal <ks>G</ks><br/><br/> </li>
+  <li><ks>currentsolution</ks>: a variable that gives the solution of the last solve executed by the actor<br/><br/> </li>
+  <li><ks>getCurSol( V )</ks>: gets the value of the variable <ks>V</ks> in <tt>currentsolution</tt> <br/><br/> </li>
+  </ul>
+ Examples are given in  <a href="../../it.unibo.demoqak20/src/prologusage.qak" target="code">prologusage.qak</a>.
+</m> 
+</td>
+
+<tr>
+<td style="width:45%">
+<b>Logical</b>
+<pre>
+unify( A, B ) :- A = B.
+
+getCtxNames(CTXNAMES) :-
+	findall( NAME, context( NAME, _, _, _ ), CTXNAMES).
+</pre>
+<b>State (side effects)</b>
+<pre>
+addRule( Rule ):-	assert( Rule ).
+removeRule( Rule ):-retract( Rule ), !.
+removeRule( A  ):- 	retract( A :- B ),!.
+removeRule( _  ).
+
+replaceRule(Rule,NewR):- removeRule(Rule),addRule(NewR).
+ 
+assign( I,V ) :-  retract( value(I,_) ),!, assert( value( I,V )).
+assign( I,V ) :-  assert( value( I,V )).
+getVal( I, V ):-  value(I,V), !.
+getVal( I, fail ).
+inc(I,K,N):- value( I,V ),	N is V + K, assign( I,N ).
+dec(I,K,N):- value( I,V ),	N is V - K,	assign( I,N ).
+</pre>
+</td>
+ <td>
+ <h3>The file <a href="../../it.unibo.demoqak20/sysRules.pl" target="code">sysRules.pl</a></h3>
+ <m>
+ The rules on the left are examples of rules provided by the generated file <tt>sysRules.pl</tt>.
+</m> 
+<pre>
+State exampleElab{
+	solve( assign(n,3) )
+	solve( inc(n,10,N1) )
+	solve( getVal( N1,V ) )
+
+	println( "V=${getCurSol(\"V\")}" )   <kc>//V=13 </kc>
+}
+</pre>
+<m>See <a href="../../it.unibo.demoqak20/src/prologusage.qak" target="code">prologusage.qak</a>.</m>
+</td>
+</tr>
+
+
+<tr>
+<td>
+<pre>
+<k>State</k> handleCmd{
+  printCurrentMessage
+  <k>onMsg</k> ( <ks>local_buttonCmd : local_buttonCmd(CMD)</ks> ){
+    <k> forward</k>  robotcontrol -m robotCmd : robotCmd($<ks>payloadArg(0)</ks>)
+  }		
+ }
+ 
+<k>onMsg</k>( polar : p( D,A )){
+ <k>run</k> resources.radarSupport.spot(<ks>payloadArg(0),payloadArg(1)</ks>))
+}
+
+ 
+<k>State</k> radarTest{
+  <k> solve</k> ( getData(D,A)	 ) 
+  <k>ifSolved run</k>  resources.radarSupport.spot( <ks>@D,@A</ks>  ) 
+}
+
+</pre>
+</td>
+ 
+
+
+
+ <td>
+  <h3 id="shortcut">Shortcut</h3>
+<pre> 
+ "<k>payloadArg(N)</k> 
+gives (as String)  the argument <kc>N (0<=N<=arity)</kc> of a msg payload 
+ <kc>example:</kc>: <ks>run ...(payloadArg(0))</ks> 
+ <kc>example:</kc>: <ks>onMsg( m : m(X) ){ println("...$payloadArg(0)") }</ks>
+
+ "<k>$</k>" varName= ID  <kc>=></kc> <k>$VARID</k>
+used within a (produced) String 
+<kc>example:</kc>: <ks>msg(_,$Curmove)</ks> 
+
+ "<k>#</k>" varName= VARID  <kc>=></kc> <k>${getCurSol("VARID").toString()}</k>
+used to access a logic variable in a (produced) String 
+ <kc>example:</kc>:<ks>solve(move(M));println( #M )</ks> 
+ 
+ "<k>@</k>" varName= VARID  <kc>=></kc> <k>getCurSol("VARID").toString()</k>
+used to access a logic variable
+ <kc>example:</kc>:<ks>solve(move(M));doMove( @M )</ks> 
+
+ 
+ </pre> 
+  
+  
+</td>
+</tr>
+
+ 
+
+ </tr>
+</table>
+</center>
+
+ 
+
+
+ 
+ 
+
+
+
+</div>
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div> 
+</body>
+</html>

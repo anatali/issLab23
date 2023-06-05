@@ -15,7 +15,7 @@ val LimitLow  = 2
 val LimitHigh = 150
 //@kotlinx.coroutines.ObsoleteCoroutinesApi
     override suspend fun actorBody(msg: IApplMessage) {
-        if( msg.msgId() != "sonar") return
+        if( msg.msgId() != "sonardistance") return
 	    if( msg.msgSender() == name) return //AVOID to handle the event emitted by itself
   		elabData( msg )
  	}

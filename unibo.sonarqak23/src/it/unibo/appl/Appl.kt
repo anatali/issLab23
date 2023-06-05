@@ -29,7 +29,7 @@ class Appl ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t02",targetState="work",cond=whenReply("engagedone"))
+					 transition(edgeName="t03",targetState="work",cond=whenReply("engagedone"))
 				}	 
 				state("work") { //this:State
 					action { //it:State
@@ -40,8 +40,8 @@ class Appl ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t03",targetState="posreached",cond=whenReply("moverobotdone"))
-					transition(edgeName="t04",targetState="posfailed",cond=whenReply("moverobotfailed"))
+					 transition(edgeName="t04",targetState="posreached",cond=whenReply("moverobotdone"))
+					transition(edgeName="t05",targetState="posfailed",cond=whenReply("moverobotfailed"))
 				}	 
 				state("posreached") { //this:State
 					action { //it:State

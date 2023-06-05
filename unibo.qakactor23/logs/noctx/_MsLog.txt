@@ -1,0 +1,2 @@
+item(,s0,msg(msg1,dispatch,any,,msg1(hello),3)).
+item(,s1,msg(autoStartSysMsg,dispatch,,,start,2)).

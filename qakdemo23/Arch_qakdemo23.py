@@ -19,13 +19,12 @@ eventedgeattr = {
 with Diagram('qakdemo23Arch', show=False, outformat='png', graph_attr=graphattr) as diag:
   with Cluster('env'):
      sys = Custom('','./qakicons/system.png')
-     with Cluster('ctxdemocodedqactor', graph_attr=nodeattr):
-          datahandler=Custom('datahandler','./qakicons/symActorSmall.png')
-          w1=Custom('w1(coded)','./qakicons/codedQActor.png')
-          w2=Custom('w2(coded)','./qakicons/codedQActor.png')
-          w3=Custom('w3(coded)','./qakicons/codedQActor.png')
-     datahandler >> Edge(color='blue', style='solid', xlabel='start', fontcolor='blue') >> w1
-     datahandler >> Edge(color='blue', style='solid', xlabel='start', fontcolor='blue') >> w2
-     datahandler >> Edge(color='blue', style='solid', xlabel='start', fontcolor='blue') >> w3
-     sys >> Edge(color='red', style='dashed', xlabel='alarm', fontcolor='red') >> datahandler
+     with Cluster('ctxdemo0', graph_attr=nodeattr):
+          demo0=Custom('demo0','./qakicons/symActorSmall.png')
+          perceiver=Custom('perceiver','./qakicons/symActorSmall.png')
+          sender=Custom('sender','./qakicons/symActorSmall.png')
+     sys >> Edge(color='red', style='dashed', xlabel='alarm', fontcolor='red') >> perceiver
+     sender >> Edge(color='blue', style='solid', xlabel='msg1', fontcolor='blue') >> demo0
+     sender >> Edge(color='blue', style='solid', xlabel='msg2', fontcolor='blue') >> demo0
+     sender >> Edge( xlabel='alarm', **eventedgeattr, fontcolor='red') >> sys
 diag

@@ -1,0 +1,1318 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+	width: 90%;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 90%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>QAk21Intro</title></head>
+    
+<body>
+
+<div class="body"> 
+
+<h1>LabIss2021 | Introduction to QAkactors</h1> 
+ 
+<ol>
+<li><a href="#intro">Introduction</a></li>
+<li><a href="#qakoverview">QActors: an overview</a>
+	<ul>
+	<li><a href="Qactork.xtext">The syntax</li>
+	<li><a href="#messages">Messages</li>
+	<li><a href="#events">Events</li>
+	<li><a href="#behavior">Behavior</li>
+ 	</ul>
+
+
+</li>
+<!-- <li><a href="#actorbasic">The class <bc>ActorBasic</bc></li> -->
+<li><a href="#impl">The Qak-Infrastructure</li>
+	<ul><li><a href="#ActorBasic"> ActorBasic</li>
+	<li><a href="#ActorBasicFsm"> ActorBasicFsm</li>
+	<li><a href="#msghandlerules">Message handling rules</li>
+	<li><a href="#msgsendrules">Message delivery rules</li>
+	<li><a href="#eventRules">Event propagation rules</li>
+	<li><a href="#codedqa">CodedQActors</li>
+	<li><a href="#msglog">Flag <bc>-msglog</bc></li>
+	<li><a href="#trace">Flag <bc>-trace</bc></li>
+	<li><a href="#Executable">Executable jars</li>
+	</ul>
+<li><a href="#actorplus">More than simple actors</li> 
+	<ul>
+	<li><a href="#actorasresource">Actors as (CoAP) resources</li>
+	<li><a href="#actorasstream">Actors as streams</a></li> 
+	</ul>
+<li><a href="../../it.unibo.demoqak21/userdocs/LabQakExamples2021.html" target="web">Examples</a> (in project <i>it.unibo.demoqak21</i> )</li> 
+
+<li><a href="QakAndProcess.html#process">QActors and process development</a></li>
+<li><a href="QakAndProcess.html#metam">Models and meta-models</a></li>
+<li><a href="QakAndProcess.html#dsl">Domain Specific Languages</a></li>
+<!-- <li><a href="#vision">Vision </a></li>   Model Driven Software Development -->
+
+ 
+</ol> 
+ 
+
+ <!-- <h3 id="vision">Vision</h3> -->
+ 
+ <center><img src="./img/vision.png" alt="vision.png" width="50%"/></center>
+
+<h2 id="intro">Introduction</h2>
+
+In 
+<a href="https://doc.akka.io//docs/akka/current/typed/guide/actors-motivation.html" target="web">akka documentation about the actor model</a> 
+we read
+about mismatches between (oo) traditional programming assumptions and the reality of modern multi-threaded, multi-CPU architectures:
+
+<center><table style="width:100%">
+<tbody>	
+ 
+<tr>
+<td style="width:50%"><h3>The challenge of encapsulation</h3> 
+<m>
+In Object Oriented languages we rarely think about threads or linear execution paths in general. 
+We often envision a system as a network of object instances that react to method calls, 
+modify their internal state, then communicate with each other via method calls
+<center><img src="./img/object_graph.png" alt="object_graph" width="60%" height="60%"></center>
+
+ 
+
+
+</td>
+<td>
+<m>However, in a multi-threaded distributed environment, what actually happens is that threads 
+“traverse” this network of object instances by following method calls. 
+As a result, <b>threads are what really drive execution</b>:</m>
+<center><img src="./img/object_graph_snakes.png" alt="object_graph_snakes" width="40%" height="60%"></center>
+
+<center><img src="./img/seq_chart_multi_thread.png" alt="seq_chart_multi_thread" width="30%" height="60%"></center>
+</td>
+</tr>
+
+<tr>
+<td style="width:40%"><h3>The illusion of shared memory</h3> 
+
+<m>
+On modern architectures CPUs are writing to <i>cache lines</i> instead of writing to memory directly. 
+Most of these caches are local to the CPU core, that is, writes by one core are not visible by another. 
+In order to make local changes visible to another core, and hence to another thread, 
+the cache line needs to be shipped to the other core’s cache.
+
+<br/><br/>
+On the JVM, we have to explicitly denote memory locations to be shared across threads by using <bc>volatile</bc> markers.
+But shipping cache lines across cores is a  <em>very costly operation</em>.
+</m>
+
+</td> 
+<td><m>There is <b>no real shared memory anymore</b>, CPU cores pass chunks of data (cache lines) explicitly 
+to each other <em>just as computers on a network do</em>. 
+Inter-CPU communication and network communication have more in common than many realize.
+<br/><br/> 
+Passing messages is the norm now be it across CPUs or networked computers.
+</m></td>
+</tr>
+
+<tr>
+<td style="width:50%">
+<h3>The illusion of a call stack</h3> 
+<m>Call stacks do not cross threads and hence, do not model <em>asynchronous call chains</em>.
+
+What usually happens, is that a "caller" puts an object into a memory location shared by a worker thread ("callee"), 
+which in turn, picks it up in some event loop. </m>
+
+<center><img src="./img/exception_prop.png" alt="exception_prop" width="60%" height="60%"></center>
+
+<m>A  serious issue arises when a worker thread fails with an <bc>exception</bc>.
+The "caller" thread needs to be notified somehow, but there is no call stack to unwind with an exception.</m>
+</td>
+<td>
+<h3>Failure handling</h3> 
+<m>
+Call stack-based error handling breaks down and new, <em>explicit error signaling mechanisms</em> need to be introduced. 
+<br/><br/>
+Failures become part of the domain model.
+<br/><br/>
+Failure notification can only be done via a side-channel, for example putting an error code where the "caller" thread 
+otherwise expects the result once ready. 
+<br/><br/>
+If this notification is not in place, the "caller" <em>never gets notified</em> of a failure and the task is lost! 
+<br/><br/>
+This is <b>surprisingly similar to how networked systems work where messages/requests can get lost/fail without any notification</b>.
+</m></td>
+</tr>
+</tbody>	
+</table></center>
+
+
+The conclusion is that:<br/>
+<hr/>
+<i>instead of hiding the message passing aspect through variables marked as shared 
+or using atomic data structures, a more disciplined and principled approach is 
+to keep state local to a concurrent entity and propagate data or events between concurrent 
+entities explicitly via messages.</i>
+<hr/>
+In other words:
+<div class="remark">
+Do not communicate by sharing memory; instead, share memory by communicating.
+</div>
+
+
+<h2 id="qakoverview">QActors: an overview</h2>
+
+<bc>QActor</bc> is the name given to the custom language inspired by the 
+<a href="https://doc.akka.io//docs/akka/current/typed/guide/actors-motivation.html" target="web">akka actor model</a> 
+based, in its turn, on the work of <a href="https://en.wikipedia.org/wiki/Carl_Hewitt#Actor_model"  target="web">Hewitt</a> at 
+<a href="http://www.mit.edu/about/"  target="web">MIT</a>.
+<br/><br/>
+The leading <em>Q/q</em> in the <tt>QActor</tt> word, means 'quasi' since the <tt>QActor</tt> language
+it is not intended to be a general purpose programming language, but rather a <bc>modeling language</bc> that should help
+application designer in defining working models of distributed systems based on actors that behave as Finite State Machines.
+
+<br/><br/>
+The addition of a <em>k</em> to the prefix (e.g. <bc>qak, QAk</bc>) means that we are making reference to the version implemented in <bc>Kotlin</bc>,
+without using any <tt>Akka</tt> support (as done in the first version of the language).
+<br/><br/>
+The language is defined using the <a href="#xtext">Xtext</a> framework  and is based on a core set of concepts that compose
+the  <em>QActor-metamodel</em>. These concepts can be summarized as follows:
+<br/><br/>
+
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:55%">
+<ul>
+<li>A <bc>QA-System</bc> is a collection of active entities (<k>QActors</k>) each working in a 
+computational node (<k>Context</k>).<br/><br/>
+</li> 
+<li>QActors interact by using <a href="#messages">Messages</a> of different types (<tt>Dispatch,
+Request,...</tt>) and  <a href="#events">Events</a>.<br/><br/></li>
+<li>A QActor can deliver information to another <tt>QActor</tt> (both local or remote) 
+by using a send-operation or by emitting events.<br/><br/>
+</li>
+<li>High-level send-operations do not use low-level references, but only <bc>actor-names</bc> 
+(<tt>DESTNAME</tt> in the operations on the right).<br/><br/></li>
+
+<li>Each context owns a set <k>QActors</k> that can interact with components (actors or 'aliens')
+ working on a different node,  by means of the following protcols:
+<ul>
+<li><ks>TCP</ks>  : on the port specified by the <k>Context</k></li>
+<li><ks>CoAP</ks> : on the port specified by the <k>Context</k> </li>
+<li><ks>MQTT</ks> : using the broker specified in the <k>mqttBroker</k> declaration</li>
+
+</ul>
+</li>
+</ul>
+ 
+</td>
+<td>
+<center><img src="./img/qacontexts.png" alt="qacontexts" width="80%"></center>
+<h3>Qak specification template</h3>
+<pre>
+<k>System</k> &lt; NAME OF THE SYSTEM >
+<k>mqttBroker</k> "broker.hivemq.com" : 1883 <kc>//OPTIONAL </kc>
+
+<kc>//DECLARATION OF MESSAGES AND EVENTS</kc>
+
+<kc>//DECLARATION OF CONTEXTS</kc>
+<k>Context</k> CTXNAME ip [host="HOSTIP" port=PORTNUM]
+
+<kc>//DECLARATION OF ACTORS</kc>
+</pre> 
+
+For an introductory example, see the <tt>sentinel</tt> actor in
+<a href="../../it.unibo.demoqak21/userdocs/LabQakExamples2021.html#sentinel" target="web"" target="code">
+LabQakExamples2021.html</a>
+
+</td>
+</tr>
+
+
+	
+<tr>
+<td >
+<h3 id="messages">Messages</h3>
+<m>
+
+In the QActor metamodel, a <em>message</em> is intended as information sent in asynchronous  way by some source to
+some specific destination.
+<br/><br/>
+For <bc>asynchronous</bc> transmission we intend that the messages can be 'buffered' by the infrastructure,
+while the 'unbuffered' transmission is said to be <bc>synchronous</bc>. </m>
+
+<h3 id="events">Events</h3>
+<m>
+In the QActor metamodel, an <em>event</em> is intended as information emitted by some source without any explicit
+destination. 
+<br/><br/>
+Events whose identifier start with the prefix <bc>local_</bc/> are not propagated outside the context in which they are generated.
+ </m>
+<h3 id="messages">Representation</h3>
+<m>
+<div class="remark">
+<pre>
+msg(MSGNAME,MSGTYPE,SENDERID,DESTID,PAYLOAD,MSGNUM)
+</pre>
+</div>
+
+ </m>
+</td> 
+<td>
+<h3>High-level message-operations</h3>
+ <m>The methods that an application designer can use to deliver messages are:
+ <ul>
+<li><ks>forward</ks> for a Dispatch</li>
+<li><ks>request, replyTo, askFor</ks> for a Request</li>
+<li><ks>emit</ks> for an Event</li>
+</ul>
+<pre>
+forward DESTNAME -m MSGID : PAYLOAD			<kc>//for dispatch</kc>
+request DESTNAME -m REQID : PAYLOAD			<kc>//for request</kc>
+replyTo REQID with  REPLYID : PAYLOAD			<kc>//for response</kc>
+askFor REQREF REQ : PAYLOAD					<kc>//for asking a caller</kc>
+--------------------------------------------
+emit EVID : PAYLOAD		 		<kc>//for event</kc>
+</pre>
+ 
+ 
+
+The syntax of the language is defined (see
+<a href="Qactork.xtext" target="code">Qactork.xtext</a>) using the
+<a href="#xtext">Xtext framework</a> as follows:</m>
+<pre><m>
+Forward   : <k>"forward"</k> dest=[QActorDeclaration] 
+                    <k>"-m"</k> msgref=[Dispatch] <k>":"</k> val = PHead ;
+Emit      : <k>"emit"</k> msgref=[Event] <k>":"</k> val = PHead	;
+Demand    : <k>"request"</k> dest=[QActorDeclaration] 
+                     <k>"-m"</k> msgref=[Request]  <k>":"</k> val = PHead ;
+Answer    : <k>"replyTo"</k> reqref=[Request]  
+                      <k>"with"</k>    msgref=[Reply]   <k>":"</k> val = PHead ;
+ReplyReq  : <k>"askFor"</k>  reqref=[Request]  
+                      <k>"request"</k> msgref=[Request] <k>":"</k> val = PHead ;
+
+<kc>//Prolog-like syntax</kc>					  
+PHead :	PAtom | PStruct	| PStructRef ; 
+...	</m>				  
+</pre><m>
+The <tt>QActor</tt> metamodel does not define any explicit <i><b>receive</b></i> operation.
+
+
+ </m>
+</td>
+</tr>
+
+
+<tr>
+<td>
+<h3 id="behavior">Behavior</h3>
+<m>
+The <tt>QActor</tt> metamodel does not envisage any explicit <i><b>receive</b></i> operation, since the behavior is 
+modeled as a <a href="https://en.wikipedia.org/wiki/Moore_machine" target="web">Moore state machine</a>
+in which state transitions are triggered by messaged and events.
+<br/><br/>
+The syntax of the language is defined 
+(see
+<a href="Qactork.xtext" target="code">Qactork.xtext</a>)
+using the
+<a href="#xtext">Xtext framework</a> as follows:</m>
+<pre><m>
+State :
+	"<k>State</k>" name=ID  ( normal ?= "<k>initial</k>" )?
+	"{" ( actions += <ks>ActionInState</ks> )*  "}"
+	( transition = <b>Transition</b> )?
+;
+<ks>ActionInState</ks> = ...	<kc>//QActor actions or kotlin code</kc>
+
+<b>Transition</b> :  <ks>EmptyTransition</ks> | <ks>NonEmptyTransition</ks> ;
+<ks>EmptyTransition</ks>    : "<k>Goto</k>" targetState=[State]  
+	("<k>if</k>" guard=STRING "<k>else</k>" othertargetState=[State] )?  ;
+
+<ks>NonEmptyTransition</ks> :  
+  "<k>Transition</k>" name=ID (duration=<ks>Timeout</ks>)? 
+  (trans +=InputTransition)* ;
+Timeout = TimeoutInt | ... ;
+TimeoutInt : "<k>whenTime</k>" msec=INT "->" targetState = [State];
+
+InputTransition  : EventTransSwitch | MsgTransSwitch | 
+		RequestTransSwitch | ReplyTransSwitch ;
+EventTransSwitch   : "<k>whenEvent</k>"   message=[Event]    
+	("<k>and</k>"  guard=STRING  )?  "->"  targetState=[State]  ;
+MsgTransSwitch     : "<k>whenMsg</k>"     message=[Dispatch] 
+	("<k>and</k>"  guard=STRING  )?  "->"  targetState=[State]  ;
+RequestTransSwitch : "<k>whenRequest</k>" message=[Request]  
+	("<k>and</k>"  guard=STRING  )?  "->"  targetState=[State]  ;
+ReplyTransSwitch   : "<k>whenReply</k>"  message=[Reply]     
+	("<k>and</k>"  guard=STRING  )?  "->"  targetState=[State]  ;
+</m>
+</pre>
+
+<m>If a <tt>QActor</tt> state is not 'waiting' for a
+transition including a message <tt>m</tt> the message is stored in a queue local to the actor.</m>
+
+<m>
+</m>
+</td> 
+<td>
+<h3 id="demo">Demo</h3>
+<m>The code of a <tt>QActor</tt> mirrors the structure of a FSM diagram introduced in
+<a href="../../it.unibo.actorfsm/userDocs/FSM.html#FSMexample" target="lab">FSM | A kotlin-based DSL</a>: 
+<center><img src="./img/demoDSL.png" alt="demoDSL" width="70%" ></center>
+The code is in <a href="../../it.unibo.demoqak21/src/demo0.qak" target="code">demo0.qak</a>.
+and described in <a href="../../it.unibo.demoqak21/userdocs/LabQakExamples2021.html#demo0" target="code">
+LabQakExamples2020 | Using the QActor (meta)model</a> (project <i>it.unibo.demoqak21</i>)
+</m>
+<pre>
+System demo
+
+Dispatch msg1 : msg1(ARG)
+Dispatch msg2 : msg2(ARG)
+
+Context ctxdemo ip [host="localhost" port=8055]
+
+QActor demo context ctxdemo{
+	<ks>State</ks> s0 <b>initial</b> { 	}
+ 	<ks>Goto</ks> s1
+ 	
+ 	<ks>State</ks> s1{ println("demo in s1")		}
+ 	<ks>Transition</ks> t0 <k>whenMsg</k> msg1 -> s2
+ 				  <k>whenMsg</k> msg2 -> s3
+
+ 	<ks>State</ks> s2{ println("demo in s2")		}
+ 	<ks>Transition</ks> t0 <k>whenMsg</k> msg2 -> s3
+
+ 	<ks>State</ks> s3{ println("demo in s3")		}
+ 	<ks>Goto</ks> s1
+}
+</pre>
+
+<h3>Firing a transition</h3>
+<m>A <bc>Transition</bc> is 'fired' if the related condition (<bc>whenTime</bc>, <bc>whenEvent</bc>, <bc>whenMsg, ...</bc>)  
+together with the related <em>guard</em> (if any) is true.
+<br/><br/>
+A <bc>guard</bc> is expressed as a condition written in user-defined Kotlin code.</m> 
+
+</m>
+</td>
+</tr>
+
+
+
+ <tr>
+<td>
+ 
+<h3 id="sentinel">An example (sentinel)</h3>
+<pre><m><k>Event</k>   alarm : alarm(V)
+
+<ks>QActor</ks> sentinel context ctxdemo{
+  [# val counter=0 	#]	<kc>//Kotlin code</kc>
+  <ks>State s0</ks> initial { println("sentinel | STARTS") } <kc>//QActor action</kc>  		  
+
+  Goto <ks>watch</ks> if <k>"counter==0"</k> else <ks>end</ks> <kc>//guard</kc>
+
+  <ks>State watch</ks>{ println("sentinel | WATCH") }
+  <bc>Transition</bc> t0
+   <k>whenTime</k> 1000 -> <ks>timeout</ks>                 <em>(0)</em>
+   <k>whenEvent</k> <ks>alarm</ks> <k>and [# counter==0 #]</k> -> <ks>handleAlarm</ks> <kc>//guard</kc>
+
+  <ks>State timeout</ks>{
+	printCurrentMessage		<kc>//QActor action</kc>
+	println("sentinel | TIMEOUT")
+	[# counter++ 	#]	 	<kc>//Kotlin code</kc>
+  }
+  <bc>Goto</bc> <ks>s0</ks>                                 <em>(1)</em>
+  <bc>//Transition</bc> t0 whenTime 10  > explore <ks>s0</ks>  <em>(2)</em>
+ 
+  <ks>State handleAlarm</ks>{
+	printCurrentMessage
+	<k>onMsg</k> ( alarm : alarm(V) ) { <kc>//QActor action</kc>
+		println("sentinel | ALARM ${<k>payloadArg</k>(0)}")
+		delay 1000
+	}
+  }
+  <bc>Goto</bc> <ks>s0</ks>
+
+  <ks>State explore</ks>{ println("sentinel | exploring (quite fast) ...") }
+  <bc>Goto</bc> watch
+
+  <ks>State end</ks>{ println("sentinel | ENDS") }
+ }
+</m></pre>
+</m>
+
+</td>
+ <td>
+
+<m>
+  <h3 id="onMsg">About guards</h3>
+The actor goes
+<ul>
+<li>from the state <tt>s0</tt> to the state <tt>watch</tt> only
+ if the guard <tt>counter==0</tt> is true; otherwise it goes to <tt>end</tt></li>
+ <li>from the state <tt>watch</tt> to the state <tt>handleAlarm </tt> only
+ if the event <tt>alarm </tt> occurs and the guard <tt>counter==0</tt> is true </li>
+</ul>
+
+ 
+  <h3 id="onMsg">About <k>onMsg</k></h3>
+  The QActor action <bc>onMsg</bc> executes the related code only if the current message can be 
+ <em>Prolog-unified</em>
+ with the <tt>alarm </tt> template defined in <bc>Event</bc> declaration 
+ and with the template specified in <bc>onMsg</bc>.
+
+
+ 
+ <h3 id="whenTime">About <k>whenTime</k></h3>
+The transition-condition <bc>whenTime</bc> is implemented by creating in dynamic way a 
+<a href="../src/main/kotlin/TimerActor.kt" target="code"><bc>TimerActor</bc></a>.
+<br/>
+When the given time expires, the timer that emits a <em>system-event</em>  with a name that starts with the prefix <bc>local_tout</bc>; 
+afterwards it terminates.<br/>
+The system event is <em>not emitted</em> if a message can be handled before that the timer-time expires.
+
+ 
+
+   <h3 id="payloadArg">About <k>payloadArg</k></h3>
+   
+ The payloadArg is described later, in <a href="#shortcut">shortcut</a>
+
+ <h3>The output</h3>
+ 
+The full code of this example is reported in 
+<a href="../../it.unibo.demoqak21/userdocs/LabQakExamples2021.html#sentinel" target="web"" target="code">LabQakExamples2021.html</a>
+
+ 
+  
+</td>
+ 
+ </tr>
+ 
+
+
+<tr>
+<td>
+<h3>Messages over the network</h3> 
+<m>
+Each QActor works in a <bc>context</bc> that provides support for sending-receiving messages on the network,
+by means of several types of  protocols. At the moment the supported protocols are:
+	<ul>
+ 	<li><a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol" target="web">TCP</a> as an example
+	of point-to-point, two-way protocols;<br/><br/>
+	<!--like <a href="https://en.wikipedia.org/wiki/User_Datagram_Protocol" target="web">UDP</a>,	
+	,
+	<a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol" target="web">HTTP</a> --></li>
+	<li><a href="https://en.wikipedia.org/wiki/MQTT" target="web">MQTT</a> as an example of publish-subscribe protocols;<br/><br/></li>
+	<li><a href="https://en.wikipedia.org/wiki/Constrained_Application_Protocol" target="web">CoAP</a>, as an example of a
+	lightweight <a href="https://en.wikipedia.org/wiki/Representational_state_transfer" target="web">REST</a>  protocol 
+	suited for <a href="https://en.wikipedia.org/wiki/Machine_to_machine" target="web">M2M interaction</a>  
+ 	</li>
+	</ul>
+	
+The  mapping between the high-level communication actions and a specific protocol technology is done by the QActor-infrastructure 
+with the help of the Eclipse <bc>QActor software factory</bc>  deployed by the
+<a href="../../it.unibo.issLabStart/resources/plugins" target="code">it.unibo.issLabStart/resources/plugins</a>
+</m>
+
+ 
+
+ 
+</td>
+<td>
+<h3>The QActor software factory</h3> 
+<center><img src="./img/qakSoftwareFactory.png" alt="qakSoftwareFactory" width="90%" ></center>
+
+</td>
+</tr>
+
+
+
+
+ </tbody>
+</table>
+</center>
+
+<h2 id="impl">About implementation</h2>
+
+The metamodel is supported by the <tt>qak-infrastructure</tt> defined in the project <m><k>it.unibo.qakactor</k></m> and
+deployed in <bc>it.unibo.qakactor-2.2.jar</bc>. 
+
+
+<center><table style="width:95%">
+<tbody>	
+
+<tr>
+<td style="width:55%">
+<h3 id="ActorBasic">The <tt>Qak-Infrastructure</tt>: <a href="../../it.unibo.qakactor/src/main/kotlin/ActorBasic.kt" target="code">ActorBasic.kt</a></h3> 
+ 
+ 
+ 
+<li> <a href="../../it.unibo.qakactor/src/main/kotlin/ActorBasic.kt" target="code">ActorBasic.kt</a> is
+an abstract class  that implements the concept of qakactor as a message-driven entity that
+handles messages by delegating the work to the abstract the method <m><ks>actorBody</ks></m>.
+<pre><m>
+ abstract class  <k>ActorBasic</k>(val name:        String,
+                           val scope:        CoroutineScope = GlobalScope,
+                           val confined :    Boolean = false,
+                           val ioBound :     Boolean = false,
+                           val channelSize : Int = 50
+                        ) : <k>MqttCallback</k> { <kc>//For MQTT messages</kc>
+
+      val <k>actor</k> = <ks>scope.actor&lt;ApplMessage></ks>( 
+				dispatcher, capacity=channelSize ) {
+</m></pre>			
+<pre id="kaloop"><m><kc>//Kactor loop</kc>
+	for( <ks>msg</ks> <k>in channel</k> ) {
+		...
+		<ks>actorBody( msg )</ks>
+	}
+    <kc>//To be defined by the application designer</kc>
+    <k>abstract suspend</k> fun <ks>actorBody</ks>(msg : ApplMessage)
+	 ...
+</m></pre>
+
+<center><img src="./img/ActorBasic.png" alt="ActorBasic" width="60%" ></center>
+
+
+ 
+
+<a href="../../it.unibo.qakactor/src/main/kotlin/ActorBasic.kt" target="code">ActorBasic.kt</a> 
+includes a Kotlin actor (let us name it as <bc id="kactor">kactor</bc>) associated to a dispatcher defined as follows:
+<m>
+<ul>
+ 
+<li>If <m><k>confined=true</k></m>, the actor is activated with a <tt>kotlinx.coroutines.newSingleThreadContext</tt>
+that makes use of just 1 Thread </li>
+
+<li>If <m><k>confined=false</k></m> and  <m><k>iobound=true</k></m>, the actor is activated with a <tt>kotlinx.coroutines.newFixedThreadPoolContext</tt>
+with 64 Threads </li>
+
+<li>If <m><k>confined=false</k></m> and  <m><k>iobound=false</k></m>, the default of type <tt>kotlinx.coroutines.newFixedThreadPoolContext</tt> 
+is selected, that handles as many Threads as the number of CPUs available.</li>
+
+</ul>
+The class <a href="../../it.unibo.qakactor/src/main/kotlin/ActorBasic.kt" target="code">ActorBasic.kt</a> can be used to define
+applicative actors working in message-driven way:
+<center><img src="./img/ApplActorBasic.png" alt="ApplActorBasic" width="60%" ></center>
+<br/>
+See for example <a href="#codedqa">CodedQActors</a>.
+</m>
+ 
+</li>
+<!--
+<li><a href="../../it.unibo.qakactor/src/main/kotlin/ApplMessage.kt" target="code">ApplMessage.kt</a> (that requires
+<a href="http://tuprolog.sourceforge.net/doc/2p-guide.pdf" target="web">tuProlog</a> )<br/><br/></li>
+<li><a href="../../it.unibo.qakactor/src/main/kotlin/MsgUtil.kt" target="code">MsgUtil.kt</a></li>
+-->
+ 
+
+</m>
+</td>
+<td>
+<h3 id="ActorBasicFsm">The <tt>Qak-Infrastructure</tt>: <a href="../../it.unibo.qakactor/src/main/kotlin/ActorBasicFsm.kt" target="code">ActorBasicFsm.kt</a></h3> 
+
+<li> <a href="../../it.unibo.qakactor/src/main/kotlin/ActorBasicFsm.kt" target="code">ActorBasicFsm.kt</a> is
+an abstract class  that extends <a href="../../it.unibo.qakactor/src/main/kotlin/ActorBasic.kt" target="code">ActorBasic.kt</a> 
+by defining the  method <m><ks>actorBody</ks></m> so to implement the behavior of a <tt>FSM</tt>. 
+
+
+<pre><m>
+ abstract class  <k>ActorBasicFsm</k>(qafsmname:  String,
+		fsmscope: CoroutineScope = GlobalScope,
+		discardMessages : Boolean = false,
+		confined :    Boolean = false,
+		ioBound :     Boolean = false,
+		channelSize : Int = 50
+	): <k>ActorBasic</k>( qafsmname, fsmscope, 
+			discardMessages, confined, ioBound, channelSize )  {  
+			
+    <k>abstract</k> fun <ks>getBody</ks>(): (ActorBasicFsm.() -> Unit)
+    <k>abstract</k> fun <ks>getInitialState</ks>(): String
+	<k>override suspend</k> fun actorBody(msg: ApplMessage) {	
+		...
+		fsmwork(msg)
+	}</m>
+</pre>
+<h3 id="fsmwork">fsmwork</h3>
+<pre > //<kc>behavior of <a href="../../it.unibo.qakactor/src/main/kotlin/ActorBasicFsm.kt" target="code">ActorBasicFsm.kt</a></kc> 
+	suspend fun fsmwork(<bc>applMsg</bc>: ApplMessage) {	
+		<kc>//see <a href="#msghandlerules">Message handling rules</a> later on</kc>
+		<!--
+		<kc>detect the next state for that msg
+		if no state exists, memo the message if <k>! discardMessages</k>
+		if a next state exists, execute its body (Moore machine)
+		and afterwards, look at the stored messages (if any)</kc> -->
+	}
+ </pre>
+ <m>
+This class <a href="../../it.unibo.qakactor/src/main/kotlin/ActorBasicFsm.kt" target="code">ActorBasicFsm.kt</a>  is designed according the same principles exposed in 
+<a href="../../it.unibo.actorfsm/userDocs/FSM.html" target="lab">FSM | A kotlin-based DSL</a>
+
+It can be used to define
+applicative actors working as Finite State Machines:
+<center><img src="./img/ApplActorBasicFsm.png" alt="ApplActorBasicFsm" width="90%" ></center>
+
+
+
+</m>
+<h3>Qak-Message support</h3>
+<m>A received message has type:
+<a href="../../it.unibo.qakactor/src/main/kotlin/ApplMessage.kt" target="code">ApplMessage.kt</a>, that requires
+the <a href="http://tuprolog.sourceforge.net/doc/2p-guide.pdf">tuProlog</a> library. 
+Some help in building and sending messages is given by the class:
+<a href="../../it.unibo.qakactor/src/main/kotlin/MsgUtil.kt" target="code">MsgUtil.kt</a>.
+</m>
+
+</li>
+
+</td>
+</tr>
+
+
+
+
+<td >
+<h3 id="msghandlerules">Message handling rules</h3>
+With reference to a user-defined QAkactor <m><bc>qa</bc></m> of type <a href=""></a><m><k>ActorBasicFsm</k></m>,
+let us call:<m>
+<ul>
+<li><ks>currentState</ks>: the name the current state of <bc>qa</bc>;</li>
+<li><ks>currentMsg</ks>: the msgId of the message that <bc>qa</bc> is processing;</li>
+<li><ks>kaq</ks> the message-queue of the Kotlin <a href="#kactor"><k>kactor</k></a>;</li>
+<li><ks>mstore</ks> the message-queue local <a href="#ActorBasicFsm"><k>ActorBasicFsm</k></a> ;</li>
+<li><ks>tset</ks>: the set of messages mentioned in the transition related to the <ks>currentState</ks>. </li>
+</ul></m>
+
+Messages sent to <bc>qa</bc> and events are inserted in the <m><ks>kaq</ks></m>.
+<br/><br/>
+<a href="#fsmwork">fsmwork</a> is <i>called in a message-driven way</i> with a new <m><kc>applMsg</kc></m> 
+by the  <a href="#kaloop"><m><k>kactor loop</k></m></a> ,
+while <m><bc>qa</bc></m> is in <m><ks>currentState</ks></m>. Its behavior is: 
+<ol>
+<!-- <li><m><bc>qa</bc></m> is <m><k>inactive</k></m>:<br/>
+<m>
+when a messages is inserted in the <ks>kaq</ks>, look at the <ks>tset</ks>.
+</m>
+</li>
+</li>
+-->
+<li> <m><bc>qa</bc></m>  checks for <m><k>transition</k> for <kc>applMsg</kc>: <br/>
+<!-- if it exists, set <ks>currentMsg=<bc>applMsg</bc></ks>, change <ks>currentState</ks> and goto 2); -->
+
+<ul>
+<li> if it is possible to fire a transition, set <ks>currentMsg=<kc>applMsg</kc></ks>,
+change <ks>currentState</ks> and goto 2)</li>
+<li>if no transition can be fired and <i>discardMessages=false</i>, store the message in the <ks>mstore</ks>;
+<!-- hen remain <k>inactive</k>.--></li>
+</ul>
+
+</li>
+
+
+<li><m><bc>qa</bc></m> executes the actions of a <m><k>state</k></m>:<br/> 
+<m>when the state actions terminate, if there is an empty-move goto 3) else goto 4);</m>
+ </li>
+  
+<li><m><bc>qa</bc></m> executes a <m><k>empty-move</k>:<br/>
+set <ks>currentMsg=<kc>NoMsg</kc> </ks>, change <ks>currentState</ks>,
+and goto 2) <!-- and then look at the <ks>mstore</ks> in the 'emtpy-move-mode' -->
+
+</m>
+ </li>
+ 
+<li>
+<m><bc>qa</bc></m>  looks at the <m><ks>mstore</ks></m> and
+<m>
+<ul>
+<li>if a message <k>ms</k> is found in <ks>tset</ks> : <!-- set <ks>currentMsg</ks> and <ks>currentState</ks> and goto 2);</li> -->
+call <a href="#fsmwork">fsmwork</a>(<k>ms</k>);
+<li>if no message is found <!-- and there is an<i>empty move</i> goto 4) </li>
+<li>if there is no move possible, --> terminate <a href="#fsmwork">fsmwork</a> (the
+next call will be perfomed by the <a href="#kaloop"><k>kactor loop</k></a> );
+</li>
+</ul></m>
+</li>
+
+
+
+</ol>
+ 
+</td>
+
+
+<td>
+<h3 id="msgsendrules">Message delivery rules</h3>
+<m>
+<ul>
+<li>A message sent from <tt>a</tt> to a local actor <tt>b</tt>, is inserted in the <ks>kaq</ks> of the  <a href="#kactor"><k>kactor</k></a> of <tt>b</tt>.
+<br/><br/>
+</li>
+<li>An <bc>event</bc> raised in some <tt>Context</tt>, is delivered to all the other known <tt>Contexts</tt> of the system
+and to all the 'alien' connected via <tt>TCP</tt> or via <tt>MQTT</tt>.
+</li>
+</ul>
+When a message sent from <tt>a</tt>  to  actor <tt>b</tt> working in a <bc>different context</bc> (on a different node),
+the <tt>Qak-Infrastructure</tt> attempts to find the <tt>ipaddress-port</tt> of the receiver context:
+
+<ul>
+<li>If information about the context of  <tt>b</tt> is found and a <tt>MQTT</tt> broker is specified in the model,
+the message is sent via <tt>MQTT</tt>; otherwise it is sent via <tt>CoAP</tt>. <br/><br/></li>
+<li>If no information about the context of  <tt>b</tt>  is found, the message to deliver should be a <bc>reply</bc>
+to a request made by some 'alien'.<br/>
+The system first checks for the existence of an active <tt>TCP</tt> connection
+with the receiver (the 'alien' made a request via <tt>TCP</tt>).<br/>
+In such a connection is found, the message is sent over it. <br/>
+Otherwise, an 
+attempt is made to send the reply via <tt>MQTT</tt>, hoping that the 'alien' was <tt>MQTT</tt>-connected.
+</li>
+</li>
+</ul> 
+ 
+ 
+<!-- A request made to an actor via <tt>CoAP</tt> will not receive any answer.
+<br/><br/> -->
+
+<!--
+<center><img src="./img/qakproxy.png" alt="qakproxy" width="90%"></center>
+-->
+
+</m>
+</td>
+</tr>
+
+<tr>
+<td>
+
+
+
+<h3 id="eventRules">Event propagation rules</h3>
+ 
+<ol>
+<li>The event emitted by a <tt>QActor</tt> that belongs to a qak-system (<ks>qasys</ks>) is <i>propagated via <tt>Context</tt></i> to 
+<k>all</k> the other <tt>QActor</tt> of <ks>qasys</ks>.
+<li>
+ A standalone <tt>QActor</tt> (e.g. <a href="../../it.unibo.qakDistribResource/src/resource.qak" target="code">resource.qak</a>)
+ that <em>does not use MQTT</em>
+ does not propagate events to <tt>QActors</tt> that use it, neither can perceive events emitted by them.</li>
+<li>
+An event emiited by an 'alien' component connected to a <tt>QActor</tt> via <k>TCP</k> will be perceived by the connected
+<tt>QActor</tt> only (i.e. it is not propagated to the other <tt>Contexts</tt> of the system).
+</li>
+<li>The event that reaches a <tt>Context</tt>  (since propagated from another <tt>Contexts</tt> or emitted by an 'alien') 
+is <k>propagated only</k> to the actors internal to that <tt>Context</tt>.</li>
+<li>The event emitted by a <tt>QActor</tt> of a  <ks>qasys</ks> that uses <k>MQTT</k> are propagated on the specified topic.</li>
+</ol> 
+ 
+ <!--
+<hr/>
+
+
+<br/><br/>
+ Before sending the answer, the <a href="../../it.unibo.qakDistribResource/src/resource.qak" target="code">resource.qak</a> emits an <ks>alarm</ks> event.
+ <br/>
+ This event is propagated (via TCP) to all the contexts known by the <tt>resource subsystem</tt>.
+ Thus, in the model of the reosurce, we could insert also the declaration of a context for the callers.
+ But, in this case, the resource subsystem does not start in absence of the callers. 
+ -->
+</td>
+<td>
+<div class="remark">
+ To allow a <tt>QActor</tt> to start as a standalone system (see for example 
+ <a href="../../it.unibo.qakDistribResource/src/resource.qak" target="code">resource.qak</a>) 
+ and to allow the perception of events, we should introduce <k>MQTT</k>-based interaction.
+ <hr/>
+ See <ks>ResourceCallerMqtt.ipynb</ks> in project <a href="../../it.unibo.qakDistrib" target="code">it.unibo.qakDistrib</a>
+</div>
+</td>
+</tr>
+
+<tr>
+<td><h3 id="msglog">Flag <bc>-msglog</bc></h3>
+<pre>
+System ... <bc>-msglog</bc>
+</pre>
+<m>
+When this flag is set, the  <tt>qak-infrastructure</tt> creates a messag-log file for each actor and for each context in the system.
+</m>
+</td>
+<td><h3 id="trace">Flag <bc>-trace</bc></h3>
+<pre>
+System ... <bc>-trace</bc>
+</pre>
+<m>
+When this flag is set, the  <tt>qak-infrastructure</tt> shows details about its internal behavior
+</m>
+</td>
+</tr>
+
+
+<tr>
+<td><h3 id="codedqa">CodedQActors</h3>
+A <bc>CodedQActor</bc> is an actor completely written in Kotlin that can be included in a qak-model by specifying its class name. For example:
+<pre>
+System  ...
+Context  <ks>ctxabc</ks>
+
+<k>CodedQActor</k> qacodedname <k>context</k> <ks>ctxabc</ks> 
+                                     <k>className</k> "unibo.classname"
+</pre>
+Its presence is included in the description of the system. 
+<br/><br/>
+The <tt>QA-infrastructure</tt> handles a <tt>CodedQActor</tt> as a usual; in particular, it will <bc>'inject'</bc> into it the context
+specified by the model. 
+</td>
+<td>
+A <tt>CodedQActor</tt> is usually introduced as a specilization of <a href="#ActorBasic">ActorBasic</a>:
+<pre>
+class qacoded (name : String ) : <k>ActorBasic</k>( name ) {
+    <k>override</k> suspend fun actorBody(msg: ApplMessage) {
+  		<kc>//TODO</bc>
+ 	}
+}
+</pre>
+For examples, see:<br/>
+<a href="../../it.unibo.qakDemo/src/kotlinCode/qacoded.kt" target="code"" target="code">it.unibo.qakDemo/src/kotlinCode/qacoded.kt</a>
+<br/>
+<a href="../../it.unibo.demoqak21/userdocs/LabQakExamples2021.html#qastreams" target="web"" target="code">LabQakExamples2021.html#qastreams</a>
+</td>
+</tr>
+
+<!--
+<tr>
+<td><h3 id="codedqa">InternalQActors</h3>
+A <bc>InternalQActor</bc> is an actor completely written in Kotlin that can be included in a qak-model by specifying its class name. For example:
+<pre>
+System  ...
+Context  <ks>ctxabc</ks>
+
+<k>CodedQActor</k> qacodedname <k>context</k> <ks>ctxabc</ks> 
+                                     <k>className</k> "unibo.classname"
+</pre>
+Its presence is included in the description of the system. 
+<br/><br/>
+The <tt>QA-infrastructure</tt> handles a <tt>CodedQActor</tt> as a usual; in particular, it will <bc>'inject'</bc> into it the context
+specified by the model. 
+</td>
+<td>
+A <tt>CodedQActor</tt> is usually introduced as a specilization of <a href="#ActorBasic">ActorBasic</a>:
+<pre>
+class qacoded (name : String ) : <k>ActorBasic</k>( name ) {
+    <k>override</k> suspend fun actorBody(msg: ApplMessage) {
+  		<kc>//TODO</bc>
+ 	}
+}
+</pre>
+For a complete example, see:
+<a href="../../it.unibo.demoqak21/userdocs/LabQakExamples2021.html#qastreams" target="web"" target="code">LabQakExamples2021.html#qastreams</a>
+</td>
+</tr>
+-->
+ </tbody>
+</table>
+</center>
+
+<h3 id="Executable">Executable jars</h3>
+
+<center><table style="width:90%">
+<tbody>	
+<tr>
+<td style="width:35%">
+<pre>
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.32'
+    id 'application'
+}
+...
+mainClassName = 'it.unibo.ctxabc.Mainxyz<k>Kt</k>'
+
+jar {
+    println("executing jar")
+    from sourceSets.main.allSource
+    manifest {
+        attributes 'Main-Class': "$mainClassName"
+    }
+}
+</pre>
+</td>
+<td><m>The code on the left is part of the file (properly edit by the Application designer)
+
+<br/><br/>
+<!-- The main we use for this example is in 
+<a href="../src/main/kotlin/it/unibo/qak/prodCons/mainProdConsLocal.kt" target="code">mainProdConsLocal.kt</a>
+<br/><br/>-->
+<k>Note that</k> the main class name must be terminated with a <bc>Kt</bc>, since kotlin code is translated in Java.
+</m> 
+</td>
+</tr>
+
+
+<tr>
+<td>
+<pre>
+gradle -b build_ctxabc.gradle distZip
+</pre>
+</td>
+<td><m>Generates the <em>distribution file</em> is the directory <bc>build/distributions</bc> 
+<!--<a href="../build/distributions" target="code">it.unibo.bls19d-1.0.zip</a> -->
+</m>
+</td>
+</tr>
+
+<tr>
+<td><m>
+<ol>
+<li>unzip the distribution file in some dir</li>
+<li>work in the <bc>bin</bc> directory</li>
+<li><bc>copy</bc> in this directory the generated files 
+<k>*.pl</k> and other user-defined files
+ </li>
+ 
+</ol>
+</m>
+</td>
+<td><m>
+...<br/>
+On the PC: activate the system by running the generated: <bc>it.unibo.sysname.bat</bc><br/><br/>
+On Linux, RaspberryPi : <bc>bash it.unibo.sysname</bc>
+</m>
+</td>
+</tr>
+
+
+</tbody>	
+</table></center>
+
+
+<h2 id="actorplus">More than simple actors</h2>
+ 
+ 
+ <h3 id="actorasresource">Actors as (CoAP) resources</h3>
+For an introdction to CoAP, see <a href="../../it.unibo.coapintro/userDocs/LabCoAP.html" target="code">LabCoAP.html</a>.
+<br/><br/>
+A QAkactor named <bc>qa</bc> working in a context named <bc>ctxqa</bc> can be accessed as a 
+<a href="https://en.wikipedia.org/wiki/Constrained_Application_Protocol" target="web">CoAP</a>
+resource with 
+<a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier" target="web">URI</a>-path <bc>ctxqa/qa</bc>.
+and  works as a (<bc>CoAP</bc>) observable resource.<br/> <br/> 
+The current state
+of the resource can be stored as a <tt>String</tt> in the variable <ks>ActorResourceRep</ks>, by using the operation <bc>updateResource</bc> of the
+QAkactor language.
+<br/>
+An example is given in 
+<a href="../../it.unibo.demoqak21/userdocs/LabQakExamples2021.html#coap" target="web"" target="code">LabQakExamples2021.html</a>
+
+ 
+
+<br/>
+
+<h3 id="actorasstream">Actors as streams</h3>
+
+<a href="https://en.wikipedia.org/wiki/Reactive_programming" target="web"><bc>Reactive programming</bc> </a>  
+is a combination of the best ideas from the ,  
+<a href="https://en.wikipedia.org/wiki/Observer_pattern" target="web"><bc>Observer</bc> pattern</a>, the 
+<a href="https://en.wikipedia.org/wiki/Iterator_pattern" target="web"><bc>Iterator</bc> pattern</a>, and 
+<a href="https://en.wikipedia.org/wiki/Functional_programming" target="web"><bc>Functional programming</bc></a>.
+<br/><br/>
+In <tt>reactive programming</tt>, the consumer reacts to the data as it comes in. 
+This is the reason why asynchronous programming is also called reactive programming. 
+Reactive programming allows to <i>propagates event changes</i> to registered observers.
+<br/><br/>
+Reactive capabilities are achieved by adding some property  to our 
+<a href="../../it.unibo.qakactor/src/main/kotlin/ActorBasic.kt" target="code">ActorBasic.kt</a> class:
+
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:50%">
+<pre>
+abstract class  ActorBasic( ... ) {
+protected val <k>subscribers</k> = mutableListOf<ActorBasic>()
+
+    fun <ks>subscribe</ks>( a : ActorBasic) : ActorBasic {
+        subscribers.add(a)
+        return a
+    }
+    fun <ks>subscribeLocalActor</ks>( actorName : String) : ActorBasic {
+        val a = sysUtil.getActor(actorName)
+        if( a != null  ){ subscribers.add(a); return a}
+    }
+    fun <ks>unsubscribe</ks>( a : ActorBasic) {
+        subscribers.remove(a)
+    }
+
+    suspend fun <ks>emitLocalStreamEvent</ks>(v: ApplMessage ){
+        subscribers.forEach { it.actor.send(v) }
+    }
+</pre>
+</td>
+<td>
+<center><img src="./img/demoStreams.png" alt="demoStreams" width="100%"></center><br/>
+
+A <tt>QAkActor</tt> can work as an <bc>observable producer</bc> of data; it can be observed by other actors
+subscribed to it. 
+<m>
+<br/>
+Each subscriber will process the data 'in parallel' with the others and can work as an observable in its turn.
+<br/>
+See the example in 
+<a href="../../it.unibo.demoqak21/userdocs/LabQakExamples2021.html#qastreams" target="web"" target="code">LabQakExamples2021.html</a>
+
+</m></td>
+</tr>
+
+<tr>
+<td >
+</td> 
+<td><m></m></td>
+</tr>
+
+ 
+</tbody>	
+</table></center>
+
+
+
+
+<m>
+<div class="remark"> 
+<a href="https://www.vogella.com/tutorials/RxJava/article.html">Reactive Extensions (Rx) in Java</a> (<bc>RxJava</bc>)
+ is based on the same principles and allows us to compose components into <bc>pipelines</bc>  
+ according to the <a href="https://en.wikipedia.org/wiki/Stream_(computing)">Stream computing</a> paradigm. 
+ <!-- See also 
+ <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.qak.streams/userDocs/LabStreams.html" 
+target="lecture">LabStreams | Using streams</a>) -->
+</div>
+</m>
+
+ 
+ 
+
+
+
+ 
+
+
+
+ 
+ <br/><br/>
+
+  
+ 
+ <!--
+
+<center><table style="width:95%">
+<tbody>	
+ 
+<tr>
+<td style="width:40%">
+</td>
+<td><m></m></td>
+</tr>
+
+<tr>
+<td style="width:40%">
+</td> 
+<td><m></m></td>
+</tr>
+
+<tr>
+<td style="width:40%">
+
+</td>
+<td><m> 
+</m></td>
+</tr>
+
+
+</tbody>	
+</table></center>
+-->
+</div>
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div> 
+</body>
+</html>

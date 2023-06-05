@@ -1,0 +1,19 @@
+# Ignore Gradle build output directory
+.classpath
+.project
+build
+bin
+
+# Ignore Gradle project-specific cache directory
+.gradle
+gradlew
+gradlew.bat
+gradle
+
+#Ignore
+.idea
+*.iml
+*.xml
+
+
+#git rm --cached build -r # REMOVE from Staging area

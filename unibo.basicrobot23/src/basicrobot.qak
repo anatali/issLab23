@@ -61,8 +61,6 @@ QActor engager context ctxbasicrobot{
 	}
 	Transition t0 whenRequest engage -> engageAccept
 		          whenMsg disengage ->  disengageRobot
-	              //whenEvent sonardata -> handleEvent
-	              //whenEvent obstacle  -> handleEvent
      			   
     State handleEngage{
     	printCurrentMessage 
@@ -373,8 +371,8 @@ QActor planexec context ctxbasicrobot{
  * ------------------------------
  * robotposendosimbiotico
  * ------------------------------
- */
-
+ */  
+  
 QActor robotposendosimbiotico context ctxbasicrobot{
 	[# val planner = unibo.planner23.Planner23Util()
 	    //val MapName = "mapEmpty23"
@@ -476,9 +474,6 @@ QActor robotposendosimbiotico context ctxbasicrobot{
 	}
 	Goto waitclientrequest
 	//Goto endofwork
-	
-
-	
 }
 
 /*

@@ -69,8 +69,8 @@ fun run3(){  runBlocking { activate(this)  }  }
 fun main() {
 	println("BEGINS CPU=$cpus ${curThread()}")
 	//run1()
-	//run2()
-	run3()
+	run2()
+	//run3()
 	println("ENDS ${curThread()}")
 }
      

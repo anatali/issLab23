@@ -37,7 +37,7 @@ class sonarSimulator ( name : String ) : ActorBasic( name ) {
 			while( i < 20 ){
  	 			val m1 = "distance( ${data.elementAt(i)} )"
 				i++
- 				val event = CommUtils.buildEvent( name,"sonardata",m1)
+ 				val event = CommUtils.buildEvent( name,"sonardistance",m1)
   				emitLocalStreamEvent( event )
  				println("$tt $name | generates $event")
  				//emit(event)  //APPROPRIATE ONLY IF NOT INCLUDED IN A PIPE

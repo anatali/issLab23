@@ -1,0 +1,344 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+k{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #990000;
+	 
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	 
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	 
+}
+pre{
+	font-family: "Helvetica";
+	font-size: 70%;
+	background-color: #fcf8c7; 
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}    
+div.remark{
+	background-color: #FFFC33;     
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+  -->
+</style>
+    
+<head>
+   
+<title>LabQakEvents2020</title></head>
+    
+<body>
+
+<div class="body"> 
+
+<h1>LabQakEvents2020 | Qak-event propagation</h1> 
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2020Lab/blob/master/it.unibo.issLabStart/userDocs/LectureCesena1920.html" target="isslm">LabISS-lectures site</a></font> 
+
+<br/><br/>
+Let us introduce a 'Legenda' for our graphical models.
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td  style="width:50%"><img src="./img/legendaAll.png" alt="legenda" width="88%" /></td></td>
+
+ <td style="width:50%">
+ <m>
+ We say that a <tt>Qa-message</tt> (dispatch, event, ...) is :
+<ul>
+<li><em>propagated via Context</em> when it is sent along a context-to-context connection set by the <tt>qak-infrastrcuture</tt>;<br/><br/></li>
+<li><em>propagated via connection</em> when it is sent (from an 'alien caller' to an actor) along the TCP-connection set by the caller with the
+QActor context-server;<br/><br/> </li>
+<li><em>propagated via proxy</em> when it is sent (from an actor to a 'external caller' ) along a connection-proxy created on the QActor node.<br/><br/></li>
+</ul>
+ 
+ </m>
+  </td>
+</tr>
+</table>
+</center>
+
+<h2>Configurations</h2>
+Let us suppose that a qak actor <ks>A</ks> has to interact with another actor <ks>R</ks> working in a different context and that such a context
+makes use of the <k>+mqtt</k> flag.
+Now, interaction problems could arise when the description of the context of <ks>R</ks> by <ks>A</ks> is not identical to the original one.
+In order to show the possible different cases, we will use the following notations:
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td  style="width:60%"><img src="./img/extcases.png" alt="extcases" width="88%" /></td>
+
+ <td style="width:40%">
+ <m>Possible definitions related to <ks>R</ks> are:
+ <pre>
+Context ctxR ip [ host= "localhost" port= 8020 ]   +mqtt
+QActor R context ctxR { ... }
+</pre>
+Possible definitions related to <ks>A</ks> are:
+ <pre>
+Context ctxR ip [ host= "localhost"   port= 8020 ]   +mqtt
+Context ctxA ip [ host= "192.168.1.5" port= 8020 ]   
+
+<k>External</k> QActor R context ctxR  
+QActor A context ctxA { ... }
+</pre>
+
+ </m>
+  </td>
+</tr>
+</table>
+</center>
+
+The different situations are summarized in the following pictures:
+
+ <center><table style="width:98%">
+<tbody>	
+<tr>
+<td  style="width:50%"><img src="./img/extcasesA.png" alt="extcasesA" width="88%" /></td>
+
+ <td style="width:50%"><img src="./img/extcasesB.png" alt="extcasesB" width="88%" /></td>
+
+ <m> 
+ </m>
+  </td>
+</tr>
+</table>
+</center>
+<br/>
+An example of these possible cases can be done with reference to the project <i>it.unibo.smartrobot2020</i>
+(see <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2020Lab/blob/master/it.unibo.smartrobot2020/userDocs/Lab3_2020.html" target="lab">
+Lab3_2020 | A smartrobot</a>).
+
+<h2>Rules</h2>
+<hr/>
+<m>
+<ol>
+<li>The event emitted by a QActor that belongs to a <ks>qak-system</ks> (<tt>qasys</tt>) is <i>propagated via Context</i> to <k>all</k> the other QActor of <tt>qasys</tt>.</li>
+<li>The event emitted by a QActor of a  <tt>qasys</tt> that 
+works as an ExternalQActor for other actors <tt>a1,...,an</tt>  is also <i>propagated via proxy</i> to  <tt>a1,...,an</tt>.</li>
+<li>The event that reaches a Context (since propagated from another Context or sent from an 'alien') is propagated <k>only</k> to the actors internal to that Context</li>
+</ol> 
+</m>
+<hr/>
+ 
+
+<center><table style="width:98%">
+<tbody>	
+ <tr>
+<td style="width:35%"><img src="./img/evsys0_0.png" alt="evsys0_0" width="85%" /></td>
+ <td>
+ <m>
+ A and R form a <ks>qak-system</ks> described by a <k>unique model</k>.<br/>
+A and R could work in different Contexts.
+ <ul>
+ <li><ks>er</ks> (emitted by <tt>R</tt>) is propagated (via Context) to A and (via proxy) to C1 but <k>not</k> to C2 <br/></li>
+ <li><ks>ea</ks> (emitted by <tt>A</tt>) is propagated (via Context) to R and (via proxy) to C2 but <k>not</k> to C1 <br/></li>
+ <li><ks>e1</ks> (generated by <tt>C1</tt>) is propagated (via connection) <k>only</k> to R <br/></li>
+ <li><ks>e2</ks> (generated by <tt>C2</tt>) is propagated (via connection) <k>only</k> to A <br/></li>
+ </ul>
+</m>
+ </td>
+</tr>
+
+<tr>
+<td><img src="./img/evsys0_1.png" alt="evsys0_1" width="85%" /></td>
+ <td>
+ <m>
+ A uses R as an <k>ExternalQActor</k>.<br/>
+ A 'knowns' the Context of R, but R does not know the Context of A.
+ <ul>
+ <li><ks>er</ks> (emitted by <tt>R</tt>) is propagated (via proxy)  to A and to C1 but <k>not</k> to C2 <br/></li>
+ <li><ks>ea</ks> (emitted by <tt>A</tt>) is propagated (via connection) to R and (via proxy) to C2 but <k>not</k> to C1 <br/></li>
+ <li><ks>e1</ks> (generated by <tt>C1</tt>) is propagated (via connection) <k>only</k> to R <br/></li>
+ <li><ks>e2</ks> (generated by <tt>C2</tt>) is propagated (via connection) <k>only</k> to A <br/></li>
+ </ul>
+</m>
+ </td>
+</tr>
+
+</table>
+</center>
+
+
+ <h3>Example</h3>
+'Divide et impera' has its own drawbacks ...
+<center><table style="width:98%">
+<tbody>	
+
+
+
+<tr>
+<td style="width:35%"><img src="./img/evsys2.png" alt="evsys2" width="85%" /></td>
+ <td>
+ <m>
+R,B belong to the same qak-system. R is External for A. A is External for B. 
+ <ul>
+  <li><ks>e1</ks> (generated by <tt>C1</tt>) is propagated (via connection) <k>only</k> to R <br/></li>
+  <li><ks>er</ks> (emitted by <tt>R</tt>) is propagated (via Context) to B and (via proxy)  to A,C1 <br/></li>
+ <li><ks>ea</ks> (emitted by <tt>A</tt>) is propagated (via connection) to R and (via proxy) to B <br/></li>
+ <li><ks>eb</ks> (generated by <tt>B</tt>) is propagated (via connection) to A  and (via Context) to R <br/></li>
+ </ul>
+ Note that <ks>eb</ks> - when received (via connection in A from B - is <k>not</k> propagated from A to R.
+ Thus, R does receives <ks>eb</ks> just one time (from B). 
+</m>
+ </td>
+</tr>
+
+
+</table>
+</center> 
+
+<!--
+<h3>Robot-services layer</h3>
+
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:45%"><img src="./img/smartRobotSystem.png" alt="smartRobotSystem" width="95%"  /></td>
+ <td><m> 
+<em>smartrobot</em>  statically 'knowns' <em>basicrobot</em> but not vice versa.<br/>
+<em>smartrobotcaller</em>  statically 'knowns' <em>smartrobot</em> but  not  <em>basicrobot</em>.
+<ul>
+<li><em>basicrobot</em> emits <tt>obstacle</tt> and <tt>alarm(obstacle)</tt> when it hits an obstacle. These events
+can be perceived by <em>smartrobot</em> and <em>C1</em> but not by <em>smartrobotcaller</em> and <em>C2</em>.</li>
+<li><em>smartrobot</em> emits  <tt>alarm(stepobstacle)</tt>  when the command <k>step</k> fails. This event can be
+perceived by <em>basicrobot</em>, <em>smartrobotcaller</em> and <em>C2</em></li>
+<li><em>smartrobotcaller</em> emits  <tt>alarm(stepcallerfails)</tt>  when its command <k>step</k> 
+returns a <k>stepfail</k> reply. This event can be
+perceived by <em>smartrobot</em> </li>
+</ul> 
+ </m>
+ </td>
+</tr>
+</table>
+</center>
+--> 
+ 
+
+
+<br/><br/>
+</div>
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div> 
+</body>
+</html>

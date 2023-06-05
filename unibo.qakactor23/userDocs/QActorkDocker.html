@@ -1,0 +1,332 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+ 
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	 
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	 
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #E6E6E6;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 700px;
+    font-size: 15px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px; 
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 120%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 110%;
+}
+h4 {
+    background-color: #C0F0E0;
+    font-size: 100%;
+	width: 100%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+	
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}       
+div.remark{
+	background-color: #ffffff;	
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+} 
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}     
+
+table, th, td {
+	border: 2px solid #d5f2ed;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+	
+}
+
+a {
+	text-decoration: none;
+	color: #9C90E7;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+
+
+        
+</style>
+    
+<head>
+   
+<title>QActok Docker</title></head>
+    
+<body>
+<div id="body">
+<h1>LabIss | Deploy QActork using Docker<font size="5"></font> </h1>
+
+<h2>Deploying a Single QActork Context</h2>
+<ol>
+<li>Create a QActork executable model (named, for example, <k>hellodocker.qak</k>) with the following code:
+<pre>System hellodocker
+
+Context hellocontext ip [host="localhost" port=8080]
+
+QActor hello context hellocontext
+{
+	State s0 initial {
+		
+		println("Hello")
+	}
+}</pre>
+</li>
+<li>Build the project with: <pre>gradle build eclipse</pre></li>
+<li>Run the project as a Kotlin (or Java) Application</li>
+<m><hr><b>Note:</b>&nbsp;If the run fails with <k>Error: Could not find or load main class</k> it may mean that the IDE can't find the *Kt Kotlin file related to the main class. To fix this, edit the corresponding Run Configuration in the  <i>Dependencies</i> tab (or the <i>Classpath</i> tab, depending on the Eclipse version), choose <i>Advanced</i> and enter the folder containing the kotlin generated <i>.class</i> files (for example: <i>build/classes/kotlin/main</i>).<hr></m>
+<m><hr><b>Note:</b>&nbsp;When changing libraries in the <i>build.gradle</i> file, it may happen that the runtime dependencies are not correctly updated. In that case, just delete the current run configuration and repeat the above procedure.<hr></m>
+<li>To deploy our QActork context on Docker, we need to create deployable artifacts for that context. To do that,
+edit the context-specific build file (for example: <i>build_hellocontext.gradle</i>) by adding the following code:
+<m><hr><b>Note:</b>&nbsp; The <k>application</k> plugin must be added to the <k>plugins</k> section of the Gradle build file.<hr></m>
+<pre>mainClassName = 'it.unibo.hellocontext.MainHellocontextKt'
+
+jar {
+    println("executing jar")
+    from sourceSets.main.allSource
+    manifest {
+        attributes 'Main-Class': "$mainClassName"
+    }
+}</pre></li>
+<li>Build the deployable artifacts: <pre>gradle -b build_hellocontext.gradle build</pre></li>
+<li>
+Create a file named <k>Dockerfile</k> in the project root, with the following content (where <k>qubeactors-sandbox</k> is the name of the project):
+<pre>FROM openjdk:12.0.2
+EXPOSE 8080
+ADD ./build/distributions/*.tar /
+ADD ./*.pl /
+RUN ls /qubeactors-sandbox-1.0/bin
+ENTRYPOINT ["bash", "/qubeactors-sandbox-1.0/bin/qubeactors-sandbox"]</pre>
+</li>
+<li>Build the docker image with the following command: <pre>docker build --rm -t hello-qactor .</pre></li>
+<li>Run the docker image: <pre>docker run --rm -p8080:8080 hello-qactor</pre></li>
+</ol>
+<h2>Deploying Multiple Interacting Contexts</h2>
+<ol>
+
+<li>Create a separate projects for each different context. In each project's root folder create a Dockerfile (similar to the one from the previous section):
+<pre>FROM openjdk:12.0.2
+EXPOSE 8080
+ADD ./build/distributions/*.tar /
+ADD ./*.pl /
+ENTRYPOINT ["bash", "/&lt;project-name&gt;-1.0/bin/&lt;project-name&gt;"]</pre>
+where <k>&lt;project-name&gt;</k> is the name used by Gradle to name the folders in the <k>build/distributions</k> directory.
+</li>
+<li>Create a <k>docker-compose.yml</k> file. Since the actors need to communicate with each other (<b>note:</b> MQTT not considered at the moment).
+we will set up a container network and assign to each container a different IP address:
+<pre>
+version: '2.1'
+
+services:
+  hello:
+    build: &lt;relative-path-to-Dockerfile-folder&gt;
+    image: qubeactors/hello
+    mem_limit: 350m
+    networks:
+      qubeactors-network:
+        ipv4_address: "172.20.128.1"
+  greeter:
+    build: &lt;relative-path-to-Dockerfile-folder&gt;
+    image: qubeactors/greeter
+    mem_limit: 350m
+    networks:
+      qubeactors-network:
+        ipv4_address: "172.20.128.2"
+
+networks:
+  qubeactors-network:
+    name: qubeactors-network
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+</pre>
+</li>
+<li>In each project, create a QActork executable model using the IP addresses specified in the <k>docker-compose.yml</k> file, for example:
+<pre>System hellodocker
+
+Dispatch greet : greet(Name)
+
+Context hellocontext ip [host="172.20.128.1" port=8080]
+
+QActor hello context hellocontext
+{
+	State s0 initial { }
+	Transition t0
+		whenMsg greet -> greet
+		
+	State greet {
+		onMsg (greet : greet(Name)) {
+			println("Hello ${payloadArg(0)}")
+		}
+	}
+	Goto s0
+}</pre>
+<pre>System greeterdocker
+
+Dispatch greet : greet(Name)
+
+Context greetercontext ip [host="172.20.128.2" port=8080]
+Context hellocontext ip [host="172.20.128.1" port=8080]
+
+ExternalQActor hello context hellocontext
+
+QActor greeter context greetercontext {
+	State s0 initial {
+		forward hello -m greet : greet(Greeter)
+	}
+}</pre>
+</li>
+<li>Build deployable artifacts for each project: <pre>gradle -b build_&lt;context&gt;.gradle build</pre></li>
+<li>Build <k>docker-compose.yml</k> by running (in the corresponding directory):
+<pre>docker-compose build</pre>
+</li>
+<li>Deploy the QActork contexts by running <pre>docker-compose up</pre>
+the logs of the QActork infrastructure should show that the message has been successfully sent and received</li>
+<!-- <img src="consoleCoap.png"/> -->
+<li>Clean up the deployment when done: <pre>docker-compose down</pre></li>
+</ol>
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By Jean Claude Correale
+</div> 
+
+</body>
+</html>
+
+
+ 

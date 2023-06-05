@@ -359,7 +359,8 @@ l’implementazione dell’interfaccia.</p>
 <ol class="arabic">
 <li><p>Per dare supporto alla <em>programmazione asincrona</em> (o <em>non bloccante</em>), evitando il noto callback hell
 (si veda <a class="reference external" href="https://en.wikipedia.org/wiki/Asynchronous_I/O">Asynchronous I/O</a> on web), Kotlin introduce il meccanismo delle <em>coroutines</em>.</p></li>
-<li><p>A coroutine can invoke other functions; it can also <a class="reference internal" href="#id3"><span class="std std-ref">suspend</span></a> its behavior (without
+<li><p>All’interno di una coroutine, la sequenza di elaborazione può essere sospesa e ripresa successivamente.</p></li>
+<li><p>A coroutine can invoke other functions; it can also <a class="reference internal" href="#id5"><span class="std std-ref">suspend</span></a> its behavior (without
 blocking its running thread).</p>
 <a class="reference internal image-reference" href="_images/coroutines0.png"><img alt="_images/coroutines0.png" class="align-center" src="_images/coroutines0.png" style="width: 60%;" /></a>
 </li>
@@ -379,10 +380,20 @@ Può sospendere la sua esecuzione in un thread e riprendere in un altro.</p>
 <p>Il concetto di coroutine si basa sull’idea di <span class="remark">sospendere un calcolo senza bloccare un thread</span>
 (si veda <span class="blue">suspend function</span> in <a class="reference external" href="https://kotlinlang.org/docs/coroutines-basics.html#extract-function-refactoring">Coroutines basics</a> on web)
 implementato utilizzando (dietro le quinte) una macchina a stati e <a class="reference internal" href="#le-funzioni"><span class="std std-ref">CPS</span></a> .</p>
+<p>Il concetto è quello di dividere il codice
+in una sorta di macchina a stati che esegue le operazioni e poi viene
+messa in stato di attesa prima di poter essere nuovamente richiamata.</p>
 <blockquote>
 <div><a class="reference internal image-reference" href="_images/coroutines.png"><img alt="_images/coroutines.png" class="align-center" src="_images/coroutines.png" style="width: 50%;" /></a>
 </div></blockquote>
-<p>Le coroutines non sono parte del linguaggio e nemmeno della libreria standard; fanno parte di una libreria separata.</p>
+<p>Le coroutines non sono parte del linguaggio e nemmeno della libreria standard; fanno parte di una
+<strong>libreria separata</strong>.</p>
+<p>Uaando <span class="remark">tecniche di compilazione</span>,
+La libreria inserisce le parti rilevanti del codice all’interno
+di callback, subscrive o eventi e schedula l’esecuzione del programma
+(su thread differenti), lasciando il codice semplice come se fosse eseguito
+sequenzialmente.</p>
+<p>Non <a href="#id3"><span class="problematic" id="id4">`</span></a>e quindi necessario il supporto di virtual machine o sistemi operativi.</p>
 <section id="coroutine-contesti-e-dispatchers">
 <h4>Coroutine: contesti e dispatchers<a class="headerlink" href="#coroutine-contesti-e-dispatchers" title="Permalink to this headline">¶</a></h4>
 <p>Le coroutine vengono sempre eseguite in un contesto rappresentato da un valore del tipo <em>CoroutineContext</em>,
@@ -441,8 +452,8 @@ da utilizzare nai main  e nei test; non dovrebbe essere utilizzata da una corout
 platform-specific (qualificata come <span class="remark">actual</span>; si veda ad esempio
 <a class="reference external" href="https://infinum.com/blog/kotlin-multiplatform-overview/">https://infinum.com/blog/kotlin-multiplatform-overview/</a>.</p>
 </section>
-<section id="id3">
-<h3>Suspending functions<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<section id="id5">
+<h3>Suspending functions<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>Una funzione di sospensione è una normale funzione di Kotlin con l’aggiunta del modificatore <strong>suspend</strong>
 che indica che la funzione può sospendere l’esecuzione di una coroutine.</p>
 <a class="reference internal image-reference" href="_images/coroutineSuspend1.png"><img alt="_images/coroutineSuspend1.png" class="align-center" src="_images/coroutineSuspend1.png" style="width: 40%;" /></a>
@@ -635,7 +646,7 @@ messaggi in modo FIFO, sfruttando un attore Kotlin incapsulato:</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#runblocking">runBlocking</a></li>
-<li><a class="reference internal" href="#id3">Suspending functions</a></li>
+<li><a class="reference internal" href="#id5">Suspending functions</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#la-parte-interazione">La parte interazione</a><ul>

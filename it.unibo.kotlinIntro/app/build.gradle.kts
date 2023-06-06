@@ -55,12 +55,15 @@ dependencies {
     implementation( "com.squareup.okhttp3:okhttp:4.9.0" )
 //JSON
     // https://mvnrepository.com/artifact/org.json/json
-    implementation("org.json:json:20220320" )
+    //implementation("org.json:json:20220320" )
+    implementation("com.googlecode.json-simple:json-simple:1.1.1")
+
 //STRING COLORS
     implementation( "com.andreapivetta.kolor:kolor:1.0.0" )
 //UNIBO
     implementation( "uniboInterfaces:uniboInterfaces"  )
     implementation( "uniboProtocolSupport:unibonoawtsupports"  )
+    implementation ("unibo.basicomm23:unibo.basicomm23-1.0")
     //implementation( "uniboIssSupport:IssActorKotlinRobotSupportJ11-2.0")
 }
 

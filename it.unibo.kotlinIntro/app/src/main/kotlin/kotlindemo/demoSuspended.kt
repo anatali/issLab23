@@ -9,13 +9,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.coroutineScope
+
+import unibo.basicomm23.utils.CommUtils
 
 //------------------SUSPEND -----------------------------
 suspend fun ioBoundFun(dt: Long=1000L) : Long{
@@ -52,6 +47,7 @@ suspend fun ioBoundFun(dt: Long=1000L) : Long{
 //=================================================================
 
 fun run1(){
+	CommUtils.outblue("run1")
 	runBlocking {
 		ioBoundFun()
 	}
@@ -59,18 +55,22 @@ fun run1(){
 
 fun run2(){
 	val myScope= CoroutineScope(newSingleThreadContext("single"))
+	CommUtils.outblue("run2")
 	myScope.launch{ ioBoundFun(500L) }
 	runBlocking { ioBoundFun() }
 	myScope.launch{ ioBoundFun(300L) }
 }
 
-fun run3(){  runBlocking { activate(this)  }  }
+fun run3(){
+	CommUtils.outblue("run3")
+	runBlocking { activate(this)  }
+}
 
 fun main() {
 	println("BEGINS CPU=$cpus ${curThread()}")
 	//run1()
-	run2()
-	//run3()
+	//run2()
+	run3()
 	println("ENDS ${curThread()}")
 }
      

@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>TemaFinale23 &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="DeliverableAppl1HTTP" href="DeliverableAppl1HTTP.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="DeliverableAppl1HTTP.html" title="DeliverableAppl1HTTP"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">TemaFinale23</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="temafinale23">
+<h1>TemaFinale23<a class="headerlink" href="#temafinale23" title="Permalink to this headline">¶</a></h1>
+<p>A company intends to build a <span class="blue">ColdStorageService</span>, composed of a set of elements:</p>
+<ol class="arabic">
+<li><p>a service area (rectangular, flat) that includes:</p>
+<ul class="simple">
+<li><p>an <span class="brown">INDOOR</span> port, to enter food (fruits, vegetables, etc. )</p></li>
+<li><p>a <span class="blue">ColdRoom</span> container, devoted to store food, upto <strong>MAXW</strong> kg .</p></li>
+</ul>
+<p>The <span class="blue">ColdRoom</span> is positioned within the service area, as shown in the following picture:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/ColdStorageServiceRoomAnnoted.PNG"><img alt="_images/ColdStorageServiceRoomAnnoted.PNG" class="align-center" src="_images/ColdStorageServiceRoomAnnoted.PNG" style="width: 60%;" /></a>
+</div></blockquote>
+</li>
+<li><p>a DDR robot working as a <span class="blue">transport trolley</span>, that is intially situated in its <span class="brown">HOME</span> location.
+The transport trolley has  the form of a square of side length <strong>RD</strong>.</p>
+<p>The <cite>transport trolley</cite> is used to perform a <span class="blue">deposit action</span> that consists in the following phases:</p>
+<ol class="arabic simple">
+<li><p>pick up a food-load from a <span class="blue">Fridge truck</span> located on the <span class="brown">INDOOR</span></p></li>
+<li><p>go from the <cite>INDOOR</cite> to the <span class="brown">PORT</span> of the <span class="blue">ColdRoom</span></p></li>
+<li><p>deposit the food-load in the <span class="blue">ColdRoom</span></p></li>
+</ol>
+</li>
+<li><p>a <span class="blue">ServiceAcessGUI</span>  that allows an human being to see the current current weigth of the material stored
+in the ColdRoom and to send to the <span class="blue">ColdStorageService</span> a request to store new <strong>FW</strong> kg
+of food.
+If the request is accepted, the services return a ticket that expires after a prefixed amount of time
+(<strong>TICKETTIME</strong> secs) and provides a field to enter the  ticket number when a <cite>Fridge truck</cite> is at the
+<span class="brown">INDOOR</span> of the service.</p></li>
+<li><p>a <span class="blue">ServiceStatusGUI</span> that allows a <span class="blue">Service-manager</span> (an human being) to
+supervises the state of the service.</p></li>
+</ol>
+<section id="alarm-requirements">
+<h2>Alarm requirements<a class="headerlink" href="#alarm-requirements" title="Permalink to this headline">¶</a></h2>
+<p>The system includes a a <span class="blue">Sonar</span> and a <span class="blue">Led</span> connected to a RaspnerryPi.</p>
+<p>The <span class="blue">Sonar</span> is used as an ‘alarm device’: when it measures a distance less that a prefixed value <strong>DLIMT</strong>,
+the <span class="blue">transport trolley</span> must be stopped; it will be resumed when <cite>Sonar</cite> detects again a distance higher
+than  <strong>DLIMT</strong>.</p>
+<p>The <cite>Led</cite> is used as a <em>warning devices</em>, according to the following scheme:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>the <cite>Led</cite> is <strong>off</strong> when the  <cite>transport trolley</cite> is at <cite>HOME</cite></p></li>
+<li><p>the <cite>Led</cite> <strong>blinks</strong> while the <cite>transport trolley</cite> is moving</p></li>
+<li><p>the <cite>Led</cite> is <strong>on</strong> when <cite>transport trolley</cite> is stopped.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="service-users-story">
+<h2>Service users story<a class="headerlink" href="#service-users-story" title="Permalink to this headline">¶</a></h2>
+<p>The story of the <span class="blue">ColdStorageService</span> can be summarized as follows:</p>
+<ol class="arabic simple">
+<li><p>A <cite>Fridge truck</cite> driver uses the <em>ServiceAcessGUI</em> to send
+a request to store  its load of <strong>FW</strong> kg. If the request is accepted, the driver drives its truck
+to the <span class="brown">INDOOR</span> of the service, before the ticket exipration time <strong>TICKETTIME</strong>.</p></li>
+<li><p>When the truck is at the <span class="brown">INDOOR</span> of the service, the driver uses the <em>ServiceAcessGUI</em> to
+enter the ticket number and waits until the message <strong>charge taken</strong>   (sent by the <cite>ColdStorageService</cite>)
+appears on the <em>ServiceAcessGUI</em>. At this point, the truck should leave the <span class="brown">INDOOR</span>.</p></li>
+<li><p>When the service accepts a ticket, the <cite>transport trolley</cite> reaches the <span class="brown">INDOOR</span>, picks up the food,
+sends the <strong>charge taken</strong> message and then goes to the <span class="blue">ColdRoom</span> to store the ffod.</p></li>
+<li><p>When the deposit action is terminated, the <span class="blue">transport trolley</span> accepts another ticket (if any)
+or returns to <span class="brown">HOME</span>.</p></li>
+<li><p>While the <span class="blue">transport trolley</span> is moving, the <a class="reference internal" href="#alarm-requirements"><span class="std std-ref">Alarm requirements</span></a> should be satisfied.
+However, the <span class="blue">transport trolley</span> should not be stopped if some prefixed amount
+of time (<strong>MINT</strong> msecs) is not passed from the previous stop.</p></li>
+<li><p>A <em>Service-manager</em> migtht use the <span class="blue">ServiceStatusGUI</span> to see:</p>
+<ul class="simple">
+<li><p>the <strong>current state</strong> of the <span class="blue">transport trolley</span> and it <strong>position</strong> in the room;</p></li>
+<li><p>the <strong>current weigth</strong> of the material stored in the <span class="blue">ColdRoom</span>;</p></li>
+<li><p>the <strong>number of store-requests rejected</strong> since the start of the service.</p></li>
+</ul>
+</li>
+</ol>
+<p><span class="slide1">About requirements</span></p>
+<p>The development of the <span class="blue">ServiceStatusGUI</span> is optional.
+However, it is <span class="remark">required</span> if the working team is composed of 3 person.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">TemaFinale23</a><ul>
+<li><a class="reference internal" href="#alarm-requirements">Alarm requirements</a></li>
+<li><a class="reference internal" href="#service-users-story">Service users story</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="DeliverableAppl1HTTP.html"
+                          title="previous chapter">DeliverableAppl1HTTP</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/TemaFinale23.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="DeliverableAppl1HTTP.html" title="DeliverableAppl1HTTP"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">TemaFinale23</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

@@ -1,4 +1,8 @@
-//simpleReceiverKotlin.kt
+/*
+-------------------------------------
+simpleReceiverKotlin.kt
+-------------------------------------
+*/
 package prodCons
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*

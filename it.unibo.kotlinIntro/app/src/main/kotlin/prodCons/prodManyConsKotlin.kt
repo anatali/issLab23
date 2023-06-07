@@ -1,5 +1,10 @@
+/*
+-------------------------------------
+prodManyConsKotlin.kt
+-------------------------------------
+*/
 package prodCons
-//prodManyConsKotlin.kt
+
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ReceiveChannel

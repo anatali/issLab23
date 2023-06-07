@@ -1,5 +1,9 @@
+/*
+-------------------------------------
+demoDispatchers.kt
+-------------------------------------
+*/
 package kotlindemo
-//demoDispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -13,7 +17,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.channels.Channel
 
-@kotlinx.coroutines.ObsoleteCoroutinesApi
+//kotlinx.coroutines.ObsoleteCoroutinesApi
 
 fun testDispatchers(n : Int, scope: CoroutineScope) {
         if( n== 0 ){
@@ -101,7 +105,7 @@ fun testDispatchers(n : Int, scope: CoroutineScope) {
         }
 }
 
-@kotlinx.coroutines.ObsoleteCoroutinesApi
+//@kotlinx.coroutines.ObsoleteCoroutinesApi
 
 fun main(){
     println("BEGINS CPU=$cpus ${curThread()}")

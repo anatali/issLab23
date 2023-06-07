@@ -1,5 +1,9 @@
+/*
+-------------------------------------
+demoForLambda.kt
+-------------------------------------
+*/
 package kotlindemo
-//demoLambda.kt
 fun add( x:Int, y:Int ) : Int { return x+y }
 
 fun exec23( op:(Int,Int) -> Int ) : Int { return op(2,3) }

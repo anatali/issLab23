@@ -1,5 +1,9 @@
+/*
+-------------------------------------
+demoSequences.kt
+-------------------------------------
+*/
 package kotlindemo
-//demoSequences
 import kotlinx.coroutines.runBlocking
 
 data class APerson(val name: String, val age: Int)

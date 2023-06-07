@@ -1,4 +1,8 @@
-//simpleProducerKotlin.kt
+/*
+-------------------------------------
+simpleProducerKotlin.kt
+-------------------------------------
+*/
 package prodCons
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ReceiveChannel

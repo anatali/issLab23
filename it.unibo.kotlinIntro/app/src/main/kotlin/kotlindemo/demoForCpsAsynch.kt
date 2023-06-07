@@ -1,5 +1,9 @@
+/*
+-------------------------------------
+demoForCpsAsync.kt
+-------------------------------------
+*/
 package kotlindemo
-//demoCpsAsynch.kt
 
 fun readCpsAsynch( callback:(String)-> Unit ) : Unit{
   kotlin.concurrent.thread(start = true) {		// Single Abstract Method conversion (SAM)

@@ -1,7 +1,11 @@
+/*
+-------------------------------------
+demo2022.kt
+-------------------------------------
+*/
+package demo22
 import kotlinx.coroutines.*
 import unibo.basicomm23.utils.CommUtils
-
-
 /*
 -------------------------------------------
 Utilities
@@ -101,6 +105,9 @@ fun demoBaseFunzioni(){
     val ftgreetCallResult = ftgreet("Hello Greeting")()//side effect: Hello Greeting
     println( "ftgreetCallResult=$ftgreetCallResult" ) //kotlin.Unit
 }
+/*
+SCOPO: Mostrare i shortcut delle lambda expr in modo incrementale
+ */
 fun demoLambda() {
     println("-- DEMOLAMBDA")
     val v1 = exec23( "no shortcut", { x:Int, y:Int -> x-y } ) //1) no shortcut
@@ -161,7 +168,8 @@ val ftaction : () -> Unit = { println("ftaction") }
 val ftgreet: (String ) -> ()->Unit = {  m: String -> { println(m)}   }
 //Funzione che riceve funzione
 fun exec23( msg : String="allok", op:(Int,Int) -> Int ) : Int {
-    println(msg); return op(2,3) }
+    println(msg); return op(2,3)
+}
 //Funzione che riceve funzione a un solo argomento
 fun p2( op:( Int ) -> Int) : Int {
     //println(op);

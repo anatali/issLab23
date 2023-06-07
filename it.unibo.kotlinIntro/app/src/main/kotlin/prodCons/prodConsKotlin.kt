@@ -1,5 +1,9 @@
+/*
+-------------------------------------
+prodConsKotlin.kt
+-------------------------------------
+*/
 package prodCons
-//prodConsKotlin.kt
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.consume

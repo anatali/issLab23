@@ -1,4 +1,8 @@
-//demoActorCounterNoDeferred.kt
+/*
+-------------------------------------
+demoActorCounterNoDeferred.kt
+-------------------------------------
+*/
 /*
 Example of  wrong code
  */

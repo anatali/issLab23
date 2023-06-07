@@ -1,6 +1,9 @@
+/*
+-------------------------------------
+demoForCps.kt
+-------------------------------------
+*/
 package kotlindemo
-
-import kotlinx.coroutines.runBlocking
 
 //------------------ CLOSURE -----------------------------
 fun counterCreate()  : ( cmd : String ) -> Int {

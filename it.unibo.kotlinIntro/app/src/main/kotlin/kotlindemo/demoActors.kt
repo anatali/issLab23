@@ -1,5 +1,10 @@
+/*
+-------------------------------------
+demoActors.kt
+-------------------------------------
+*/
 package kotlindemo
-//demoActors.kt
+
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.actor
 import kotlinx.coroutines.channels.SendChannel

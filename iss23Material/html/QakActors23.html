@@ -283,9 +283,20 @@ quadro di un loro disciplinato utilizzo (si veda <a class="reference internal" h
 <li><p>la possibilità di <span class="blue">consultare e gestire basi conoscenza</span> eseguendo <span class="brown">computazioni Prolog</span>,
 come spiegato in <a class="reference external" href="./_static/LabQakPrologUsage2021.html">Uso di Prolog</a> (html).</p></li>
 </ul>
-<p>Con questo linguaggio abbiamo potuto costruire un sistema software di alto livello che nasconde
-molti dettagli tecnologici relativi all’uso di un DDR robot in applicazioni IOT:
-<a class="reference internal" href="BasicRobot23.html#basicrobot23-versione-maggio30"><span class="std std-ref">basicrobot23 versione Maggio30</span></a>.</p>
+<p>Con questo linguaggio abbiamo costruito:</p>
+<ul class="simple">
+<li><p>un sistema software di alto livello che nasconde molti dettagli tecnologici relativi all’uso di un DDR robot
+in applicazioni IOT: <a class="reference internal" href="BasicRobot23.html#basicrobot23-versione-maggio30"><span class="std std-ref">basicrobot23 versione Maggio30</span></a>;</p></li>
+<li><p>un sistema software per l’uso di un sonar fisico <a class="reference internal" href="RaspBasicCode.html#usiamo-un-sonar-hc-sr04"><span class="std std-ref">SONAR HC-SR04</span></a> come
+dispositivo di allarme per applicazioni IOT: <a class="reference internal" href="RaspApplCode.html#progetto-unibo-sonarqak23"><span class="std std-ref">Progetto  unibo.sonarqak23</span></a>.</p></li>
+</ul>
+<p>Abbiamo anche sviluppato:</p>
+<ul class="simple">
+<li><p>l’applicazione web <a class="reference internal" href="RobotPosWeb.html#robotposweb"><span class="std std-ref">robotposweb</span></a> che fornisce una pagina HTML che permette di inviare comandi al
+<em>basicrobot</em> e di ricevere informazioni via CoAP sulla evoluzione della posizione del robot;</p></li>
+<li><p>il progetto <span class="blue">webrobot23</span> per dotare
+il <a class="reference internal" href="BasicRobot23.html#basicrobot23-versione-maggio30"><span class="std std-ref">basicrobot23 versione Maggio30</span></a> di una console remota.</p></li>
+</ul>
 <section id="qak-syntax-esempi">
 <h3><a class="toc-backref" href="#id12">Qak syntax: esempi</a><a class="headerlink" href="#qak-syntax-esempi" title="Permalink to this headline">¶</a></h3>
 <p>Riportiamo qui alcuni esempi relativi alle capacità espressive del linguaggio Qak.</p>
@@ -940,7 +951,7 @@ ereditato da <a class="reference internal" href="#it-unibo-kactor-actorbasic-kt"
 <tr class="row-odd"><td><p><span class="remark">suspend fun actorBody</span></p></td>
 <td><p>definisce il codice per la gestione dei messaggi <a class="reference internal" href="unibo.basicomm23.html#unibo-interaction-interfaces-iapplmessage"><span class="std std-ref">IApplMessage</span></a>
 ricevuti dall’attore.
-Si veda <a class="reference internal" href="KotlinNotes.html#id3"><span class="std std-ref">Suspending functions</span></a> in <a class="reference internal" href="KotlinNotes.html#kotlinnotes"><span class="std std-ref">KotlinNotes</span></a> e  <a class="reference internal" href="#come-definire-codedqactor"><span class="std std-ref">Come definire CodedQactor</span></a>.</p></td>
+Si veda <span class="xref std std-ref">Suspending functions</span> in <a class="reference internal" href="KotlinNotes.html#kotlinnotes"><span class="std std-ref">KotlinNotes</span></a> e  <a class="reference internal" href="#come-definire-codedqactor"><span class="std std-ref">Come definire CodedQactor</span></a>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1004,7 +1015,7 @@ di cui è noto il nome o la connessione.</p>
   //usando conn se conn!=null (destname è un &#39;alieno&#39;)
   val destactor = context!!.hasActor(destName)
   /*
-    se destactor  è locale: destactor.actor.send( msg )
+    se destactor  è locale: destactor.kactor.send( msg )
     altrimenti usa il proxy verso il contesto di destactor
 }
 </pre></div>
@@ -1085,7 +1096,7 @@ la gestione dei messaggi ricevuti sul canale di ingresso.</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Per <span class="remark">suspend</span>, si veda <a class="reference internal" href="KotlinNotes.html#id3"><span class="std std-ref">Suspending functions</span></a>.</p></li>
+<li><p>Per <span class="remark">suspend</span>, si veda <span class="xref std std-ref">Suspending functions</span>.</p></li>
 </ul>
 <p>Il metodo <em>doRead</em> legge i valori <code class="docutils literal notranslate"><span class="pre">V</span></code> di distanza  emessi sullo standard output dal programma Python
 <code class="docutils literal notranslate"><span class="pre">sonar.py</span></code> e genera l’evento <span class="blue">msg(sonardata,event,sonar,ANY,distance( V ),&lt;Int&gt;)</span>.</p>

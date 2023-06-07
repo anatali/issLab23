@@ -1,5 +1,10 @@
+/*
+-------------------------------------
+demoChannels.kt
+-------------------------------------
+*/
 package kotlindemo
-//demoChannels.kt
+
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay

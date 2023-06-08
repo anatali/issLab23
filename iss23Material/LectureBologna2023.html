@@ -626,7 +626,28 @@ in Kotlin attraverso esempi:
 <td> 
 <li><a href="../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#coroutineslook" target="web">About coroutins html</a></li>
  
-<li><a href="../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demo2022.kt"target="web">demo2022.kt</a> </li>
+<li><a href="../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demo2022.kt"target="web">demo2022.kt</a> 
+<ul>
+<li>2: <tt>demoLambda</tt> (short-cut per le lambda) </li>
+<li>3: <tt>demoCps</tt> ( read-eval-print normale e cps )</li>
+<li>4: <tt>demoAsynchCps</tt> ( readCpsAsynch che chiama callback )</li>
+<li>5: <tt>runBlockThread</tt> (delay bloccante)</li>
+<li>6: <tt>runBlockThreadInGlobalScope</tt> (delay in coroutine attivata con GlobalScope)</li>
+<li>7: <tt>runBlockingLaunchJoin</tt> (launch di coroutine con join entro runBlocking)</li>
+<li>7: <tt>runBlockingLaunchNoJoin</tt> (launch di coroutine entro un nuovo CoroutineScope)</li>
+<li>13: <tt>scopeAsyncDemo</tt> (attivazione con async e attesa risultato)</li>
+<li>11: <tt>manyThreads</tt> (10000*1000 inc in thread paralleli)</li>
+<li>12: <tt>manyCoroutines</tt> (10000*1000 inc in coroutines)</li>
+<li>14: <tt>ioBoundFunCallBlocking</tt> ( suspend fun che fa delay chiamata in runBlocking)</li>
+<li>15: <tt>ioBoundFunCallnewSingleThreadContext</tt> ( uso di newSingleThreadContext )</li>
+<li>16: <tt>ioBoundFunCallActivate</tt> (  scope come parametro )</li>
+<li>17: <tt>doDemoChannelTestOneSenderOneReceiver</tt> ( demo di uso di un canale con un sender e un receiver )</li>
+<li>18: <tt>doDemoChannelTestMany</tt> (  demo di uso di un canale con più sender/receove )</li>
+<li>21: <tt>actorsSenderReceiver</tt> ( kotlin actor sender e receiver   )</li>
+</ul>
+
+
+</li>
 <li><a href="../it.unibo.kotlinIntro/app/src/main//kotlin/kotlindemo/demoCoroutinesIntro.kt"target="web">demoCoroutinesIntro.kt</a> </li>
 <li><a href="../it.unibo.kotlinIntro/app/src/main//kotlin/kotlindemo/demoSuspended.kt"target="web">demoSuspended.kt</a> </li>
 <li>Panoramica finale</li>

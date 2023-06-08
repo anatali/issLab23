@@ -117,7 +117,7 @@ eclipse {
 
 application {
     // Define the main class for the application.
-    mainClass = 'it.unibo.ctxprototipo0.MainCtxprototipo0Kt'
+    mainClass = 'it.unibo.ctxradargui.MainCtxradarguiKt'
 }
 
  jar {

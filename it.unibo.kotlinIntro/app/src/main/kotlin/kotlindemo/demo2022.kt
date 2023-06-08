@@ -31,13 +31,32 @@ val choiche = arrayOf("demoBaseFunzioni","demoLambda","demoCps","demoAsynchCps",
     "runBlockingLaunchJoin", "runBlockingLaunchNoJoin",
     "scopeDemo","runInNewScope",
     "manyThreads","manyCoroutines","scopeAsyncDemo",
-     "ioBoundFunCallBlocking","ioBoundFunCallnewSingleThreadContext","ioBoundFunCallActivate",
+     "ioBoundFunCallBlocking","ioBoundFunCallnewSingleThreadContext",
+     "ioBoundFunCallActivate",
     "demoChannelTestOneSendRec","demoChannelTestMany",
     "manyTypeProducerOnChannel", "manyConsumers",
      "actorsSenderReceiver", "doCounterActor"
        )
 
 var demoTodo : () -> Unit = { println("nothing to do") }
+
+/*
+---------------------------------------------
+main
+---------------------------------------------
+ */
+fun main() {
+    showChoices()
+    var input =  readInt()
+    while( input != 0 ){
+        doDemo( input )
+        demoTodo = 	{ println("nothing to do") }
+        showChoices()
+        input    =  readInt()
+    }
+    println( "BYE")
+}
+
 fun readInt() : Int { print(">"); return readLine()!!.toInt() }
 fun showChoices(){
     var n=1
@@ -48,12 +67,12 @@ fun showChoices(){
 
 //DEMO user interface
 fun doDemo( input : Int ){
-    println("BEGINS CPU=$cpus ${curThread()} " )
+    println("doDemo BEGINS CPU=$cpus ${curThread()} " )
 
     when( input ){
         1 ->  demoTodo =  { demoBaseFunzioni() }
-        2 ->  demoTodo =  { demoLambda() }
-        3 ->  demoTodo =  { demoCps() }
+        2 ->  demoTodo =  { demoLambda() }          //From demoForLambda
+        3 ->  demoTodo =  { demoCps() }             //From demoForCps
         4 ->  demoTodo =  { demoAsynchCps() }
         5 ->  demoTodo =  { runBlockThread() }
         6 ->  demoTodo =  { runBlockThreadInGlobalScope() }
@@ -67,30 +86,24 @@ fun doDemo( input : Int ){
         14 ->  demoTodo =  { ioBoundFunCallBlocking() }
         15 ->  demoTodo =  { ioBoundFunCallnewSingleThreadContext() }
         16 ->  demoTodo =  { ioBoundFunCallActivate() }
+        //In demoChannels.kt
         17 ->  demoTodo =  { kotlindemo.doDemoChannelTestOneSenderOneReceiver() }
         18 ->  demoTodo =  { kotlindemo.doDemoChannelTestMany() }
+        //In prodConsKotlin.kt
         19 ->  demoTodo =  { prodCons.manyTypeProducerOnChannel() }
         20 ->  demoTodo =  { prodCons.manyConsumers() }
+        //In demoActors
         21 ->  demoTodo =  { kotlindemo.actorsSenderReceiver() }
         //22 ->  demoTodo =  { kotlindemo.actorsSenderReceiver() }
+        //IN demoActorCounter.kt
         22 ->  demoTodo =  { kotlindemo.doCounterActor() }
         else ->  { println("command unknown") }  //Note the block
     }
-    println( "work done in time= ${measureTimeMillis(  demoTodo )}"  )
-    println("ENDS ${curThread()}")
+    println( "doDemo work done in time= ${measureTimeMillis(  demoTodo )}"  )
+    println("doDemo ENDS ${curThread()}")
 }
 
-fun main() {
-    showChoices()
-    var input =  readInt()
-    while( input != 0 ){
-        doDemo( input )
-        demoTodo = 	{ println("nothing to do") }
-        showChoices()
-        input    =  readInt()
-    }
-    println( "BYE")
-}
+
 
 /*
 -----------------------------------------------------------
@@ -98,7 +111,7 @@ Funzioni con le demo
 -----------------------------------------------------------
  */
 
-fun demoBaseFunzioni(){
+fun demoBaseFunzioni(){     //(1)
     println("-- DEMOBASE funzioni")
     //println( fun(){ println("Hello-anonymous")}   ) //Function0<kotlin.Unit>
     //println( fun(){ println("Hello-anonymous")}()   ) //Hello-anonymous e poi kotlin.Unit
@@ -108,7 +121,7 @@ fun demoBaseFunzioni(){
 /*
 SCOPO: Mostrare i shortcut delle lambda expr in modo incrementale
  */
-fun demoLambda() {
+fun demoLambda() {     //(2)
     println("-- DEMOLAMBDA")
     val v1 = exec23( "no shortcut", { x:Int, y:Int -> x-y } ) //1) no shortcut
     println("v1=$v1")	      //no shortcut v1=-1
@@ -124,13 +137,13 @@ fun demoLambda() {
     val v6 = p2{ it - 18 / 9 } //4) USING it
     println("v6=$v6")	      // v6=0
     val v7 = p2{ it + 18 } / 2  //4) arg types inferred
-    println("v7=$v7")	      // v7=-10
+    println("v7=$v7")	      // v7=10
 
     var arr = arrayOf(1,2,3)
     arr.forEach { print("$it"); println() }	//1 2 3
 }
 
-fun demoCps(){
+fun demoCps(){   //(3)
     doReadEvalPrintNormal(10) //myinput:10
     //readCps( { msg -> showAction(msg)  } ) //myinputcps
     //readCps( {showAction(it)  } )//myinputcps | using  lambda  shortcut
@@ -138,20 +151,23 @@ fun demoCps(){
     doReadEvalPrintCps(10) //myinputcps: 10
 }
 
-fun demoAsynchCps() {
+fun demoAsynchCps() {  //(4)
     doJobAsynchCps( 10  )
-    /*
-    BEGINS CPU=12 thread=main / nthreads=2
-    Here I can do other jobs ...
-    -- demo22 END
-    readCpsAsynch  ... | thread=Thread-0 / nthreads=3
-    work done in time= 3
-    ENDS thread=main / nthreads=3
-    readCpsAsynch done
-    evalCps ... | thread=Thread-0 / nthreads=3
-    myinputasynchcps: 10
-     */
 }
+//ATTENZIONE al risultato di demoAsynchCps
+/*
+doDemo BEGINS CPU=12 thread=main / nthreads=2
+doJobAsynchCps | Here I can do other jobs ...
+readCpsAsynch  ... | thread=Thread-0 / nthreads=3
+doDemo work done in time= 2
+doDemo ENDS   thread=main / nthreads=3  (3 e non 2)
+----------------------------------------------
+....
+----------------------------------------------
+>readCpsAsynch done
+evalCps working with v=10 | thread=Thread-0 / nthreads=3
+myinputasynchcps: 10
+*/
 
 /*
 -----------------------------------------------------------
@@ -167,8 +183,9 @@ val ftaction : () -> Unit = { println("ftaction") }
 //Funzione che restituisce una funzione
 val ftgreet: (String ) -> ()->Unit = {  m: String -> { println(m)}   }
 //Funzione che riceve funzione
-fun exec23( msg : String="allok", op:(Int,Int) -> Int ) : Int {
-    println(msg); return op(2,3)
+fun exec23( msg : String="allOk", op:(Int,Int) -> Int ) : Int {
+    println(msg);
+    return op(2,3)
 }
 //Funzione che riceve funzione a un solo argomento
 fun p2( op:( Int ) -> Int) : Int {
@@ -187,7 +204,13 @@ fun counterCreate()  : ( cmd : String ) -> Int {
         }
     }
 }
-//Funzioni rread-eval-print
+
+/*
+--------------------------------
+Funzioni read-eval-print
+--------------------------------
+ */
+
 fun showAction( msg: String ){  println( msg ) }
 fun readAction() : String{
     println("readaction  ... | ${curThread()}")
@@ -200,66 +223,109 @@ fun evalAction( v: Int, msg: String ) : String{
 fun doReadEvalPrintNormal(n:Int){	//1) read 2) eval 3) print
     showAction( evalAction( n,readAction() )  )
 }
-//Funzioni rread-eval-print in stile CPS
+/*
+---------------------------------------------
+Funzioni rread-eval-print in stile CPS
+---------------------------------------------
+ */
 fun readCps( callback:( String )-> Unit ) :Unit {
     println("readCps  ... | ${curThread()}")
     callback( "myinputcps" )
 }
 fun evalCps(v:Int, msg:String, callback:(String)-> Unit ){
-    println("evalCps ... | ${curThread()}")
+    println("evalCps working with v=$v  | ${curThread()}")
     callback( "$msg: $v" )
 }
 fun doReadEvalPrintCps( n: Int  ){ //using lambda shortcut
     readCps{ evalCps( n, it) { showAction( it )} }  //read-and-after-do
     //read works, than calls eval that works and calls showAction
 }
-//ASYNCHRONOUS PROGRAMMING WITH CPS
+
+/*
+---------------------------------------------
+ASYNCHRONOUS PROGRAMMING WITH CPS
+---------------------------------------------
+ */
+//Attiva un Thread che simula una Long-term action
 fun readCpsAsynch( callback:(String)-> Unit ) : Unit{
-    //SAM: when an object implements a SAM interface, we can pass a lambda instead.
+    //SAM: when an object implements a SAM interface,
+    //we can pass a lambda instead.
     kotlin.concurrent.thread(start = true) {
         println("readCpsAsynch  ... | ${curThread()} ")
         Thread.sleep(3000)	//Long-term action
         println("readCpsAsynch done")
-        callback( "myinputasynchcps" )
+        callback( "readCpsAsynch done" )
     }
-}
-fun doJobAsynchCps( n: Int  ){
-    readCpsAsynch{ evalCps( n, it) { showAction( it )}}
-    println("Here I can do other jobs ... ")
-}
-//Coroutines
-var thcounter=0
-fun runBlockThread( delay : Long = 1000L ){
-    CommUtils.outyellow("thread  : ${curThread()} thcounter=${thcounter}")
-    Thread.sleep(delay)
-    thcounter++  //thcounter = thcounter + 1 NON ATOMICA
-}
-fun runBlockThreadInGlobalScope(){
-    GlobalScope.launch{ runBlockThread() }
-}
-fun runBlockingLaunchJoin(){
-    runBlocking {
-        thcounter = 0;
-        println("Before run2  ${curThread()}")
-        val job =  launch{ runBlockThread(2000)  }
-        println("Just after launch ${curThread()}"  )
-        job.join()
-        println("After job ${curThread()} thcounter=$thcounter")
-    }
-    //the coroutine is launched in the scope of the outer runBlocking coroutine.7
-    println("Ends runBlockingLaunchJoin ${curThread()}")
-}
-fun runBlockingLaunchNoJoin(){	//user-option 7
-    runBlocking {
-        println("Before run1 ${curThread()}")
-        launch{  runBlockThread(2000)  }
-        println("Just after launch ${curThread()}")
-    }
-    //The runBlocking won't complete before all of its child coroutines finish.
-    println("Ends runBlockingLaunchNoJoin ${curThread()}")
 }
 
-fun scopeDemo (){
+fun doJobAsynchCps( n: Int  ){
+    readCpsAsynch{ evalCps( n, it) { showAction( it )}}
+    println("doJobAsynchCps | Here I can do other jobs ... ")
+}
+
+/*
+---------------------------------------------
+Coroutines
+---------------------------------------------
+ */
+var thcounter=0
+
+//Esegue una delay all'interno del Thread corrente
+fun runBlockThread( delay : Long = 1000L ){  //(5)
+    CommUtils.outyellow("runBlockThread in ${curThread()} STARTS thcounter=${thcounter}")
+    Thread.sleep(delay)
+    thcounter++  //thcounter = thcounter + 1 NON ATOMICA
+    CommUtils.outyellow("runBlockThread in ${curThread()} ENDS thcounter=${thcounter}")
+}
+//Si noti: runBlockThread in thread=DefaultDispatcher-worker-1
+
+//Lancia una delay all'interno di una coroutine
+fun runBlockThreadInGlobalScope(){  //(6)
+    GlobalScope.launch { runBlockThread() }
+}
+/* RISULTATO di  runBlockThreadInGlobalScope CON o SENZA runBlocking
+doDemo BEGINS CPU=8 thread=main / nthreads=2
+doDemo work done in time= 65
+doDemo ENDS thread=main / nthreads=5
+------------------------------
+...
+------------------------------
+>runBlockThread in thread=DefaultDispatcher-worker-1 / nthreads=5 STARTS thcounter=0
+runBlockThread in thread=DefaultDispatcher-worker-1 / nthreads=5 ENDS thcounter=1
+ */
+
+fun runBlockingLaunchJoin(){  //(7)
+    runBlocking {
+        thcounter = 0;
+        CommUtils.outblue("runBlockingLaunchJoin Before launch  ${curThread()}")
+        val job =  launch{ runBlockThread(2000)  }
+        CommUtils.outblue("runBlockingLaunchJoin Just after launch ${curThread()}"  )
+        job.join()
+        CommUtils.outblue("runBlockingLaunchJoin After job ${curThread()} thcounter=$thcounter")
+    }
+    //the coroutine is launched in the scope of the outer runBlocking coroutine
+    CommUtils.outblue("runBlockingLaunchJoin After runBlocking ${curThread()}")
+}
+fun runBlockingLaunchNoJoin(){	//(8)
+    //runBlocking {
+        val scope = CoroutineScope( Dispatchers.Default )
+        CommUtils.outblue("runBlockingLaunchNoJoin Before run ${curThread()}")
+        val job = scope.launch{  runBlockThread(2000)  }
+        CommUtils.outblue("runBlockingLaunchNoJoin Just after launch ${curThread()}")
+        //job.join()
+        //CommUtils.outblue("runBlockingLaunchJoin After job ${curThread()} thcounter=$thcounter")
+   // }
+    //The runBlocking won't complete before all of its child coroutines finish.
+    CommUtils.outblue("runBlockingLaunchNoJoin AT END ${curThread()}")
+}
+//runBlocking non influisce se usiamo un altro scope
+
+/*
+---------------------------------------------
+Scope
+---------------------------------------------
+ */
+fun scopeDemo (){  //(19)
     thcounter=0
     val scope = CoroutineScope( Dispatchers.Default )
     CommUtils.outmagenta( "scopeDemo ${scope.coroutineContext}" )
@@ -282,25 +348,52 @@ fun scopeDemo (){
 
 fun workTodo(i : Int) { println("hello $i ${curThread()}") }
 
-suspend fun runInScope(
+suspend fun runInScope(  //(10)
     //scope:CoroutineScope=CoroutineScope(Dispatchers.IO)
     scope:CoroutineScope=CoroutineScope(newSingleThreadContext("single"))){
     var job = mutableListOf<Job>()
     for (i in 1..6){
-        job.add( scope.launch{ delay(1000L/i); workTodo(i) } )
+        job.add( scope.launch{ delay(1000L*i); workTodo(i) } )
     }
-    job.forEach { it.join() }
+    job.forEach { it.join() } //Provare a togliere questo join
 }
 
 fun runInNewScope() {
     runBlocking {
-        println("Run in new scope ")
+        CommUtils.outmagenta("Run in new scope ")
         runInScope()
     }
 }
 
+/*
+The async builder returns a promise (also known as future),
+(which is of type Deferred in Kotlin): it promises to compute a value which
+we can wait for or request at any time.
+The method await on the promise allows us to get the value.
 
-//
+Una coroutine attivata con async produce un valore (res)
+sul quale attende un'altra coroutine
+ */
+fun scopeAsyncDemo(){ //(13)
+    val scope = CoroutineScope( Dispatchers.Default )
+    val res : Deferred<String>   = scope.async{
+        CommUtils.outcyan("async starts")
+            delay(2000)
+            CommUtils.outcyan("async produces the output")
+            "hello from async"
+    }
+    scope.launch{
+        CommUtils.outblue("receiver starts to wait result")
+        val r = res.await();
+        //must be called only from a coroutine or a suspend function
+        CommUtils.outblue("receiver result= ${r}")
+    }
+}
+/*
+---------------------------------------------
+Many threads vs. many coroutines
+---------------------------------------------
+ */
 val n=10000	//number of Thread or Coroutines to launch
 val k=1000	//times an action is repeated by each Thread or Coroutine
 //n*k = 10000000
@@ -311,7 +404,7 @@ fun incGlobalCounter(   ){
     thcounter++
 }
 
-fun manyThreads(){  //user-option
+fun manyThreads(){  //(11)
     thcounter=0
     maxNumThread = 0
     val time = measureTimeMillis{
@@ -325,7 +418,7 @@ fun manyThreads(){  //user-option
     println("manyThreads time= $time thcounter=$thcounter maxNumThread=$maxNumThread")
 }
 
-suspend fun manyCoroutines(){	//user-option 5
+suspend fun manyCoroutines(){	//(12)
     val d = newSingleThreadContext("single")
     //val d = newFixedThreadPoolContext(10,"d")
     //val d = Dispatchers.Default
@@ -341,112 +434,30 @@ suspend fun manyCoroutines(){	//user-option 5
     println("manyCoroutines time= $time counter=$thcounter maxNumThread=$maxNumThread")
 }
 
-fun scopeAsyncDemo(){
-    val scope = CoroutineScope( Dispatchers.Default )
-    val res : Deferred<String>   = scope.async{
-        println("async starts")
-        delay(2000) //See delay
-        "hello from async"
-    }
-    scope.launch{
-        println("starts to wait result")
-        val r = res.await();
-        //must be called only from a coroutine or a suspend function
-        println("result= ${r}")
-    }
-}
-
-//Dispatechers (TODO)
-fun testDispatchers(n : Int, scope: CoroutineScope) {
-    if( n== 1 ){
-        runBlocking {
-            launch { //context of the parent runBlocking
-                delay(500)
-                println("1_a) runBlocking | ${curThread()}")
-            }
-            launch { //context of the parent runBlocking
-                println("1_b) runBlocking | ${curThread()}")
-            }
-        }
-    }
-    if( n== 2 ) {
-        val dispatcher = Dispatchers.Default
-        scope.launch(dispatcher) {
-            delay(500)
-            println("2_a) Default | ${curThread()}")
-        }
-        scope.launch(dispatcher) {
-            println("2_b) Default | ${curThread()}")
-        }
-    }
-    if( n== 3 ){
-        val dispatcher = newSingleThreadContext("MyThr")
-        scope.launch( dispatcher ) {
-            delay(500)
-            println("3-a) newSingleThreadContext | ${curThread()}")
-        }
-        scope.launch( dispatcher ) {
-            println("3-b) newSingleThreadContext | ${curThread()}")
-        }
-    }
-    if( n== 4 ) {
-        val dispatcher = Dispatchers.IO
-        scope.launch(dispatcher) {
-            delay(500)
-            println("4_a) Dispatchers.IO | ${curThread()}")
-        }
-        scope.launch(dispatcher) {
-            println("4_b) Dispatchers.IO | ${curThread()}")
-        }
-    }
-    if( n== 5 ) {
-        val dispatcher = Dispatchers.Unconfined
-        scope.launch(dispatcher) {
-            delay(500)
-            println("5_a) Unconfined | ${curThread()}")
-        }
-        scope.launch(dispatcher) {
-            println("5_b) Unconfined | ${curThread()}")
-        }
-    }
-    if( n== 6 ) { //Working in a new scope and in the given one
-        val myscope = CoroutineScope(Dispatchers.Default)
-        scope.launch { delay(1000); println("just to avoid premature main end") }
-        val job1 = myscope.launch {
-            delay(500)
-            println("2_a) Default | ${curThread()}")
-        }
-        myscope.launch {
-            //job1.join()
-            println("2_b) Default | ${curThread()}")
-        }
-    }
-    if( n== 7 ) {  //Working in a new scope only
-        val myscope = CoroutineScope(Dispatchers.Default)
-        myscope.launch{
-            delay(500)
-            println("2_a) Default | ${curThread()}")
-        }
-        myscope.launch{
-            println("2_b) Default | ${curThread()}")
-        }
-    }
-}
-
-//Suspending functions
+/*
+---------------------------------------------
+Suspending functions
+---------------------------------------------
+ */
+//To be used later
+//Simula una funzione che fa io e quindi ci mette tempo
 suspend fun ioBoundFun(dt: Long = 1000L) : Long{
     val time =  measureTimeMillis{
-        println("ioBoundFun | dt=$dt STARTS in ${curThread()}")
+        CommUtils.outblue("ioBoundFun | dt=$dt STARTS in ${curThread()}")
         delay(dt)
     }
     val res = dt/10
-    println("ioBoundFun | dt=$dt res=$res ${curThread()} TIME=$time")
+    CommUtils.outblue("ioBoundFun | dt=$dt res=$res ${curThread()} TIME=$time")
     return res
 }
-fun ioBoundFunCallBlocking(){ runBlocking { ioBoundFun() } }
-fun ioBoundFunCallnewSingleThreadContext(){
+fun ioBoundFunCallBlocking(){ //(14)
+    runBlocking { ioBoundFun() }
+}
+
+
+fun ioBoundFunCallnewSingleThreadContext(){   //(15)
     val myScope=CoroutineScope(newSingleThreadContext("single"))
-    myScope.launch{ ioBoundFun(500L) }
+    myScope.launch{ ioBoundFun(1500L) }
     runBlocking { ioBoundFun() }
     myScope.launch{ ioBoundFun(300L) }
 }
@@ -456,23 +467,25 @@ The async coroutine builder creates new coroutine and returns a promise,
 (of type Deferred in Kotlin): it promises to compute a value which
 we can wait for or request at any time.
  */
+//To be used later
 fun activate(mainscope : CoroutineScope){
+    CommUtils.outmagenta("uso un mainscope ricevuto come arg")
+    CommUtils.outmagenta("creo un myscope con newSingleThreadContext ")
     val myscope = CoroutineScope( newSingleThreadContext("t1"))
-    val job1 =  myscope.async { ioBoundFun(500L) }
-    val job2 =  myscope.async{  ioBoundFun(300L) }
+    CommUtils.outcyan("creo due coroutine con async in myscope ")
+    val job1    =  myscope.async { ioBoundFun(500L) }
+    val job2    =  myscope.async{  ioBoundFun(300L) }
+    CommUtils.outcyan("le due coroutine vanno in sequenza")
+    CommUtils.outblue("lancio una nuova coroutine usando il mainscope")
+    CommUtils.outblue("la coroutine attende i risultati ")
     mainscope.launch {
         if (!job1.isCompleted || !job2.isCompleted) println("Waiting for completion")
         val end1 = job1.await() //only from a coroutine or another suspend
         val end2 =  job2.await()
-        println("All jobs done; end1=$end1 end2=$end2")
+        CommUtils.outmagenta("All jobs done; end1=$end1 end2=$end2")
     }
 }
-fun ioBoundFunCallActivate(){ runBlocking{ activate(this)  }}
+fun ioBoundFunCallActivate(){   //(16)
+    runBlocking{ activate(this)  }
+}
 
-
-//CHANNEL test : in demoChannels.kt
-//CHANNEL ProdCons : in simpleProducerKotlin.kt
-//CHANNEL Many-type producer : in prodConsKotlin.kt
-
-//ACTORS sender-receiver: in  demoActors.kt
-//ACTORS actorcounter: in  demoActorCounter.kt.

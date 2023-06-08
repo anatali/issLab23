@@ -8,6 +8,7 @@ package kotlindemo
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.actor
 import kotlinx.coroutines.channels.SendChannel
+import unibo.basicomm23.utils.CommUtils
 
 var dispatcher    = newSingleThreadContext("single")
 lateinit var receiverActor : SendChannel<String>
@@ -17,7 +18,7 @@ lateinit var receiverActor : SendChannel<String>
 fun startReceiver( scope : CoroutineScope){
 	receiverActor = scope.actor<String>( dispatcher, capacity = 2) {
 		//actor is a coroutine builder (dual of produce)
-		println("receiverActor STARTS")
+		CommUtils.outgreen("receiverActor STARTS")
 		/*
 		channel is a reference to the mailbox channel that this coroutine receives messages from.
 		It is provided for convenience, so that the code in the coroutine can refer to the channel
@@ -29,7 +30,7 @@ fun startReceiver( scope : CoroutineScope){
 		var msg = channel.receive()
 		while( msg != "end" ){ 	//message-driven
 			delay(500)   //time to elaborate the msg ...
-			println("receiverActor receives $msg ${curThread()}")
+			CommUtils.outgreen("receiverActor receives $msg ${curThread()}")
 			msg = channel.receive()
 		}
 		println("receiverActor ENDS ${curThread()}")
@@ -41,13 +42,13 @@ fun startSender( ){
 	val myScope = CoroutineScope(dispatcher)
 	//myScope.launch{	//(1)
 	val senderActor = myScope.actor<String> {	//(2)
-		println("sender STARTS")
+		CommUtils.outblue("sender STARTS")
 		for( i in 1..4 ) {
 			receiverActor.send("Hello$i")
-			println("sender has sent Hello$i ${curThread()}")
+			CommUtils.outblue("sender has sent Hello$i ${curThread()}")
 		}
 		receiverActor.send("end")
-		println("sender ENDS ${curThread()}" )
+		CommUtils.outblue("sender ENDS ${curThread()}" )
  	}
 }
 

@@ -21,12 +21,13 @@ class Planexec ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 		  var Plan          = ""
 				var PlanOrig      = ""
 				var CurMoveTodo   = ""		
-				var StepTime      = 345L
+				var StepTime      = "200"
 				var Owner         = "unknown"
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
 						subscribeToLocalActor("engager") 
+						 StepTime = uniborobots.robotSupport.readStepTime( )	 		
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -41,19 +42,39 @@ class Planexec ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t08",targetState="execplan",cond=whenRequest("doplan"))
+					 transition(edgeName="t09",targetState="checkTheOwner",cond=whenRequest("doplan"))
+				}	 
+				state("checkTheOwner") { //this:State
+					action { //it:State
+						CommUtils.outblue("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
+						if( checkMsgContent( Term.createTerm("doplan(PATH,OWNER,STEPTIME)"), Term.createTerm("doplan(PLAN,CALLER,STEPTIME)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								 Plan     = payloadArg(0).replace("[","").replace("]","").replace(",","").replace(" ","")
+											   PlanOrig = Plan
+								    		   val Caller = payloadArg(1) 
+								CommUtils.outblack("$name checkTheOwner $Caller")
+								request("checkowner", "checkowner($Caller)" ,"engager" )  
+						}
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t010",targetState="execplan",cond=whenReply("checkownerok"))
+					transition(edgeName="t011",targetState="planrefused",cond=whenReply("checkownerfailed"))
 				}	 
 				state("execplan") { //this:State
 					action { //it:State
 						CommUtils.outred("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
-						if( checkMsgContent( Term.createTerm("doplan(PATH,OWNER,STEPTIME)"), Term.createTerm("doplan(PLAN,OWNER,STEPTIME)"), 
+						if( checkMsgContent( Term.createTerm("doplan(PATH,OWNER,STEPTIME)"), Term.createTerm("doplan(PLAN,CALLER,STEPTIME)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								CommUtils.outblack("$name | ${payloadArg(0)}")
 								  Plan     = payloadArg(0).replace("[","").replace("]","").replace(",","").replace(" ","")
 												PlanOrig = Plan
 												Owner    = payloadArg(1)
-												StepTime = payloadArg(2).toLong()
+												StepTime = payloadArg(2) //.toLong() 
 								CommUtils.outblack("$name | Plan=$Plan StepTime=$StepTime")
 						}
 						//genTimer( actor, state )
@@ -63,8 +84,8 @@ class Planexec ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 				 	 		stateTimer = TimerActor("timer_execplan", 
 				 	 					  scope, context!!, "local_tout_planexec_execplan", 100.toLong() )
 					}	 	 
-					 transition(edgeName="t09",targetState="nextMove",cond=whenTimeout("local_tout_planexec_execplan"))   
-					transition(edgeName="t010",targetState="planinterruptedalarm",cond=whenEvent("alarm"))
+					 transition(edgeName="t012",targetState="nextMove",cond=whenTimeout("local_tout_planexec_execplan"))   
+					transition(edgeName="t013",targetState="planinterruptedalarm",cond=whenEvent("alarm"))
 				}	 
 				state("nextMove") { //this:State
 					action { //it:State
@@ -80,8 +101,8 @@ class Planexec ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t011",targetState="planinterruptedalarm",cond=whenEvent("alarm"))
-					transition(edgeName="t012",targetState="doMove",cond=whenDispatch("nextmove"))
+					 transition(edgeName="t014",targetState="planinterruptedalarm",cond=whenEvent("alarm"))
+					transition(edgeName="t015",targetState="doMove",cond=whenDispatch("nextmove"))
 				}	 
 				state("doMove") { //this:State
 					action { //it:State
@@ -105,11 +126,11 @@ class Planexec ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t013",targetState="planinterruptedalarm",cond=whenEvent("alarm"))
-					transition(edgeName="t014",targetState="planend",cond=whenDispatch("nomoremove"))
-					transition(edgeName="t015",targetState="nextMove",cond=whenDispatch("nextmove"))
-					transition(edgeName="t016",targetState="nextMove",cond=whenReply("stepdone"))
-					transition(edgeName="t017",targetState="planinterruptedobstacle",cond=whenReply("stepfailed"))
+					 transition(edgeName="t016",targetState="planinterruptedalarm",cond=whenEvent("alarm"))
+					transition(edgeName="t017",targetState="planend",cond=whenDispatch("nomoremove"))
+					transition(edgeName="t018",targetState="nextMove",cond=whenDispatch("nextmove"))
+					transition(edgeName="t019",targetState="nextMove",cond=whenReply("stepdone"))
+					transition(edgeName="t020",targetState="planinterruptedobstacle",cond=whenReply("stepfailed"))
 				}	 
 				state("planend") { //this:State
 					action { //it:State
@@ -158,6 +179,16 @@ class Planexec ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 						updateResourceRep( "planfailed($PlanOrig,$Plantodo )"  
 						)
 						answer("doplan", "doplanfailed", "doplanfailed($Plantodo)"   )  
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition( edgeName="goto",targetState="work", cond=doswitch() )
+				}	 
+				state("planrefused") { //this:State
+					action { //it:State
+						answer("doplan", "doplanfailed", "doplanfailed($PlanOrig)"   )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

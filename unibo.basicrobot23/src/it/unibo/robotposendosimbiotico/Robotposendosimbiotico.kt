@@ -22,14 +22,16 @@ class Robotposendosimbiotico ( name: String, scope: CoroutineScope  ) : ActorBas
 			    //val MapName = "mapEmpty23"
 			    val MapName = "mapCompleteWithObst23ok"
 			    val MyName    = name //upcase var
-			    val StepTime  = 330
+			    var StepTime  = "330"
 				var Plan      = ""	
+				var Caller    = ""
 				var TargetX   = ""
 				var TargetY   = ""
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
 						CommUtils.outblack("$name STARTS loading $MapName")
+						 StepTime = uniborobots.robotSupport.readStepTime( )	 		
 						 planner.initAI()  
 								   planner.loadRoomMap(MapName) 
 								   planner.showMap()
@@ -48,8 +50,34 @@ class Robotposendosimbiotico ( name: String, scope: CoroutineScope  ) : ActorBas
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t018",targetState="elabClientRequest",cond=whenRequest("moverobot"))
-					transition(edgeName="t019",targetState="setTheRobotState",cond=whenDispatch("setrobotstate"))
+					 transition(edgeName="t021",targetState="getRoboSstate",cond=whenRequest("getrobotstate"))
+					transition(edgeName="t022",targetState="checkTheOwnerForMove",cond=whenRequest("moverobot"))
+					transition(edgeName="t023",targetState="checkTheOwnerForSet",cond=whenDispatch("setrobotstate"))
+				}	 
+				state("getRoboSstate") { //this:State
+					action { //it:State
+						 val PX   = planner.getPosX() 
+						    		val PY  = planner.getPosY()
+						    		val DIR = ""+planner.getDir()
+						answer("getrobotstate", "robotstate", "robotstate(pos($PX,$PY),$DIR)"   )  
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition( edgeName="goto",targetState="waitclientrequest", cond=doswitch() )
+				}	 
+				state("checkTheOwnerForSet") { //this:State
+					action { //it:State
+						 Caller = currentMsg.msgSender()  
+						request("checkowner", "checkowner($Caller)" ,"engager" )  
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t024",targetState="setTheRobotState",cond=whenReply("checkownerok"))
+					transition(edgeName="t025",targetState="waitclientrequest",cond=whenReply("checkownerfailed"))
 				}	 
 				state("setTheRobotState") { //this:State
 					action { //it:State
@@ -73,15 +101,30 @@ class Robotposendosimbiotico ( name: String, scope: CoroutineScope  ) : ActorBas
 					}	 	 
 					 transition( edgeName="goto",targetState="waitclientrequest", cond=doswitch() )
 				}	 
-				state("elabClientRequest") { //this:State
+				state("checkTheOwnerForMove") { //this:State
 					action { //it:State
 						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
+						 Caller = currentMsg.msgSender()  
 						if( checkMsgContent( Term.createTerm("moverobot(TARGETX,TARGETY)"), Term.createTerm("moverobot(X,Y)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 TargetX = payloadArg(0)
 											   TargetY = payloadArg(1)
 						}
+						CommUtils.outblue("$name checkTheOwnerForMove $Caller")
+						request("checkowner", "checkowner($Caller)" ,"engager" )  
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t026",targetState="planTheRobotmoves",cond=whenReply("checkownerok"))
+					transition(edgeName="t027",targetState="moveRefused",cond=whenReply("checkownerfailed"))
+				}	 
+				state("elabClientRequest") { //this:State
+					action { //it:State
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -95,19 +138,19 @@ class Robotposendosimbiotico ( name: String, scope: CoroutineScope  ) : ActorBas
 						 	   
 						  
 								   Plan = planner.planForGoal(""+TargetX,""+TargetY).toString()
-								   println(Plan)
+								   println("planTheRobotmoves $Plan")
 								   Plan = planner.planCompacted(Plan) 
 								   if( Plan.isEmpty()) Plan="''"
 								   //CommUtils.outblue("$name | Plan to reach pos: $Plan")
-						CommUtils.outblack("$name | Plan to reach pos: $Plan")
-						request("doplan", "doplan($Plan,worker,$StepTime)" ,"basicrobot" )  
+						CommUtils.outblue("$name | Plan to reach pos: $Plan for $Caller")
+						request("doplan", "doplan($Plan,$Caller,$StepTime)" ,"basicrobot" )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t020",targetState="endok",cond=whenReply("doplandone"))
-					transition(edgeName="t021",targetState="endko",cond=whenReply("doplanfailed"))
+					 transition(edgeName="t028",targetState="endok",cond=whenReply("doplandone"))
+					transition(edgeName="t029",targetState="endko",cond=whenReply("doplanfailed"))
 				}	 
 				state("endok") { //this:State
 					action { //it:State
@@ -139,6 +182,16 @@ class Robotposendosimbiotico ( name: String, scope: CoroutineScope  ) : ActorBas
 								 planner.showCurrentRobotState();  
 								answer("moverobot", "moverobotfailed", "moverobotfailed($PathDone,$PathTodo)"   )  
 						}
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition( edgeName="goto",targetState="waitclientrequest", cond=doswitch() )
+				}	 
+				state("moveRefused") { //this:State
+					action { //it:State
+						answer("moverobot", "moverobotfailed", "moverobotfailed(none,refused)"   )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

@@ -6,3 +6,4 @@ context(ctxbasicrobot, "localhost",  "TCP", "8020").
   qactor( basicrobot, ctxbasicrobot, "it.unibo.basicrobot.Basicrobot").
   qactor( planexec, ctxbasicrobot, "it.unibo.planexec.Planexec").
   qactor( robotposendosimbiotico, ctxbasicrobot, "it.unibo.robotposendosimbiotico.Robotposendosimbiotico").
+  %%qactor( robotposclient, ctxbasicrobot, "it.unibo.robotposclient.Robotposclient").

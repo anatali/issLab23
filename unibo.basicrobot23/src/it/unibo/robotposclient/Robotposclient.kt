@@ -21,18 +21,19 @@ class Robotposclient ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( n
 		return { //this:ActionBasciFsm
 				state("ss0") { //this:State
 					action { //it:State
-						request("engage", "engage(worker)" ,"basicrobot" )  
+						CommUtils.outgreen("$name request engage")
+						request("engage", "engage(robotposclient)" ,"basicrobot" )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t020",targetState="gototarget",cond=whenReply("engagedone"))
-					transition(edgeName="t021",targetState="waitrobotfree",cond=whenReply("engagerefused"))
+					 transition(edgeName="t030",targetState="gototarget",cond=whenReply("engagedone"))
+					transition(edgeName="t031",targetState="waitrobotfree",cond=whenReply("engagerefused"))
 				}	 
 				state("waitrobotfree") { //this:State
 					action { //it:State
-						CommUtils.outblue("$name | Sorry, the robot is already engaged.")
+						CommUtils.outgreen("$name | Sorry, the robot is already engaged.")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -41,22 +42,32 @@ class Robotposclient ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( n
 				}	 
 				state("gototarget") { //this:State
 					action { //it:State
-						delay(1000) 
-						request("moverobot", "moverobot(2,2)" ,"basicrobot" )  
+						CommUtils.outgreen("$name goto (4,3)")
+						request("moverobot", "moverobot(4,3)" ,"basicrobot" )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t022",targetState="handleAnswer",cond=whenReply("moverobotdone"))
-					transition(edgeName="t023",targetState="handleAnswer",cond=whenReply("moverobotfailed"))
+					 transition(edgeName="t032",targetState="handleAnswer",cond=whenReply("moverobotdone"))
+					transition(edgeName="t033",targetState="handleAnswer",cond=whenReply("moverobotfailed"))
 				}	 
 				state("handleAnswer") { //this:State
 					action { //it:State
 						CommUtils.outmagenta("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
-						 CommUtils.waitTheUser("$name | hit 1CR")  
-						request("moverobot", "moverobot(6,4)" ,"basicrobot" )  
+						request("getrobotstate", "robotstate(ok)" ,"basicrobot" )  
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t034",targetState="handleRobotState",cond=whenReply("robotstate"))
+				}	 
+				state("handleRobotState") { //this:State
+					action { //it:State
+						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

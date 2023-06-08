@@ -26,12 +26,11 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 		  var CurrentMove   = "unkknown"
 		  var StepSynchRes  = false
 		  var Owner         = "unkknown"
-		  //val planner       = unibo.planner23.Planner23Util() 
 		  
 		  fun checkOwner() : Boolean {
 		  	if( currentMsg.isEvent()  ) return true
 		  	CommUtils.outblue("checkOwner $Owner ${currentMsg}")
-		  	return ( currentMsg.msgSender() == Owner) 
+		  	return ( currentMsg.msgSender() == Owner ) 
 		  }
 		return { //this:ActionBasciFsm
 				state("ss0") { //this:State
@@ -42,6 +41,7 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						delegate("engage", "engager") 
 						delegate("disengage", "engager") 
 						delegate("doplan", "planexec") 
+						delegate("getrobotstate", "robotposendosimbiotico") 
 						delegate("setrobotstate", "robotposendosimbiotico") 
 						delegate("moverobot", "robotposendosimbiotico") 
 						delay(1000) 
@@ -53,7 +53,7 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						uniborobots.robotSupport.move( "d"  )
 						updateResourceRep( "basicrobot(started)"  
 						)
-						delay(1000) 
+						delay(2000) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -69,7 +69,7 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t02",targetState="work",cond=whenDispatch("engaged"))
+					 transition(edgeName="t03",targetState="work",cond=whenDispatch("engaged"))
 				}	 
 				state("work") { //this:State
 					action { //it:State
@@ -86,11 +86,11 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t03",targetState="doStep",cond=whenRequest("step"))
-					transition(edgeName="t04",targetState="execcmd",cond=whenDispatch("cmd"))
-					transition(edgeName="t05",targetState="endwork",cond=whenDispatch("end"))
-					transition(edgeName="t06",targetState="waitForOwner",cond=whenDispatch("disengaged"))
-					transition(edgeName="t07",targetState="work",cond=whenDispatch("engaged"))
+					 transition(edgeName="t04",targetState="doStep",cond=whenRequest("step"))
+					transition(edgeName="t05",targetState="execcmd",cond=whenDispatch("cmd"))
+					transition(edgeName="t06",targetState="endwork",cond=whenDispatch("end"))
+					transition(edgeName="t07",targetState="waitForOwner",cond=whenDispatch("disengaged"))
+					transition(edgeName="t08",targetState="work",cond=whenDispatch("engaged"))
 				}	 
 				state("execcmd") { //this:State
 					action { //it:State

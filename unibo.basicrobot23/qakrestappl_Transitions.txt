@@ -7,4 +7,4 @@
 {"actor":"planexec", "msgType":"dispatch", "curstate":"nextMove", "nextstate":"doMove", "msgId":"nextmove"}
 {"actor":"planexec", "msgType":"dispatch", "curstate":"doMove", "nextstate":"planend", "msgId":"nomoremove"}
 {"actor":"planexec", "msgType":"dispatch", "curstate":"doMove", "nextstate":"nextMove", "msgId":"nextmove"}
-{"actor":"robotposendosimbiotico", "msgType":"dispatch", "curstate":"waitclientrequest", "nextstate":"setTheRobotState", "msgId":"setrobotstate"}
+{"actor":"robotposendosimbiotico", "msgType":"dispatch", "curstate":"waitclientrequest", "nextstate":"checkTheOwnerForSet", "msgId":"setrobotstate"}

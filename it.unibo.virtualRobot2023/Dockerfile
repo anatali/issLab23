@@ -2,7 +2,7 @@
 FROM node:17-alpine
 RUN mkdir -p /home/node
 	
-### FROM openjdk:12.0.2		
+
 EXPOSE 8090
 EXPOSE 8091
 

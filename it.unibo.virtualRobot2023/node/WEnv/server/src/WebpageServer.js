@@ -187,6 +187,8 @@ wsServer.on('connection', (ws) => {
 	if( moveTodo != "alarm" && curMove != undefined /* && curMove != "interrupted" && curMove != "collision"*/   ){
         console.log("     $$$ WebpageServer ws | SORRY: cmd " + msg + " NOT POSSIBLE, since I'm running:" + curMove)
         const info     = { 'endmove' : 'false', 'move': moveTodo+"_notallowed (asynch)" }
+        execMoveOnAllConnectedScenes("alarm", 100)
+        //moveTerminated=moveTodo
         updateCallers( JSON.stringify(info) )
 	    return
 	}else  //alarm move could also be sent via HTTP

@@ -17,7 +17,7 @@ public class TestAbstractComm {
     private  String haltcmd      = "{\"robotmove\":\"alarm\" ,        \"time\": \"10\"}";
 
     public void doForwardHttp() throws Exception {
-        conn = ConnectionFactory.createClientSupport(ProtocolType.http, "localhost", "8090/api/move");
+            conn = ConnectionFactory.createClientSupport(ProtocolType.http, "localhost", "8090/api/move");
         //new HttpConnection("localhost:8090/api/move");
         //CommUtils.waitTheUser("PUT ROBOT in HOME  and hit 1CR");
         String result = conn.request(forwardcmd);
@@ -32,7 +32,7 @@ public class TestAbstractComm {
         CommUtils.aboutThreads("Before start - ");
         TestAbstractComm appl = new TestAbstractComm();
         appl.doForwardHttp();
-        appl.doForwardWs();
+        //appl.doForwardWs();
         CommUtils.aboutThreads("At end - ");
     }
 

@@ -12,7 +12,6 @@ import org.json.simple.parser.JSONParser;
 import org.junit.Before;
 import org.junit.Test;
 import unibo.basicomm23.utils.CommUtils;
-
 import java.net.URI;
 
 public class AutomaticTestHTTP {

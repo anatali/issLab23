@@ -5,21 +5,14 @@
 <body>
 <script src="https://cdn.jsdelivr.net/webjars/org.webjars/jquery/2.1.0/jquery.js"></script>
 <script language="javascript" type="text/javascript">
-const socket = new WebSocket('ws://localhost:8091/');
-  socket.onopen = function () { console.log("socket connected on 8091") };
+var socket ; //= new WebSocket('ws://localhost:8091/');
+var httpAddr;
 
-  	socket.onmessage = function(evt) { 
-  		//console.log( "onmessage data=" + evt.data); 
-  	};
 
-	socket.addEventListener('message', event => {
-	   document.getElementById("display").innerHTML += event.data +"<br/>"
-	  //also UPDATES iframe
-	});
 
     function doMove(move, time) {
         const moveJson = '{"robotmove":"'+ move + '", "time":'+time+'}'
-        //console.log("doMove moveJson:" + moveJson);
+        console.log("doMove moveJson:" + moveJson);
         if (socket && socket.bufferedAmount == 0) { socket.send(moveJson) }
     }
 	
@@ -41,7 +34,34 @@ $(function () {
 </script>
 
 <script>
+         function connect(){ //Feb2023
+           var ipaddr   = document.getElementById("IPADDR").value;
+           var wsaddr   = "ws://"+ ipaddr +":8091/"
+           //console.log("connect wsaddr="+wsaddr)
+           socket       = new WebSocket(wsaddr);
 
+                socket.onopen = function () {
+                    console.log("socket connected on 8091")
+                };
+
+                socket.onmessage = function(evt) {
+                    //console.log( "onmessage data=" + evt.data);
+                };
+
+                socket.addEventListener('message', event => {
+                   document.getElementById("display").innerHTML += event.data +"<br/>"
+                  //also UPDATES iframe
+                });
+
+
+           httpAddrBase = "http://"+ ipaddr + ":8090"
+           httpAddr     = httpAddrBase+"/api/move";
+           document.getElementById("VRFRAME").src = httpAddrBase;
+           var vrframe   = document.getElementById("VRFRAME").src;
+           //alert(vrframe);
+           document.getElementById("display").innerHTML +=
+                    "Connected to: " + httpAddrBase +  "<br/>"
+         }
          function clearDisplay(){
             document.getElementById("display").innerHTML =""
          }
@@ -62,7 +82,7 @@ $(function () {
                   time: timemove,
             };
             //alert(JSON.stringify(json))
-            fetch("http://localhost:8090/api/move", {
+            fetch( httpAddr, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -75,12 +95,15 @@ $(function () {
 
 </script>
 
-<h3>Virtual robot</h3>
+
 <table>
  <tr>
-  <td><iframe src="http://localhost:8090" name="vrobot" height="300" width="300" title="Virtual robot"></iframe></td>
-  <td><h3>DISPLAY AREA <button onclick="clearDisplay()">CLEAR</button></h3>
-
+  <td>
+      <iframe id="VRFRAME" src=httpAddr name="vrobot" height="300" width="300" title="Virtual robot"></iframe></td>
+     <td>
+         <b>IP</b>:<input   id="IPADDR" value="localhost" size="10"/>
+         <button onclick="connect( )">CONNECT</button>
+      <h3>DISPLAY AREA <button onclick="clearDisplay()">CLEAR</button></h3>
       <div id = "display"></div></td>
 
  </tr>

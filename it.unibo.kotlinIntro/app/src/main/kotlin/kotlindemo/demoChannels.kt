@@ -15,7 +15,7 @@ import unibo.basicomm23.utils.CommUtils
 
 suspend fun channelTest( scope : CoroutineScope ){
 val n = 5
-val channel = Channel<Int>(1)
+val channel = Channel<Int>(5)
     CommUtils.outblue( "channelTest channel=$channel" )	//ArrayChannel capacity=2 size=0
 	
         val sender = scope.launch {

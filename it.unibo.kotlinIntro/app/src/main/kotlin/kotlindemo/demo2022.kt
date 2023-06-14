@@ -237,7 +237,7 @@ fun evalCps(v:Int, msg:String, callback:(String)-> Unit ){
     callback( "$msg: $v" )
 }
 fun doReadEvalPrintCps( n: Int  ){ //using lambda shortcut
-    readCps{ evalCps( n, it) { showAction( it )} }  //read-and-after-do
+    readCps{ evalCps( n, it) {CommUtils.outmagenta(it); showAction( it )} }  //read-and-after-do
     //read works, than calls eval that works and calls showAction
 }
 
@@ -300,7 +300,7 @@ fun runBlockingLaunchJoin(){  //(7)
         CommUtils.outblue("runBlockingLaunchJoin Before launch  ${curThread()}")
         val job =  launch{ runBlockThread(2000)  }
         CommUtils.outblue("runBlockingLaunchJoin Just after launch ${curThread()}"  )
-        job.join()
+        //job.join()
         CommUtils.outblue("runBlockingLaunchJoin After job ${curThread()} thcounter=$thcounter")
     }
     //the coroutine is launched in the scope of the outer runBlocking coroutine

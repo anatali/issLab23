@@ -69,7 +69,7 @@ abstract class  ActorBasic(  name:         String,
  		createMsglogFile()					//APR2020 : an Actor could have no context
         isObservable     = true
         logo             = "ActorBasic(Resource) $name "
-        ActorResourceRep = "$logo | created  "
+        ActorResourceRep = "$name(created)"
         sysUtil.aboutThreads("CREATED actor $name - ")
 
     }

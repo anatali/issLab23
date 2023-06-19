@@ -34,8 +34,8 @@
        <form action="setprotocol" method="post">
         <!-- the form-data is sent to the path specified in the action attribute -->
            <select name="protocol" id="protocols">
-               <option value="coap">coap</option>
                <option value="tcp">tcp</option>
+               <option value="coap">coap</option>
            </select>
         <!-- <input type="text" size="10" id="protocolspec" name="protocol" value="coap"> -->
         <input type="submit" value="protocolRobot">
@@ -69,7 +69,7 @@
           <!--   ROBOT ADDRESS InputArea   -->
           <form action="setrobotip" method="post">
          <!-- the form-data is sent to the path specified in the action attribute -->
-         <input type="text" size="10" id="configurespec" name="ipaddr" value="localhost">
+         <input type="text" size="10" id="configurespec" name="ipaddr" value="localhost/basicrobot23">
          <input type="submit" value="robotip">
          </form>
       </div>
@@ -79,6 +79,20 @@
          </div>
      </div> <!-- row robotip in card in I/O area card  -->
 
+        <div class="row"> <!-- row stepTime in card in I/O area card  -->
+            <div class="col-7">
+                <!--   StepTime InputArea   -->
+                <form action="setsteptime" method="post">
+                    <!-- the form-data is sent to the path specified in the action attribute -->
+                    <input type="text" size="10" id="settimespec" name="steptime" value="330">
+                    <input type="submit" value="steptime">
+                </form>
+            </div>
+            <!--   StepTime DataArea   -->
+            <div class="col-5 text-info">
+                <b><span th:text="${steptime}">unknown</span></b>
+            </div>
+        </div> <!-- row robotip in card in I/O area card  -->
      </div> <!-- I/O area card body -->
     </div>  <!-- I/O area card -->
 
@@ -101,7 +115,7 @@
              <div class="col"><button class='btn btn-warning btn-block border' id='p'>p (step) </button></div>
          </div> <!--p,l,r commands row -->
 
-            <div class="row"> <!-- p,l,r commands row -->
+            <div class="row"> <!-- x,y row -->
                 <form action="dorobotpos" method="post">
                 <div class="col">
                     x <input type="text" size="4" name="x" />
@@ -109,8 +123,17 @@
                     <input type="submit" value="dorobotpos"></div>
 
                   </form>
-            </div> <!--p,l,r commands row -->
+            </div> <!-- x,y commands row -->
 
+            <div class="row"> <!-- x,y,d row -->
+                <form action="setrobotpos" method="post">
+                    <div class="col">
+                        x <input type="text" size="3" name="x" value="0"/>
+                        y <input type="text" size="3" name="y" value="0"/>
+                        d <input type="text" size="1" name="dir" value="d"/>
+                        <input type="submit" value="setrobotposInMap"></div>
+                </form>
+            </div> <!-- x,y commands row -->
 
         </div> <!-- command card-content -->
       </div> <!--  command card -->
@@ -130,9 +153,9 @@
           </div>
       </div>
 
-      <!-- pathexectDisplay -->
+      <!-- planexectDisplay -->
       <div class="card iss-bg-pathexecarea text-dark">
-          <div class="card-header px-1">Path executor</div>
+          <div class="card-header px-1">Plan executor (no planner involved) </div>
           <div class="card-content px-1">
               <div class="row"> <!-- path row -->
 
@@ -142,8 +165,8 @@
                       <input type="submit" value="doplan">
                       plantodo=<span th:text="${plantodo}" id="plantoexec"></span>
                   </form>
-              </div> <!-- path row -->
-              <span id="pathexecDisplay" >...</span>
+              </div> <!-- plan exec row -->
+              <span id="planexecDisplay" >...</span>
           </div>
       </div>
 

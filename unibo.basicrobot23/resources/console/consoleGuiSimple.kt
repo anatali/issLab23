@@ -16,8 +16,10 @@ val stepTime = 350
 lateinit var connQakSupport : connQakBase
 //val buttonLabels = arrayOf("e","w", "s", "l", "r", "z", "x", "b", "p", "h")
 val buttonLabels = arrayOf( "w", "s", "l", "r",  "p", "h")
-	
+val myname = "gui23xyz9526"
+
     init{
+		println("consoleGuiSimple $myname")
 		createTheGui( connQak.connprotocol )
 		Utils.showSystemInfo("after create")
     }
@@ -40,7 +42,7 @@ val buttonLabels = arrayOf( "w", "s", "l", "r",  "p", "h")
 	}
 	
 	fun engageTheRobot() {
-		val msg = MsgUtil.buildRequest("console", "engage", "engage(console)", connQak.qakdestination )
+		val msg = MsgUtil.buildRequest(myname, "engage", "engage($myname,330)", connQak.qakdestination )
 	    val answer = connQakSupport.request( msg )
 	    val m = ApplMessage(answer)
 		CommUtils.outred("console answer :  $m");
@@ -49,23 +51,25 @@ val buttonLabels = arrayOf( "w", "s", "l", "r",  "p", "h")
 		}
 	}
 	override fun update(o: Observable, arg: Any) {
+		CommUtils.outblue("update :  $arg");
+
 		var move = arg as String
  		  if( move == "p" ){
-			  val msg = MsgUtil.buildRequest("console", "step", "step(345)", connQak.qakdestination )
-			  connQakSupport.request( msg )
-		  } 
+			  val msg = MsgUtil.buildRequest(myname, "step", "step(345)", connQak.qakdestination )
+			  val answer = connQakSupport.request( msg )
+			  CommUtils.outblue("step answer :  $answer");
+ 		  }
 		  /* else if( move == "e" ){
-			  val msg = MsgUtil.buildEvent("console","alarm","alarm(fire)" )
+			  val msg = MsgUtil.buildEvent(myname,"alarm","alarm(fire)" )
 			  connQakSupport.emit( msg )
 		  }*/
  		  else{
-			  val msg = MsgUtil.buildDispatch("console", "cmd", "cmd($move)", connQak.qakdestination )
+			  val msg = MsgUtil.buildDispatch(myname, "cmd", "cmd($move)", connQak.qakdestination )
 			  connQakSupport.forward( msg )
 		  }
 	}
 }
 
 fun main(){
-	println("consoleGuiSimple")
 	val appl = consoleGuiSimple(   )
 }

@@ -16,20 +16,20 @@ Reply stepfailed   : stepfailed(DURATION, CAUSE)
 Event  sonardata   : sonar( DISTANCE ) 	  //percepito da sonarobs/engager   
 Event obstacle     : obstacle(X) 
 
-Request  doplan   : doplan( PATH, STEPTIME )
+Request  doplan   : doplan( PATH, OWNER, STEPTIME )
 Reply doplandone  : doplandone( ARG ) 
 Reply doplanfailed  : doplanfailed( ARG )
 
 Dispatch setrobotstate: setpos(X,Y,D)
 //Dispatch setsteptime:setsteptime(T)
 
-Request engage        : engage(OWNER, STEPTIME)	
+Request engage        : engage(OWNER)	
 Reply   engagedone    : engagedone(ARG)
 Reply   engagerefused : engagerefused(ARG)
 
 Dispatch disengage    : disengage(ARG)
-//Dispatch engaged      : engaged(ARG)
-//Dispatch disengaged   : disengage(ARG)
+Dispatch engaged      : engaged(ARG)
+Dispatch disengaged   : disengage(ARG)
 
 Request checkowner    : checkowner(CALLER)
 Reply checkownerok    : checkownerok(ARG)
@@ -42,7 +42,7 @@ Dispatch nomoremove   : nomoremove(M)
 Dispatch setdirection : dir( D )  //D =up|down!left|right
 
 //Endosimbiosi di robotpos
-Request moverobot    :  moverobot(TARGETX, TARGETY)  
+Request moverobot    :  moverobot(TARGETX, TARGETY)  //TODO: aggiungere Owner?
 Reply moverobotdone  :  moverobotok(ARG)
 Reply moverobotfailed:  moverobotfailed(PLANDONE, PLANTODO)
 
@@ -79,14 +79,14 @@ QActor engager context ctxbasicrobot{
      			   
     State handleEngage{
     	printCurrentMessage 
-			onMsg( engage : engage(OWNER, STEPTIME) ) {
+			onMsg( engage : engage(OWNER) ) {
 				[# if( currentMsg.conn != null ) curConn = currentMsg.conn					
 				   EngageCaller  = payloadArg(0)
 				   if( curConn != null )
-				     CommUtils.outmagenta("engager | engaged by remote $EngageCaller on $curConn" )		
-				   else CommUtils.outmagenta("engager | engaged by local $EngageCaller " )	
+				   CommUtils.outmagenta("engager | engaged by remote $EngageCaller on $curConn" )		
+				   else 		   
+				   CommUtils.outmagenta("engager | engaged by local $EngageCaller " )	
 				   EngageDone = OwnerMngr.engage(EngageCaller)
-				   if( EngageDone ) OwnerMngr.setStepTime(payloadArg(1))
 				#]
 			}
      }
@@ -96,10 +96,9 @@ QActor engager context ctxbasicrobot{
      
      
     State disengageRobot{  
-    	//printCurrentMessage 
+    	printCurrentMessage 
      	//[# Owner  = "unkknown"  #]
      	[# OwnerMngr.disengage()  #]
-     	println( "$name has disengaged")
     	//forward basicrobot -m disengaged : disengaged($Owner)  //ancora necessario?
     	emitlocalstream alarm : alarm(disengaged)  //lo elabora planexec
     }
@@ -117,8 +116,7 @@ QActor engager context ctxbasicrobot{
 		[# val Owner    = OwnerMngr.owner #]
 		updateResource [# "workingfor($Owner)" #] 			
 		replyTo engage with engagedone : engagedone($Owner)
-		//forward basicrobot    -m engaged : engaged($Owner) //Non necessario
-		//I messaggi che arrivano al basicrobot sono elaborati solo se OwnerMngr.owner ok	 			 
+		forward basicrobot    -m engaged : engaged($Owner)				 			 
 	} 
 	Goto s0
 	 
@@ -158,53 +156,69 @@ QActor basicrobot context ctxbasicrobot{
   var RobotType     = "" 
   var CurrentMove   = "unkknown"
   var StepSynchRes  = false
+  //var Owner         = "unkknown"
   var OwnerMngr     = supports.OwnerManager //Kotlin object
-  var AnswerKo      = ""
   
+  //Obseoleto?
   fun checkOwner( ) : Boolean {
   	return OwnerMngr.checkOwner( currentMsg.msgSender() )
+  	/*  
+  	if( currentMsg.isEvent()  ) return true
+  	CommUtils.outblue("checkOwner $Owner ${currentMsg}")
+  	return ( currentMsg.msgSender() == Owner ) 
+  	*/
   }
 #]      
  	State ss0 initial { 	
- 		//printCurrentMessage       
+ 		printCurrentMessage       
  		discardMsg On  //In the intial phase ...
  		
  		delegate "engage" to engager
  		delegate "disengage" to engager
  		delegate "doplan" to planexec
- 		delegate "getrobotstate" to robotpos
- 		delegate "setrobotstate" to robotpos
- 		delegate "moverobot" to robotpos
- 		delegate "setdirection" to robotpos
- 		
+ 		delegate "getrobotstate" to robotposendosimbiotico
+ 		delegate "setrobotstate" to robotposendosimbiotico
+ 		delegate "moverobot" to robotposendosimbiotico
+ 		delegate "setdirection" to robotposendosimbiotico
+  		
  		//[# unibo.comm22.utils.CommSystemConfig.tracing = false #]  //tracing at unibo.comm22 level
- 		//delay 1000  //per inserzione in docker
+ 		delay 1000  //per inserzione in docker
+		println("basicrobot | STARTING ... ")	
 		//[# sysUtil.trace = true #]  //Trace the behavior of ActorBasic
  		qrun uniborobots.robotSupport.create(myself,"basicrobotConfig.json")	 		
  		[# RobotType = uniborobots.robotSupport.robotKind #]  
- 		delay 3000 //per inserzione in docker: attesa per wenv
- 		println("basicrobot | STARTING ... ") color magenta	
+ 		delay 2000 //per inserzione in docker
   		run uniborobots.robotSupport.move( "a" )    //synch
  		run uniborobots.robotSupport.move( "d" )	//synch
-  		//delay 2000 //per inserzione in docker
+        updateResource [# "basicrobot(started)" #]
+  		delay 2000 //per inserzione in docker
  	}  
- 	Goto work
- 
+	Goto waitForOwner  
+ 	
+ 	State waitForOwner{
+ 		//Put robot in HOME ...
+ 		println("basicrobot  | Waiting engage request ...  ")  
+ 	}
+ 	Transition t0 whenMsg engaged -> work
+ 	 
   	
 	State work{ 
-		//printCurrentMessage   
-        updateResource [# "basicrobot(started)" #]
+		printCurrentMessage   
 		discardMsg Off //We want store the non-handled messages
-		println("basicrobot  | waiting, working for ${OwnerMngr.owner} ... ")  color magenta 
+		/*
+		onMsg( engaged : engaged(OWNER)){
+			[# Owner  = payloadArg(0) #]
+		}*/
+		println("basicrobot  | waiting, working for ${OwnerMngr.owner} ... ")   
 	} 
 	Transition t0   whenRequest  step      -> doStep		
 					whenMsg     cmd        -> execcmd
 				  	whenMsg     end        -> endwork			  
-	                //whenMsg     disengaged -> waitForOwner
-	                //whenMsg     engaged    -> work  //repetita ...
+	                whenMsg     disengaged -> waitForOwner
+	                whenMsg     engaged    -> work  //repetita ...
 	
 	State execcmd{ 
-		//printCurrentMessage
+		printCurrentMessage
 		if [#   checkOwner() #] {   
 			onMsg( cmd : cmd(MOVE) ){
 	  			//activate the motors  
@@ -217,61 +231,50 @@ QActor basicrobot context ctxbasicrobot{
 	 Goto work   
 	
    	State doStep{ 
- 		//printCurrentMessage  
+ 		printCurrentMessage  
  		if [#   checkOwner() #] {   
 			onMsg( step : step( T ) ){  
 				[#	StepTime     = payloadArg(0).toLong()  	#]    
 				updateResource [# "step(${StepTime})" #]
 	  		}  
-	        //println("basicrobot | doing doStep StepTime=$StepTime  ")        
+	        println("basicrobot | doing doStep StepTime=$StepTime  ")        
 	        memoCurrentTime StartTime  
 	        [# StepSynchRes = uniborobots.robotSupport.dostep( StepTime ) #]          
-        } else{
- 		    //println("$name doStep AnswerKo=$AnswerKo") color red
-        	[# AnswerKo = "youarenotowner" #]
-			//replyTo step with stepfailed : stepfailed($Duration, noowner)
-		}
+        }
 	}  	
 	Goto stepok if [# StepSynchRes #] else stepKo 
  
      	 
 	State stepok{   
-		//printCurrentMessage
-		[# StepSynchRes = false #]
+		printCurrentMessage
  		run uniborobots.robotSupport.move( "h" )  //stop the (real) robot 
 		updateResource [# "stepDone($StepTime)" #]
    		//emit info : info( stepdone($StepTime) )
    		replyTo step with stepdone : stepdone($StepTime)
-		//println("basicrobot | stepDone reply done")
+		println("basicrobot | stepDone reply done")
   	}
 	Goto work  
  
-	State stepKo{ 
-		//println("$name stepKo AnswerKo=$AnswerKo") color red 	 
-		if [# AnswerKo == "" #]{
-			setDuration Duration from StartTime
-			//printCurrentMessage
-			run uniborobots.robotSupport.move( "h" )  //stop the (real) robot
-			[# var TunedDuration   = StepTime - ((Duration * 0.80)).toLong()   #]
-			//println("basicrobot | stepKo $StepTime  duration=$Duration  TunedDuration=$TunedDuration") color magenta
-			if [# TunedDuration > 30 #]{
-				run uniborobots.robotSupport.move( "s" )
-				delayVar TunedDuration 
-				run uniborobots.robotSupport.move( "h" ) 
-		 		updateResource [# "stepFail($Duration)" #] 
-		 		delay 300
-			}
-		 	replyTo step with stepfailed : stepfailed($Duration, obst)
-	 	}else{
-	 		replyTo step with stepfailed : stepfailed($Duration, $AnswerKo)
-	 		[# AnswerKo = "" #]
-	 	}
+	State stepKo{  	 	
+		setDuration Duration from StartTime
+		printCurrentMessage
+		run uniborobots.robotSupport.move( "h" )  //stop the (real) robot
+		[# var TunedDuration   = StepTime - ((Duration * 0.80)).toLong()   #]
+		println("basicrobot | stepKo $StepTime  duration=$Duration  TunedDuration=$TunedDuration") color magenta
+		if [# TunedDuration > 30 #]{
+			run uniborobots.robotSupport.move( "s" )
+			delayVar TunedDuration 
+			run uniborobots.robotSupport.move( "h" ) 
+	 		updateResource [# "stepFail($Duration)" #] 
+	 		delay 300
+		}
+	 	replyTo step with stepfailed : stepfailed($Duration, obst)
     } 
 	Goto work 
 
 					
 	State endwork{ 
-		//printCurrentMessage
+		printCurrentMessage
 		updateResource [# "basicrobot(end)" #]	 		
  		//terminate 1
 	}   
@@ -288,12 +291,14 @@ QActor planexec context ctxbasicrobot{
 		var PlanOrig      = ""
 		var CurMoveTodo   = ""		
 		var StepTime      = "200"
+		//var Owner         = "unknown"
 		var OwnerMngr     = supports.OwnerManager //Kotlin object
 		var IsOwner       = false
    	#]
 	State s0 initial{
 		subscribeTo engager 
-        //[# StepTime = uniborobots.robotSupport.readStepTime( )	#]		
+        [# StepTime = uniborobots.robotSupport.readStepTime( )	 		
+ 		#]		
 	}
 	Goto work
 
@@ -302,17 +307,18 @@ QActor planexec context ctxbasicrobot{
 	}
 	Transition t0 whenRequest doplan -> checkTheOwner//execplan
 
+  
     
     State checkTheOwner{
-    	//printCurrentMessage color blue
-    	onMsg( doplan : doplan(PLAN, STEPTIME)){
+    	printCurrentMessage color blue
+    	onMsg( doplan : doplan(PLAN, CALLER, STEPTIME)){
     		[# Plan       = payloadArg(0).replace("[","").replace("]","").replace(",","").replace(" ","")
 			   PlanOrig   = Plan
-			   StepTime   = payloadArg(1) 
-    		   val Caller = currentMsg.msgSender() //payloadArg(1) 
+			   StepTime   = payloadArg(2) 
+    		   val Caller = payloadArg(1) 
     		   IsOwner    = OwnerMngr.checkOwner( Caller )
     		#]
-    		//println("$name | checkTheOwner $Caller")
+    		println("$name checkTheOwner $Caller")
     		//request engager -m checkowner : checkowner($Caller)
     	}
     }
@@ -323,7 +329,7 @@ QActor planexec context ctxbasicrobot{
     */
     
 	State execplan{
-		//printCurrentMessage color red
+		printCurrentMessage color red
 		/*
 		onMsg( doplan : doplan(PLAN, CALLER, STEPTIME)){
 		    println("$name | ${payloadArg(0)}") 
@@ -347,14 +353,14 @@ QActor planexec context ctxbasicrobot{
 		   	Plan        =  Plan.removePrefix(CurMoveTodo)
 		   }else CurMoveTodo = ""		   
 		#]
-		//println("$name | CurMoveTodo= $CurMoveTodo remain:$Plan" ) 
+		println("$name | CurMoveTodo= $CurMoveTodo remain:$Plan" ) 
 		forward planexec -m nextmove : nextmove($CurMoveTodo)
 	} 	 
 	Transition t0  whenEvent alarm   -> planinterruptedalarm
 		           whenMsg nextmove  -> doMove
 	
 	State doMove{
-		//println("$name | domove $CurMoveTodo")  
+		println("$name | domove $CurMoveTodo")  
  		if [# CurMoveTodo == "" #] { 
  			forward planexec -m nomoremove : nomoremove(end)
  		}
@@ -365,7 +371,7 @@ QActor planexec context ctxbasicrobot{
 	 			//[# StepSynchRes = uniborobots.robotSupport.dostep( StepTime ) #]
 	 			request basicrobot -m step : step($StepTime)	//mentre fa doplan ...		
 			}else{
-				//println("$name | doMoveTurn $CurMoveTodo")  
+				println("doMoveTurn $CurMoveTodo")  
 				run uniborobots.robotSupport.move(  CurMoveTodo )
 				forward planexec -m nextmove : nextmove(goon)
 			}
@@ -379,17 +385,17 @@ QActor planexec context ctxbasicrobot{
 
  	
 	State planend{ 
-		//printCurrentMessage color red
+		printCurrentMessage color red
 		if [# currentMsg.msgContent() == "alarm(disengaged)" #]{}
 		else{ 
 			if [# currentMsg.msgId() == "alarm" #]{
-		 		println("$name |  planend alarm $Plan $CurMoveTodo")	 
+		 		println("planend alarm $Plan $CurMoveTodo")	 
 		 		[# val Plantodo = CurMoveTodo + Plan #]
 		 		replyTo doplan with doplanfailed : doplanfailed( $Plantodo )			
 			}else{ 
-				println("$name | planend ok plan=$PlanOrig ") color blue
-				replyTo doplan with doplandone : doplandone($PlanOrig)
-				updateResource [# "plandone($PlanOrig)" #] 
+				println("planend ok $Plan ") 
+					replyTo doplan with doplandone : doplandone($PlanOrig)
+					updateResource [# "plandone($PlanOrig)" #] 
 			}
 		}
 	}
@@ -397,7 +403,7 @@ QActor planexec context ctxbasicrobot{
 	
 	State planinterruptedobstacle{  
 		//printCurrentMessage
- 		println("$name |  planinterruptedobstacle $CurMoveTodo ")	color magenta
+ 		println("planinterruptedobstacle $CurMoveTodo ")	color magenta
  		[# var Plantodo =  CurMoveTodo + Plan
  		#]
  		updateResource [# "planfailed($Plan,$Plantodo )" #] 
@@ -407,7 +413,7 @@ QActor planexec context ctxbasicrobot{
  	
  	State planinterruptedalarm{  
 		//printCurrentMessage
- 		println("$name |  planinterruptedalarm $CurMoveTodo ")	color magenta
+ 		println("planinterruptedalarm $CurMoveTodo ")	color magenta
  		[# var Plantodo = CurMoveTodo + Plan
  		#]
  		updateResource [# "planfailed($PlanOrig,$Plantodo )" #] 
@@ -416,7 +422,7 @@ QActor planexec context ctxbasicrobot{
  	Goto work 
  	
  	State planrefused{
- 		replyTo doplan with doplanfailed : doplanfailed( youarenotowner )
+ 		replyTo doplan with doplanfailed : doplanfailed( $PlanOrig )
  		//TODO: inserire motivazione fallimento ?
  	}
  	Goto work
@@ -424,11 +430,11 @@ QActor planexec context ctxbasicrobot{
 
 /*
  * ------------------------------
- * robotpos
+ * robotposendosimbiotico
  * ------------------------------
  */  
-   	
-QActor robotpos context ctxbasicrobot{
+  
+QActor robotposendosimbiotico context ctxbasicrobot{
 	[# val planner = unibo.planner23.Planner23Util()
 	    //val MapName = "mapEmpty23"
 	    val MapName = "mapCompleteWithObst23ok"
@@ -446,8 +452,8 @@ QActor robotpos context ctxbasicrobot{
 	#]
 	State s0 initial{
         println("$name STARTS loading $MapName") 
-        //[# StepTime = OwnerMngr.steptime //uniborobots.robotSupport.readStepTime( )	 		
- 		//#]		
+        [# StepTime = uniborobots.robotSupport.readStepTime( )	 		
+ 		#]		
         
 		[# planner.initAI()  
 		   planner.loadRoomMap(MapName) 
@@ -481,7 +487,8 @@ QActor robotpos context ctxbasicrobot{
  			   Caller  = currentMsg.msgSender() 
  			   IsOwner = OwnerMngr.checkOwner( Caller )
  			   
-			#]						 
+			#]		
+				 
 		}
    		//request engager -m checkowner : checkowner($Caller)
     }
@@ -491,28 +498,11 @@ QActor robotpos context ctxbasicrobot{
                   whenReply checkownerfailed -> waitclientrequest
     */
     State setTheRobotDirection{
-    	//println("setTheRobotDirection $D") color magenta
-    	[# Plan = planner.setTheDirection(D) #]  //Solo nel planner ? Anche nel real world ...
-    	//[# planner.showCurrentRobotState() #]
-    	//println("setTheRobotDirection plan=$Plan caller=$Caller") color magenta
-    	request planexec -m doplan : doplan( $Plan, $StepTime )
-    }
-    //Goto waitclientrequest
- 	Transition t0 whenReply doplandone   -> planfordirok
-	              whenReply doplanfailed -> fatalerror
-    
-    State planfordirok{
-		[# planner.doPathOnMap(Plan) #]
-		[# planner.showCurrentRobotState(); #]
-		updateResource [# planner.robotOnMap() #] 
-	}
-	Goto waitclientrequest
-    
-    State fatalerror{
-    	println("fatalerror ") color red
+    	println("setTheRobotDirection $D") color magenta
+    	[# planner.setDirection(D) #]  //Solo nel planner ? Anche nel real world ...
+    	[# planner.showCurrentRobotState() #]
     }
     Goto waitclientrequest
-    
     
 	//Se setrobotstate è inviato da un attore diverso da Owner, non si fa nulla
 	//Il caller però potrebbe non capire perchè il comando non è stato fatti
@@ -538,19 +528,17 @@ QActor robotpos context ctxbasicrobot{
     */
 	State setTheRobotState{
 		[# planner.setRobotState(X,Y,D) #]
-		//println("setTheRobotState ($X, $Y, $D) ") color magenta
+		println("setTheRobotState ($X, $Y, $D) ") color magenta
 		[# planner.showCurrentRobotState(); #]	 
 		delay 300  //Give time to the webpage ...
-		//println("update resource for setTheRobotState") color magenta  
+		println("update resource for setTheRobotState") color magenta  
 		updateResource [# planner.robotOnMap() #] 
 	} 
 	Goto waitclientrequest
 	
     State checkTheOwnerForMove{
     	printCurrentMessage
-    	[# Caller    = currentMsg.msgSender() 
-    		StepTime = OwnerMngr.steptime  
-    	#]
+    	[# Caller = currentMsg.msgSender() #]
 		onMsg( moverobot : moverobot(X,Y)){
 			[# TargetX = payloadArg(0)
 			   TargetY = payloadArg(1)
@@ -558,8 +546,8 @@ QActor robotpos context ctxbasicrobot{
 			   
 		    #]
 		}
-    	//println("$name checkTheOwnerForMove $Caller") color blue
-   			//request engager -m checkowner : checkowner($Caller)
+    	println("$name checkTheOwnerForMove $Caller") color blue
+   		//request engager -m checkowner : checkowner($Caller)
     }
     Goto planTheRobotmoves if [# IsOwner #] else moveRefused    
     /*
@@ -567,18 +555,17 @@ QActor robotpos context ctxbasicrobot{
                   whenReply checkownerfailed -> moveRefused
  	*/
 	
-	/*
 	State elabClientRequest{
 		printCurrentMessage 
 	}
 	Goto planTheRobotmoves
-	*/
+	
 	
 	/* 
 	 * Uso il planner per gestire il robot
 	*/
 	State planTheRobotmoves{	 
-		//printCurrentMessage 
+		printCurrentMessage 
 		[#  
 		   Plan = planner.planForGoal(""+TargetX,""+TargetY).toString()
 		   println("planTheRobotmoves $Plan")
@@ -588,13 +575,13 @@ QActor robotpos context ctxbasicrobot{
 		#]
 		println("$name | Plan to reach pos: $Plan for $Caller")  color blue
 		//chiedo al basicrobot di eseguire  Plan
-		request planexec -m doplan : doplan($Plan,  $StepTime)
+		request basicrobot -m doplan : doplan($Plan, $Caller, $StepTime)
 	}
 	Transition t0 whenReply doplandone   -> endok
 	              whenReply doplanfailed -> endko
 	  
 	State endok{
-		//println("pos reached") 
+		println("pos reached") 
 		//Aggiorno il path sulla mappa
 		[# planner.doPathOnMap(Plan) #]
 		[# planner.showCurrentRobotState(); #]
@@ -612,7 +599,7 @@ QActor robotpos context ctxbasicrobot{
 				 else planner.doPathOnMap(PathDone)
 			#]
 			updateResource [# planner.robotOnMap() #]
-			//println("uuu ${PathDone}") 
+			println("uuu ${PathDone}") 
 			//[# planner.doPathOnMap(PathDone) #]
 			[# planner.showCurrentRobotState(); #]
 			replyTo moverobot with moverobotfailed : moverobotfailed($PathDone,$PathTodo)
@@ -622,8 +609,7 @@ QActor robotpos context ctxbasicrobot{
 	
  	//Added June6
 	State moveRefused{
-		//println("moveRefused ") color red
-		replyTo moverobot with moverobotfailed : moverobotfailed(none,youarenotowner)
+		replyTo moverobot with moverobotfailed : moverobotfailed(none,refused)
 	}
 	Goto waitclientrequest
  
@@ -716,7 +702,7 @@ QActor basicrobotusage context ctxbasicrobot{
 	
 //Testdopoath	
 	State testdoplan{
-		request basicrobot -m doplan : doplan($Plan, 345)
+		request basicrobot -m doplan : doplan($Plan,$MyName,345)
 	}
 	Transition t0 whenReply doplandone   -> testdoplanEnd
 				  whenReply doplanfailed -> testdoplanEnd

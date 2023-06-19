@@ -4,6 +4,7 @@ package uniborobots
  */
 
 import it.unibo.kactor.ActorBasic
+import kotlinx.coroutines.delay
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import robotVirtual.VrobotHLMovesActors23
@@ -42,7 +43,7 @@ object robotSupport{
 				vr = VrobotHLMovesActors23( hostAddr,  owner )
 				//vr.setTrace(true)
 			}
-			/*
+
   			"realnano"   ->  {
 				robotNano.nanoSupport.create( owner )
  				val realsonar = robotNano.sonarHCSR04SupportActor("realsonar")
@@ -50,6 +51,7 @@ object robotSupport{
 				owner.context!!.addInternalActor(realsonar)  
   				println("		--- realnano robotSupport | has created the realsonar")
 			}
+			/*
 			"realmbot" -> {
 				robotMbot.mbotSupport.create(owner, robotPort)
 				/*
@@ -74,7 +76,7 @@ object robotSupport{
 		when( robotKind ){
 			//"mockrobot"  -> { robotMock.mockrobotSupport.move( cmd ) 					  }
 			"virtual"    -> { vr.move(  cmd ) 	  }
-  			//"realnano"   -> { robotNano.nanoSupport.move( cmd)	}
+  			"realnano"   -> { robotNano.nanoSupport.move( cmd)	}
             //"realmbot"   -> { robotMbot.mbotSupport.move( cmd )	}
 			else         -> println( "		--- robotSupport: move| robot unknown")
 		}		
@@ -84,7 +86,12 @@ object robotSupport{
 		//println("robotSupport move cmd=$cmd robotKind=$robotKind" )
 		when( robotKind ){
 			"virtual"    -> {  return vr.step(  time  ) 	  } //synch
-			//"realnano"   -> { return false	}   //TODO
+			"realnano"   -> {
+				robotNano.nanoSupport.move( "w" )
+				Thread.sleep(time)
+				robotNano.nanoSupport.move( "h" )
+				return true
+			}   //TODO 23
 			//"realmbot"   -> { return false 	}	//TODO
 			else         -> {
 				println("		--- robotSupport: dostep | robot unknown")

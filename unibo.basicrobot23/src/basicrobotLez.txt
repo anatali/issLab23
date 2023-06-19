@@ -28,8 +28,8 @@ Reply   engagedone    : engagedone(ARG)
 Reply   engagerefused : engagerefused(ARG)
 
 Dispatch disengage    : disengage(ARG)
-//Dispatch engaged      : engaged(ARG)
-//Dispatch disengaged   : disengage(ARG)
+Dispatch engaged      : engaged(ARG)
+Dispatch disengaged   : disengage(ARG)
 
 Request checkowner    : checkowner(CALLER)
 Reply checkownerok    : checkownerok(ARG)
@@ -42,7 +42,7 @@ Dispatch nomoremove   : nomoremove(M)
 Dispatch setdirection : dir( D )  //D =up|down!left|right
 
 //Endosimbiosi di robotpos
-Request moverobot    :  moverobot(TARGETX, TARGETY)  
+Request moverobot    :  moverobot(TARGETX, TARGETY)  //TODO: aggiungere Owner?
 Reply moverobotdone  :  moverobotok(ARG)
 Reply moverobotfailed:  moverobotfailed(PLANDONE, PLANTODO)
 
@@ -172,30 +172,38 @@ QActor basicrobot context ctxbasicrobot{
  		delegate "engage" to engager
  		delegate "disengage" to engager
  		delegate "doplan" to planexec
- 		delegate "getrobotstate" to robotpos
- 		delegate "setrobotstate" to robotpos
- 		delegate "moverobot" to robotpos
- 		delegate "setdirection" to robotpos
- 		
+ 		delegate "getrobotstate" to robotposendosimbiotico
+ 		delegate "setrobotstate" to robotposendosimbiotico
+ 		delegate "moverobot" to robotposendosimbiotico
+ 		delegate "setdirection" to robotposendosimbiotico
+  		
  		//[# unibo.comm22.utils.CommSystemConfig.tracing = false #]  //tracing at unibo.comm22 level
- 		//delay 1000  //per inserzione in docker
+ 		delay 1000  //per inserzione in docker
+		println("basicrobot | STARTING ... ")	
 		//[# sysUtil.trace = true #]  //Trace the behavior of ActorBasic
  		qrun uniborobots.robotSupport.create(myself,"basicrobotConfig.json")	 		
  		[# RobotType = uniborobots.robotSupport.robotKind #]  
- 		delay 3000 //per inserzione in docker: attesa per wenv
- 		println("basicrobot | STARTING ... ") color magenta	
+ 		delay 2000 //per inserzione in docker
   		run uniborobots.robotSupport.move( "a" )    //synch
  		run uniborobots.robotSupport.move( "d" )	//synch
-  		//delay 2000 //per inserzione in docker
+        updateResource [# "basicrobot(started)" #]
+  		delay 2000 //per inserzione in docker
  	}  
  	Goto work
- 
+ 	/* 
+	Goto waitForOwner  
+ 	
+ 	State waitForOwner{
+ 		//Put robot in HOME ...
+ 		println("basicrobot  | Waiting engage request ...  ")  
+ 	}
+ 	Transition t0 whenMsg engaged -> work
+ 	*/ 
   	
 	State work{ 
 		//printCurrentMessage   
-        updateResource [# "basicrobot(started)" #]
 		discardMsg Off //We want store the non-handled messages
-		println("basicrobot  | waiting, working for ${OwnerMngr.owner} ... ")  color magenta 
+		println("basicrobot  | waiting, working for ${OwnerMngr.owner} ... ")   
 	} 
 	Transition t0   whenRequest  step      -> doStep		
 					whenMsg     cmd        -> execcmd
@@ -424,11 +432,11 @@ QActor planexec context ctxbasicrobot{
 
 /*
  * ------------------------------
- * robotpos
+ * robotposendosimbiotico
  * ------------------------------
  */  
-   	
-QActor robotpos context ctxbasicrobot{
+  
+QActor robotposendosimbiotico context ctxbasicrobot{
 	[# val planner = unibo.planner23.Planner23Util()
 	    //val MapName = "mapEmpty23"
 	    val MapName = "mapCompleteWithObst23ok"
@@ -588,7 +596,7 @@ QActor robotpos context ctxbasicrobot{
 		#]
 		println("$name | Plan to reach pos: $Plan for $Caller")  color blue
 		//chiedo al basicrobot di eseguire  Plan
-		request planexec -m doplan : doplan($Plan,  $StepTime)
+		request basicrobot -m doplan : doplan($Plan,  $StepTime)
 	}
 	Transition t0 whenReply doplandone   -> endok
 	              whenReply doplanfailed -> endko

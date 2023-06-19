@@ -8,11 +8,7 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
-import unibo.Robots.common.IWsHandler;
-import unibo.Robots.common.RobotUtils;
 import unibo.basicomm23.utils.CommUtils;
- 
-
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -44,9 +40,7 @@ public class WebSocketHandler extends AbstractWebSocketHandler implements IWsHan
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         String movecmd = message.getPayload();
         CommUtils.outblue("WebSocketHandler | handleTextMessage Received: " + movecmd);
-        //Gestione di comandi remoti via Ws come RobotController
-        //sendToAll("webRobot22 WebSocketHandler echo: "+cmd);
-        try {
+         try {
 
             JSONObject json = (JSONObject) jsonparser.parse(movecmd);
             String move = json.get("robotmove").toString();
@@ -82,14 +76,16 @@ public class WebSocketHandler extends AbstractWebSocketHandler implements IWsHan
     public void sendToAll(TextMessage message) {
         //CommUtils.outblue("WebSocketHandler | sendToAll " + message.getPayload() + " TextMessage sessions:" + sessions.size());
         Iterator<WebSocketSession> iter = sessions.iterator();
+        //CommUtils.outyellow("WebSocketHandler | sendToAll TextMessage " );
         while( iter.hasNext() ){
             try{
                 WebSocketSession session = iter.next();
-                CommUtils.outblue("WebSocketHandler | sendToAll " +
-                        message.getPayload() + " for session " + session.getRemoteAddress() );
-                //synchronized(session){
+                        // + message.getPayload() + " for session " + session.getRemoteAddress() );
+                synchronized(session){ //evito scritture concorrenti
+                    //CommUtils.delay(5000);
+                    CommUtils.outyellow("WebSocketHandler | sendToAll session " );
                     session.sendMessage(message);
-                //}
+                }
             }catch(Exception e){
                 CommUtils.outred("WebSocketHandler | TextMessage " + message + " ERROR:"+e.getMessage());
             }

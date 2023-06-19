@@ -79,10 +79,11 @@ tasks.named('test') {
 }
 
 // -----------------------------------------------------------
-mainClassName = 'unibo.webRobot23.WebRobot22Application'
+mainClassName = 'unibo.webRobot23.WebRobot23Application'
 
 jar {
 	println("executing jar")
+	duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
 	from sourceSets.main.allSource
 	manifest {
 		attributes 'Main-Class': "$mainClassName"

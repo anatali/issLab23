@@ -19,9 +19,11 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		val interruptedStateTransitions = mutableListOf<Transition>()
 		     
-		  var Owner           = "unkknown"
+		  //var Owner           = "unkknown"
 		  var EngageCaller    = ""
+		  var EngageDone      = false
 		  var curConn : Interaction? = null 
+		  var OwnerMngr       = supports.OwnerManager //Kotlin object
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -41,31 +43,30 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 					action { //it:State
 						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
-						if( checkMsgContent( Term.createTerm("engage(OWNER)"), Term.createTerm("engage(OWNER)"), 
+						if( checkMsgContent( Term.createTerm("engage(OWNER,STEPTIME)"), Term.createTerm("engage(OWNER,STEPTIME)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 if( currentMsg.conn != null ) curConn = currentMsg.conn					
 												   EngageCaller  = payloadArg(0)
 												   if( curConn != null )
-												   CommUtils.outmagenta("engager | engaged by remote $EngageCaller   on $curConn" )		
-												   else 		   
-												   CommUtils.outmagenta("engager | engaged by local $EngageCaller " )	
+												     CommUtils.outmagenta("engager | engaged by remote $EngageCaller on $curConn" )		
+												   else CommUtils.outmagenta("engager | engaged by local $EngageCaller " )	
+												   EngageDone = OwnerMngr.engage(EngageCaller)
+												   if( EngageDone ) OwnerMngr.setStepTime(payloadArg(1))
 						}
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition( edgeName="goto",targetState="engageAccept", cond=doswitchGuarded({ Owner == "unkknown"  
+					 transition( edgeName="goto",targetState="engageAccept", cond=doswitchGuarded({ EngageDone  
 					}) )
-					transition( edgeName="goto",targetState="engageRefuse", cond=doswitchGuarded({! ( Owner == "unkknown"  
+					transition( edgeName="goto",targetState="engageRefuse", cond=doswitchGuarded({! ( EngageDone  
 					) }) )
 				}	 
 				state("disengageRobot") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
-						 	   
-						 Owner  = "unkknown"  
-						forward("disengaged", "disengaged($Owner)" ,"basicrobot" ) 
+						 OwnerMngr.disengage()   
+						CommUtils.outblack("$name has disengaged")
 						emitLocalStreamEvent("alarm", "alarm(disengaged)" ) 
 						//genTimer( actor, state )
 					}
@@ -76,6 +77,7 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				}	 
 				state("engageRefuse") { //this:State
 					action { //it:State
+						 val Owner = OwnerMngr.owner   
 						CommUtils.outblack("$name engage refused since already working for $Owner")
 						answer("engage", "engagerefused", "engagerefused($Owner)"   )  
 						//genTimer( actor, state )
@@ -89,11 +91,10 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 					action { //it:State
 						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
-						 Owner = EngageCaller  
+						 val Owner    = OwnerMngr.owner  
 						updateResourceRep( "workingfor($Owner)"  
 						)
 						answer("engage", "engagedone", "engagedone($Owner)"   )  
-						forward("engaged", "engaged($Owner)" ,"basicrobot" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -106,7 +107,6 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
 						 CommUtils.outcyan("handleEvent $currentMsg") 
-								   //val Data = currentMsg.msgContent()
 								   val info = currentMsg.toString()
 								   if( curConn != null ) CommUtils.forwardOnInterconn(curConn,info) //invio l'evento al caller'
 						//genTimer( actor, state )
@@ -120,17 +120,6 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 					action { //it:State
 						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
-						if( checkMsgContent( Term.createTerm("checkowner(CALLER)"), Term.createTerm("checkowner(CALLER)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								 val Caller = payloadArg(0)  
-								CommUtils.outblack("$name checkTheOwner $Caller owner=$Owner")
-								if(  Owner == Caller  
-								 ){answer("checkowner", "checkownerok", "checkownerok(Owner)"   )  
-								}
-								else
-								 {answer("checkowner", "checkownerfailed", "checkownerfailed(Owner)"   )  
-								 }
-						}
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

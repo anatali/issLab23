@@ -25,77 +25,53 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 		  var RobotType     = "" 
 		  var CurrentMove   = "unkknown"
 		  var StepSynchRes  = false
-		  var Owner         = "unkknown"
+		  var OwnerMngr     = supports.OwnerManager //Kotlin object
+		  var AnswerKo      = ""
 		  
-		  fun checkOwner() : Boolean {
-		  	if( currentMsg.isEvent()  ) return true
-		  	CommUtils.outblue("checkOwner $Owner ${currentMsg}")
-		  	return ( currentMsg.msgSender() == Owner ) 
+		  fun checkOwner( ) : Boolean {
+		  	return OwnerMngr.checkOwner( currentMsg.msgSender() )
 		  }
 		return { //this:ActionBasciFsm
 				state("ss0") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
-						 	   
 						discardMessages = true
 						delegate("engage", "engager") 
 						delegate("disengage", "engager") 
 						delegate("doplan", "planexec") 
-						delegate("getrobotstate", "robotposendosimbiotico") 
-						delegate("setrobotstate", "robotposendosimbiotico") 
-						delegate("moverobot", "robotposendosimbiotico") 
-						delay(1000) 
-						CommUtils.outblack("basicrobot | STARTING ... ")
+						delegate("getrobotstate", "robotpos") 
+						delegate("setrobotstate", "robotpos") 
+						delegate("moverobot", "robotpos") 
+						delegate("setdirection", "robotpos") 
 						uniborobots.robotSupport.create(myself ,"basicrobotConfig.json" )
 						 RobotType = uniborobots.robotSupport.robotKind  
-						delay(2000) 
+						delay(3000) 
+						CommUtils.outmagenta("basicrobot | STARTING ... ")
 						uniborobots.robotSupport.move( "a"  )
 						uniborobots.robotSupport.move( "d"  )
-						updateResourceRep( "basicrobot(started)"  
-						)
-						delay(2000) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition( edgeName="goto",targetState="waitForOwner", cond=doswitch() )
-				}	 
-				state("waitForOwner") { //this:State
-					action { //it:State
-						CommUtils.outblack("basicrobot  | Waiting engage request ...  ")
-						//genTimer( actor, state )
-					}
-					//After Lenzi Aug2002
-					sysaction { //it:State
-					}	 	 
-					 transition(edgeName="t03",targetState="work",cond=whenDispatch("engaged"))
+					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
 				state("work") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
-						 	   
+						updateResourceRep( "basicrobot(started)"  
+						)
 						discardMessages = false
-						if( checkMsgContent( Term.createTerm("engaged(ARG)"), Term.createTerm("engaged(OWNER)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								 Owner  = payloadArg(0)  
-						}
-						CommUtils.outblack("basicrobot  | waiting, working for $Owner ... ")
+						CommUtils.outmagenta("basicrobot  | waiting, working for ${OwnerMngr.owner} ... ")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t04",targetState="doStep",cond=whenRequest("step"))
-					transition(edgeName="t05",targetState="execcmd",cond=whenDispatch("cmd"))
-					transition(edgeName="t06",targetState="endwork",cond=whenDispatch("end"))
-					transition(edgeName="t07",targetState="waitForOwner",cond=whenDispatch("disengaged"))
-					transition(edgeName="t08",targetState="work",cond=whenDispatch("engaged"))
+					 transition(edgeName="t03",targetState="doStep",cond=whenRequest("step"))
+					transition(edgeName="t04",targetState="execcmd",cond=whenDispatch("cmd"))
+					transition(edgeName="t05",targetState="endwork",cond=whenDispatch("end"))
 				}	 
 				state("execcmd") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
-						 	   
 						if(    checkOwner()  
 						 ){if( checkMsgContent( Term.createTerm("cmd(MOVE)"), Term.createTerm("cmd(MOVE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
@@ -114,17 +90,19 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("doStep") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
-						 	   
-						if( checkMsgContent( Term.createTerm("step(TIME)"), Term.createTerm("step(T)"), 
+						if(    checkOwner()  
+						 ){if( checkMsgContent( Term.createTerm("step(TIME)"), Term.createTerm("step(T)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 									StepTime     = payloadArg(0).toLong()  	 
 								updateResourceRep( "step(${StepTime})"  
 								)
 						}
-						CommUtils.outblack("basicrobot | doing doStep StepTime=$StepTime  ")
 						StartTime = getCurrentTime()
 						 StepSynchRes = uniborobots.robotSupport.dostep( StepTime )  
+						}
+						else
+						 { AnswerKo = "youarenotowner"  
+						 }
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -137,13 +115,11 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("stepok") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
-						 	   
+						 StepSynchRes = false  
 						uniborobots.robotSupport.move( "h"  )
 						updateResourceRep( "stepDone($StepTime)"  
 						)
 						answer("step", "stepdone", "stepdone($StepTime)"   )  
-						CommUtils.outblack("basicrobot | stepDone reply done")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -153,12 +129,10 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("stepKo") { //this:State
 					action { //it:State
-						Duration = getDuration(StartTime)
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
-						 	   
+						if(  AnswerKo == ""  
+						 ){Duration = getDuration(StartTime)
 						uniborobots.robotSupport.move( "h"  )
 						 var TunedDuration   = StepTime - ((Duration * 0.80)).toLong()    
-						CommUtils.outmagenta("basicrobot | stepKo $StepTime  duration=$Duration  TunedDuration=$TunedDuration")
 						if(  TunedDuration > 30  
 						 ){uniborobots.robotSupport.move( "s"  )
 						delay(TunedDuration)
@@ -168,6 +142,11 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						delay(300) 
 						}
 						answer("step", "stepfailed", "stepfailed($Duration,obst)"   )  
+						}
+						else
+						 {answer("step", "stepfailed", "stepfailed($Duration,$AnswerKo)"   )  
+						  AnswerKo = ""  
+						 }
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -177,8 +156,6 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("endwork") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
-						 	   
 						updateResourceRep( "basicrobot(end)"  
 						)
 						//genTimer( actor, state )

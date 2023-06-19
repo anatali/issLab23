@@ -7,21 +7,25 @@
 FROM hypriot/rpi-java
 EXPOSE 8020
 ## ADD extracts the tar
-ADD ./it.unibo.qak21.basicrobot-1.0.tar /
-WORKDIR /it.unibo.qak21.basicrobot-1.0/bin
+ADD ./unibo.basicrobot23-2.0.tar /
+WORKDIR /unibo.basicrobot23-2.0/bin
 COPY ./*.pl ./
 COPY ./*.json ./
-## COPY ./*.py ./
+COPY ./*.py ./
+COPY ./*.c ./
+COPY ./map*.bin ./
+COPY ./map*.txt ./
+COPY ./*.sh ./
 
-## RUN apt-get update -y
-## RUN apt-get install -y wiringpi
-## RUN sudo apt-get install -y python
+#RUN apt-get update -y
+RUN apt-get install -y wiringpi
+RUN sudo apt-get install -y python
 
-CMD ["bash", "it.unibo.qak21.basicrobot"]
+CMD ["bash", "unibo.basicrobot23"]
 
-##  gradle  -b build2021.gradle distZip
-##  docker build -t basicrobot21:1.0 . 
-##  docker run -it --rm --name basicrobot21 -p8020:8020/tcp --privileged basicrobot21  /bin/bash
+##  gradle build  distZip
+##  sudo docker build -t basicrobot23:1.0 .
+##  docker run -it --rm --name basicrobot23 -p8020:8020/tcp --privileged basicrobot23:1.0  /bin/bash
 
 
 

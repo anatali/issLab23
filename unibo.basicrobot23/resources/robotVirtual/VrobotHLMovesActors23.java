@@ -79,7 +79,7 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
 
     @Override
     public void halt() throws Exception {
-        CommUtils.outgreen("     VrobotHLMovesActors23 | halt");
+        //CommUtils.outgreen("     VrobotHLMovesActors23 | halt");
         wsCommSupport.forward(VrobotMsgs.haltcmd);
         CommUtils.delay(50); //wait for halt completion since halt on ws does not send answer
         //CommUtils.outgreen("     VrobotHLMovesActors23 | halt done " + moveResult );
@@ -116,11 +116,12 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
          try {
             elapsed = getDuration();
             //if( tracing )
+                /*
                 CommUtils.outcyan(
                     "     VrobotHLMovesActors23 | update:" + info
                             + " elapsed=" + elapsed + " doingStep=" + doingStep
                             + " " + Thread.currentThread().getName());
-
+                */
              JSONObject jsonObj = CommUtils.parseForJson(info);
             if (jsonObj == null) {
                 CommUtils.outred("     VrobotHLMovesActors23 | update ERROR Json:" + info);
@@ -215,11 +216,11 @@ public class VrobotHLMovesActors23 extends ApplAbstractObserver implements IVrob
     public boolean step(long time) throws Exception {
         doingStep = true;
         //if( tracing )
-            CommUtils.outgreen("     VrobotHLMovesActors23 | step time=" + time);
+            //CommUtils.outgreen("     VrobotHLMovesActors23 | step time=" + time);
         String cmd    = VrobotMsgs.forwardcmd.replace("TIME", "" + time);
         String result = sendSynchToWenv(cmd);
         //if( tracing )
-            CommUtils.outgreen("     VrobotHLMovesActors23 | step result="+result);
+            //CommUtils.outgreen("     VrobotHLMovesActors23 | step result="+result);
         //result=true elapsed=... OPPURE collision elapsed=...
         doingStep = false;
         return result.contains("true");

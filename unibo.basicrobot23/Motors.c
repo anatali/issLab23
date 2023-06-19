@@ -40,35 +40,35 @@ void s(){
 	digitalWrite(inp1m2, HIGH);
 	digitalWrite(inp2m2, LOW);
 }
-void aa(){
+void a(){
 	digitalWrite(inp1m1, HIGH);
 	digitalWrite(inp2m1, LOW);
 	digitalWrite(inp1m2, HIGH);
 	digitalWrite(inp2m2, LOW);
 }
-void dd(){
+void d(){
 	digitalWrite(inp1m1, LOW);
 	digitalWrite(inp2m1, HIGH);
 	digitalWrite(inp1m2, LOW);
 	digitalWrite(inp2m2, HIGH);
 }
 void r(){
-	dd();
+	d();
 	delay(rotRightTime);
 	h();
 }
 void l(){
-	aa();
+	a();
 	delay(rotLeftTime);
 	h();
 }
 void z(){
-	dd();
+	d();
 	delay(rotStepTime);
 	h();
 }
 void x(){
-	aaw();
+	a();
 	delay(rotStepTime);
 	h();
 }
@@ -80,7 +80,7 @@ void configureRotationTime(){
 void setup() {
 	cout << "motorsC setUp STARTS" << endl;
 	wiringPiSetup();
-	pinMode(inp1m1, OUTPUT);s
+	pinMode(inp1m1, OUTPUT);
 	pinMode(inp2m1, OUTPUT);
 	pinMode(inp1m2, OUTPUT);
 	pinMode(inp2m2, OUTPUT);
@@ -98,10 +98,10 @@ int input = 'h';
 	          case 99  : configureRotationTime(); break;  //c... | cl0.59 or cr0.59  or cx0.005 or cz0.005
 	          case 119 : w(); break;  //w		 
 	          case 115 : s(); break;  //s		 
-	          case 97  : l(); break;  //a
+	          case 97  : a(); break;  //a		 
 	          case 122 : z(); break;  //z		 
 	          case 120 : x(); break;  //x		 
-	          case 100 : r(); break;  //d
+	          case 100 : d(); break;  //d
 	          case 104 : h();  break;  //h
 	          case 114 : r();  break;  //r		  
 	          case 108 : l(); break;    //l		 

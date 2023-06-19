@@ -1,10 +1,8 @@
 {"actor":"engager", "msgType":"dispatch", "curstate":"s0", "nextstate":"disengageRobot", "msgId":"disengage"}
-{"actor":"basicrobot", "msgType":"dispatch", "curstate":"waitForOwner", "nextstate":"work", "msgId":"engaged"}
 {"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"execcmd", "msgId":"cmd"}
 {"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"endwork", "msgId":"end"}
-{"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"waitForOwner", "msgId":"disengaged"}
-{"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"work", "msgId":"engaged"}
 {"actor":"planexec", "msgType":"dispatch", "curstate":"nextMove", "nextstate":"doMove", "msgId":"nextmove"}
 {"actor":"planexec", "msgType":"dispatch", "curstate":"doMove", "nextstate":"planend", "msgId":"nomoremove"}
 {"actor":"planexec", "msgType":"dispatch", "curstate":"doMove", "nextstate":"nextMove", "msgId":"nextmove"}
-{"actor":"robotposendosimbiotico", "msgType":"dispatch", "curstate":"waitclientrequest", "nextstate":"checkTheOwnerForSet", "msgId":"setrobotstate"}
+{"actor":"robotpos", "msgType":"dispatch", "curstate":"waitclientrequest", "nextstate":"checkTheOwnerForSet", "msgId":"setrobotstate"}
+{"actor":"robotpos", "msgType":"dispatch", "curstate":"waitclientrequest", "nextstate":"checkTheOwnerForSetDir", "msgId":"setdirection"}

@@ -8,10 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import unibo.Robots.common.RobotUtils;
 import unibo.basicomm23.coap.CoapConnection;
 import unibo.basicomm23.utils.CommUtils;
-import unibo.basicomm23.utils.Connection;
+
 
 
 //---------------------------------------------------
@@ -22,7 +21,7 @@ import unibo.basicomm23.utils.Connection;
 public class RobotController {
     public final static String robotName  = "basicrobot";
     protected String mainPage             = "basicrobot23Gui";
-    protected boolean usingTcp            = false;
+    protected boolean usingTcp            = true;
 
     //Settaggio degli attributi del modello
     @Value("${robot23.protocol}")
@@ -33,6 +32,8 @@ public class RobotController {
     String robotip;
     @Value("${robot23.path}")
     String plantodo;
+    //@Value("${robot23.stepTime}")
+    public static String steptime = "330";
 
 
     protected String buildThePage(Model viewmodel) {
@@ -45,6 +46,7 @@ public class RobotController {
         viewmodel.addAttribute("webcamip", webcamip);
         viewmodel.addAttribute("robotip",  robotip);
         viewmodel.addAttribute("pathtodo", plantodo);
+        viewmodel.addAttribute("steptime", steptime);
     }
 
   @GetMapping("/") 		 
@@ -68,14 +70,17 @@ public class RobotController {
         viewmodel.addAttribute("webcamip", webcamip);
         return buildThePage(viewmodel);
     }
+    @PostMapping("/setsteptime")
+    public String setsteptime(Model viewmodel, @RequestParam String steptime  ){
+        RobotController.steptime = steptime;
+        System.out.println("RobotHIController | setsteptime:" + RobotController.steptime);
+        return buildThePage(viewmodel);
+    }
     @PostMapping("/setrobotip")
     public String setrobotip(Model viewmodel, @RequestParam String ipaddr  ){
         robotip = ipaddr;
         System.out.println("RobotHIController | setrobotip:" + ipaddr );
         viewmodel.addAttribute("robotip", robotip);
-//        setConfigParams(viewmodel);
-        //Uso basicrobto22 sulla porta 8020
-        //robotName  = "basicrobot";
         if( usingTcp ) RobotUtils.connectWithRobotUsingTcp(ipaddr);
         //Attivo comunque una connessione CoAP (per osservare basicrobot e doplan)
         CoapConnection conn = RobotUtils.connectWithRobotUsingCoap(ipaddr);
@@ -99,9 +104,9 @@ public class RobotController {
     public String dopath(Model viewmodel , @RequestParam String plan ){
         CommUtils.outblue("RobotController | doplan:" + plan + " robotName=" + robotName);
         plantodo =  plan;
-        viewmodel.addAttribute("plantodo", "m:"+plantodo);
+        viewmodel.addAttribute("plantodo", ""+plantodo);
           try {
-            RobotUtils.doPlan( plan );
+            RobotUtils.doPlan( plan, steptime );
         } catch (Exception e) {
               CommUtils.outred("RobotController | doplan ERROR:"+e.getMessage());
         }
@@ -109,12 +114,25 @@ public class RobotController {
     }
     @PostMapping("/dorobotpos")
     public String dorobotpos(Model viewmodel  , @RequestParam String x, @RequestParam String y ){
-        CommUtils.outblue("RobotController | dorobotpos x:" + x + " robotName=" + robotName);
-        CommUtils.outblue("RobotController | dorobotpos y:" + y + " robotName=" + robotName);
+        //CommUtils.outblue("RobotController | dorobotpos x:" + x + " robotName=" + robotName);
+        //CommUtils.outblue("RobotController | dorobotpos y:" + y + " robotName=" + robotName);
         try {
             RobotUtils.doRobotPos( x,y );
         } catch (Exception e) {
             CommUtils.outred("RobotController | dorobotpos ERROR:"+e.getMessage());
+        }
+        return buildThePage(viewmodel);
+    }
+    @PostMapping("/setrobotpos")
+    public String setrobotpos(Model viewmodel,
+        @RequestParam String x, @RequestParam String y, @RequestParam String dir ){
+        //CommUtils.outblue("RobotController | setrobotpos x:" + x + " robotName=" + robotName);
+        //CommUtils.outblue("RobotController | setrobotpos y:" + y + " robotName=" + robotName);
+        //CommUtils.outblue("RobotController | setrobotpos d:" + d + " robotName=" + robotName);
+        try {
+            RobotUtils.setRobotPos( x,y,dir );
+        } catch (Exception e) {
+            CommUtils.outred("RobotController | setrobotpos ERROR:"+e.getMessage());
         }
         return buildThePage(viewmodel);
     }

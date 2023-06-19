@@ -15,11 +15,11 @@ object nanoSupport {
 	fun create( owner : ActorBasic ){		
 		val p = Runtime.getRuntime().exec("sudo ./Motors")		 	
  		writer = OutputStreamWriter(  p.getOutputStream()  )
-		println("motorscSupport | CREATED with writer=$writer")
+		println("nanoSupport  | CREATED with writer=$writer")
  	}
 
 	fun move( msg : String="" ){
-		//println("motorscSupport | WRITE $msg with $writer")
+		println("nanoSupport  | WRITE $msg with $writer")
 		writer.write( msg )
 		writer.flush()
 	}

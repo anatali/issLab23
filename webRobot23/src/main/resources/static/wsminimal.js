@@ -32,8 +32,8 @@ wsminimal.js
             msg = event.data;
             //alert(`Got Message: ${msg}`);
             console.log("ws-status:" + msg);
-            if( msg.includes("plan") ) setMessageToWindow(pathexecDisplay,msg);
-            else if( msg.includes("RobotPos") ) setMessageToWindow(robotDisplay,msg);
+            if( msg.includes("plan") ) setMessageToWindow(planexecDisplay,msg);
+            //else if( msg.includes("RobotPos") ) setMessageToWindow(robotDisplay,msg);
             else setMessageToWindow(robotDisplay,msg); //""+`${event.data}`*/
          };
     }//connect

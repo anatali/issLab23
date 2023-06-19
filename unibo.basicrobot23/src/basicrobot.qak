@@ -73,7 +73,7 @@ QActor engager context ctxbasicrobot{
 		//printCurrentMessage color magenta
 		if [# ! currentMsg.isEvent() #]{ println("$name waiting ..")   }
 	} 
-	Transition t0 whenRequest engage     ->  handleEngage //engageAccept
+	Transition t0 whenRequest engage     ->  handleEngage  
 		          whenMsg disengage      ->  disengageRobot
 		          whenRequest checkowner ->  checkTheOwner
      			   
@@ -81,7 +81,7 @@ QActor engager context ctxbasicrobot{
     	printCurrentMessage 
 			onMsg( engage : engage(OWNER, STEPTIME) ) {
 				[# if( currentMsg.conn != null ) curConn = currentMsg.conn					
-				   EngageCaller  = payloadArg(0)
+				   EngageCaller  = currentMsg.msgSender() //payloadArg(0)
 				   if( curConn != null )
 				     CommUtils.outmagenta("engager | engaged by remote $EngageCaller on $curConn" )		
 				   else CommUtils.outmagenta("engager | engaged by local $EngageCaller " )	
@@ -204,7 +204,7 @@ QActor basicrobot context ctxbasicrobot{
 	                //whenMsg     engaged    -> work  //repetita ...
 	
 	State execcmd{ 
-		//printCurrentMessage
+		printCurrentMessage
 		if [#   checkOwner() #] {   
 			onMsg( cmd : cmd(MOVE) ){
 	  			//activate the motors  

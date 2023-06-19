@@ -12,7 +12,7 @@ using namespace std;
 /*
  * in the directory: of SonarAlone.c:
 1)  [ sudo ../../pi-blaster/pi-blaster ] if servo
-2)  g++  SonarAlone.c -l wiringPi -o  SonarAlone
+2)  nano
 sudo ./SonarAlone
 In nat/servosonar:
 sudo java -jar   SonarAloneP2PMain.jar

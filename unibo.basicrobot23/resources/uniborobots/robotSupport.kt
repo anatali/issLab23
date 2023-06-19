@@ -51,7 +51,7 @@ object robotSupport{
 				owner.context!!.addInternalActor(realsonar)  
   				println("		--- realnano robotSupport | has created the realsonar")
 			}
-			/*
+
 			"realmbot" -> {
 				robotMbot.mbotSupport.create(owner, robotPort)
 				/*
@@ -59,7 +59,7 @@ object robotSupport{
 				//Context injection
 				owner.context!!.addInternalActor(realsonar)  
   				println("		--- realmbot robotSupport | has created the realsonar")*/
-			}*/
+			}
  			else -> println( "		--- robotSupport | robot $robotKind unknown" )
  		}
 	}
@@ -77,7 +77,7 @@ object robotSupport{
 			//"mockrobot"  -> { robotMock.mockrobotSupport.move( cmd ) 					  }
 			"virtual"    -> { vr.move(  cmd ) 	  }
   			"realnano"   -> { robotNano.nanoSupport.move( cmd)	}
-            //"realmbot"   -> { robotMbot.mbotSupport.move( cmd )	}
+            "realmbot"   -> { robotMbot.mbotSupport.move( cmd )	}
 			else         -> println( "		--- robotSupport: move| robot unknown")
 		}		
 	}
@@ -91,8 +91,8 @@ object robotSupport{
 				Thread.sleep(time)
 				robotNano.nanoSupport.move( "h" )
 				return true
-			}   //TODO 23
-			//"realmbot"   -> { return false 	}	//TODO
+			}   //TODO
+			"realmbot"   -> { return false 	}	//TODO
 			else         -> {
 				println("		--- robotSupport: dostep | robot unknown")
 				return false
@@ -103,8 +103,8 @@ object robotSupport{
 		when( robotKind ){
 			"mockrobot"  -> {  					                  }
 			"virtual"    -> { /* robotVirtual.virtualrobotSupport23.terminate(  ) */	  }
- 			//"realmbot"   -> { /* mbotSupport.terminate(  ) */	}
- 			//"realnano"   -> { robotNano.nanoSupport.terminate( )	}
+ 			"realmbot"   -> { /* mbotSupport.terminate(  ) */	}
+ 			"realnano"   -> { robotNano.nanoSupport.terminate( )	}
 			else         -> println( "		--- robotSupport | robot unknown")
 		}		
 		

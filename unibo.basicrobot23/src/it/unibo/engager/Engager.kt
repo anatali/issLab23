@@ -46,7 +46,7 @@ class Engager ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 						if( checkMsgContent( Term.createTerm("engage(OWNER,STEPTIME)"), Term.createTerm("engage(OWNER,STEPTIME)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 if( currentMsg.conn != null ) curConn = currentMsg.conn					
-												   EngageCaller  = payloadArg(0)
+												   EngageCaller  = currentMsg.msgSender() //payloadArg(0)
 												   if( curConn != null )
 												     CommUtils.outmagenta("engager | engaged by remote $EngageCaller on $curConn" )		
 												   else CommUtils.outmagenta("engager | engaged by local $EngageCaller " )	

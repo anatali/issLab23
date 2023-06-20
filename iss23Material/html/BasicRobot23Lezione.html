@@ -1,0 +1,422 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>BasicRobot23Lezione &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="BasicRobot23" href="BasicRobot23.html" />
+    <link rel="prev" title="Appl1ActorsQak23" href="Appl1ActorsQak23.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="BasicRobot23.html" title="BasicRobot23"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Appl1ActorsQak23.html" title="Appl1ActorsQak23"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">BasicRobot23Lezione</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="basicrobot23lezione">
+<h1>BasicRobot23Lezione<a class="headerlink" href="#basicrobot23lezione" title="Permalink to this headline">¶</a></h1>
+<p>Obiettivo: introdurre un componente software che esegue comandi di spostamento di un DDR-robot
+in ‘modo indipendente dalla tecnologia’ con cui è realizzato del robot (virtuale o reale).</p>
+<section id="br23lez-requisito-tipidirobot">
+<h2>br23lez requisito  <em>tipidirobot</em><a class="headerlink" href="#br23lez-requisito-tipidirobot" title="Permalink to this headline">¶</a></h2>
+<p>Facciamo riferimento ad almeno tre diversi tipi di robot:</p>
+<ul class="simple">
+<li><p><span class="xref std std-ref">VirtualRobot</span></p></li>
+<li><p><a class="reference external" href="../../../../../it.unibo.qak21.basicrobot/userDocs/Mbot2020.html">Mbot</a> (realmbot)</p></li>
+<li><p><a class="reference external" href="../../../../../unibo.basicrobot22/userDocs/LabNanoRobot.html">NanoRobot</a> (realnano)</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/basicrobotComponent.PNG"><img alt="_images/basicrobotComponent.PNG" class="align-center" src="_images/basicrobotComponent.PNG" style="width: 60%;" /></a>
+<section id="br23lez-una-prima-architettura">
+<h3>br23lez Una prima architettura<a class="headerlink" href="#br23lez-una-prima-architettura" title="Permalink to this headline">¶</a></h3>
+<p>Si delinea una architettura come quella raffiguata:</p>
+<a class="reference internal image-reference" href="_images/basicrobotproject.PNG"><img alt="_images/basicrobotproject.PNG" class="align-center" src="_images/basicrobotproject.PNG" style="width: 50%;" /></a>
+</section>
+<section id="br23lez-basicrobot23-configurazione">
+<h3>br23lez BasicRobot23: configurazione<a class="headerlink" href="#br23lez-basicrobot23-configurazione" title="Permalink to this headline">¶</a></h3>
+<p>La utility class <code class="docutils literal notranslate"><span class="pre">unibo.robot.robotSupport.kt</span></code> si occupa dei dettagli tecnologici specifici di ogni
+<span class="xref std std-ref">tipo di robot</span> utilizzando un supporto diverso per ciascun tipo.</p>
+<section id="br23lez-basicrobot23-supporti">
+<h4>br23lez BasicRobot23: supporti<a class="headerlink" href="#br23lez-basicrobot23-supporti" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/wenvscene1.PNG"><img alt="_images/wenvscene1.PNG" class="align-center" src="_images/wenvscene1.PNG" style="width: 90%;" /></a>
+</td>
+<td><p>per il VirtualRobot: <a class="reference external" href="../../../../../unibo.basicrobot22/resources/robotVirtual/virtualrobotSupport2021.kt">virtualrobotSupport</a></p></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal image-reference" href="_images/robotsUnibo.jpg"><img alt="_images/robotsUnibo.jpg" class="align-center" src="_images/robotsUnibo.jpg" style="width: 90%;" /></a>
+</td>
+<td><p>per il  NanoRobot: <a class="reference external" href="../../../../../unibo.basicrobot22/resources/robotNano/nanoSupport.kt">nanoSupport</a>, <a class="reference external" href="../../../../../unibo.basicrobot22/resources/robotNano/Motors.c">motors</a></p></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/mbot.PNG"><img alt="_images/mbot.PNG" class="align-center" src="_images/mbot.PNG" style="width: 90%;" /></a>
+</td>
+<td><p>per Mbot: <a class="reference external" href="../../../../../it.unibo.qak21.basicrobot/userDocs/Mbot2020.html">mbotSupport</a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="br23lez-file-di-configurazione">
+<h4>br23lez File di configurazione<a class="headerlink" href="#br23lez-file-di-configurazione" title="Permalink to this headline">¶</a></h4>
+<p>Il file di configurazione  è impostato su frasi JSon, come ad esempio il seguente
+<code class="docutils literal notranslate"><span class="pre">basicrobotConfig.json</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;virtual&quot;</span><span class="p">,</span><span class="s2">&quot;port&quot;</span><span class="p">:</span><span class="s2">&quot;8090&quot;</span><span class="p">,</span><span class="s2">&quot;ipvirtualrobot&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;realnano&quot;</span><span class="p">,</span><span class="s2">&quot;port&quot;</span><span class="p">:</span><span class="s2">&quot;8020&quot;</span><span class="p">,</span><span class="s2">&quot;ipvirtualrobot&quot;</span><span class="p">:</span><span class="s2">&quot;dontcare&quot;</span><span class="p">}</span>
+<span class="o">//</span><span class="n">Arduino</span> <span class="n">connesso</span> <span class="n">al</span> <span class="n">Raspberry</span><span class="p">:</span>
+<span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;realmbot&quot;</span><span class="p">,</span> <span class="s2">&quot;port&quot;</span><span class="p">:</span><span class="s2">&quot;/dev/ttyUSB0&quot;</span><span class="p">,</span> <span class="s2">&quot;ipvirtualrobot&quot;</span><span class="p">:</span><span class="s2">&quot;-&quot;</span><span class="p">}</span>
+<span class="o">//</span><span class="n">Arduino</span> <span class="n">connesso</span> <span class="n">al</span> <span class="n">PC</span><span class="p">:</span>
+<span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;realmbot&quot;</span><span class="p">,</span><span class="s2">&quot;port&quot;</span><span class="p">:</span><span class="s2">&quot;COM6&quot;</span><span class="p">,</span><span class="s2">&quot;ipvirtualrobot&quot;</span><span class="p">:</span><span class="s2">&quot;dontcare&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="br23lez-basicrobot23-model">
+<h2>br23lez basicrobot23 model<a class="headerlink" href="#br23lez-basicrobot23-model" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/basicrobot23.PNG"><img alt="_images/basicrobot23.PNG" class="align-center" src="_images/basicrobot23.PNG" style="width: 90%;" /></a>
+</td>
+<td><ul class="simple">
+<li><p><span class="blue">basicrobot</span></p></li>
+<li><p><span class="blue">engager</span></p></li>
+<li><p><span class="blue">basicrobotusage</span></p></li>
+</ul>
+<p>Supporti:</p>
+<ul class="simple">
+<li><p><span class="blue">uniborobots.robotSupport</span> che usa</p></li>
+<li><p><span class="blue">robotVirtual.VrobotHLMovesActors23</span> che esegue</p></li>
+<li><p>emitLocalEvent <span class="brown">sonarData</span></p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="slide1">Evoluzione del Maggio 11</span></p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/basicrobot23WithPathexec.PNG"><img alt="_images/basicrobot23WithPathexec.PNG" class="align-center" src="_images/basicrobot23WithPathexec.PNG" style="width: 90%;" /></a>
+</td>
+<td><ul class="simple">
+<li><p><span class="blue">basicrobot</span></p></li>
+<li><p><span class="blue">engager</span></p></li>
+<li><p><span class="blue">planexec</span></p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Si veda il progetto <span class="blue">unibo.basicrobot23</span>, che fornisce il modello eseguibile <span class="blue">basicrobot.qak</span>.</p>
+<p><span class="slide">Movimenti pianificati</span></p>
+</section>
+<section id="br23lez-uso-del-planner">
+<h2>br23lez Uso del planner<a class="headerlink" href="#br23lez-uso-del-planner" title="Permalink to this headline">¶</a></h2>
+<p>Il robot (virtuale o reale) viene considerato un oggetto inscrivibile in un cerchio di diametro <code class="docutils literal notranslate"><span class="pre">D</span></code>.</p>
+<p>Muovere il robot con mossa <code class="docutils literal notranslate"><span class="pre">step(T)</span></code> con tempo <code class="docutils literal notranslate"><span class="pre">T</span></code> tale da spostare il robot (con velocità prefissata)
+di uno spazio <code class="docutils literal notranslate"><span class="pre">D</span></code>, permette di costruire una mappa della stanza formata da celle quadrate <code class="docutils literal notranslate"><span class="pre">DxD</span></code>.
+Ad esempio:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">3</span>  <span class="mi">4</span>  <span class="mi">5</span>  <span class="mi">6</span>  <span class="mi">7</span>  <span class="n">x</span>
+<span class="mi">0</span> <span class="o">|</span><span class="n">r</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+<span class="mi">1</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+<span class="mi">2</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+<span class="mi">3</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+<span class="mi">4</span> <span class="o">|</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+<span class="mi">5</span>  <span class="o">|</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
+<span class="n">y</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>0</strong> denota una cella mai percorsa</p></li>
+<li><p><strong>1</strong> denota una cella libreria</p></li>
+<li><p><strong>X</strong> denota una cella occupata da un ostacolo</p></li>
+<li><p><strong>r</strong> denota la posizione corrente del robot</p></li>
+</ul>
+<p>Un modo per costruire dinamicamente una sequenza di mosse con cui il robot può muoversi dalla posizione
+corrente <strong>r</strong> a un’altra posizione (libera) sulla mappa, consiste
+nell’utilizzo di un pianificatore (si veda <a class="reference external" href="./_static/LabPlanner.html">Planning</a>)
+come quello fornito  in <code class="docutils literal notranslate"><span class="pre">unibo.planner23-1.0.jar</span></code>.</p>
+<p>Il progetto   <a class="reference external" href="../../../../unibo.planner23">unibo.planner23</a>,  fornisce la classe <span class="blue">Planner23Util</span> che realizza
+le operazioni-base descritte in <a class="reference external" href="./_static/LabPlanner.html">Planning</a> e varie altre utlità.</p>
+<p><span class="slide1">Costruzione ed esecuzione di piani</span></p>
+<p>Si veda: <a class="reference internal" href="RobotPos.html#planexec"><span class="std std-ref">planexec</span></a>.</p>
+<p><span class="worktodo">TODO map</span></p>
+<p>map) creare la mappa della stanza vuota</p>
+<p><span class="worktodo">TODO position</span></p>
+<p>position) posizionare il robot al centro della stanza</p>
+<p><span class="slide">Applicazioni</span></p>
+<ol class="arabic simple">
+<li><p>Realizzare l’esperimento <a class="reference external" href="./_static/LabPlanner.html#spiralwalkernorobot">spiralwalker</a> (progetto <span class="brown">unibo.usePlanner23Qak</span>).</p></li>
+<li><p>Creare una mappa della stanza vuota (<span class="blue">mapemptyroom23</span>).  (progetto <span class="brown">unibo.mapperQak23</span>).</p></li>
+<li><p>Spostare il robot da HOME a una locazione scelta dall’utente ( )</p></li>
+<li><p><em>mapemptyroom23</em> con console start/stop/resume e un Led che si accende quando il robot è stopped.</p></li>
+<li><p><em>mapemptyroom23</em> con Sonar esterno che blocca il robot quando rileva distanza inferiore a un limite dato.</p></li>
+<li><p>Creare una mappa della stanza con ostacoli interni <span class="blue">mapwithobstqak23</span> nella ipotesi che il bordo superiore
+sia libero.</p></li>
+</ol>
+</section>
+<section id="br23lez-basicrobot23-versione-maggio30">
+<h2>br23lez basicrobot23 versione Maggio30<a class="headerlink" href="#br23lez-basicrobot23-versione-maggio30" title="Permalink to this headline">¶</a></h2>
+<p><span class="slide1">Evoluzione del Maggio 30</span></p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/basicrobot23WithSimbiotico.PNG"><img alt="_images/basicrobot23WithSimbiotico.PNG" class="align-center" src="_images/basicrobot23WithSimbiotico.PNG" style="width: 90%;" /></a>
+</td>
+<td><ul class="simple">
+<li><p><span class="blue">basicrobot</span></p></li>
+<li><p><span class="blue">engager</span></p></li>
+<li><p><span class="blue">planexec</span></p></li>
+<li><p><span class="blue">robotposendosimbiotico</span></p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Si veda il progetto <span class="blue">unibo.basicrobot23</span>, che fornisce il modello eseguibile <span class="blue">basicrobot.qak</span>,
+di cui si fornsice qui una parte:</p>
+<section id="br23lez-basicrobot23-messaggi">
+<h3>br23lez basicrobot23 messaggi<a class="headerlink" href="#br23lez-basicrobot23-messaggi" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="n">basicrobot23</span>
+
+<span class="n">Dispatch</span> <span class="n">cmd</span>        <span class="p">:</span> <span class="n">cmd</span><span class="p">(</span><span class="n">MOVE</span><span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">end</span>        <span class="p">:</span> <span class="n">end</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+
+<span class="n">Request</span> <span class="n">step</span>       <span class="p">:</span> <span class="n">step</span><span class="p">(</span><span class="n">TIME</span><span class="p">)</span>
+<span class="n">Reply</span> <span class="n">stepdone</span>     <span class="p">:</span> <span class="n">stepdone</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">Reply</span> <span class="n">stepfailed</span>   <span class="p">:</span> <span class="n">stepfailed</span><span class="p">(</span><span class="n">DURATION</span><span class="p">,</span> <span class="n">CAUSE</span><span class="p">)</span>
+
+<span class="n">Event</span>  <span class="n">sonardata</span>   <span class="p">:</span> <span class="n">sonar</span><span class="p">(</span> <span class="n">DISTANCE</span> <span class="p">)</span>        <span class="c1">//percepito da sonarobs/engager</span>
+<span class="n">Event</span> <span class="n">obstacle</span>     <span class="p">:</span> <span class="n">obstacle</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">Request</span>  <span class="n">doplan</span>   <span class="p">:</span> <span class="n">doplan</span><span class="p">(</span> <span class="n">PATH</span><span class="p">,</span> <span class="n">OWNER</span><span class="p">,</span> <span class="n">STEPTIME</span> <span class="p">)</span>
+<span class="n">Reply</span> <span class="n">doplandone</span>  <span class="p">:</span> <span class="n">doplandone</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+<span class="n">Reply</span> <span class="n">doplanfailed</span>  <span class="p">:</span> <span class="n">doplanfailed</span><span class="p">(</span> <span class="n">ARG</span> <span class="p">)</span>
+
+<span class="n">Dispatch</span> <span class="n">setrobotstate</span><span class="p">:</span> <span class="n">setpos</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">D</span><span class="p">)</span>
+
+<span class="n">Request</span> <span class="n">engage</span>        <span class="p">:</span> <span class="n">engage</span><span class="p">(</span><span class="n">OWNER</span><span class="p">)</span>
+<span class="n">Reply</span>   <span class="n">engagedone</span>    <span class="p">:</span> <span class="n">engagedone</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+<span class="n">Reply</span>   <span class="n">engagerefused</span> <span class="p">:</span> <span class="n">engagerefused</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+
+<span class="n">Dispatch</span> <span class="n">disengage</span>    <span class="p">:</span> <span class="n">disengage</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">engaged</span>      <span class="p">:</span> <span class="n">engaged</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">disengaged</span>   <span class="p">:</span> <span class="n">disengage</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+
+<span class="n">Event</span> <span class="n">alarm</span>           <span class="p">:</span> <span class="n">alarm</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">nextmove</span>     <span class="p">:</span> <span class="n">nextmove</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">nomoremove</span>   <span class="p">:</span> <span class="n">nomoremove</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+
+<span class="c1">//Endosimbiosi di robotpos</span>
+<span class="n">Request</span> <span class="n">moverobot</span>    <span class="p">:</span>  <span class="n">moverobot</span><span class="p">(</span><span class="n">TARGETX</span><span class="p">,</span> <span class="n">TARGETY</span><span class="p">)</span>
+<span class="n">Reply</span> <span class="n">moverobotdone</span>  <span class="p">:</span>  <span class="n">moverobotok</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+<span class="n">Reply</span> <span class="n">moverobotfailed</span><span class="p">:</span>  <span class="n">moverobotfailed</span><span class="p">(</span><span class="n">PLANDONE</span><span class="p">,</span> <span class="n">PLANTODO</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="br23lez-basicrobot23-attori">
+<h3>br23lez basicrobot23 attori<a class="headerlink" href="#br23lez-basicrobot23-attori" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Context</span> <span class="n">ctxbasicrobot</span> <span class="n">ip</span> <span class="o">[</span><span class="n">host</span><span class="o">=</span><span class="s">&quot;localhost&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8020</span><span class="o">]</span>
+</pre></div>
+</div>
+<section id="br23lez-basicrobot23-engager">
+<h4>br23lez basicrobot23 engager<a class="headerlink" href="#br23lez-basicrobot23-engager" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">QActor</span> <span class="n">engager</span> <span class="n">context</span> <span class="n">ctxbasicrobot</span><span class="p">{</span>
+  <span class="c1">//Gestisce i messaggi engage/disengage</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="br23lez-basicrobot23-basicrobot">
+<h4>br23lez basicrobot23 basicrobot<a class="headerlink" href="#br23lez-basicrobot23-basicrobot" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span>QActor basicrobot context ctxbasicrobot{
+  /*
+    Gestisce i messaggi
+        comando di avvenuto engagement: engaged
+        comando-base: cmd
+        passo in avanti: step
+  */
+  State ss0 initial {
+      ...
+      delegate &quot;engage&quot; to engager
+      delegate &quot;disengage&quot; to engager
+      delegate &quot;doplan&quot; to planexec
+      delegate &quot;setrobotstate&quot; to robotposendosimbiotico
+      delegate &quot;moverobot&quot; to robotposendosimbiotico
+
+      updateResource [# &quot;basicrobot(started)&quot; #]
+  }
+}
+</pre></div>
+</div>
+</section>
+<section id="br23lez-basicrobot23-planexec">
+<h4>br23lez basicrobot23 planexec<a class="headerlink" href="#br23lez-basicrobot23-planexec" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">QActor</span> <span class="n">planexec</span> <span class="n">context</span> <span class="n">ctxbasicrobot</span><span class="p">{</span>
+  <span class="cm">/*</span>
+<span class="cm">    Gestisce i messaggi</span>
+<span class="cm">        esecuzione di un piano: doplan</span>
+<span class="cm">        risposta alla esecuzione di un passo: stepdone/stepfailed</span>
+<span class="cm">        evento di allarme: alarm</span>
+<span class="cm">    Usa i messaggi &#39;interni&#39;:</span>
+<span class="cm">        nomoremove</span>
+<span class="cm">        nextmove</span>
+<span class="cm">  */</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="br23lez-basicrobot23-robotposendosimbiotico">
+<h4>br23lez basicrobot23 robotposendosimbiotico<a class="headerlink" href="#br23lez-basicrobot23-robotposendosimbiotico" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">QActor</span> <span class="n">robotposendosimbiotico</span> <span class="n">context</span> <span class="n">ctxbasicrobot</span><span class="p">{</span>
+  <span class="cm">/*</span>
+<span class="cm">    Usa il planner e la mappa della stanza</span>
+<span class="cm">    Gestisce i messaggi</span>
+<span class="cm">        posizionamento del robot: setrobotstate</span>
+<span class="cm">        movimento a una cella target: moverobot</span>
+<span class="cm">        risposta alla esecuzione di un piano: doplandone/doplanfailed</span>
+<span class="cm">  */</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">BasicRobot23Lezione</a><ul>
+<li><a class="reference internal" href="#br23lez-requisito-tipidirobot">br23lez requisito  <em>tipidirobot</em></a><ul>
+<li><a class="reference internal" href="#br23lez-una-prima-architettura">br23lez Una prima architettura</a></li>
+<li><a class="reference internal" href="#br23lez-basicrobot23-configurazione">br23lez BasicRobot23: configurazione</a><ul>
+<li><a class="reference internal" href="#br23lez-basicrobot23-supporti">br23lez BasicRobot23: supporti</a></li>
+<li><a class="reference internal" href="#br23lez-file-di-configurazione">br23lez File di configurazione</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#br23lez-basicrobot23-model">br23lez basicrobot23 model</a></li>
+<li><a class="reference internal" href="#br23lez-uso-del-planner">br23lez Uso del planner</a></li>
+<li><a class="reference internal" href="#br23lez-basicrobot23-versione-maggio30">br23lez basicrobot23 versione Maggio30</a><ul>
+<li><a class="reference internal" href="#br23lez-basicrobot23-messaggi">br23lez basicrobot23 messaggi</a></li>
+<li><a class="reference internal" href="#br23lez-basicrobot23-attori">br23lez basicrobot23 attori</a><ul>
+<li><a class="reference internal" href="#br23lez-basicrobot23-engager">br23lez basicrobot23 engager</a></li>
+<li><a class="reference internal" href="#br23lez-basicrobot23-basicrobot">br23lez basicrobot23 basicrobot</a></li>
+<li><a class="reference internal" href="#br23lez-basicrobot23-planexec">br23lez basicrobot23 planexec</a></li>
+<li><a class="reference internal" href="#br23lez-basicrobot23-robotposendosimbiotico">br23lez basicrobot23 robotposendosimbiotico</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Appl1ActorsQak23.html"
+                          title="previous chapter">Appl1ActorsQak23</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="BasicRobot23.html"
+                          title="next chapter">BasicRobot23</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/BasicRobot23Lezione.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="BasicRobot23.html" title="BasicRobot23"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Appl1ActorsQak23.html" title="Appl1ActorsQak23"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">BasicRobot23Lezione</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

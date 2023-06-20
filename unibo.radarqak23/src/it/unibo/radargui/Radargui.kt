@@ -45,7 +45,7 @@ class Radargui ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 					 transition(edgeName="t00",targetState="showSpotReply",cond=whenRequest("polar"))
 					transition(edgeName="t01",targetState="showSpotNoReply",cond=whenDispatch("polar"))
 					transition(edgeName="t02",targetState="showSpotNoReply",cond=whenEvent("polar"))
-					transition(edgeName="t03",targetState="showSpot2022",cond=whenEvent("sonardata"))
+					transition(edgeName="t03",targetState="showSpot2023",cond=whenEvent("sonardata"))
 				}	 
 				state("showSpotNoReply") { //this:State
 					action { //it:State
@@ -96,7 +96,7 @@ class Radargui ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 					}	 	 
 					 transition( edgeName="goto",targetState="waitForDataToShow", cond=doswitch() )
 				}	 
-				state("showSpot2022") { //this:State
+				state("showSpot2023") { //this:State
 					action { //it:State
 						CommUtils.outcyan("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
@@ -112,7 +112,7 @@ class Radargui ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t04",targetState="showSpot2022",cond=whenEvent("sonardata"))
+					 transition(edgeName="t04",targetState="showSpot2023",cond=whenEvent("sonardata"))
 				}	 
 			}
 		}

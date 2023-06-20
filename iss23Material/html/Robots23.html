@@ -339,8 +339,8 @@ che possono emettere informazioni sulle azioni che stanno compiendo e sul propri
 il codice necessario al soddisfacimento dei requisiti che l’analisi ha omesso.
 Per parti di basso livello definite in Kotlin, può essere utile consultare <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html">kotlinUnibo</a>.</p>
 <p>Anche in questa fase però, miriamo  a definire nel modello gli <strong>aspetti essenziali della ‘business logic’</strong> del robot,
-lasciando ai <a class="reference internal" href="BasicRobot23.html#basicrobot23-supporti"><span class="std std-ref">supporti</span></a>
-il compito di occuparsi dei dettagli tecnologici relativi ai diversi <a class="reference internal" href="BasicRobot23.html#requisito-tipidirobot"><span class="std std-ref">tipi di robot</span></a>.</p>
+lasciando ai <a class="reference internal" href="BasicRobot23Lezione.html#basicrobot23-supporti"><span class="std std-ref">supporti</span></a>
+il compito di occuparsi dei dettagli tecnologici relativi ai diversi <a class="reference internal" href="BasicRobot23Lezione.html#requisito-tipidirobot"><span class="std std-ref">tipi di robot</span></a>.</p>
 <p>Con riferimento a <a class="reference internal" href="#una-prima-architettura"><span class="std std-ref">Una prima architettura</span></a> possiamo estendere il modello come segue:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="n">basicrobot</span>
   <span class="o">....</span>
@@ -361,7 +361,7 @@ il compito di occuparsi dei dettagli tecnologici relativi ai diversi <a class="r
 </pre></div>
 </div>
 <p>L’operazione <span class="xref std std-ref">qrun</span> invoca il metodo static <code class="docutils literal notranslate"><span class="pre">create</span></code> della utility class <code class="docutils literal notranslate"><span class="pre">unibo.robot.robotSupport.kt</span></code>
-che consulta il <a class="reference internal" href="BasicRobot23.html#file-di-configurazione"><span class="std std-ref">File di configurazione</span></a> creando il supporto per il tipo di robot specificato.</p>
+che consulta il <a class="reference internal" href="BasicRobot23Lezione.html#file-di-configurazione"><span class="std std-ref">File di configurazione</span></a> creando il supporto per il tipo di robot specificato.</p>
 <p>Sfruttiamo la feature <a class="reference internal" href="QakActors23Demo.html#actors-as-streams"><span class="std std-ref">Actors as streams</span></a> per generare eventi ‘di ambiente’ (come i dati di Sonar)
 che possono essere percepiti e gestiti dal <code class="docutils literal notranslate"><span class="pre">BasicRobot23</span></code>.</p>
 <blockquote>

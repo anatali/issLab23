@@ -30,8 +30,10 @@ public class RobotController {
     String webcamip;
     @Value("${robot23.robotip}")
     String robotip;
-    @Value("${robot23.path}")
+    @Value("${robot23.plan}")
     String plantodo;
+    @Value("${robot23.plandone}")
+    String plandone;
     //@Value("${robot23.stepTime}")
     public static String steptime = "330";
 
@@ -46,6 +48,7 @@ public class RobotController {
         viewmodel.addAttribute("webcamip", webcamip);
         viewmodel.addAttribute("robotip",  robotip);
         viewmodel.addAttribute("pathtodo", plantodo);
+        viewmodel.addAttribute("plandone", plandone);
         viewmodel.addAttribute("steptime", steptime);
     }
 
@@ -106,12 +109,24 @@ public class RobotController {
         plantodo =  plan;
         viewmodel.addAttribute("plantodo", ""+plantodo);
           try {
-            RobotUtils.doPlan( plan, steptime );
+              plandone = RobotUtils.doPlan( plan, steptime );
         } catch (Exception e) {
               CommUtils.outred("RobotController | doplan ERROR:"+e.getMessage());
         }
+        viewmodel.addAttribute("plantodo", ""+plantodo);
         return buildThePage(viewmodel);
     }
+    @PostMapping("/alarm")
+    public String alarm(Model viewmodel   ){
+        CommUtils.outmagenta("RobotController | alarm robotName=" + robotName);
+        viewmodel.addAttribute("plantodo", ""+plantodo);
+
+            RobotUtils.setalarm(  )  ;
+
+        return buildThePage(viewmodel);
+    }
+
+
     @PostMapping("/dorobotpos")
     public String dorobotpos(Model viewmodel  , @RequestParam String x, @RequestParam String y ){
         //CommUtils.outblue("RobotController | dorobotpos x:" + x + " robotName=" + robotName);

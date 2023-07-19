@@ -3,6 +3,7 @@ package unibo.webRobot23;
 import unibo.basicomm23.coap.CoapConnection;
 import unibo.basicomm23.interfaces.IApplMessage;
 import unibo.basicomm23.interfaces.Interaction;
+import unibo.basicomm23.msg.ApplMessage;
 import unibo.basicomm23.tcp.TcpClientSupport;
 import unibo.basicomm23.utils.CommSystemConfig;
 import unibo.basicomm23.utils.CommUtils;
@@ -17,6 +18,7 @@ public class RobotUtils {
     private static Interaction tcpconn;
     private static Interaction coapconn;
     private static boolean enaged               = false;
+    private static boolean withalarm            = false;
 
     private static void engageRobot(){
         if( enaged ) return;
@@ -104,17 +106,37 @@ public class RobotUtils {
             CommUtils.outred("RobotUtils | sendMsg on:" + tcpconn + " ERROR:"+e.getMessage());
         }
     }
-    public static void doPlan(String path, String steptime ){
+    public static String doPlan(String path, String steptime ){
         try {
             String msg = ""+ CommUtils.buildRequest(applName,
                     "doplan", "doplan("+path+ "," + steptime + ")", "basicrobot");
-             Interaction conn = (tcpconn != null) ? tcpconn  : coapconn;
+            Interaction conn = (tcpconn != null) ? tcpconn  : coapconn;
             CommUtils.outblue("RobotUtils doPlan |  msg:" + msg + " conn=" + conn);
+            if( withalarm ){
+                new Thread(){
+                    public void run(){
+                        try {
+                            Thread.sleep(1500);
+                            String msg = ""+ CommUtils.buildEvent("webgui", "alarm", "alarm(fromgui)" );
+                            CommUtils.outred("RobotUtils doPlan |  alarm msg:" + msg + " conn=" + conn);
+                            conn.forward( msg );
+                            withalarm = false;
+                        } catch ( Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+            }
             String answer = conn.request( msg );
             CommUtils.outmagenta("doPlan answer=" + answer);
+            withalarm = false;
+            IApplMessage reply = new ApplMessage(answer);
+            return reply.msgContent();
         } catch (Exception e) {
             CommUtils.outred("RobotUtils doPlan |  ERROR:"+e.getMessage());
+            return "doPlanERROR";
         }
+
     }
     public static void doRobotPos(String x, String y ){
         try {
@@ -142,4 +164,7 @@ public class RobotUtils {
         }
     }
 
+    public static void setalarm() {
+        withalarm=true;
+    }
 }

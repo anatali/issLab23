@@ -157,8 +157,12 @@
       <div class="card iss-bg-pathexecarea text-dark">
           <div class="card-header px-1">Plan executor (no planner involved) </div>
           <div class="card-content px-1">
-              <div class="row"> <!-- path row -->
 
+              <div class="row"> <!-- ALARM row -->
+                  <form action="alarm" method="post">
+                      <input type="submit" value="withalarm">
+                  </form>
+              </div> <!-- ALARM  row -->              <div class="row"> <!-- path row -->
                   <form action="doplan" method="post">
                       <!-- the form-data is sent to the path specified in the action attribute -->
                       <input type="text" size="20" name="plan" >
@@ -166,7 +170,8 @@
                       plantodo=<span th:text="${plantodo}" id="plantoexec"></span>
                   </form>
               </div> <!-- plan exec row -->
-              <span id="planexecDisplay" >...</span>
+
+              Plan result: <span th:text="${plandone}" id="planexecDisplay" >...</span> <!-- see wsminila -->
           </div>
       </div>
 

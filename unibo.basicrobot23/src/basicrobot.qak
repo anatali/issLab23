@@ -16,8 +16,8 @@ Reply stepfailed   : stepfailed(DURATION, CAUSE)
 Event  sonardata   : sonar( DISTANCE ) 	  //percepito da sonarobs/engager   
 Event obstacle     : obstacle(X) 
 
-Request  doplan   : doplan( PATH, STEPTIME )
-Reply doplandone  : doplandone( ARG ) 
+Request  doplan     : doplan( PATH, STEPTIME )
+Reply doplandone    : doplandone( ARG ) 
 Reply doplanfailed  : doplanfailed( ARG )
 
 Dispatch setrobotstate: setpos(X,Y,D)
@@ -300,8 +300,8 @@ QActor planexec context ctxbasicrobot{
 	State work{
 		//println("planexec | waiting ...")  
 	}
-	Transition t0 whenRequest doplan -> checkTheOwner//execplan
-
+	Transition t0 whenRequest doplan -> checkTheOwner
+	
     
     State checkTheOwner{
     	//printCurrentMessage color blue
@@ -316,37 +316,32 @@ QActor planexec context ctxbasicrobot{
     		//request engager -m checkowner : checkowner($Caller)
     	}
     }
-    Goto execplan if [# IsOwner #] else planrefused
+    Goto nextMove if [# IsOwner #] else planrefused
     /*
     Transition t0 whenReply checkownerok -> execplan
                   whenReply checkownerfailed -> planrefused
-    */
+    
     
 	State execplan{
 		//printCurrentMessage color red
-		/*
-		onMsg( doplan : doplan(PLAN, CALLER, STEPTIME)){
-		    println("$name | ${payloadArg(0)}") 
-			[#  Plan     = payloadArg(0).replace("[","").replace("]","").replace(",","").replace(" ","")
-				PlanOrig = Plan
-				Owner    = payloadArg(1)
-				StepTime = payloadArg(2) //.toLong() 
-			 #]
-			 println("$name | Plan=$Plan StepTime=$StepTime") 
-		} */
+ 
 	}  
 	Transition t0 
 		whenTime 100    -> nextMove
-		whenEvent alarm -> planinterruptedalarm
-	  
+		//whenEvent alarm -> planinterruptedalarm
+	*/
 	
 	State nextMove{ 
 		[# 
 		   if( Plan.length > 0  ){
 		   	CurMoveTodo =  Plan.elementAt(0).toString() 
 		   	Plan        =  Plan.removePrefix(CurMoveTodo)
-		   }else CurMoveTodo = ""		   
+		   }else{
+		   	CurMoveTodo = ""
+		   	Plan        = "empty"
+		   } 		   
 		#]
+/*		
 		//println("$name | CurMoveTodo= $CurMoveTodo remain:$Plan" ) 
 		forward planexec -m nextmove : nextmove($CurMoveTodo)
 	} 	 
@@ -354,7 +349,8 @@ QActor planexec context ctxbasicrobot{
 		           whenMsg nextmove  -> doMove
 	
 	State doMove{
-		//println("$name | domove $CurMoveTodo")  
+ */
+ 		//println("$name | domove $CurMoveTodo")  
  		if [# CurMoveTodo == "" #] { 
  			forward planexec -m nomoremove : nomoremove(end)
  		}
@@ -370,13 +366,13 @@ QActor planexec context ctxbasicrobot{
 				forward planexec -m nextmove : nextmove(goon)
 			}
 		}
- 	}
-	Transition t0  whenEvent alarm     -> planinterruptedalarm
-	               whenMsg nomoremove  -> planend
-	               whenMsg nextmove    -> nextMove 
+ 	}  
+	Transition t0  whenReply stepfailed -> planinterruptedobstacle
+				   whenEvent alarm      -> planinterruptedalarm
+	               whenMsg nomoremove   -> planend
+	               whenMsg nextmove     -> nextMove 
 	               whenReply stepdone   -> nextMove 
-	               whenReply stepfailed -> planinterruptedobstacle
-
+//alarm gestito solo se non c'è stepfailed
  	
 	State planend{ 
 		//printCurrentMessage color red
@@ -400,21 +396,76 @@ QActor planexec context ctxbasicrobot{
  		println("$name |  planinterruptedobstacle $CurMoveTodo ")	color magenta
  		[# var Plantodo =  CurMoveTodo + Plan
  		#]
- 		updateResource [# "planfailed($Plan,$Plantodo )" #] 
+ 		updateResource [# "planfailed($PlanOrig,$Plantodo )" #] 
  		replyTo doplan with doplanfailed : doplanfailed( $Plantodo )
  	}	
  	Goto work 
  	
  	State planinterruptedalarm{  
 		//printCurrentMessage
- 		println("$name |  planinterruptedalarm $CurMoveTodo ")	color magenta
- 		[# var Plantodo = CurMoveTodo + Plan
- 		#]
- 		updateResource [# "planfailed($PlanOrig,$Plantodo )" #] 
- 		replyTo doplan with doplanfailed : doplanfailed( $Plantodo )
- 	}	
- 	Goto work 
- 	
+ 		//println("$name |  planinterruptedalarm $CurMoveTodo ")	color magenta
+ 		//[# var Plantodo = CurMoveTodo + Plan
+ 		//#]
+ 		//updateResource [# "planfailed($PlanOrig,$Plantodo )" #] 
+ 		//replyTo doplan with doplanfailed : doplanfailed( $Plan )
+ 	}	 
+ 	Transition t0 //whenTime 200 -> work  //THanks to Mirabella 2023
+ 				  whenMsg nextmove    ->  nonextmovesincealarm
+ 				  whenReply stepdone  ->  nonextmovesincealarm //possiblestepdonemirabella
+ 				  whenReply stepfailed -> planinterruptedobstacle //work
+
+ 	//State possiblestepdonemirabella{
+ 	//	request basicrobot -m getrobotstate : getrobotstate(ARG)
+ 	//}
+ 	//Transition t0 whenReply robotstate -> setstatemirabella
+
+	State nonextmovesincealarm{
+ 		println("$name |  nonextmovesincealarm $CurMoveTodo plantodo=$Plan") color magenta
+ 		updateResource [# "planfailed($PlanOrig,$Plan )" #] 
+ 		if [# Plan.length == 0 #]{ //Piano esaurito nonostante l'allarme
+ 			replyTo doplan with doplandone : doplandone($PlanOrig)
+ 		}else{ //Piano interrotto; da fare ancora: Plan
+ 		   replyTo doplan with doplanfailed : doplanfailed( $Plan )
+ 		}
+	}
+	Goto work
+	/*Il piano esegue sempre almeno la prima mossa prima di essere interrotto
+	 */
+	 /* 
+ 	State setstatemirabella{
+ 		onMsg(robotstate:robotstate(Pos,Dir)){
+ 			[#
+ 				var Pos = payloadArg(0)
+ 				var Dir = payloadArg(1)
+ 				var X = 0
+ 				var Y = 0
+ 				val regex = """pos\((\d+),(\d+)\)""".toRegex()
+				val matchResult = regex.find(Pos)
+				if (matchResult != null) {
+				    val (yStr, xStr) = matchResult.destructured
+				    X = xStr.toInt()
+				    Y = yStr.toInt()
+ 				}else {
+				    CommUtils.outred("setstatemirabella Invalid input format")  
+				}
+
+ 				when (Dir) {
+			    "UP" -> X-=1
+			    "DOWN" -> X+=1
+			    "LEFT" -> Y-=1
+			    "RIGHT" -> Y+=1
+			    else -> { // Note the block
+			        CommUtils.outred("setstatemirabella errore direzione")  
+			    }
+			}
+ 			#]
+ 			println("$Pos -x $X y $Y  - $Dir") color black
+ 			forward basicrobot -m setrobotstate: setpos($Y,$X,$Dir)
+
+ 		}
+ 	}
+ 	Goto work
+ 	*/
  	State planrefused{
  		replyTo doplan with doplanfailed : doplanfailed( youarenotowner )
  		//TODO: inserire motivazione fallimento ?

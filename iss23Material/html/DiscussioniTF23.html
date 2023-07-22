@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>DiscussioniTF23 &#8212; iss23 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Libri" href="Libri.html" />
+    <link rel="prev" title="MPS" href="MPS.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Libri.html" title="Libri"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="MPS.html" title="MPS"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">DiscussioniTF23</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="discussionitf23">
+<h1>DiscussioniTF23<a class="headerlink" href="#discussionitf23" title="Permalink to this headline">¶</a></h1>
+<section id="problematiche-sul-temafinale23">
+<h2>Problematiche sul <a class="reference internal" href="TemaFinale23.html#temafinale23"><span class="std std-ref">TemaFinale23</span></a><a class="headerlink" href="#problematiche-sul-temafinale23" title="Permalink to this headline">¶</a></h2>
+<p>Nelle discussioni con il committente, sono emerse alcune problematiche:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#lo-sprint0"><span class="std std-ref">Lo sprint0</span></a>.</p></li>
+<li><p><a class="reference internal" href="#il-problema-del-load-time-lungo"><span class="std std-ref">Il problema del load-time lungo</span></a>.</p></li>
+<li><p><a class="reference internal" href="#il-problema-del-driver-distratto"><span class="std std-ref">Il problema del driver distratto</span></a> (non coerente, rispetto a una fase di scarico
+preceduto da una prenotazione).</p></li>
+<li><p><a class="reference internal" href="#il-problema-del-driver-malevolo"><span class="std std-ref">Il problema del driver malevolo</span></a>.</p></li>
+<li><p><a class="reference internal" href="#il-problema-dell-allarme-ignorato"><span class="std std-ref">Il problema dell’allarme ignorato</span></a>.</p></li>
+<li><p>Il problema di garantire che una risposta venga sempre inviata sempre solo
+a chi ha fatto la richiesta, anche quando la richiesta è inviata da un ‘alieno’ come una
+pagine HTML</p></li>
+</ul>
+<section id="lo-sprint0">
+<h3>Lo sprint0<a class="headerlink" href="#lo-sprint0" title="Permalink to this headline">¶</a></h3>
+<p>Lo scopo dello sprint0 è <span class="blue">analizzare il testo dei requisiti</span> in modo da
+‘formalizzarli’ attraverso un modello  comprensibile alla macchina con cui:</p>
+<ul class="simple">
+<li><p>esplicitare la natura (POJO / servzi / attori …) dei (macro)componenti del sistema
+e sulle interazioni tra questi che sono esplicitamente definite o deducibili dal testo dei requisiti</p></li>
+<li><p>creare una lista di priorità dei requisiti, ponendo al primo posto quelli che coprono il core-business</p></li>
+<li><p>delineare una prima ipotesi di sprint e una prima valutazione dei tempi previsti per ogni sprint</p></li>
+<li><p>definire il goal dello sprint1 e creare un nuovo progetto per lo sprint1</p></li>
+</ul>
+<p>In generale, lo sprintN deve essere associato a un progetto comprensivo di un proprio
+userdocs di documentazione /diario e deve definire in modo esplicito i requisiti che intende coprire, il suo GOAL
+e i principali piani di testing funzionale, riportando come punto di partenza il sistema sviluppato
+(e testato) nell sprint precedente N-1. Lo sprintN si deve concludere con un prototipo funzionante e
+testato che sarà l’inzio dello sprint (progetto) successivo N+1</p>
+</section>
+<section id="il-problema-del-load-time-lungo">
+<h3>Il problema del load-time lungo<a class="headerlink" href="#il-problema-del-load-time-lungo" title="Permalink to this headline">¶</a></h3>
+<p>Il problema del load-time lungo è stato affrontato da Arnaudo/Munari con
+l’idea di inviare due messaggi di ‘risposta’ (una per dire al driver
+che il ticket inviato è valido e una per inviare <code class="docutils literal notranslate"><span class="pre">chargeTaken</span></code>).
+A questo fine hanno fatto uso diretto della connessione TCP stabilita
+da una versione prototipale dell’accessGui fatta come GUI JAVA.</p>
+<p>Per consentire questa possibilità anche a livello di modellazione qak, in
+<em>ActorBasicFsm</em> è stato introdotto il metodo
+<span class="blue">storeCurrentRequest()</span> che permette di ricordare la richiesta corrente
+(cancellata da una <em>replyTo</em>).
+Questo però è un trucco/meccanismo che potrebbe risultare pericoloso.</p>
+<p>Meglio <span class="slidekp">affrontare il problema dal punto di vista logico</span>, impostando una
+interazione a DUE-FASI tra driver e service
+(compito che può svolgere la <em>serviceAcessGui</em>).</p>
+<ul class="simple">
+<li><p>FASE1: il driver invia il ticket e attenda una risposta (immediata)
+come ad esempio  <code class="docutils literal notranslate"><span class="pre">ticketaccepted/ticketrejected</span></code></p></li>
+<li><p>FASE2: il driver invia la richiesta <code class="docutils literal notranslate"><span class="pre">loaddone</span></code> e attenda la risposta (<code class="docutils literal notranslate"><span class="pre">chargeTaken</span></code>
+o fallimento per cause legate al servizio)</p></li>
+</ul>
+</section>
+<section id="il-problema-del-driver-distratto">
+<h3>Il problema del driver distratto<a class="headerlink" href="#il-problema-del-driver-distratto" title="Permalink to this headline">¶</a></h3>
+<p>Questo problema ha indotto il committente ad affermare che:</p>
+<p>quando un agente esterno (driver) invia il ticket per indurre il servizio a
+scaricare il truck, si <span class="slidekp">SUPPPONE GARANTITO</span> che il carico del truck sia
+UGUALE (o al più MINORE) del carico indicato nella prenotazione.</p>
+<p>Ciò in quanto non vi sono sensori (bilance , etc) che possano fornire il valore
+del carico effettivo sul Truck.</p>
+</section>
+<section id="il-problema-del-driver-malevolo">
+<h3>Il problema del driver malevolo<a class="headerlink" href="#il-problema-del-driver-malevolo" title="Permalink to this headline">¶</a></h3>
+<p>Si fa l’ipotesi che nessun driver cerchi di imbrogliare (rubando ticket, etc.)</p>
+</section>
+<section id="il-problema-dell-allarme-ignorato">
+<h3>Il problema dell’allarme ignorato<a class="headerlink" href="#il-problema-dell-allarme-ignorato" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="workers-giugno-luglio">
+<h2>Workers Giugno-Luglio<a class="headerlink" href="#workers-giugno-luglio" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">andrea</span><span class="o">.</span><span class="n">munari4</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+<span class="n">cristiano</span><span class="o">.</span><span class="n">arnaudo</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+
+<span class="n">riccardo</span><span class="o">.</span><span class="n">barbieri11</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+<span class="n">leonardo</span><span class="o">.</span><span class="n">ruberto</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+
+<span class="n">gabriele</span><span class="o">.</span><span class="n">tassinari2</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+<span class="n">krystian</span><span class="o">.</span><span class="n">koss</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+<span class="n">leonardo</span><span class="o">.</span><span class="n">baraldi</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+
+<span class="n">roberto</span><span class="o">.</span><span class="n">mirabella2</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+<span class="n">alessandro</span><span class="o">.</span><span class="n">pedini4</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+
+<span class="n">lorenzo</span><span class="o">.</span><span class="n">ziosi3</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+<span class="n">enrico</span><span class="o">.</span><span class="n">zacchiroli</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+<span class="n">luca</span><span class="o">.</span><span class="n">dominici3</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+
+<span class="n">caterina</span><span class="o">.</span><span class="n">leonelli2</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+<span class="n">matteo</span><span class="o">.</span><span class="n">longhi5</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+
+<span class="n">luca</span><span class="o">.</span><span class="n">lombardi12</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+<span class="n">giacomo</span><span class="o">.</span><span class="n">romanini3</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+<span class="n">lisa</span><span class="o">.</span><span class="n">innocentiuccini</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+
+<span class="n">letizia</span><span class="o">.</span><span class="n">mancini3</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">DiscussioniTF23</a><ul>
+<li><a class="reference internal" href="#problematiche-sul-temafinale23">Problematiche sul <span class="xref std std-ref">TemaFinale23</span></a><ul>
+<li><a class="reference internal" href="#lo-sprint0">Lo sprint0</a></li>
+<li><a class="reference internal" href="#il-problema-del-load-time-lungo">Il problema del load-time lungo</a></li>
+<li><a class="reference internal" href="#il-problema-del-driver-distratto">Il problema del driver distratto</a></li>
+<li><a class="reference internal" href="#il-problema-del-driver-malevolo">Il problema del driver malevolo</a></li>
+<li><a class="reference internal" href="#il-problema-dell-allarme-ignorato">Il problema dell’allarme ignorato</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#workers-giugno-luglio">Workers Giugno-Luglio</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="MPS.html"
+                          title="previous chapter">MPS</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="Libri.html"
+                          title="next chapter">Libri</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/DiscussioniTF23.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Libri.html" title="Libri"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="MPS.html" title="MPS"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">DiscussioniTF23</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

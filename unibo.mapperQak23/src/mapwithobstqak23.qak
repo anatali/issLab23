@@ -1,0 +1,441 @@
+/*
+ * Percorro una colonna tenendo conto del numero di stepok
+ * Al primo ostacolo mi giro e torno su di stepok passi
+ * 
+ * docker cp sceneConfig.js 87c9eb2e0989:/home/node/WEnv/WebGLScene/sceneConfig.js
+ */
+System mapwithobstqak23 //-msglog    
+Dispatch cmd       : cmd(MOVE)     
+Dispatch gotopos   : gotopos(X,Y)      
+Request step       : step( TIME )	
+Reply   stepdone   : stepdone(V)  
+Reply   stepfailed   : stepfailed(DURATION, CAUSE)
+Event alarm        : alarm(X)
+  
+Request  dopath   : dopath( PATH, OWNER, STEPTIME )
+Reply dopathdone  : dopathdone( ARG ) 
+Reply dopathfailed  : dopathfailed( ARG )
+
+Request engage        : engage(ARG)	
+Reply   engagedone    : engagedone(ARG)
+Reply   engagerefused : engagerefused(ARG)
+
+Dispatch disengage    : disengage(ARG)
+
+Context ctxbasicrobot         ip [host="127.0.0.1" port=8020]   
+Context ctxmapwithobstqak23   ip [host="localhost" port=8032]
+
+ExternalQActor basicrobot context ctxbasicrobot  
+     
+ 
+/*   
+ * ------------------------------------------------------------------
+  * ASSUNZIONE: bordo superiore libero
+ * ------------------------------------------------------------------
+*/     
+QActor mapwithobstqak23 context ctxmapwithobstqak23{    
+[#   
+val MaxNumStep  = 6
+var NumStep     = 0
+var stepok      = 0
+val StepTime    = 340
+var CurMoveTodo = "h"
+val MapName     = "mapWithObst23"
+val planner     = unibo.planner23.Planner23Util() 
+val Path        = "\"[l, l, w, w]\""
+val MyName      = name
+var PathToHome  = ""
+		var MyPath    = "lwwwwww"  //for rapid test of planner.doPathOnMap
+        var domap     = false
+#]  
+
+	State s0 initial {
+		if [# domap #] {
+		    println("$MyName STARTS")
+			[# NumStep     = 0;     
+	           planner.initAI() 
+	           planner.showCurrentRobotState() 
+	           //CommUtils.waitTheUser("s0, please hit 1CR")	 
+	        #]   	 
+	 	    request basicrobot -m engage : engage($MyName)    
+ 	    }
+	}	   
+	Transition t0 whenReply engagedone -> coverNextColumn //testDopath //coverNextColumn //
+ 
+	State coverNextColumn{  		  
+		printCurrentMessage
+   		[# stepok = 0	#]      
+   		request basicrobot -m step : step($StepTime)	
+	}
+	Transition t0  whenReply stepdone -> coverColumn  
+				   whenReply stepfailed -> backHome  
+ 	  			   
+	State coverColumn{  		   
+   		//printCurrentMessage
+   		[# stepok = stepok + 1
+   		   planner.updateMap(  "w", "" ) 		
+   		#]
+   		//println("coverColumn stepok=$stepok NumStep=$NumStep")
+     	delay 100 
+   		request basicrobot -m step : step($StepTime)
+ 	}
+	Transition t0  whenReply stepdone -> coverColumn
+ 	               //whenReply stepfailed and [# stepok <  MaxNumStep #] -> backHome
+ 	               whenReply stepfailed  -> backHome
+ 
+	State backHome{  	
+		printCurrentMessage color blue  
+		println("$name |  GOING BACK to wallup stepok=$stepok")	color blue   
+		[#   planner.updateMapObstacleOnCurrentDirection() #]   		
+   			forward basicrobot -m cmd : cmd(a)
+			[#   planner.updateMap(  "l", "" )    #]  			
+   			delay 300 
+   			forward basicrobot -m cmd : cmd(a)
+			[#   planner.updateMap(  "l", "" )   #]   			
+   			delay 300   			
+    		[#  planner.showCurrentRobotState()  #]
+		//[# CommUtils.waitTheUser("GOING BACK, please hit 1CR")	 #]
+    		request basicrobot -m step : step($StepTime)   
+	}	
+   	Transition t0  whenReply stepdone -> gotoHome 
+ 	               whenReply stepfailed -> turnAndStep //atHomeFatal1
+ 
+/*
+ * Il ritorno a home può provocare un hit su wallup
+ */ 
+ 	State gotoHome{
+ 		println("$name | gotoHome stepok=$stepok")	color blue
+ 		[# planner.updateMap(  "w", "" ) 
+ 		   stepok = stepok - 1 
+ 		#] 
+ 		[#  planner.showCurrentRobotState()   #]
+ 		//[# CommUtils.waitTheUser("gotoHome")	 #] 
+ 		delay 300  
+ 		request basicrobot -m step : step($StepTime)  
+ 	}
+// 	Goto gotoHome if [# stepok > 0 #] else turnAndStep  //WRONG
+  	Transition t0  whenReply stepdone and [# stepok > 0  #] -> gotoHome
+  	               whenReply stepdone and [# stepok == 0 #] -> turnAndStep
+  				   whenReply stepfailed -> turnAndStep //se hit wallup
+
+ 	
+ 	State turnAndStep{
+ 		println("$name | turnAndStep  ")	color blue
+ 		//[# planner.updateMap(  "w", "" ) #] 
+   		forward basicrobot -m cmd : cmd(r)
+		[#   planner.updateMap(  "r", "" )    #]  			
+   		delay 300 		
+		//[# CommUtils.waitTheUser("turnAndStep, please hit 1CR")	 #]
+   		request basicrobot -m step : step($StepTime)  //step laterale
+ 	}
+  	Transition t0  whenReply stepdone -> posForNextColumn
+  				   whenReply stepfailed -> endOfWork
+ 	
+ 	State posForNextColumn{
+ 		[#  planner.updateMap(  "w", "" )  #]
+   		forward basicrobot -m cmd : cmd(r)
+		[#   planner.updateMap(  "r", "" )    #]  	
+		println("posForNextColumn stepok=$stepok")		
+   		[#  planner.showCurrentRobotState()   #]		
+ 		//[# CommUtils.waitTheUser("posForNextColumn")	 #]
+   		delay 300 		 
+	}
+ 	Goto coverNextColumn
+ 	 
+ 	
+	State endOfWork{  		  
+   		printCurrentMessage
+   		[#  planner.showMap()
+   			var Athome = planner.atHome(); 
+   			println("athome=$Athome")    			
+   		#] 
+   		run planner.saveRoomMap("$MapName")
+	}	
+	Goto backToHome if [# ! planner.atHome() #] else atHomeAgain
+	 
+	State backToHome{ 
+		[#  planner.setGoal(0,0) #]
+		[# PathToHome = planner.doPlanCompact() #] //List<aima.core.agent.Action> 
+		println("Azioni pianificate per ritorno finale: $PathToHome")
+		//[# CommUtils.waitTheUser("backToHome hit1CR")	 #] 
+ 		request basicrobot -m dopath : dopath( $PathToHome, pathcaller, $StepTime )
+	}
+ 	Transition t0  whenReply dopathdone   -> atHomeAgain
+ 			       whenReply dopathfailed -> atHomeAgain // IGNORO HIT SU wallleft atHomeFatal
+ 
+ 	 
+ 	//WARNING: dopath non cambia la mappa !!
+	State atHomeAgain{
+		println("$name AT HOME AGAIN")	color blue
+		forward basicrobot -m cmd : cmd(l)
+   		[#  planner.doPathOnMap(PathToHome)
+   			planner.updateMap(  "l", "" )  
+   			planner.showMap()
+    		planner.saveRoomMap("$MapName")
+   		#]		
+   		forward basicrobot -m disengage : disengage($MyName)
+	}
+/* 	
+	State atHomeFatal{
+		//printCurrentMessage
+ 		println("atHomeFatal stepok=$stepok")	color blue
+		forward basicrobot -m cmd : cmd(l)
+   		[#  planner.doPathOnMap(PathToHome)
+   			 planner.updateMap(  "l", "" )  
+   			planner.showMap()
+    		planner.saveRoomMap("$MapName")
+   		#]		
+	}
+	Goto end
+*/ 
+	State end{
+		//Riproduci il path sulla mappa
+		
+	}
+} 
+
+
+/*
+-----------------------------------------------------
+mapusage
+-----------------------------------------------------
+*/	
+  
+QActor mapusage context ctxmapwithobstqak23{
+[# val MapName     = "mapCompleteWithObst23ok"
+   val CompleteMapName = "mapCompleteWithObst23"
+   val planner     = unibo.planner23.Planner23Util() 
+   val MyName      = name
+   var PathToPos   = ""
+   var PathToHome  = ""
+   var completemap = false   //false when using worker
+   val StepTime    = 330
+#]
+
+	State s0 initial {
+		printCurrentMessage
+		if [# completemap #]{
+			 println("$MyName STARTS") color green 
+			[# planner.initAI() 
+	           planner.showCurrentRobotState() 
+	        #]   	 
+	 		request basicrobot -m engage : engage($MyName)   
+ 		}
+	}	   
+	Transition t0 whenReply engagedone -> loadTheMap   
+	
+	State loadTheMap{
+		[#  planner.loadRoomMap("$MapName")
+			planner.showCurrentRobotState()
+		#] 
+	}
+	//Goto completeTheMap
+	Goto completeTheMap if [# completemap #] else work
+ 	
+ 	
+ 	State work{
+ 		forward mover -m gotopos : gotopos(3,2)
+ 	}
+ 	
+	State completeTheMap{
+		[#   
+			PathToPos = planner.planForNextDirtyCompact()             
+		#] 
+		println("Azioni pianificate per raggiungere dirty: $PathToPos ${PathToPos.length}") color green
+		//[# CommUtils.waitTheUser("to next dirty hit1CR")	 #] 
+		if [# PathToPos.length > 0 #]{
+			request basicrobot -m dopath : dopath( $PathToPos, mapusage, $StepTime )		
+		}else{ forward mapusage -m cmd : cmd(done) }  //TODO better
+	}
+ 	Transition t0  whenMsg cmd            -> backToHome
+ 	               whenReply dopathdone   -> foundFree
+ 			       whenReply dopathfailed -> foundObstacle  
+	
+	State foundFree{
+		println("foundFree") color blue
+		[#  planner.doPathOnMap(PathToPos)
+			planner.showCurrentRobotState() 
+		#]
+	}
+	Goto completeTheMap
+	 
+	State foundObstacle{
+		printCurrentMessage color red
+		println("foundObstacle $PathToPos") color blue
+		onMsg( dopathfailed : dopathfailed( PATHTODO )){
+			[# val PathTodo = payloadArg(0) 
+			   var PathDone = ""
+			   if( PathTodo != "e"){
+				   PathDone = PathToPos.substring(0 , PathToPos.lastIndexOf(PathTodo))
+			   }else{
+			   	   PathDone = PathToPos.substring(0, PathToPos.length-1) //ultima w fallita
+			   }
+			   CommUtils.outblue("foundObstacle PathDone=$PathDone")  
+			   planner.doPathOnMap(PathDone)
+			   planner.updateMapObstacleOnCurrentDirection()
+			   planner.showCurrentRobotState()
+			#]	 
+			[# CommUtils.waitTheUser("to next dirty hit1CR")	 #]		
+		}
+	}	
+	Goto completeTheMap
+
+	State backToHome{ 
+		[#  planner.setGoal(0,0) #]
+		[#  PathToHome = planner.doPlanCompact() #]  
+		println("Azioni pianificate per ritorno finale: $PathToHome")
+		[# CommUtils.waitTheUser("backToHome hit1CR")	 #] 
+ 		request basicrobot -m dopath : dopath( $PathToHome, pathcaller, $StepTime )
+	}
+ 	Transition t0  whenReply dopathdone   -> mapCompleted
+ 			       whenReply dopathfailed -> mapCompleted // IGNORO HIT SU wallleft atHomeFatal
+
+
+	State mapCompleted{
+		println("mapCompleted") color red
+		[# planner.doPathOnMap(PathToHome) #]
+		   			//planner.updateMap(  "l", "" )  
+		
+		[# planner.showCurrentRobotState() #]
+	    [# planner.saveRoomMap("$CompleteMapName") #]			    
+	    forward basicrobot -m disengage : disengage($MyName)
+	}		
+	
+
+}
+
+/*
+-----------------------------------------------------
+mover 
+-----------------------------------------------------
+*/	
+QActor mover context ctxmapwithobstqak23{
+[# val MapName     = "mapCompleteWithObst23ok"
+   val planner     = unibo.planner23.Planner23Util() 
+   val MyName      = name
+   var PathToPos   = ""
+   var PathToHome  = ""
+   val StepTime    = 330
+   val workerrun   = true
+#]	
+	State s0 initial {
+		printCurrentMessage
+	   if[#  workerrun  #]{
+		    println("$MyName STARTS") color blue 
+			[#  planner.initAI() 
+		        planner.showCurrentRobotState() 
+		    #]   	 
+		    request basicrobot -m engage : engage($MyName)  
+	    } 
+	}	   
+	Transition t0 whenReply engagedone -> loadTheMap   
+	
+	State loadTheMap{
+		[#  planner.loadRoomMap("$MapName")
+			planner.showCurrentRobotState()
+		#] 
+		forward mover -m gotopos : gotopos(3,2)
+	}
+	Transition t0 whenMsg gotopos -> work
+ 	
+	State work{
+		//printCurrentMessage color blue
+		onMsg( gotopos : gotopos(X,Y)){
+			[#  val X = payloadArg(0).toInt()
+				val Y = payloadArg(1).toInt()
+				planner.setGoal(X,Y)   
+				PathToPos = planner.doPlanCompact() 			      
+			#] 
+			println("Azioni pianificate per raggingere POS: $PathToPos StepTime=$StepTime") color blue
+			[# CommUtils.waitTheUser("to Pos hit1CR")	 #] 
+	 		request basicrobot -m dopath : dopath( $PathToPos, mapusage, $StepTime )
+ 		}
+	}
+ 	Transition t0  whenReply dopathdone   -> atposdone
+ 			       whenReply dopathfailed -> atposfailed  
+	
+	State atposdone{
+		println( "atposdone ") color green		
+		[#  planner.doPathOnMap(PathToPos)
+			planner.showCurrentRobotState() 
+		#]		
+	}
+	Goto backToHome
+	
+	State atposfailed{
+		println( "atposfailed ") color red
+		[# planner.showCurrentRobotState() #]
+		//forward basicrobot -m disengage : disengage($MyName)
+	}	
+
+	State backToHome{ 
+		[#  planner.setGoal(0,0) #]
+		[#  PathToHome = planner.doPlanCompact() #]  
+		println("Azioni pianificate per ritorno finale: $PathToHome") color blue
+		[# CommUtils.waitTheUser("backToHome hit1CR")	 #] 
+ 		request basicrobot -m dopath : dopath( $PathToHome, pathcaller, $StepTime )
+	}
+ 	Transition t0  whenReply dopathdone   -> end
+ 			       whenReply dopathfailed -> end  
+
+	State end{
+		printCurrentMessage
+		forward basicrobot -m cmd : cmd(l)
+		[# planner.doPathOnMap(PathToHome) 
+		   planner.doMove("l") 
+		   planner.showCurrentRobotState() 
+	    #]
+	}
+
+}
+
+
+/*
+-----------------------------------------------------
+Testdopoath fa test di planner.doPathOnMap
+-----------------------------------------------------
+*/	
+/* 
+	State testDopath{
+	[#  //val Path    = "\"[l, w, w, w, w]\""
+		val MyName = name 
+	#] 		
+	    println("testDopath  $MyPath ")
+		request basicrobot -m dopath : dopath($MyPath,$MyName)
+	}
+	Transition t0 whenReply dopathdone   -> testDopathEndOk
+				  whenReply dopathfailed -> testDopathEndKo
+	State testDopathEndOk{
+		printCurrentMessage color magenta
+		forward basicrobot -m disengage :  disengage($MyName)
+		[# planner.doPathOnMap(MyPath) #]
+	}		
+	State testDopathEndKo{
+		printCurrentMessage color magenta
+		forward basicrobot -m disengage :  disengage($MyName)
+		onMsg( dopathfailed : dopathfailed( PATHTODO )){
+			[# val PathTodo = payloadArg(0) 
+			   val PathDone = MyPath.substring(0 , MyPath.lastIndexOf(PathTodo))
+			   planner.doPathOnMap(PathDone)
+			   planner.showCurrentRobotState();
+			#]
+			println("testDopathEndKo $MyPath $PathTodo ${PathDone}")  
+		}
+ 
+	}	
+}
+ 
+QActor alarmtester context ctxmapwithobstqak23{
+	State s0 initial {
+		//printCurrentMessage color red		 
+	}
+	Goto genalarm
+	
+	State genalarm{
+		delay 1200
+		println("alarmtester emits ") color red
+		emit alarm : alarm(testpath)		
+	}
+}
+*/ 
+

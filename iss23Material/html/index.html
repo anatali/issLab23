@@ -1,48 +1,41 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>iss23 &#8212; iss23 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
-    
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
-    
-    <script src="_static/sidebar.js"></script>
-    
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Introduzione" href="Introduzione23.html" /> 
+    <link rel="next" title="Introduzione" href="Introduzione23.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="Introduzione23.html" title="Introduzione"
-             accesskey="N">next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">iss23 1.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">iss23</a></li> 
-      </ul>
-    </div>  
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <section id="iss23">
-<h1>iss23<a class="headerlink" href="#iss23" title="Permalink to this headline">¶</a></h1>
+<h1>iss23<a class="headerlink" href="#iss23" title="Permalink to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Introduzione23.html">Introduzione</a><ul>
@@ -773,7 +766,11 @@
 <li class="toctree-l3"><a class="reference internal" href="QakActors23.html#qak-codice-e-risorse-generate">Qak codice e risorse generate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="QakActors23.html#qak-factory">Qak factory</a></li>
 <li class="toctree-l3"><a class="reference internal" href="QakActors23.html#qak-infrastructure">Qak infrastructure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="QakActors23.html#id1">Qak syntax</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="QakActors23.html#id1">Qak syntax</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="QakActors23.html#il-metamodello-qak">Il metamodello Qak</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="QakActors23.html#qak-syntax-esempi">Qak syntax: esempi</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="QakActors23.html#dichiarazione-degli-attori">Dichiarazione degli attori</a></li>
 <li class="toctree-l4"><a class="reference internal" href="QakActors23.html#dichiarazione-dei-messaggi">Dichiarazione dei messaggi</a></li>
 <li class="toctree-l4"><a class="reference internal" href="QakActors23.html#operazioni-di-invio-messaggi">Operazioni di invio messaggi</a></li>
@@ -812,8 +809,41 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="QakActors23.html#codedqactor">CodedQActor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QakActors23.html#externalqactor">ExternalQActor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="QakActors23.html#streamedqactor">StreamedQActor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QakActors23.html#streamedqactor">StreamedQActor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="QakActors23.html#subscribetolocalactor">subscribeToLocalActor</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="QakActors23.html#attore-come-risorsa-coap">Attore come risorsa CoAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QakActors23.html#qakactors23-note-implementative">QakActors23 note implementative</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="QakActors23.html#it-unibo-kactor-actorbasic-kt">it.unibo.kactor.ActorBasic.kt</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="QakActors23.html#parte-kotlininheritance">Parte kotlinInheritance</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="QakActors23.html#coapresource">CoapResource</a></li>
+<li class="toctree-l5"><a class="reference internal" href="QakActors23.html#mqttcallback">MqttCallback</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="QakActors23.html#actorbasic-il-funzionamento">ActorBasic: il funzionamento</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="QakActors23.html#kactor">kactor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="QakActors23.html#automsg">autoMsg</a></li>
+<li class="toctree-l5"><a class="reference internal" href="QakActors23.html#sendmessagetoactor">sendMessageToActor</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="QakActors23.html#it-unibo-kactor-actorbasicfsm-kt">it.unibo.kactor.ActorBasicFsm.kt</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="QakActors23.html#come-definire-codedqactor">Come definire CodedQactor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="QakActors23.html#sonarhcsr04support23">sonarHCSR04Support23</a></li>
+<li class="toctree-l3"><a class="reference internal" href="QakActors23.html#datacleaner">dataCleaner</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="QakActors23.html#datacleaner-gestione-messaggi">dataCleaner: gestione messaggi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="QakActors23.html#una-pipe-di-codedqactor">Una pipe di CodedQactor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="QakActors23.html#sonar23">sonar23</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="QakActors23Demo.html">QakActors23Demo</a><ul>
@@ -828,6 +858,7 @@
 <li class="toctree-l3"><a class="reference internal" href="QakActors23Demo.html#demorequest-called">demorequest called</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="QakActors23Demo.html#demoasktocaller-qak">demoasktocaller.qak</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QakActors23Demo.html#democodedqactor-qak">democodedqactor.qak</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="QakActors23Demo.html#datahandler">datahandler</a></li>
 <li class="toctree-l3"><a class="reference internal" href="QakActors23Demo.html#workactor">workactor</a></li>
@@ -861,6 +892,31 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="BasicRobot23Lezione.html">BasicRobot23Lezione</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="BasicRobot23Lezione.html#br23lez-requisito-tipidirobot">br23lez requisito  <em>tipidirobot</em></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="BasicRobot23Lezione.html#br23lez-una-prima-architettura">br23lez Una prima architettura</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BasicRobot23Lezione.html#br23lez-basicrobot23-configurazione">br23lez BasicRobot23: configurazione</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="BasicRobot23Lezione.html#br23lez-basicrobot23-supporti">br23lez BasicRobot23: supporti</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicRobot23Lezione.html#br23lez-file-di-configurazione">br23lez File di configurazione</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="BasicRobot23Lezione.html#br23lez-basicrobot23-model">br23lez basicrobot23 model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BasicRobot23Lezione.html#br23lez-uso-del-planner">br23lez Uso del planner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BasicRobot23Lezione.html#br23lez-basicrobot23-versione-maggio30">br23lez basicrobot23 versione Maggio30</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="BasicRobot23Lezione.html#br23lez-basicrobot23-messaggi">br23lez basicrobot23 messaggi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BasicRobot23Lezione.html#br23lez-basicrobot23-attori">br23lez basicrobot23 attori</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="BasicRobot23Lezione.html#br23lez-basicrobot23-engager">br23lez basicrobot23 engager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicRobot23Lezione.html#br23lez-basicrobot23-basicrobot">br23lez basicrobot23 basicrobot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicRobot23Lezione.html#br23lez-basicrobot23-planexec">br23lez basicrobot23 planexec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicRobot23Lezione.html#br23lez-basicrobot23-robotposendosimbiotico">br23lez basicrobot23 robotposendosimbiotico</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="BasicRobot23.html">BasicRobot23</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="BasicRobot23.html#requisito-tipidirobot">requisito  <em>tipidirobot</em></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="BasicRobot23.html#una-prima-architettura">Una prima architettura</a></li>
@@ -869,10 +925,13 @@
 <li class="toctree-l4"><a class="reference internal" href="BasicRobot23.html#file-di-configurazione">File di configurazione</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="BasicRobot23.html#basicrobot23-le-funzioni">basicrobot23 Le funzioni</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BasicRobot23.html#basicrobot23-messaggi">basicrobot23 messaggi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BasicRobot23.html#basicrobot23-componenti">basicrobot23 Componenti</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="BasicRobot23.html#basicrobot23-model">basicrobot23 model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="BasicRobot23.html#uso-del-planner">Uso del planner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BasicRobot23.html#basicrobot23-yaml">basicrobot23.yaml</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="RobotPos.html">Posizionamento del robot</a><ul>
@@ -990,8 +1049,12 @@
 <li class="toctree-l3"><a class="reference internal" href="RaspberrySoftware.html#samba">Samba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="RaspberrySoftware.html#aiocoap">aiocoap</a></li>
 <li class="toctree-l3"><a class="reference internal" href="RaspberrySoftware.html#shellinabox">Shellinabox</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RaspberrySoftware.html#python">Python</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RaspberrySoftware.html#installazione-del-modulo-gpio-per-python3">Installazione del modulo GPIO per Python3</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="RaspberrySoftware.html#ambiente-virtuale-python">Ambiente virtuale Python</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="RaspberrySoftware.html#installezione-di-virtualenv">Installezione di virtualenv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RaspberrySoftware.html#installazione-di-virtualenv">Installazione di virtualenv</a></li>
 <li class="toctree-l4"><a class="reference internal" href="RaspberrySoftware.html#installezione-di-virtualenvwrapper">Installezione di virtualenvwrapper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="RaspberrySoftware.html#creazione-di-un-virtual-environment">Creazione di un virtual environment</a></li>
 </ul>
@@ -1043,7 +1106,16 @@
 <li class="toctree-l3"><a class="reference internal" href="RaspApplCode.html#software-per-il-led">Software per il Led</a></li>
 <li class="toctree-l3"><a class="reference internal" href="RaspApplCode.html#software-per-il-sonar">Software per il Sonar</a></li>
 <li class="toctree-l3"><a class="reference internal" href="RaspApplCode.html#software-lowlevel-per-il-radarsystem">Software lowlevel per il RadarSystem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="RaspApplCode.html#software-highlevel-che-usa-sonar-e-led">Software highlevel che usa Sonar e Led</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RaspApplCode.html#sonar-e-led-come-attori">Sonar e Led come attori</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RaspApplCode.html#progetto-unibo-sonarqak23">Progetto  unibo.sonarqak23</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="RaspApplCode.html#sonarqak23-fase1">sonarqak23 Fase1</a></li>
+<li class="toctree-l5"><a class="reference internal" href="RaspApplCode.html#sonarqak23-fase2">sonarqak23 Fase2</a></li>
+<li class="toctree-l5"><a class="reference internal" href="RaspApplCode.html#sonar23observer">sonar23observer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="RaspApplCode.html#sonarqak23-fase3">sonarqak23 Fase3</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1133,25 +1205,45 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="KotlinNotes.html">KotlinNotes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="KotlinNotes.html#koltin-per-iss-72939">Koltin per ISS-72939</a></li>
-<li class="toctree-l2"><a class="reference internal" href="KotlinNotes.html#la-parte-strutturale">La parte strutturale</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="KotlinNotes.html#alcuni-punti-chiave">Alcuni punti-chiave</a></li>
+<li class="toctree-l2"><a class="reference internal" href="KotlinNotes.html#koltin-per-iss-72939">Koltin per ISS-72939</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#il-file-labintroductiontokotlin-html">Il file LabIntroductionToKotlin.html</a></li>
+<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#il-file-demo2022-kt">Il file demo2022.kt</a></li>
 <li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#dati-e-tipi-di-dato">Dati e tipi di dato</a></li>
 <li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#oggetti-e-classi">Oggetti e classi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#le-funzioni">Le funzioni</a></li>
+<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#le-funzioni">Le funzioni</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="KotlinNotes.html#cps">CPS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#percorso-funzioni-cps-coroutines-canali-attori">Percorso funzioni-cps-coroutines-canali-attori</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="KotlinNotes.html#la-parte-concorrente">La parte concorrente</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#asynch">Asynch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#kotlin-concurrent-overview">Kotlin concurrent overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#le-coroutines">Le coroutines</a></li>
-<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#id1">Suspending functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#asynch">Asynch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="KotlinNotes.html#sam">SAM</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#le-coroutines">Le coroutines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="KotlinNotes.html#coroutine-contesti-e-dispatchers">Coroutine: contesti e dispatchers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="KotlinNotes.html#confinamento">Confinamento</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#lancio-di-coroutines">Lancio di coroutines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="KotlinNotes.html#launch">Launch</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#runblocking">runBlocking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#id1">Sospensione di coroutine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="KotlinNotes.html#suspending-functions">Suspending functions</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="KotlinNotes.html#la-parte-interazione">La parte interazione</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#i-canali">I canali</a></li>
 <li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#receivechannel">ReceiveChannel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#sendchannel">SendChannel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#gli-attori">Gli attori</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="KotlinNotes.html#kotlin-actor">Kotlin actor</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="KotlinNotes.html#actorbasic-kt-incapsula-un-attore">ActorBasic.kt incapsula un attore</a></li>
 </ul>
 </li>
@@ -1398,13 +1490,21 @@
 <li class="toctree-l2"><a class="reference internal" href="TemaFinale22.html#tfrequirements">TFRequirements</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Studenti2023.html">Studenti2023</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Studenti2023.html">Studenti2023</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Studenti2023.html#analisi-del-tf23">Analisi del TF23</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Studenti2023.html#il-problema-del-load-time-lungo">Il problema del load-time lungo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Studenti2023.html#il-problema-del-driver-distratto">Il problema del driver distratto</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="DeliverableBoundaryWalkReq1.html">DeliverableBoundaryWalkReq1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="DeliverableAppl1HTTP.html">DeliverableAppl1HTTP</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="DeliverableAppl1HTTP.html#problematiche-sprint2">Problematiche Sprint2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DeliverableAppl1HTTP.html#actor-gbt">Actor GBT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DeliverableAppl1HTTP.html#event-in-informatica">event in informatica</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DeliverableAppl1HTTP.html#spiega-i-qak-di-natali-antonio">Spiega i qak di Natali Antonio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DeliverableAppl1HTTP.html#spiega-il-corso-di-ingegneria-dei-sistemi-software-di-antonio-natali-universita-di-bologna">Spiega il corso di Ingegneria dei Sistemi Software di Antonio Natali Università di Bologna</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DeliverableAppl1HTTP.html#spiega-i-quasi-actor-di-antonio-natali-universita-di-bologna">Spiega i quasi actor di Antonio Natali Università di Bologna</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DeliverableAppl1HTTP.html#spiega-appl1-httpsprint2-del-corso-di-ingegneria-dei-sistemi-software-di-antonio-natali-universita-di-bologna">Spiega Appl1-HTTPSprint2 del corso di Ingegneria dei Sistemi Software di Antonio Natali Università di Bologna</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DeliverableAppl1HTTP.html#spiega-come-costruire-un-sistema-software-che-muove-un-differential-drive-robot-lungo-il-perimetro-privo-di-ostacoli-di-una-stanza">Spiega come costruire un sistema software che muove un differential drive robot lungo il perimetro (privo di ostacoli) di una stanza</a></li>
@@ -1412,10 +1512,40 @@
 <li class="toctree-l2"><a class="reference internal" href="DeliverableAppl1HTTP.html#programma-java-che-muove-un-differential-drive-robot-lungo-il-perimetro-privo-di-ostacoli-di-una-stanza">Programma Java che muove un differential drive robot lungo il perimetro (privo di ostacoli) di una stanza</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="TemaFinale23.html">TemaFinale23</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TemaFinale23.html#alarm-requirements">Alarm requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TemaFinale23.html#service-users-story">Service users story</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="MPS.html">MPS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="MPS.html#aspetti">Aspetti</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MPS.html#mps-overview">MPS overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="MPS.html#introduction-to-jetbrains-mps-video">Introduction to JetBrains MPS VIDEO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MPS.html#mpsbase">MPSBase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MPS.html#mps-calculator">MPS Calculator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="MPS.html#mps-links">MPS links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MPS.html#mps-dependencies">MPS dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MPS.html#amazon">Amazon</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Libri.html">Libri</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id1">2023</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id2">2022</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id3">2021</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id4">2020</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id5">2010</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id6">2011</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id7">2009</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id8">2007</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id9">2000</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <section id="indices-and-tables">
-<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
@@ -1425,34 +1555,82 @@
 </section>
 
 
-            <div class="clearer"></div>
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="#">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">iss23</a><ul>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
-</ul>
-</li>
+<h1 class="logo"><a href="#">iss23</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Introduzione23.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CriteriValutazione.html">Criteri di valutazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Template23.html">Il template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Primipassioperativi.html">Primi passi operativi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Principi.html">Principi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot23.html">VirtualRobot23</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Applicazione1.html">Applicazione1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Appl1-HTTPSprint1.html">Appl1-HTTPSprint1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Appl1-HTTPSprint2.html">Appl1-HTTPSprint2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Appl1-HTTPSprint3Init.html">Appl1-HTTPSprint3Init</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Interaction.html">Interaction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unibo.basicomm23.html">unibo.basicomm23</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Appl1-HTTPSprint3.html">Appl1-HTTPSprint3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Appl1-WSSprint3.html">Appl1-WSSprint3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StepAsynch.html">StepAsynch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actors23.html">Actors23</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actors23FSM.html">Actors23FSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Producers-Consumer.html">Producers-Consumer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SistemiActors23.html">SistemiActors23</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Appl1Actors23.html">Appl1Actors23</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Appl1ActorsFsm23.html">Appl1ActorsFsm23</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QakActors23.html">QakActors23</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QakActors23Demo.html">QakActors23Demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ProdConsQak.html">ProdConsQak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Appl1ActorsQak23.html">Appl1ActorsQak23</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BasicRobot23Lezione.html">BasicRobot23Lezione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BasicRobot23.html">BasicRobot23</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotPos.html">Posizionamento del robot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotPosWeb.html">robotposweb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsoDiunPlanner.html">Uso di un planner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspApplCode.html">RaspApplCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem23.html">RadarSystem23</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KotlinNotes.html">KotlinNotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AppuntiTecnologie.html">Appunti su tecnologie</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AppuntiAPIRest.html">Appunti API Rest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpringBootIntro.html">SpringBootIntro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actors23Facade.html">Actors23Facade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpringDataRest.html">SpringDataRest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Books.html">Books</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemaFinale22.html">TemaFinale22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Studenti2023.html">Studenti2023</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DeliverableBoundaryWalkReq1.html">DeliverableBoundaryWalkReq1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DeliverableAppl1HTTP.html">DeliverableAppl1HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemaFinale23.html">TemaFinale23</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MPS.html">MPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Libri.html">Libri</a></li>
 </ul>
 
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="Introduzione23.html"
-                          title="next chapter">Introduzione</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/index.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="Introduzione23.html" title="next chapter">Introduzione</a></li>
+  </ul></li>
+</ul>
+</div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -1462,27 +1640,33 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="Introduzione23.html" title="Introduzione"
-             >next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">iss23 1.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">iss23</a></li> 
-      </ul>
+    <div class="footer">
+      &copy;2022, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, Antonio Natali.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
-    </div>
+
+    
+
+    
   </body>
 </html>

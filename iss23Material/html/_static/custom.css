@@ -37,6 +37,13 @@ body {
     border-radius: 25px;
   }
 
+  .high{
+    background-color: hsl(62, 100%, 75%);
+    font-size: 16px; 
+    line-height: 1.5;
+    padding: 3px
+  }  
+
   .worktodo{
     background-color: #66ff66;
     padding: 3px;

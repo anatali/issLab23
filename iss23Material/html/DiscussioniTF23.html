@@ -1,23 +1,20 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>DiscussioniTF23 &#8212; iss23 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
-    
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
-    
-    <script src="_static/sidebar.js"></script>
-    
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Libri" href="Libri.html" />
@@ -46,9 +43,9 @@
           <div class="body" role="main">
             
   <section id="discussionitf23">
-<h1>DiscussioniTF23<a class="headerlink" href="#discussionitf23" title="Permalink to this headline">¶</a></h1>
+<h1>DiscussioniTF23<a class="headerlink" href="#discussionitf23" title="Permalink to this heading">¶</a></h1>
 <section id="problematiche-sul-temafinale23">
-<h2>Problematiche sul <a class="reference internal" href="TemaFinale23.html#temafinale23"><span class="std std-ref">TemaFinale23</span></a><a class="headerlink" href="#problematiche-sul-temafinale23" title="Permalink to this headline">¶</a></h2>
+<h2>Problematiche sul <a class="reference internal" href="TemaFinale23.html#temafinale23"><span class="std std-ref">TemaFinale23</span></a><a class="headerlink" href="#problematiche-sul-temafinale23" title="Permalink to this heading">¶</a></h2>
 <p>Nelle discussioni con il committente, sono emerse alcune problematiche:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#lo-sprint0"><span class="std std-ref">Lo sprint0</span></a>.</p></li>
@@ -62,7 +59,7 @@ a chi ha fatto la richiesta, anche quando la richiesta è inviata da un ‘alien
 pagine HTML</p></li>
 </ul>
 <section id="lo-sprint0">
-<h3>Lo sprint0<a class="headerlink" href="#lo-sprint0" title="Permalink to this headline">¶</a></h3>
+<h3>Lo sprint0<a class="headerlink" href="#lo-sprint0" title="Permalink to this heading">¶</a></h3>
 <p>Lo scopo dello sprint0 è <span class="blue">analizzare il testo dei requisiti</span> in modo da
 ‘formalizzarli’ attraverso un modello  comprensibile alla macchina con cui:</p>
 <ul class="simple">
@@ -72,14 +69,26 @@ e sulle interazioni tra questi che sono esplicitamente definite o deducibili dal
 <li><p>delineare una prima ipotesi di sprint e una prima valutazione dei tempi previsti per ogni sprint</p></li>
 <li><p>definire il goal dello sprint1 e creare un nuovo progetto per lo sprint1</p></li>
 </ul>
-<p>In generale, lo sprintN deve essere associato a un progetto comprensivo di un proprio
+<p>In generale, lo <em>sprintN</em> deve essere associato a un progetto comprensivo di un proprio
 userdocs di documentazione /diario e deve definire in modo esplicito i requisiti che intende coprire, il suo GOAL
 e i principali piani di testing funzionale, riportando come punto di partenza il sistema sviluppato
-(e testato) nell sprint precedente N-1. Lo sprintN si deve concludere con un prototipo funzionante e
-testato che sarà l’inzio dello sprint (progetto) successivo N+1</p>
+(e testato) nello sprint precedente <em>N-1</em>. Lo <em>sprintN</em> si deve concludere con un prototipo funzionante e
+testato che sarà l’inizio dello sprint (progetto) successivo <em>N+1</em>.</p>
+<section id="in-generale-lo-sprint0">
+<h4>In generale, lo sprint0:<a class="headerlink" href="#in-generale-lo-sprint0" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>deve essere accuratamente protetto dai ‘bias culturali’ di chi legge</p></li>
+<li><p>non deve introdurre comportementi che non sono esplicitamente definiti nel testo</p></li>
+<li><p>non deve introdurre interazioni tra le parti che non sono esplicitamente definiti nel testo</p></li>
+<li><p>consente di definire un <span class="slidekp">modello parziale</span> del sistema, in cui solo sono
+riportati solo i componenti e le interazioni deducibili dal testo</p></li>
+<li><p>il modello iniziale del sistema potrebbe essere eseguibile solo in relazione a un
+<span class="slidekp">ridotto sotto-insieme</span> di requisiti</p></li>
+</ul>
+</section>
 </section>
 <section id="il-problema-del-load-time-lungo">
-<h3>Il problema del load-time lungo<a class="headerlink" href="#il-problema-del-load-time-lungo" title="Permalink to this headline">¶</a></h3>
+<h3>Il problema del load-time lungo<a class="headerlink" href="#il-problema-del-load-time-lungo" title="Permalink to this heading">¶</a></h3>
 <p>Il problema del load-time lungo è stato affrontato da Arnaudo/Munari con
 l’idea di inviare due messaggi di ‘risposta’ (una per dire al driver
 che il ticket inviato è valido e una per inviare <code class="docutils literal notranslate"><span class="pre">chargeTaken</span></code>).
@@ -101,7 +110,7 @@ o fallimento per cause legate al servizio)</p></li>
 </ul>
 </section>
 <section id="il-problema-del-driver-distratto">
-<h3>Il problema del driver distratto<a class="headerlink" href="#il-problema-del-driver-distratto" title="Permalink to this headline">¶</a></h3>
+<h3>Il problema del driver distratto<a class="headerlink" href="#il-problema-del-driver-distratto" title="Permalink to this heading">¶</a></h3>
 <p>Questo problema ha indotto il committente ad affermare che:</p>
 <p>quando un agente esterno (driver) invia il ticket per indurre il servizio a
 scaricare il truck, si <span class="slidekp">SUPPPONE GARANTITO</span> che il carico del truck sia
@@ -110,11 +119,11 @@ UGUALE (o al più MINORE) del carico indicato nella prenotazione.</p>
 del carico effettivo sul Truck.</p>
 </section>
 <section id="il-problema-del-driver-malevolo">
-<h3>Il problema del driver malevolo<a class="headerlink" href="#il-problema-del-driver-malevolo" title="Permalink to this headline">¶</a></h3>
+<h3>Il problema del driver malevolo<a class="headerlink" href="#il-problema-del-driver-malevolo" title="Permalink to this heading">¶</a></h3>
 <p>Si fa l’ipotesi che nessun driver cerchi di imbrogliare (rubando ticket, etc.)</p>
 </section>
 <section id="il-problema-dell-allarme-ignorato">
-<h3>Il problema dell’allarme ignorato<a class="headerlink" href="#il-problema-dell-allarme-ignorato" title="Permalink to this headline">¶</a></h3>
+<h3>Il problema dell’allarme ignorato<a class="headerlink" href="#il-problema-dell-allarme-ignorato" title="Permalink to this heading">¶</a></h3>
 <p>Riguarda il requisito:</p>
 <p><em>the transport trolley should not be stopped if some prefixed amount of time (MINT msecs) is not passed from the previous stop</em></p>
 <p>Si è concordato che il tempo MINT viene conteggiato dopo che il transport trolley è stato riattivato dallo stato
@@ -122,7 +131,7 @@ di fermo in cui è stato posto in seguito ad un comando di stop (ricevuto per vi
 </section>
 </section>
 <section id="workers-giugno-luglio">
-<h2>Workers Giugno-Luglio<a class="headerlink" href="#workers-giugno-luglio" title="Permalink to this headline">¶</a></h2>
+<h2>Workers Giugno-Luglio<a class="headerlink" href="#workers-giugno-luglio" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">andrea</span><span class="o">.</span><span class="n">munari4</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
 <span class="n">cristiano</span><span class="o">.</span><span class="n">arnaudo</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
 
@@ -151,6 +160,90 @@ di fermo in cui è stato posto in seguito ad un comando di stop (ricevuto per vi
 </pre></div>
 </div>
 </section>
+<section id="workers-agosto">
+<h2>Workers Agosto<a class="headerlink" href="#workers-agosto" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">leonardo</span><span class="o">.</span><span class="n">focardi</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+<span class="n">christian</span><span class="o">.</span><span class="n">galeone</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+<span class="n">gianmiriano</span><span class="o">.</span><span class="n">porrazzo</span><span class="nd">@studio</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">it</span>
+</pre></div>
+</div>
+</section>
+<section id="analisi-del-testo-mediante-python-nlk">
+<h2>Analisi del testo mediante Python NLK<a class="headerlink" href="#analisi-del-testo-mediante-python-nlk" title="Permalink to this heading">¶</a></h2>
+<p>Usando <a class="reference external" href="https://www.nltk.org/">https://www.nltk.org/</a> è possibile analizzare il testo dei requisiti estraendone
+i nomi e i verbi. Nel caso nostro, troviamo:</p>
+<section id="nomi">
+<h3>NOMI<a class="headerlink" href="#nomi" title="Permalink to this heading">¶</a></h3>
+<p>[(‘Alarm’, ‘NN’), (‘INDOOR’, ‘NN’), (‘action’, ‘NN’), (‘alarm’, ‘NN’), (‘amount’, ‘NN’),
+(‘area’, ‘NN’), (‘charge’, ‘NN’), (‘company’, ‘NN’), (‘container’, ‘NN’), (‘deposit’, ‘NN’),
+(‘development’, ‘NN’), (‘device’, ‘NN’), (‘distance’, ‘NN’), (‘documentation’, ‘NN’),
+(‘driver’, ‘NN’), (‘exipration’, ‘NN’), (‘field’, ‘NN’), (‘food’, ‘NN’), (‘foodload’, ‘NN’),
+(‘form’, ‘NN’), (‘kg’, ‘NN’), (‘length’, ‘NN’), (‘load’, ‘NN’), (‘location’, ‘NN’),
+(‘material’, ‘NN’), (‘message’, ‘NN’), (‘migtht’, ‘NN’), (‘msecs’, ‘NN’), (‘number’, ‘NN’),
+(‘person’, ‘NN’), (‘picture’, ‘NN’), (‘point’, ‘NN’), (‘port’, ‘NN’), (‘position’, ‘NN’),
+(‘request’, ‘NN’), (‘robot’, ‘NN’), (‘room’, ‘NN’), (‘scheme’, ‘NN’), (‘secs’, ‘NN’),
+(‘service’, ‘NN’), (‘set’, ‘NN’), (‘side’, ‘NN’), (‘square’, ‘NN’), (‘start’, ‘NN’),
+(‘state’, ‘NN’), (‘stop’, ‘NN’), (‘story’, ‘NN’), (‘system’, ‘NN’), (‘team’, ‘NN’),
+(‘ticket’, ‘NN’), (‘time’, ‘NN’), (‘transport’, ‘NN’), (‘trolley’, ‘NN’), (‘truck’, ‘NN’),
+(‘use’, ‘NN’), (‘value’, ‘NN’), (‘warning’, ‘NN’), (‘weigth’, ‘NN’), (‘working’, ‘NN’)]</p>
+</section>
+<section id="verbi">
+<h3>VERBI<a class="headerlink" href="#verbi" title="Permalink to this heading">¶</a></h3>
+<p>[(‘accepted’, ‘VBN’), (‘accepts’, ‘VBZ’), (‘according’, ‘VBG’), (‘allows’, ‘VBZ’),
+(‘appears’, ‘VBZ’), (‘be’, ‘VB’), (‘being’, ‘VBG’), (‘build’, ‘VB’), (‘composed’, ‘VBN’),
+(‘connected’, ‘VBN’), (‘consists’, ‘VBZ’), (‘detects’, ‘VBZ’), (‘devoted’, ‘VBD’),
+(‘drives’, ‘VBZ’), (‘enter’, ‘VB’), (‘etc’, ‘VBP’), (‘expires’, ‘VBZ’), (‘follows’, ‘VBZ’),
+(‘go’, ‘VBP’), (‘goes’, ‘VBZ’), (‘has’, ‘VBZ’), (‘includes’, ‘VBZ’), (‘intends’, ‘VBZ’),
+(‘is’, ‘VBZ’), (‘iss23’, ‘VBZ’), (‘kg’, ‘VBD’), (‘leave’, ‘VB’), (‘located’, ‘VBN’),
+(‘measures’, ‘VBZ’), (‘moving’, ‘VBG’), (‘passed’, ‘VBN’), (‘perform’, ‘VB’), (‘pick’, ‘VBP’),
+(‘picks’, ‘VBZ’), (‘positioned’, ‘VBN’), (‘provides’, ‘VBZ’), (‘reaches’, ‘VBZ’),
+(‘rejected’, ‘VBD’), (‘required’, ‘VBN’), (‘resumed’, ‘VBN’), (‘return’, ‘VBP’),
+(‘satisfied’, ‘VBN’), (‘see’, ‘VB’), (‘send’, ‘VB’), (‘sends’, ‘VBZ’), (‘sent’, ‘VBN’),
+(‘shown’, ‘VBN’), (‘situated’, ‘VBN’), (‘stopped’, ‘VBN’), (‘store’, ‘VB’), (‘stored’, ‘VBN’),
+(‘summarized’, ‘VBN’), (‘supervises’, ‘VB’), (‘taken’, ‘VBN’), (‘terminated’, ‘VBN’),
+(‘used’, ‘VBN’), (‘uses’, ‘VBZ’), (‘working’, ‘VBG’)]</p>
+</section>
+<section id="terminologia-nltk-pos-tag-list">
+<h3>Terminologia (NLTK POS tag list)<a class="headerlink" href="#terminologia-nltk-pos-tag-list" title="Permalink to this heading">¶</a></h3>
+<p>Part-Of-Speech tagging:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>CC coordinating conjunction
+CD cardinal digit
+DT determiner
+EX existential there
+FW foreign word
+IN preposition/subordinating conjunction
+JJ This NLTK POS Tag is an adjective (large)
+JJR adjective, comparative (larger)
+JJS adjective, superlative (largest)
+LS list market
+MD modal (could, will)
+NN noun, singular (cat, tree)
+NNS noun plural (desks)
+NNP proper noun, singular (sarah)
+NNPS proper noun, plural (indians or americans)
+PDT predeterminer (all, both, half)
+POS possessive ending (parent\ ‘s)
+PRP personal pronoun (hers, herself, him, himself)
+PRP$ possessive pronoun (her, his, mine, my, our )
+RB adverb (occasionally, swiftly)
+RBR adverb, comparative (greater)
+RBS adverb, superlative (biggest)
+RP particle (about)
+TO infinite marker (to)
+UH interjection (goodbye)
+VB verb (ask)
+VBG verb gerund (judging)
+VBD verb past tense (pleaded)
+VBN verb past participle (reunified)
+VBP verb, present tense not 3rd person singular(wrap)
+VBZ verb, present tense with 3rd person singular (bases)
+WDT wh-determiner (that, what)
+WP wh- pronoun (who)
+WRB wh- adverb (how)
+</pre></div>
+</div>
+</section>
+</section>
 </section>
 
 
@@ -165,7 +258,10 @@ di fermo in cui è stato posto in seguito ad un comando di stop (ricevuto per vi
     <ul>
 <li><a class="reference internal" href="#">DiscussioniTF23</a><ul>
 <li><a class="reference internal" href="#problematiche-sul-temafinale23">Problematiche sul <span class="xref std std-ref">TemaFinale23</span></a><ul>
-<li><a class="reference internal" href="#lo-sprint0">Lo sprint0</a></li>
+<li><a class="reference internal" href="#lo-sprint0">Lo sprint0</a><ul>
+<li><a class="reference internal" href="#in-generale-lo-sprint0">In generale, lo sprint0:</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#il-problema-del-load-time-lungo">Il problema del load-time lungo</a></li>
 <li><a class="reference internal" href="#il-problema-del-driver-distratto">Il problema del driver distratto</a></li>
 <li><a class="reference internal" href="#il-problema-del-driver-malevolo">Il problema del driver malevolo</a></li>
@@ -173,6 +269,13 @@ di fermo in cui è stato posto in seguito ad un comando di stop (ricevuto per vi
 </ul>
 </li>
 <li><a class="reference internal" href="#workers-giugno-luglio">Workers Giugno-Luglio</a></li>
+<li><a class="reference internal" href="#workers-agosto">Workers Agosto</a></li>
+<li><a class="reference internal" href="#analisi-del-testo-mediante-python-nlk">Analisi del testo mediante Python NLK</a><ul>
+<li><a class="reference internal" href="#nomi">NOMI</a></li>
+<li><a class="reference internal" href="#verbi">VERBI</a></li>
+<li><a class="reference internal" href="#terminologia-nltk-pos-tag-list">Terminologia (NLTK POS tag list)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -204,7 +307,7 @@ di fermo in cui è stato posto in seguito ad un comando di stop (ricevuto per vi
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -227,7 +330,7 @@ di fermo in cui è stato posto in seguito ad un comando di stop (ricevuto per vi
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Antonio Natali.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
     </div>
   </body>
 </html>

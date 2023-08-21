@@ -8,7 +8,7 @@ services:
       - 8091:8091/udp
   basicrobot23:
     image: basicrobot23:2.0
-    ##image: docker.io/natbodocker/basicrobot23:2.0
+    #image: docker.io/natbodocker/basicrobot23:2.0
     ports:
       - 8020:8020/tcp
       - 8020:8020/udp

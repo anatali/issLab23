@@ -9,6 +9,7 @@ import kotlinx.coroutines.delay
 import it.unibo.kactor.MsgUtil
 import kotlinx.coroutines.runBlocking
 import unibo.basicomm23.interfaces.IApplMessage
+import kotlin.math.roundToInt
 
 
 /* 
@@ -28,8 +29,8 @@ class sonarHCSR04SupportActor ( name : String ) : ActorBasic( name ) {
 		if( msg.msgId() == "sonarstart"){
 			println("sonarHCSR04SupportActor CREATING")
 			try{
-				val p = Runtime.getRuntime().exec("sudo ./SonarAlone")
-				//val p  = Runtime.getRuntime().exec("python sonar.py")
+				//val p = Runtime.getRuntime().exec("sudo ./SonarAlone")
+				val p  = Runtime.getRuntime().exec("sudo python3 sonar.py")
 				reader = BufferedReader(  InputStreamReader(p.getInputStream() ))
 				startRead(   )
 			}catch( e : Exception){
@@ -41,23 +42,24 @@ class sonarHCSR04SupportActor ( name : String ) : ActorBasic( name ) {
 //@kotlinx.coroutines.ObsoleteCoroutinesApi
 
 	suspend fun startRead(   ){
+		println("sonarHCSR04SupportActor startRead  "   )
  		var counter = 0
 		GlobalScope.launch{	//to allow message handling
 		while( true ){
 				var data = reader.readLine()
-				//println("sonarHCSR04Support data = $data"   )
+				//println("sonarHCSR04SupportActor data = $data"   )
 				if( data != null ){
 					try{
-						val v = data.toInt()
+						val v = data.toFloat().roundToInt()
 						if( v <= 150 ){	//A first filter ...
 							val m1 = "sonar( $v )"
 							val event = MsgUtil.buildEvent( "sonarHCSR04Support","sonarRobot",m1)
-							//emit( event )
+							//if( counter % 10 == 0) println("$tt $name | emits $event after ${counter++}"  )
 							emitLocalStreamEvent( event )		//not propagated to remote actors
-							if( counter++ % 10 == 0)
-							println("sonarHCSR04Support ${counter}: $event "   )
 						}
-					}catch(e: Exception){}
+					}catch(e: Exception){
+						println("sonarHCSR04SupportActor startRead ERROR: ${e.message} "   )
+					}
 				}
 				delay( 100 ) 
  		}

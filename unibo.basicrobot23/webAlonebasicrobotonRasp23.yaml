@@ -1,0 +1,14 @@
+version: '3'
+services:
+  webrobot23:
+    #image: imgwebrobot23:1.0
+    image: docker.io/natbodocker/imgwebrobot23:1.0
+    ports:
+      - 8085:8085/tcp
+
+
+
+## -------------------------------------------------------------
+## TODO See https://docs.docker.com/compose/startup-order/
+## -------------------------------------------------------------
+## docker-compose -f webbasicrobotonRasp23.yaml  up

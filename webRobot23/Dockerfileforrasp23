@@ -1,0 +1,37 @@
+## ----------------------------------------------------------
+## Dockerfileforrasp23
+## This file should be copied on Rasp together with the
+## required resources and executed there
+## ----------------------------------------------------------
+
+FROM balenalib/raspberry-pi-debian:buster
+RUN apt update
+RUN apt -y full-upgrade
+RUN apt -yq install pigpio python-pigpio python3-pigpio wget
+### COPY docker/install-java.sh /install-java.sh
+### RUN chmod u+x /install-java.sh && /install-java.sh
+RUN sudo apt update
+RUN sudo apt install -y openjdk-11-jdk
+ENV LOG_LEVEL=debug
+ENV TZ=Europe/Berlin
+ENV DEMOMODE=false
+EXPOSE 8080/tcp
+EXPOSE 8085/tcp
+## ADD extracts the tar
+ADD ./webrobot23-1.0.tar /
+WORKDIR /webrobot23-1.0/bin
+COPY ./*.pl ./
+COPY ./*.json ./
+COPY ./*.bin ./
+COPY ./*.txt ./
+
+CMD ["bash", "webrobot23"]
+
+##  gradlew  distTar
+##  sudo docker build -f Dockerfileforrasp23 -t imgwebrobot23:1.0 .
+##  docker run -it --rm --name webrobot23 -p8085:8085/tcp  --privileged imgwebrobot23:1.0  /bin/bash
+# docker tag imgwebrobot23:1.0 natbodocker/imgwebrobot23:1.0
+# type docker_password.txt | docker login --username natbodocker --password-stdin
+# docker push natbodocker/imgwebrobot23:1.0
+## https://hub.docker.com/r/arm32v7/python/
+## docker run -d -p 80:80 hypriot/rpi-busybox-httpd		##works, but ???

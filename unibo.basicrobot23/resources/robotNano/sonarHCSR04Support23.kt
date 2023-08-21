@@ -30,7 +30,7 @@ class sonarHCSR04Support23 ( name : String ) : ActorBasic( name ) {
 			//println("sonarHCSR04Support23 STARTING") //AVOID SINCE pipe ...
 			try{
 				//val p  = Runtime.getRuntime().exec("sudo ./SonarAlone")
-				val p  = Runtime.getRuntime().exec("python sonar.py")
+				val p  = Runtime.getRuntime().exec("sudo python3 sonar.py")
 				reader = BufferedReader(  InputStreamReader(p.getInputStream() ))
 				doRead(   )
 			}catch( e : Exception){
@@ -45,7 +45,7 @@ class sonarHCSR04Support23 ( name : String ) : ActorBasic( name ) {
 		scope.launch{
 		while( true ){
 				var data = reader.readLine()
-				//CommUtils.outyellow("$name with python: data = $data"   )
+				CommUtils.outyellow("$name with python: data = $data"   )
 				if( data != null ){
 					try{
 						val vd = data.toFloat()

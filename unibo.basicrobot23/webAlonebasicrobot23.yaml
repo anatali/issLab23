@@ -1,0 +1,14 @@
+### webAlonebasicrobot23
+version: '3'
+services:
+  webrobot23:
+      #image: webrobot23:1.0
+      image: docker.io/natbodocker/webrobot23:1.0
+      ports:
+        - 8085:8085
+
+## -------------------------------------------------------------
+## TODO See https://docs.docker.com/compose/startup-order/
+## -------------------------------------------------------------
+## docker-compose -f webAlonebasicrobot23.yaml  up
+## docker-compose run --service-ports wenv

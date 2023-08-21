@@ -1,0 +1,16 @@
+version: '3'
+services:
+  basicrobot23:
+    #image:  imgbasicrobot23:1.0
+    image: docker.io/natbodocker/imgbasicrobot23:1.0
+    privileged : true
+    ports:
+      - 8020:8020/tcp
+      - 8080:8080
+
+
+
+## -------------------------------------------------------------
+## TODO See https://docs.docker.com/compose/startup-order/
+## -------------------------------------------------------------
+## docker-compose -f basicrobotonRasp23Alone.yaml  up

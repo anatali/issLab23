@@ -49,7 +49,7 @@ object robotSupport{
  				val realsonar = robotNano.sonarHCSR04SupportActor("realsonar")
 				//Context injection  
 				owner.context!!.addInternalActor(realsonar)  
-  				println("		--- realnano robotSupport | has created the realsonar")
+  				println("		--- realnano robotSupport | has created the realsonar in ${owner.context!!.name}")
 			}
 
 			"realmbot" -> {

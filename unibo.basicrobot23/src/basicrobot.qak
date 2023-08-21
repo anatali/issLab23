@@ -13,7 +13,7 @@ Request step       : step(TIME)
 Reply stepdone     : stepdone(V)  
 Reply stepfailed   : stepfailed(DURATION, CAUSE)	
 
-Event  sonardata   : sonar( DISTANCE ) 	  //percepito da sonarobs/engager   
+Event  sonardata   : sonar( DISTANCE ) 	   
 Event obstacle     : obstacle(X) 
 
 Request  doplan     : doplan( PATH, STEPTIME )
@@ -53,8 +53,8 @@ Reply robotstate      : robotstate(POS,DIR)
 
 Context ctxbasicrobot ip [host="localhost" port=8020]  
 
-//CodedQActor datacleaner    context ctxbasicrobot className "rx.dataCleaner"
-//CodedQActor distancefilter context ctxbasicrobot className "rx.distanceFilter"
+CodedQActor datacleaner    context ctxbasicrobot className "rx.dataCleaner"    //riceve l'evento sonarRobot
+CodedQActor distancefilter context ctxbasicrobot className "rx.distanceFilter" //genera l'evento  obstacle e sonardata
 
 /* 
  * ------------------------------
@@ -182,9 +182,18 @@ QActor basicrobot context ctxbasicrobot{
 		//[# sysUtil.trace = true #]  //Trace the behavior of ActorBasic
  		qrun uniborobots.robotSupport.create(myself,"basicrobotConfig.json")	 		
  		[# RobotType = uniborobots.robotSupport.robotKind #]  
- 		delay 3000 //per inserzione in docker: attesa per wenv
- 		println("basicrobot | STARTING ... ") color magenta	
-  		run uniborobots.robotSupport.move( "a" )    //synch
+ 		delay 3000 //per inserzione in docker: attesa per wenv  
+ 		println("basicrobot | STARTING ... ") color magenta
+ 		//realsonar creato da uniborobots.robotsupport come sonarHCSR04SupportActor
+  	    //[# subscribeToLocalActor("distancefilter").subscribeToLocalActor("realsonar") #] 
+  	    //sottoscrive this a distancefilter e distancefilter a realsonar 
+  	    //DOVERI DIRE: subscribe distancefilter to realsonar (che è partito)
+  	    //E subscribe this a distancefilter
+  	    [#  subscribeTo("distancefilter","realsonar")
+  	    	subscribeToLocalActor("distancefilter")
+  	    #]
+  	      
+  		run uniborobots.robotSupport.move( "a" )    //synch 
  		run uniborobots.robotSupport.move( "d" )	//synch
   		//delay 2000 //per inserzione in docker
  	}  

@@ -1,0 +1,26 @@
+## ----------------------------------------------------------
+## Dockerfileforraspbase23
+## This file should be copied on Rasp together with the
+## required resources and executed there
+## ----------------------------------------------------------
+
+FROM balenalib/raspberry-pi-debian:buster
+RUN apt update
+RUN apt -y full-upgrade
+RUN apt -yq install pigpio python-pigpio python3-pigpio wget
+### COPY docker/install-java.sh /install-java.sh
+### RUN chmod u+x /install-java.sh && /install-java.sh
+RUN sudo apt update
+RUN sudo apt install -y openjdk-11-jdk
+EXPOSE 8080/tcp
+ENV LOG_LEVEL=debug
+ENV TZ=Europe/Berlin
+ENV DEMOMODE=false
+
+
+
+##  sudo docker build -f Dockerfileforraspbase23 -t imgbusterjava11:1.0 .   LOWERCASE!!
+##  docker run -it --rm --name busterjava11 -p8080:8080/tcp --privileged imagebusterjava11:1.0  /bin/bash
+
+## https://hub.docker.com/r/arm32v7/python/
+## docker run -d -p 80:80 hypriot/rpi-busybox-httpd		##works, but ???

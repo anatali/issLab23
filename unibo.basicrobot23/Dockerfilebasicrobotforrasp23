@@ -1,0 +1,63 @@
+## ----------------------------------------------------------
+## Dockerfileforrasp for it.unibo.qak21.basicrobot
+## This file should be copied on Rasp together with the
+## required resources and executed there
+## ----------------------------------------------------------
+
+FROM balenalib/raspberry-pi-debian:buster
+RUN apt update
+RUN apt -y full-upgrade
+RUN apt -yq install pigpio python-pigpio python3-pigpio wget
+### COPY docker/install-java.sh /install-java.sh
+### RUN chmod u+x /install-java.sh && /install-java.sh
+RUN sudo apt update
+RUN sudo apt install -y openjdk-11-jdk
+########## RUN sudo apt-get install g++  Se uso Motors.c
+RUN sudo apt-get -y install python3-rpi.gpio
+# ----  mjpg streamer
+RUN sudo apt-get install build-essential
+RUN sudo apt-get install make
+RUN sudo apt-get install git
+RUN sudo git clone https://github.com/jacksonliam/mjpg-streamer.git
+RUN sudo apt-get install libjpeg8-dev imagemagick libv4l-dev v4l-utils make gcc git cmake g++
+WORKDIR mjpg-streamer/mjpg-streamer-experimental/
+## RUN sudo cmake -G "Unix Makefiles"
+RUN sudo make
+RUN sudo make install
+### RUN ./start.sh &
+
+ENV LOG_LEVEL=debug
+ENV TZ=Europe/Berlin
+ENV DEMOMODE=false
+EXPOSE 8020/tcp
+## ADD extracts the tar
+ADD ./unibo.basicrobot23-2.0.tar /
+WORKDIR /unibo.basicrobot23-2.0/bin
+COPY ./*.pl ./
+COPY ./*.json ./
+COPY ./*.bin ./
+COPY ./*.txt ./
+COPY ./*.c ./
+COPY ./*.py ./
+COPY ./*.sh ./
+########## RUN g++  Motors.c -l wiringPi -o  Motors # Se uso Motors.c ma manca wiring pi
+
+########## https://stadtfabrikanten.org/display/TH/Webcam+streaming+with+mjpg-streamer
+
+
+### CMD ["bash", "mjpg-streamer/mjpg-streamer-experimental/start.sh &"]
+### CMD ["bash", "unibo.basicrobot23"]
+
+CMD ["bash", "activate.sh"]
+
+##  gradlew build  distTar
+##  sudo docker build -f Dockerfilebasicrobotforrasp23 -t imgbasicrobot23:1.0 .
+##  docker run -it --rm --name basicrobot23 -p8020:8020/tcp -p8080:8080 --privileged imgbasicrobot23:1.0  /bin/bash
+
+## docker cp basicrobotConfig.json cab3aa29f8eb:/unibo.basicrobot23-2.0/bin/basicrobotConfig.json
+# docker tag imgbasicrobot23:1.0 natbodocker/imgbasicrobot23:1.0
+# type docker_password.txt | docker login --username natbodocker --password-stdin
+# docker push natbodocker/imgbasicrobot23:1.0
+
+## https://hub.docker.com/r/arm32v7/python/
+## docker run -d -p 80:80 hypriot/rpi-busybox-httpd		##works, but ???

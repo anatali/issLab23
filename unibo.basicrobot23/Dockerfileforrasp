@@ -1,5 +1,5 @@
 ## ----------------------------------------------------------
-## Dockerfileforrasp for it.unibo.qak21.basicrobot
+## Dockerfilebasicrobotforrasp for it.unibo.qak21.basicrobot
 ## This file should be copied on Rasp together with the
 ## required resources and executed there
 ## ----------------------------------------------------------

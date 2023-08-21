@@ -185,13 +185,16 @@
       <div class="row">
         <img class="img-fluid" th:src="@{${ 'http://'+webcamip+':8000/video'} }"
                alt="androidcammmm" style="border-spacing: 0; border: 1px solid black;">
+          <a th:href="@{${'http://'+webcamip+':8080'}}">Android ipwebcam</a>
         </div>
          <!--  LO STREAM DEVE ESSERE SU UN ALTRO PC
                <img class="img-fluid" th:src="@{${ 'http://192.168.1.214:8000/video'} }" -->
          <div class="row">
-         <img class="img-fluid" th:src="@{${ 'http://'+robotip+':8080/?action=stream'}}"
-              alt="raspicam" style="border-spacing: 0; border: 1px solid black;">
-         <!--  <a th:href="@{${'http://'+webcamip+':8080'}}">Android ipwebcam</a> -->
+             <!-- <img class="img-fluid" th:src="@{${ 'http://'+robotip+':8080/?action=stream'}}"
+                 alt="raspicam" style="border-spacing: 0; border: 1px solid black;"> -->
+             <img class="img-fluid" th:src="@{${ 'http://87.16.56.129:8080/?action=stream'}}"
+                  alt="raspicam" style="border-spacing: 0; border: 1px solid black;">
+
       </div>
      </div>
      </div> <!-- card -->

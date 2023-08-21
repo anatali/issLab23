@@ -46,6 +46,8 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						 RobotType = uniborobots.robotSupport.robotKind  
 						delay(3000) 
 						CommUtils.outmagenta("basicrobot | STARTING ... ")
+						  subscribeTo("distancefilter","realsonar")
+						  	    	subscribeToLocalActor("distancefilter")
 						uniborobots.robotSupport.move( "a"  )
 						uniborobots.robotSupport.move( "d"  )
 						//genTimer( actor, state )

@@ -24,6 +24,8 @@ with Diagram('basicrobot23Arch', show=False, outformat='png', graph_attr=graphat
           basicrobot=Custom('basicrobot','./qakicons/symActorSmall.png')
           planexec=Custom('planexec','./qakicons/symActorSmall.png')
           robotpos=Custom('robotpos','./qakicons/symActorSmall.png')
+          datacleaner=Custom('datacleaner(coded)','./qakicons/codedQActor.png')
+          distancefilter=Custom('distancefilter(coded)','./qakicons/codedQActor.png')
      planexec >> Edge(color='blue', style='solid', xlabel='nomoremove', fontcolor='blue') >> planexec
      planexec >> Edge(color='magenta', style='solid', xlabel='step', fontcolor='magenta') >> basicrobot
      planexec >> Edge(color='blue', style='solid', xlabel='nextmove', fontcolor='blue') >> planexec

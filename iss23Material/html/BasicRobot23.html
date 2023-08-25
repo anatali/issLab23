@@ -251,10 +251,12 @@ come quello fornito  in <code class="docutils literal notranslate"><span class="
 <p>Il progetto   <a class="reference external" href="../../unibo.planner23">unibo.planner23</a>,  fornisce la classe <span class="blue">Planner23Util</span> che realizza
 le operazioni-base descritte in <a class="reference external" href="./_static/LabPlanner.html">Planning</a> e varie altre utlità.
 Si veda: <a class="reference internal" href="RobotPos.html#planexec"><span class="std std-ref">planexec</span></a>.</p>
-<p><span class="slide">Distribuzione</span></p>
+<p><span class="slide">Distribuzione su PC</span></p>
 </section>
+<section id="distribuzione-docker-su-pc">
+<h2>Distribuzione docker su PC<a class="headerlink" href="#distribuzione-docker-su-pc" title="Permalink to this heading">¶</a></h2>
 <section id="basicrobot23-yaml">
-<h2>basicrobot23.yaml<a class="headerlink" href="#basicrobot23-yaml" title="Permalink to this heading">¶</a></h2>
+<h3>basicrobot23.yaml<a class="headerlink" href="#basicrobot23-yaml" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">version</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span>
 <span class="n">services</span><span class="p">:</span>
   <span class="n">wenv</span><span class="p">:</span>
@@ -273,6 +275,66 @@ Si veda: <a class="reference internal" href="RobotPos.html#planexec"><span class
       <span class="o">-</span> <span class="n">wenv</span>
 </pre></div>
 </div>
+</section>
+<section id="webalonebasicrobot23-yaml">
+<h3>webAlonebasicrobot23.yaml<a class="headerlink" href="#webalonebasicrobot23-yaml" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">version</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span>
+<span class="n">services</span><span class="p">:</span>
+  <span class="n">webrobot23</span><span class="p">:</span>
+      <span class="c1">#image: webrobot23:1.0</span>
+      <span class="n">image</span><span class="p">:</span> <span class="n">docker</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">natbodocker</span><span class="o">/</span><span class="n">webrobot23</span><span class="p">:</span><span class="mf">1.0</span>
+      <span class="n">ports</span><span class="p">:</span>
+        <span class="o">-</span> <span class="mi">8085</span><span class="p">:</span><span class="mi">8085</span>
+</pre></div>
+</div>
+</section>
+<section id="webbasicrobot23-yaml">
+<h3>webbasicrobot23.yaml<a class="headerlink" href="#webbasicrobot23-yaml" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">version</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span>
+<span class="n">services</span><span class="p">:</span>
+  <span class="n">wenv</span><span class="p">:</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">docker</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">natbodocker</span><span class="o">/</span><span class="n">virtualrobotdisi23</span><span class="p">:</span><span class="mf">1.0</span>
+    <span class="n">ports</span><span class="p">:</span>
+      <span class="o">-</span> <span class="mi">8090</span><span class="p">:</span><span class="mi">8090</span>
+      <span class="o">-</span> <span class="mi">8091</span><span class="p">:</span><span class="mi">8091</span><span class="o">/</span><span class="n">tcp</span>
+      <span class="o">-</span> <span class="mi">8091</span><span class="p">:</span><span class="mi">8091</span><span class="o">/</span><span class="n">udp</span>
+  <span class="n">basicrobot23</span><span class="p">:</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">docker</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">natbodocker</span><span class="o">/</span><span class="n">basicrobot23</span><span class="p">:</span><span class="mf">2.0</span>
+    <span class="n">ports</span><span class="p">:</span>
+      <span class="o">-</span> <span class="mi">8020</span><span class="p">:</span><span class="mi">8020</span><span class="o">/</span><span class="n">tcp</span>
+      <span class="o">-</span> <span class="mi">8020</span><span class="p">:</span><span class="mi">8020</span><span class="o">/</span><span class="n">udp</span>
+    <span class="n">depends_on</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">wenv</span>
+  <span class="n">webrobot23</span><span class="p">:</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">docker</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">natbodocker</span><span class="o">/</span><span class="n">webrobot23</span><span class="p">:</span><span class="mf">1.0</span>
+    <span class="n">ports</span><span class="p">:</span>
+      <span class="o">-</span> <span class="mi">8085</span><span class="p">:</span><span class="mi">8085</span>
+    <span class="n">depends_on</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">basicrobot23</span>
+</pre></div>
+</div>
+<p><span class="slide">Distribuzione su Raspberry</span></p>
+</section>
+</section>
+<section id="distribuzione-docker-su-raspberry">
+<h2>Distribuzione docker su Raspberry<a class="headerlink" href="#distribuzione-docker-su-raspberry" title="Permalink to this heading">¶</a></h2>
+<section id="webbasicrobotonrasp23-yaml">
+<h3>webbasicrobotonRasp23.yaml<a class="headerlink" href="#webbasicrobotonrasp23-yaml" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">version</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span>
+<span class="n">services</span><span class="p">:</span>
+  <span class="n">webrobot23</span><span class="p">:</span>
+     <span class="n">image</span><span class="p">:</span> <span class="n">docker</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">natbodocker</span><span class="o">/</span><span class="n">imgwebrobot23</span><span class="p">:</span><span class="mf">1.0</span>
+    <span class="n">ports</span><span class="p">:</span>
+      <span class="o">-</span> <span class="mi">8085</span><span class="p">:</span><span class="mi">8085</span><span class="o">/</span><span class="n">tcp</span>
+  <span class="n">basicrobot23</span><span class="p">:</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">docker</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">natbodocker</span><span class="o">/</span><span class="n">imgbasicrobot23</span><span class="p">:</span><span class="mf">1.0</span>
+    <span class="n">privileged</span> <span class="p">:</span> <span class="n">true</span>
+    <span class="n">ports</span><span class="p">:</span>
+      <span class="o">-</span> <span class="mi">8020</span><span class="p">:</span><span class="mi">8020</span><span class="o">/</span><span class="n">tcp</span>
+      <span class="o">-</span> <span class="mi">8080</span><span class="p">:</span><span class="mi">8080</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
@@ -300,7 +362,16 @@ Si veda: <a class="reference internal" href="RobotPos.html#planexec"><span class
 </ul>
 </li>
 <li><a class="reference internal" href="#uso-del-planner">Uso del planner</a></li>
+<li><a class="reference internal" href="#distribuzione-docker-su-pc">Distribuzione docker su PC</a><ul>
 <li><a class="reference internal" href="#basicrobot23-yaml">basicrobot23.yaml</a></li>
+<li><a class="reference internal" href="#webalonebasicrobot23-yaml">webAlonebasicrobot23.yaml</a></li>
+<li><a class="reference internal" href="#webbasicrobot23-yaml">webbasicrobot23.yaml</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#distribuzione-docker-su-raspberry">Distribuzione docker su Raspberry</a><ul>
+<li><a class="reference internal" href="#webbasicrobotonrasp23-yaml">webbasicrobotonRasp23.yaml</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

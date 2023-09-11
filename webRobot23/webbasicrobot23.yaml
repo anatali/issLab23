@@ -1,13 +1,13 @@
 version: '3'
 services:
   basicrobot23:
-    image: imgbasicrobot23:1.0
-    #image: docker.io/natbodocker/basicrobot23:2.0
+    #image: imgbasicrobot23:1.0
+    image: docker.io/natbodocker/basicrobot23:2.0
     ports:
       - 8020:8020/tcp
   webrobot23:
-    image: imgwebrobot23:1.0
-    #image: docker.io/natbodocker/webrobot23:1.0
+    #image: imgwebrobot23:1.0
+    image: docker.io/natbodocker/webrobot23:1.0
     ports:
       - 8085:8085
     depends_on:

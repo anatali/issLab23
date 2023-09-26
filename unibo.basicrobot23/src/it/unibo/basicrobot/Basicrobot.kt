@@ -44,12 +44,18 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						delegate("setdirection", "robotpos") 
 						uniborobots.robotSupport.create(myself ,"basicrobotConfig.json" )
 						 RobotType = uniborobots.robotSupport.robotKind  
-						delay(3000) 
+						CommUtils.outmagenta("basicrobot | CREATED ... ")
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition( edgeName="goto",targetState="work", cond=doswitch() )
+				}	 
+				state("waitForRobot") { //this:State
+					action { //it:State
+						delay(5000) 
 						CommUtils.outmagenta("basicrobot | STARTING ... ")
-						  subscribeTo("distancefilter","realsonar")
-						  	    	subscribeToLocalActor("distancefilter")
-						uniborobots.robotSupport.move( "a"  )
-						uniborobots.robotSupport.move( "d"  )
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -59,8 +65,6 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("work") { //this:State
 					action { //it:State
-						updateResourceRep( "basicrobot(started)"  
-						)
 						discardMessages = false
 						CommUtils.outmagenta("basicrobot  | waiting, working for ${OwnerMngr.owner} ... ")
 						//genTimer( actor, state )

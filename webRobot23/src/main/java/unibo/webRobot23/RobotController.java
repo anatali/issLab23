@@ -20,16 +20,18 @@ import unibo.basicomm23.utils.CommUtils;
 @Controller 
 public class RobotController {
     public final static String robotName  = "basicrobot";
-    protected String mainPage             = "basicrobot23Gui";
+    protected String mainPage             = "basicrobot23EssentialGui"; //"basicrobot23Gui";
+    protected String noVrPage             = "basicrobot23NoVrGui"; //
+
     protected boolean usingTcp            = true;
 
     //Settaggio degli attributi del modello
-    @Value("${robot23.protocol}")
-    String protocol;
-    @Value("${robot23.webcamip}")
+    //@Value("${robot23.protocol}")
+    String protocol="tcp";
+    //@Value("${robot23.webcamip}")
     String webcamip;
-    @Value("${robot23.robotip}")
-    String robotip;
+    //@Value("${robot23.robotip}")
+    String robotip="basicrobot23";
     @Value("${robot23.plan}")
     String plantodo;
     @Value("${robot23.plandone}")
@@ -42,7 +44,10 @@ public class RobotController {
         setConfigParams(viewmodel);
         return mainPage;
     }
-
+    protected String buildTheNoVrPage(Model viewmodel) {
+        setConfigParams(viewmodel);
+        return noVrPage;
+    }
     protected void setConfigParams(Model viewmodel){
         viewmodel.addAttribute("protocol", protocol);
         viewmodel.addAttribute("webcamip", webcamip);
@@ -55,6 +60,7 @@ public class RobotController {
   @GetMapping("/") 		 
   public String entry(Model viewmodel) {
         //Connection.trace = true;
+
         return buildThePage(viewmodel);
   }
 
@@ -106,16 +112,24 @@ public class RobotController {
     @PostMapping("/doplan")
     public String dopath(Model viewmodel , @RequestParam String plan ){
         CommUtils.outblue("RobotController | doplan:" + plan + " robotName=" + robotName);
-        plantodo =  plan;
+        if( plan == null ) plantodo="ll";
+        else plantodo =  plan;
         viewmodel.addAttribute("plantodo", ""+plantodo);
-          try {
-              plandone = RobotUtils.doPlan( plan, steptime );
+        try {
+              //plandone = RobotUtils.doPlan( plan, steptime );
+              RobotUtils.sendPlanMsg( plan, steptime );
         } catch (Exception e) {
               CommUtils.outred("RobotController | doplan ERROR:"+e.getMessage());
         }
-        viewmodel.addAttribute("plantodo", ""+plantodo);
+        viewmodel.addAttribute("plandone", ""+plandone);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return buildThePage(viewmodel);
     }
+
     @PostMapping("/alarm")
     public String alarm(Model viewmodel   ){
         CommUtils.outmagenta("RobotController | alarm robotName=" + robotName);

@@ -14,7 +14,7 @@
 <body>
 
 <div class="container-fluid bg-primary text-white text-center">
- <h1>basicrobot23 console</h1>
+ <h1>basicrobot23 VR console</h1>
 </div>
 
 <!-- CONTAINER del contenuto di pagina -->
@@ -22,62 +22,27 @@
  <div class="row"> <!-- Page main row -->
 
   <!-- PRIMA COLONNA (Input/Output area) -->
-  <div class="col-7 px-1">  <!-- I/O area col  -->
+  <div class="col-6 px-1">  <!-- I/O area col  -->
 
    <!-- CONFIGURATION Area and Data -->
    <div class="card iss-bg-inputarea">  <!-- I/O area card -->
     <div class="card-body">
      <!-- AREA PROTOCOL -->
-     <div class="row"> <!-- protocol row in I/O area card -->
-      <div class="col-7">
-       <!--   PROTOCOL InputArea   -->
-       <form action="setprotocol" method="post">
-        <!-- the form-data is sent to the path specified in the action attribute -->
-           <select name="protocol" id="protocols">
-               <option value="tcp">tcp</option>
-               <option value="coap">coap</option>
-           </select>
-        <!-- <input type="text" size="10" id="protocolspec" name="protocol" value="coap"> -->
-        <input type="submit" value="protocolRobot">
-       </form>
-      </div>
-         <!--   PROTOCOL DataArea   -->
-      <div class="col-5 text-primary">
-       <b><span th:text="${protocol}">tcp</span></b>
-      </div>
-     </div> <!--  row protocol in I/O area card -->
-
+        <div class="row"> <!-- row robotip in card in I/O area card  -->
+            <div class="col-7">
+                <!--   ROBOT ADDRESS InputArea   -->
+                <form action="setrobotip" method="post">
+                    <!-- the form-data is sent to the path specified in the action attribute -->
+                    <input type="text" size="10" id="configurespec" name="ipaddr" value="basicrobot23">
+                    <input type="submit" value="connect">
+                </form>
+            </div>
+        </div>
      <!-- AREA WEBCAM Android -->
-        <div class="row" > <!-- camip row in I/O area card  -->
-      <div class="col-7">
-          <!--   WEBCAM Android InputArea   -->
-        <form action="setwebcamip" method="post">
-         <!-- the form-data is sent to the path specified in the action attribute -->
-         <input type="text" size="10" id="webcamspec" name="ipaddr" value="">
-         <input type="submit" value="camip">
-        </form>
-      </div>
-        <!--   WEBCAM Android DataArea   -->
-      <div class="col-5 text-info">
-       <b><span th:text="${webcamip}" id="webcamipaddr">unknown</span></b>
-      </div>
-     </div> <!-- row webcamip in card in I/O area card  -->
+
 
      <!-- AREA ROBOT ADDRESS -->
-     <div class="row"> <!-- row robotip in card in I/O area card  -->
-      <div class="col-7">
-          <!--   ROBOT ADDRESS InputArea   -->
-          <form action="setrobotip" method="post">
-         <!-- the form-data is sent to the path specified in the action attribute -->
-         <input type="text" size="10" id="configurespec" name="ipaddr" value="localhost/basicrobot23">
-         <input type="submit" value="robotip">
-         </form>
-      </div>
-         <!--   ROBOT ADDRESS DataArea   -->
-         <div class="col-5 text-danger">
-            <b><span th:text="${robotip}">not connected</span></b>
-         </div>
-     </div> <!-- row robotip in card in I/O area card  -->
+
 
         <div class="row"> <!-- row stepTime in card in I/O area card  -->
             <div class="col-7">
@@ -90,7 +55,7 @@
             </div>
             <!--   StepTime DataArea   -->
             <div class="col-5 text-info">
-                <b><span th:text="${steptime}">unknown</span></b>
+                <b><span th:text="${steptime}">steptime?</span></b>
             </div>
         </div> <!-- row robotip in card in I/O area card  -->
      </div> <!-- I/O area card body -->
@@ -179,26 +144,18 @@
 
 <!-- SECONDA COLONNA (webcam e robot messages) -->
   <!-- Responsive images automatically adjust to fit the size of the screen. -->
-  <div class="col-5">  <!-- webcam col -->
+  <div class="col-6">  <!-- webcam col -->
     <div class="card iss-bg-webcamarea px-1 border">
      <div class="card-body">
-      <div class="row">
-        <img class="img-fluid" th:src="@{${ 'http://'+webcamip+':8000/video'} }"
-               alt="androidcammmm" style="border-spacing: 0; border: 1px solid black;">
-          <a th:href="@{${'http://'+webcamip+':8080'}}">Android ipwebcam</a>
-      </div>
+
          <!--  LO STREAM DEVE ESSERE SU UN ALTRO PC
                <img class="img-fluid" th:src="@{${ 'http://192.168.1.214:8000/video'} }" -->
-      <div class="row">
-             <!-- <img class="img-fluid" th:src="@{${ 'http://'+robotip+':8080/?action=stream'}}"
-                 alt="raspicam" style="border-spacing: 0; border: 1px solid black;"> -->
-             <img class="img-fluid" th:src="@{${ 'http://87.16.56.129:8080/?action=stream'}}"
-                  alt="raspicam" style="border-spacing: 0; border: 1px solid black;">
-      </div>
+
          <div class="row">
              <b>Virtual robot</b>
-             <iframe src="http://wenv:8090" height="400" width="200" style="border:2px solid red;"
-                     title="Virtual robot"></iframe>
+             <!--
+<iframe src="http://wenv:8090" height="500" width="200" style="border:2px solid red;"title="Virtual robot"></iframe>
+                      -->
          </div>
      </div>
      </div> <!-- card -->
@@ -211,7 +168,7 @@
   <hr/>
   <div class="footer clearfix mb-0 text-muted">
    <div class="float-start">
-    <p>basicrobot23 console</p>
+    <p>basicrobot23 virtualRobot console</p>
    </div>
    <div class="float-end">
     <p>By <a href="https://www.unibo.it/sitoweb/antonio.natali">AN-DISI</a> </p>

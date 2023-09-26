@@ -16,10 +16,10 @@ COPY ./*.txt ./
 CMD ["bash", "webrobot23"]
 
 ## 1) gradlew distTar
-## 2) docker build -t webrobot23:1.0 .
-## docker tag webrobot23:1.0 natbodocker/webrobot23:1.0
+## 2) docker build -t webrobot23:1.1 .
+## docker tag webrobot23:1.0 natbodocker/webrobot23:1.1
 ## docker run -it --rm --name webrobot23 -p8085:8085/tcp --privileged webrobot23:1.0  /bin/bash
 
 #type docker_password.txt | docker login --username natbodocker --password-stdin
 #docker login --username natbodocker --password xyz
-#docker push natbodocker/webrobot23:1.0
+#docker push natbodocker/webrobot23:1.1

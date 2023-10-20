@@ -11,7 +11,7 @@ import unibo.basicomm23.utils.Connection;
 
 
 public class CoapConnection extends Connection {
-private CoapClient client;
+protected CoapClient client;
 private String url;
  
 private String answer = "unknown";

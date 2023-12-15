@@ -33,7 +33,7 @@ public class WebSocketHandler extends AbstractWebSocketHandler implements IWsHan
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         sessions.remove(session);
-        CommUtils.outblue("WebSocketHandler | Removed the session:" + session);
+        CommUtils.outmagenta("WebSocketHandler | afterConnectionClosed:" + session);
         super.afterConnectionClosed(session, status);
     }
     @Override
@@ -64,7 +64,7 @@ public class WebSocketHandler extends AbstractWebSocketHandler implements IWsHan
 
     public void sendToAll(String message)  {
         try{
-            CommUtils.outblue("WebSocketHandler | sendToAll String: " + message);
+            //CommUtils.outblue("WebSocketHandler | sendToAll String: " + message);
             //JSONObject jsm = new JSONObject(message);
             //IApplMessage mm = new ApplMessage(message);
             //String mstr    = mm.msgContent();//.replace("'","");
@@ -83,7 +83,7 @@ public class WebSocketHandler extends AbstractWebSocketHandler implements IWsHan
                         // + message.getPayload() + " for session " + session.getRemoteAddress() );
                 synchronized(session){ //evito scritture concorrenti
                     //CommUtils.delay(5000);
-                    CommUtils.outyellow("WebSocketHandler | sendToAll session " );
+                    //CommUtils.outyellow("WebSocketHandler | sendToAll session " );
                     session.sendMessage(message);
                 }
             }catch(Exception e){

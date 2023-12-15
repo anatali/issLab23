@@ -4,7 +4,7 @@ import unibo.basicomm23.utils.CommUtils
 
 object OwnerManager {
     var owner = "unknown"
-    val consoleName = "gui23xyz9526"
+    val consoleName = "gui23xyz9526" 
     var steptime    = "330"
 
     fun checkOwner(caller: String): Boolean {

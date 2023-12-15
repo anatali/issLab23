@@ -18,7 +18,7 @@ COPY ./*.txt ./
 
 CMD ["bash", "unibo.basicrobot23"]
 
-## 1) gradlew build -> distTar
+## 1) gradlew distTar
 ## 2) docker build -t basicrobot23:2.0 .
 ## OCCORRE APRIRE UDP PER PERMETTERE COAP
 ## docker run -it --rm --name basicrobot23 -p8020:8020/tcp -p8020:8020/udp --privileged basicrobot23:2.0  /bin/bash

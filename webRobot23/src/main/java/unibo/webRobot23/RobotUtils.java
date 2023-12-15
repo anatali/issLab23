@@ -23,7 +23,7 @@ public class RobotUtils {
     private static void engageRobot(){
         if( enaged ) return;
         IApplMessage engageReq = CommUtils.buildRequest(applName,
-                "engage", "engage("+ applName +")", "basicrobot");
+                "engage", "engage("+ applName + ","+ RobotController.steptime + ")", "basicrobot");
         try {
             Interaction conn = (tcpconn != null) ? tcpconn  : coapconn;
             //CommUtils.outmagenta("engage engageReq=" + engageReq);
@@ -77,6 +77,7 @@ public class RobotUtils {
             case "l" : return CommUtils.buildDispatch(applName, basicrobotCmdId, "cmd(a)", robotName);
             case "r" : return CommUtils.buildDispatch(applName, basicrobotCmdId, "cmd(d)", robotName);
             case "h" : return CommUtils.buildDispatch(applName, basicrobotCmdId, "cmd(h)", robotName);
+
             case "p" : return CommUtils.buildRequest(applName, "step", "step("+RobotController.steptime +")", robotName);
 
             case "start"  : return CommUtils.buildDispatch(applName, robotCmdId, "start",  robotName);
@@ -106,6 +107,40 @@ public class RobotUtils {
             CommUtils.outred("RobotUtils | sendMsg on:" + tcpconn + " ERROR:"+e.getMessage());
         }
     }
+
+    public static void sendPlanMsg(String path, String steptime ){
+        try {
+            String msg = ""+ CommUtils.buildRequest(applName,
+                    "doplan", "doplan("+path+ "," + steptime + ")", "basicrobot");
+            Interaction conn = (tcpconn != null) ? tcpconn  : coapconn;
+            CommUtils.outblue("RobotUtils sendPlanMsg |  msg:" + msg + " conn=" + conn);
+            if( withalarm ){
+                new Thread(){
+                    public void run(){
+                        try {
+                            Thread.sleep(1500);
+                            String msg = ""+ CommUtils.buildEvent("webgui", "alarm", "alarm(fromgui)" );
+                            CommUtils.outred("RobotUtils doPlan |  alarm msg:" + msg + " conn=" + conn);
+                            conn.forward( msg );
+                            withalarm = false;
+                        } catch ( Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+            }
+            String answer = conn.request( msg );
+            CommUtils.outmagenta("sendPlanMsg answer=" + answer);
+            withalarm = false;
+            //IApplMessage reply = new ApplMessage(answer);
+            //return reply.msgContent();
+        } catch (Exception e) {
+            CommUtils.outred("RobotUtils sendPlanMsg |  ERROR:"+e.getMessage());
+            //return "doPlanERROR";
+        }
+
+    }
+
     public static String doPlan(String path, String steptime ){
         try {
             String msg = ""+ CommUtils.buildRequest(applName,

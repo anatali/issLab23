@@ -5,36 +5,36 @@
  */  
    
 System /* -trace -msglog  */ basicrobot23    
-  
+   
 Dispatch cmd       	: cmd(MOVE)      
 Dispatch end       	: end(ARG)   
 
 Request step       : step(TIME)	
-Reply stepdone     : stepdone(V)  
-Reply stepfailed   : stepfailed(DURATION, CAUSE)	
+Reply stepdone     : stepdone(V)                 for step
+Reply stepfailed   : stepfailed(DURATION, CAUSE) for step
 
 Event  sonardata   : sonar( DISTANCE ) 	   
 Event obstacle     : obstacle(X) 
 
 Request  doplan     : doplan( PATH, STEPTIME )
-Reply doplandone    : doplandone( ARG ) 
-Reply doplanfailed  : doplanfailed( ARG )
+Reply doplandone    : doplandone( ARG )    for doplan
+Reply doplanfailed  : doplanfailed( ARG )  for doplan
 
 Dispatch setrobotstate: setpos(X,Y,D)
 //Dispatch setsteptime:setsteptime(T)
 
 Request engage        : engage(OWNER, STEPTIME)	
-Reply   engagedone    : engagedone(ARG)
-Reply   engagerefused : engagerefused(ARG)
+Reply   engagedone    : engagedone(ARG)    for engage
+Reply   engagerefused : engagerefused(ARG) for engage
 
 Dispatch disengage    : disengage(ARG)
 //Dispatch engaged      : engaged(ARG)
 //Dispatch disengaged   : disengage(ARG)
 
 Request checkowner    : checkowner(CALLER)
-Reply checkownerok    : checkownerok(ARG)
-Reply checkownerfailed: checkownerfailed(ARG)
-
+Reply checkownerok    : checkownerok(ARG)      for checkowner
+Reply checkownerfailed: checkownerfailed(ARG)  for checkowner
+ 
 Event alarm           : alarm(X)
 Dispatch nextmove     : nextmove(M)
 Dispatch nomoremove   : nomoremove(M)
@@ -43,20 +43,20 @@ Dispatch setdirection : dir( D )  //D =up|down!left|right
 
 //Endosimbiosi di robotpos
 Request moverobot    :  moverobot(TARGETX, TARGETY)  
-Reply moverobotdone  :  moverobotok(ARG)
-Reply moverobotfailed:  moverobotfailed(PLANDONE, PLANTODO)
+Reply moverobotdone  :  moverobotok(ARG)                    for moverobot
+Reply moverobotfailed:  moverobotfailed(PLANDONE, PLANTODO) for moverobot
 
 
-//Richieste di info
+//Richieste di info 
 Request getrobotstate : getrobotstate(ARG)
-Reply robotstate      : robotstate(POS,DIR)
+Reply robotstate      : robotstate(POS,DIR)  for getrobotstate
 
 Context ctxbasicrobot ip [host="localhost" port=8020]  
 
 CodedQActor datacleaner    context ctxbasicrobot className "rx.dataCleaner"    //riceve l'evento sonarRobot
 CodedQActor distancefilter context ctxbasicrobot className "rx.distanceFilter" //genera l'evento  obstacle e sonardata
-
-/* 
+  
+/*   
  * ------------------------------
  * engager 
  * ------------------------------
@@ -89,7 +89,7 @@ QActor engager context ctxbasicrobot{
 				   if( EngageDone ) OwnerMngr.setStepTime(payloadArg(1))
 				#]
 			}
-     }
+     }  
      //Goto engageAccept if [# Owner == "unkknown" || Owner == EngageCaller || EngageCaller == "gui23xyz9526" #] else engageRefuse
      Goto engageAccept if [# EngageDone #] else engageRefuse
      
@@ -182,7 +182,8 @@ QActor basicrobot context ctxbasicrobot{
 		//[# sysUtil.trace = true #]  //Trace the behavior of ActorBasic
  		qrun uniborobots.robotSupport.create(myself,"basicrobotConfig.json")	 		
  		[# RobotType = uniborobots.robotSupport.robotKind #]  
- 		delay 3000 //per inserzione in docker: attesa per wenv  
+ 		println("basicrobot | CREATED ... ") color magenta
+ 		/*  
  		println("basicrobot | STARTING ... ") color magenta
  		//realsonar creato da uniborobots.robotsupport come sonarHCSR04SupportActor
   	    //[# subscribeToLocalActor("distancefilter").subscribeToLocalActor("realsonar") #] 
@@ -196,13 +197,26 @@ QActor basicrobot context ctxbasicrobot{
   		run uniborobots.robotSupport.move( "a" )    //synch 
  		run uniborobots.robotSupport.move( "d" )	//synch
   		//delay 2000 //per inserzione in docker
- 	}  
+  		*/
+ 	}
+ 	//Goto waitForRobot   
  	Goto work
  
+    State waitForRobot{
+ 		delay 5000 //per inserzione in docker: attesa per wenv  
+ 		//NO SUBSCRIPTION TO SONAR FOR THE VIRTUAL ROBOT
+ 		println("basicrobot | STARTING ... ") color magenta
+ 		
+ 		//ELIMINO LA INTERAZIONE SINCRONA perchè richiede la presenza dell'immagine
+   		//run uniborobots.robotSupport.move( "a" )    //synch 
+ 		//run uniborobots.robotSupport.move( "d" )	//synch   	
+    }
+    Goto work
+    
   	
 	State work{ 
 		//printCurrentMessage   
-        updateResource [# "basicrobot(started)" #]
+        //updateResource [# "basicrobot(started)" #]
 		discardMsg Off //We want store the non-handled messages
 		println("basicrobot  | waiting, working for ${OwnerMngr.owner} ... ")  color magenta 
 	} 
@@ -359,10 +373,10 @@ QActor planexec context ctxbasicrobot{
 	
 	State doMove{
  */
- 		//println("$name | domove $CurMoveTodo")  
+ 		//println("$name | domove $CurMoveTodo")    
  		if [# CurMoveTodo == "" #] { 
  			forward planexec -m nomoremove : nomoremove(end)
- 		}
+ 		} 
 		else{ if [# CurMoveTodo == "w" #] {
 	 			delay 300  //avoid too fast ...
 	 			//Il supporto non fa step-back

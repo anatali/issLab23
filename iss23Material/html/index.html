@@ -8,7 +8,7 @@
 
     <title>iss23 &#8212; iss23 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -17,21 +17,25 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Introduzione" href="Introduzione23.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
+    <link rel="next" title="Introduzione" href="Introduzione23.html" /> 
   </head><body>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Introduzione23.html" title="Introduzione"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">iss23</a></li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <section id="iss23">
@@ -931,7 +935,18 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="BasicRobot23.html#uso-del-planner">Uso del planner</a></li>
-<li class="toctree-l2"><a class="reference internal" href="BasicRobot23.html#basicrobot23-yaml">basicrobot23.yaml</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BasicRobot23.html#distribuzione-docker-su-pc">Distribuzione docker su PC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="BasicRobot23.html#dockerfilebasicrobotforrasp23">Dockerfilebasicrobotforrasp23</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BasicRobot23.html#activate-sh">activate.sh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BasicRobot23.html#basicrobot23-yaml">basicrobot23.yaml</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BasicRobot23.html#webalonebasicrobot23-yaml">webAlonebasicrobot23.yaml</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BasicRobot23.html#webbasicrobot23-yaml">webbasicrobot23.yaml</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="BasicRobot23.html#distribuzione-docker-su-raspberry">Distribuzione docker su Raspberry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="BasicRobot23.html#webbasicrobotonrasp23-yaml">webbasicrobotonRasp23.yaml</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="RobotPos.html">Posizionamento del robot</a><ul>
@@ -1075,6 +1090,8 @@
 <li class="toctree-l2"><a class="reference internal" href="RaspberrySoftware.html#websocket">websocket</a></li>
 <li class="toctree-l2"><a class="reference internal" href="RaspberrySoftware.html#docker">Docker</a></li>
 <li class="toctree-l2"><a class="reference internal" href="RaspberrySoftware.html#docker-compose">Docker-compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RaspberrySoftware.html#senza-wifi">Senza wifi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RaspberrySoftware.html#wifi-su-bullseye">wifi su bullseye</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a><ul>
@@ -1490,14 +1507,7 @@
 <li class="toctree-l2"><a class="reference internal" href="TemaFinale22.html#tfrequirements">TFRequirements</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Studenti2023.html">Studenti2023</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Studenti2023.html#analisi-del-tf23">Analisi del TF23</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="Studenti2023.html#il-problema-del-load-time-lungo">Il problema del load-time lungo</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Studenti2023.html#il-problema-del-driver-distratto">Il problema del driver distratto</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="Studenti2023.html">Studenti2023</a></li>
 <li class="toctree-l1"><a class="reference internal" href="DeliverableBoundaryWalkReq1.html">DeliverableBoundaryWalkReq1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="DeliverableAppl1HTTP.html">DeliverableAppl1HTTP</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="DeliverableAppl1HTTP.html#problematiche-sprint2">Problematiche Sprint2</a></li>
@@ -1517,6 +1527,23 @@
 <li class="toctree-l2"><a class="reference internal" href="TemaFinale23.html#service-users-story">Service users story</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="TemaFinaleNote.html">TemaFinaleNote</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TemaFinaleNote.html#non-functional-requirements">Non functional requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TemaFinaleNote.html#linee-guida">Linee-guida</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TemaFinaleNote.html#fasi-del-colloquio">FASI del colloquio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TemaFinaleNote.html#aggiornamenti-del-software">Aggiornamenti del software</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TemaFinaleNote.html#precisazioni-del-commitente">Precisazioni del commitente</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TemaFinaleNote.html#note-dopo-le-interazioni-in-rete">Note dopo le interazioni in rete</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TemaFinaleNote.html#come-organizzare-gli-sprint">Come organizzare gli sprint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TemaFinaleNote.html#estensioni-estate-2022">Estensioni estate 2022</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="TemaFinaleNote.html#nuove-features">Nuove features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TemaFinaleNote.html#unibo-qk30demo">unibo.qk30demo</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="TemaFinaleNote.html#sui-diagrammi-di-sequenza-in-uml">Sui diagrammi di sequenza in UML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TemaFinaleNote.html#interazioni-asincrone-in-uml">Interazioni asincrone in UML</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="MPS.html">MPS</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="MPS.html#aspetti">Aspetti</a></li>
 <li class="toctree-l2"><a class="reference internal" href="MPS.html#mps-overview">MPS overview</a><ul>
@@ -1530,16 +1557,44 @@
 <li class="toctree-l2"><a class="reference internal" href="MPS.html#amazon">Amazon</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="DiscussioniTF23.html">DiscussioniTF23</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="DiscussioniTF23.html#problematiche-sul-temafinale23">Problematiche sul <span class="xref std std-ref">TemaFinale23</span></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="DiscussioniTF23.html#lo-sprint0">Lo sprint0</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="DiscussioniTF23.html#in-generale-lo-sprint0">In generale, lo sprint0:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="DiscussioniTF23.html#il-problema-del-load-time-lungo">Il problema del load-time lungo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DiscussioniTF23.html#il-problema-del-driver-distratto">Il problema del driver distratto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DiscussioniTF23.html#il-problema-del-driver-malevolo">Il problema del driver malevolo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DiscussioniTF23.html#il-problema-dell-allarme-ignorato">Il problema dell’allarme ignorato</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="DiscussioniTF23.html#workers-giugno-luglio">Workers Giugno-Luglio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DiscussioniTF23.html#workers-agosto">Workers Agosto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DiscussioniTF23.html#analisi-del-testo-mediante-python-nlk">Analisi del testo mediante Python NLK</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="DiscussioniTF23.html#nomi">NOMI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DiscussioniTF23.html#verbi">VERBI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DiscussioniTF23.html#terminologia-nltk-pos-tag-list">Terminologia (NLTK POS tag list)</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="Libri.html">Libri</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Libri.html#id1">2023</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Libri.html#id2">2022</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Libri.html#id3">2021</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Libri.html#id4">2020</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Libri.html#id5">2010</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Libri.html#id6">2011</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Libri.html#id7">2009</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Libri.html#id8">2007</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Libri.html#id9">2000</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id5">2018</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id6">2015</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id7">2014</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id8">2011</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id9">2010</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id10">2008</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id11">2008</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id12">2005</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id15">1999</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#id16">1989</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Libri.html#decision-brain">Decision Brain</a></li>
 </ul>
 </li>
 </ul>
@@ -1555,82 +1610,34 @@
 </section>
 
 
+            <div class="clearer"></div>
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="#">iss23</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="Introduzione23.html">Introduzione</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CriteriValutazione.html">Criteri di valutazione</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Template23.html">Il template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Primipassioperativi.html">Primi passi operativi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Principi.html">Principi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="VirtualRobot23.html">VirtualRobot23</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Applicazione1.html">Applicazione1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Appl1-HTTPSprint1.html">Appl1-HTTPSprint1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Appl1-HTTPSprint2.html">Appl1-HTTPSprint2</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Appl1-HTTPSprint3Init.html">Appl1-HTTPSprint3Init</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Interaction.html">Interaction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="unibo.basicomm23.html">unibo.basicomm23</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Appl1-HTTPSprint3.html">Appl1-HTTPSprint3</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Appl1-WSSprint3.html">Appl1-WSSprint3</a></li>
-<li class="toctree-l1"><a class="reference internal" href="StepAsynch.html">StepAsynch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Actors23.html">Actors23</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Actors23FSM.html">Actors23FSM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Producers-Consumer.html">Producers-Consumer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SistemiActors23.html">SistemiActors23</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Appl1Actors23.html">Appl1Actors23</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Appl1ActorsFsm23.html">Appl1ActorsFsm23</a></li>
-<li class="toctree-l1"><a class="reference internal" href="QakActors23.html">QakActors23</a></li>
-<li class="toctree-l1"><a class="reference internal" href="QakActors23Demo.html">QakActors23Demo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ProdConsQak.html">ProdConsQak</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Appl1ActorsQak23.html">Appl1ActorsQak23</a></li>
-<li class="toctree-l1"><a class="reference internal" href="BasicRobot23Lezione.html">BasicRobot23Lezione</a></li>
-<li class="toctree-l1"><a class="reference internal" href="BasicRobot23.html">BasicRobot23</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RobotPos.html">Posizionamento del robot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RobotPosWeb.html">robotposweb</a></li>
-<li class="toctree-l1"><a class="reference internal" href="UsoDiunPlanner.html">Uso di un planner</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RaspApplCode.html">RaspApplCode</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RadarSystem23.html">RadarSystem23</a></li>
-<li class="toctree-l1"><a class="reference internal" href="KotlinNotes.html">KotlinNotes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="AppuntiTecnologie.html">Appunti su tecnologie</a></li>
-<li class="toctree-l1"><a class="reference internal" href="AppuntiAPIRest.html">Appunti API Rest</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SpringBootIntro.html">SpringBootIntro</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Actors23Facade.html">Actors23Facade</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SpringDataRest.html">SpringDataRest</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Books.html">Books</a></li>
-<li class="toctree-l1"><a class="reference internal" href="TemaFinale22.html">TemaFinale22</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Studenti2023.html">Studenti2023</a></li>
-<li class="toctree-l1"><a class="reference internal" href="DeliverableBoundaryWalkReq1.html">DeliverableBoundaryWalkReq1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="DeliverableAppl1HTTP.html">DeliverableAppl1HTTP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="TemaFinale23.html">TemaFinale23</a></li>
-<li class="toctree-l1"><a class="reference internal" href="MPS.html">MPS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Libri.html">Libri</a></li>
+  <div>
+    <h3><a href="#">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">iss23</a><ul>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
 </ul>
 
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="Introduzione23.html" title="next chapter">Introduzione</a></li>
-  </ul></li>
-</ul>
-</div>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="Introduzione23.html"
+                          title="next chapter">Introduzione</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -1641,32 +1648,26 @@
     </div>
 </div>
 <script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2022, Antonio Natali.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/index.rst.txt"
-          rel="nofollow">Page source</a>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Introduzione23.html" title="Introduzione"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">iss23 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">iss23</a></li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Antonio Natali.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    </div>
   </body>
 </html>

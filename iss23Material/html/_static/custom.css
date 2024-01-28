@@ -1,7 +1,61 @@
 body {
     background-color: rgb(255,255,255);
+    font-size: 18px;
   }
-  
+
+pre{
+  color: rgb(6, 35, 6) !important;
+  font-size: 12px;
+}
+
+
+
+h1{
+    background-color: #fffed6 !important;
+    color: rgb(115, 0, 255)  !important;
+    border: 1px solid rgb(0, 10, 0) !important;
+    margin: 0 !important;
+    border-radius: 15px !important;
+  }
+
+h2{
+    background-color: #e4ffd6 !important;
+    color: rgb(47, 0, 255) !important;
+    margin: 100 !important;
+    border: 1px solid rgb(0, 10, 0) !important;
+    border-radius: 15px !important;
+    padding: 2px !important;
+  }
+
+h3{
+    background-color: #d6fff7 !important;
+    color: rgb(119, 0, 255) !important;
+    border-radius: 25px !important;
+    text-decoration: underline !important;
+}
+
+  .pre{
+    font-family: Arial;
+    font-style: normal;
+    font-size: 16px;
+    color: rgb(115, 0, 255);
+    
+    margin: 0;
+    
+  }  
+
+  .n{ 
+    font-size: small;
+    font-style: normal;
+   }
+
+  .c1{ 
+    font-family: Arial;
+    font-style: normal;
+    color: red;
+    font-size: small;
+  }
+
   .blue {
     color: blue; 
     font-style: italic;
@@ -18,6 +72,12 @@ body {
 
   .green {
     color:#0fd80f;
+  }
+
+  .magenta {
+    color:#8f0099e5;
+    font-style: oblique;
+    
   }
 
   .reference{
@@ -64,23 +124,40 @@ body {
   .slide1{
     background-color: #ccff66;
     border-radius: 25px;
+    border: 1px solid green;
     font-size: 30px; 
     line-height: 1.5;
-    padding: 3px
+     
+    padding: 5px
   }
 
   .slide2{
-    background-color: #80ffff;
-    border-radius: 25px;
+    background-color: #c5f6f6;
+    border-radius: 15px;
+    border: 1px solid black;
     font-size: 20px; 
     line-height: 1.5;
+    margin: 10;
     padding: 3px
   }
 
+  .slide3{
+    background-color: yellow;
+    border-radius: 10px;
+    border: 1px solid blue;
+    font-size: 16px; 
+    line-height: 1.0;
+    padding: 3px;
+    font-weight: bold;
+  }  
+
   .slidekp{
     background-color: hsl(332, 77%, 86%);
-    border-radius: 25px;
+    border-radius: 10px;
+    border: 1px solid blue;
     font-size: 18px; 
+    font-weight: bold;
     line-height: 1.5;
     padding: 3px
   }  
+

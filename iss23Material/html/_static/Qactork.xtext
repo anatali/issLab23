@@ -16,6 +16,7 @@ QActorSystem: "System" ( trace ?= "-trace" )? (  logmsg ?= "-msglog" )? spec=QAc
 
 terminal VARID  :  ('A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
 terminal KCODE  : '#' ( . )* '#'  ;
+terminal PCOLOR : 'blue' | 'red' | 'green' | 'black' | 'yellow' | 'magenta' | 'cyan';
 
 QualifiedName : ID ('.' ID)* ;
 
@@ -80,7 +81,7 @@ StateAction    :
 	GuardedStateAction | IfSolvedAction |															//pre
 	Print | PrintCurMsg | SolveGoal |	DiscardMsg |  MemoTime | Duration |							//general
 	Forward | Emit |  Demand | Answer | ReplyReq | Delay | MsgCond |	EndActor |  ReturnFromInterrupt |
-	Subscribe | Delegate | EmitLocal |  EmitLocalStream |  //April2023
+	Subscribe | Delegate | EmitLocal |  EmitLocalStream |   //April2023
 	UpdateResource | 	ObserveResource |
 	CodeRun | AnyAction	| Exec																		//extra code
 ;  
@@ -90,9 +91,12 @@ IfSolvedAction     : {IfSolvedAction} "ifSolved" "{" ( solvedactions += StateAct
 GuardedStateAction : {GuardedStateAction} "if" guard = AnyAction "{" ( okactions += StateAction )*  "}"  //action=ActionSequence  
 					 ("else"  "{" ( koactions += StateAction )*  "}")?
 ;
+ 
+ 
+PrintCurMsg    :  {PrintCurMsg} "printCurrentMessage"  ("color" color=PCOLOR )? ;
+Print          :  {Print} "println" "(" args=PHead ")" ("color" color=PCOLOR )?   ; 
+//Printcolored   :  {Printcolored} "printlncolor" "(" args=PHead ")" "color"color=PCOLOR     ; 
 
-PrintCurMsg    :  {PrintCurMsg} "printCurrentMessage"  ;
-Print          :  {Print} "println" "(" args=PHead ")"    ; 
 SolveGoal      :  {SolveGoal} "solve" "(" goal=PHead ("," resVar=Variable)? ")";
 DiscardMsg     :  {DiscardMsg} "discardMsg" (discard?='On' | 'Off') ;
 MemoTime       :  {MemoTime} "memoCurrentTime"	store=VARID ;
